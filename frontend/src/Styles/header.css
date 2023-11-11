@@ -1,0 +1,44 @@
+.nav{
+    height: 10%;
+    background-color:rgb(5, 35, 73);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1%;
+    color: white;
+    opacity: 90%;
+  }
+  
+  ul{
+    list-style: none;
+    display: inline-block;
+  }
+  
+  ul li{
+    display:inline-block;
+    padding: 1rem 1rem;
+    font-size: 1.5rem;
+    
+    
+  }
+  .nav a{
+    text-decoration: none;
+    align-items: center;
+    color: white;
+    
+  
+  }
+  .nav-links{
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: space-around;
+    
+  }
+  .nav ul li a:hover{
+    background-color: rgb(17, 231, 117);
+  }
+
+  .boton{
+    background-color: gold;
+  }
