@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button ,Modal} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -17,7 +17,7 @@ const RegistroUsuario = (props) => {
   const [ usuario, setUsuario] = useState("");
   const [ password, setPassword ] = useState("");
   const [ confirmPassword, setConfirmPassword ] = useState("");
-  const [ aviso, setAviso ] = useState("");
+  //const [ aviso, setAviso ] = useState("");
   const [ nombreError, setNombreError] = useState("");
   const [ apellidoError, setApellidoError] = useState("");
   //const [ rolError, setRolError] = useState("");
@@ -27,6 +27,25 @@ const RegistroUsuario = (props) => {
   const [ usuarioError, setusuarioError] = useState("");
   const [ passwordError, setPasswordError] = useState("");
   const [ confirmPasswordError, setConfirmPasswordError ] = useState("");
+
+///
+ ///
+ const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+ const handleSuccessModalClose = () => {
+   setShowSuccessModal(false);
+   
+   // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
+   navigate('/usuario');
+ };
+
+
+////
+
+const handleSuccessModalShow = () => setShowSuccessModal(true);
+////
+
+
   const rol = "Usuario";
   const navigate = useNavigate();
   
@@ -59,6 +78,7 @@ const RegistroUsuario = (props) => {
           nombre,apellido,rol,sexo,fechaNacimiento,telefono,usuario, password, confirmPassword })
       .then(res => {
         console.log(res);
+        handleSuccessModalShow();
         setNombre("");
         setApellido("");
         //setRol("");
@@ -68,7 +88,7 @@ const RegistroUsuario = (props) => {
         setUsuario("");
         setPassword("");
         setConfirmPassword("");
-        setAviso("Usuario creado con exito!!");
+        //setAviso("Usuario creado con exito!!");
 
         setNombreError("");
         setApellidoError("");
@@ -84,7 +104,7 @@ const RegistroUsuario = (props) => {
         const errorResponse = err.response.data.errors;
         if (Object.keys(errorResponse).includes('nombre')) {
           setNombreError(errorResponse['nombre'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setNombreError("");
@@ -93,7 +113,7 @@ const RegistroUsuario = (props) => {
 
         if (Object.keys(errorResponse).includes('apellido')) {
           setApellidoError(errorResponse['apellido'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setApellidoError("");
@@ -101,7 +121,7 @@ const RegistroUsuario = (props) => {
         }
         if (Object.keys(errorResponse).includes('sexo')) {
           setSexoError(errorResponse['sexo'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setSexoError("");
@@ -109,7 +129,7 @@ const RegistroUsuario = (props) => {
         }
         if (Object.keys(errorResponse).includes('fechaNacimiento')) {
           setFechaNacimientoError(errorResponse['fechaNacimiento'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setFechaNacimientoError("");
@@ -117,7 +137,7 @@ const RegistroUsuario = (props) => {
         }
         if (Object.keys(errorResponse).includes('telefono')) {
           settelefonoError(errorResponse['telefono'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           settelefonoError("");
@@ -125,7 +145,7 @@ const RegistroUsuario = (props) => {
         }
         if (Object.keys(errorResponse).includes('usuario')) {
           setusuarioError(errorResponse['usuario'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setusuarioError("");
@@ -134,7 +154,7 @@ const RegistroUsuario = (props) => {
 
         if(Object.keys(errorResponse).includes('password')) {
           setPasswordError(errorResponse['password'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setPasswordError("");
@@ -142,7 +162,7 @@ const RegistroUsuario = (props) => {
         }  
         if(Object.keys(errorResponse).includes('confirmPassword')) {
           setConfirmPasswordError(errorResponse['confirmPassword'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setConfirmPasswordError("");
@@ -239,10 +259,24 @@ const RegistroUsuario = (props) => {
               <div>
                 <button onClick={e => navigate("/usuario")}>Cancelar</button >
               </div>
+              <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>Ahora puede acceder con sus credenciales.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="success" onClick={handleSuccessModalClose}>
+                  Cerrar
+                  </Button>
+                </Modal.Footer>
+            </Modal>
+
             </div>
           </div>
         </div >
-        <h4>{aviso}</h4>
+       {/*<h4>{aviso}</h4>*/}
       </Form>
     );
   

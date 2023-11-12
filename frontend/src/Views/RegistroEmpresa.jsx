@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button,Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -10,7 +10,20 @@ import { Link, useNavigate} from 'react-router-dom';
 const RegistroEmpresa = (props) => {
   const [ nombreEmpresa, setNombreEmpresa] = useState("");
   const [ correo, setCorreo] = useState("");
-  
+  ///
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    
+    // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
+    navigate('/empresa');
+  };
+
+  const handleSuccessModalShow = () => setShowSuccessModal(true);
+////
+
+
   const [ direccion, setDireccion] = useState("");
   const [ telefono, setTelefono] = useState("");
   const [ descripcion, setDescripcion] = useState("");
@@ -18,7 +31,7 @@ const RegistroEmpresa = (props) => {
   const [ usuario, setUsuario] = useState("");
   const [ password, setPassword ] = useState("");
   const [ confirmPassword, setConfirmPassword ] = useState("");
-  const [ aviso, setAviso ] = useState("");
+  //const [ aviso, setAviso ] = useState("");
   const [ nombreEmpresaError, setNombreEmpresaError] = useState("");
   const [ correoError, setCorreoError] = useState("");
   //const [ rolError, setRolError] = useState("");
@@ -44,7 +57,7 @@ const RegistroEmpresa = (props) => {
   };
 
   const handleInputChange = (e, setterFunction, errorSetter) => {
-      const value = e.target.value.trim();
+      const value = e.target.value;
       setterFunction(value);
       errorSetter(value === '' ? 'Este campo es obligatorio' : '');
     };
@@ -61,6 +74,7 @@ const RegistroEmpresa = (props) => {
         nombreEmpresa,correo,rol,direccion,telefono,descripcion,usuario, password, confirmPassword })
       .then(res => {
         console.log(res);
+        handleSuccessModalShow();
         setNombreEmpresa("");
         setCorreo("");
         //setRol("");
@@ -71,7 +85,7 @@ const RegistroEmpresa = (props) => {
         setUsuario("");
         setPassword("");
         setConfirmPassword("");
-        setAviso("Empresa creada con exito!!");
+        //setAviso("Empresa creada con exito!!");
 
         setNombreEmpresaError("");
         setCorreoError("");
@@ -88,7 +102,7 @@ const RegistroEmpresa = (props) => {
         const errorResponse = err.response.data.errors;
         if (Object.keys(errorResponse).includes('nombreEmpresa')) {
           setNombreEmpresaError(errorResponse['nombreEmpresa'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setNombreEmpresaError("");
@@ -97,7 +111,7 @@ const RegistroEmpresa = (props) => {
 
         if (Object.keys(errorResponse).includes('correo')) {
           setCorreoError(errorResponse['correo'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setCorreoError("");
@@ -105,7 +119,7 @@ const RegistroEmpresa = (props) => {
         }
         if (Object.keys(errorResponse).includes('direccion')) {
           setDireccionError(errorResponse['direccion'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setDireccionError("");
@@ -114,7 +128,7 @@ const RegistroEmpresa = (props) => {
         
         if (Object.keys(errorResponse).includes('telefono')) {
           settelefonoError(errorResponse['telefono'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           settelefonoError("");
@@ -122,7 +136,7 @@ const RegistroEmpresa = (props) => {
         }
         if (Object.keys(errorResponse).includes('descripcion')) {
             setDescripcionError(errorResponse['descripcion'].message);
-            setAviso("");
+            //setAviso("");
           }
           else{
             setDescripcionError("");
@@ -130,7 +144,7 @@ const RegistroEmpresa = (props) => {
           }
         if (Object.keys(errorResponse).includes('usuario')) {
           setusuarioError(errorResponse['usuario'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setusuarioError("");
@@ -139,7 +153,7 @@ const RegistroEmpresa = (props) => {
 
         if(Object.keys(errorResponse).includes('password')) {
           setPasswordError(errorResponse['password'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setPasswordError("");
@@ -147,7 +161,7 @@ const RegistroEmpresa = (props) => {
         }  
         if(Object.keys(errorResponse).includes('confirmPassword')) {
           setConfirmPasswordError(errorResponse['confirmPassword'].message);
-          setAviso("");
+          //setAviso("");
         }
         else{
           setConfirmPasswordError("");
@@ -242,10 +256,25 @@ const RegistroEmpresa = (props) => {
               <div>
                 <button onClick={e => navigate("/empresa")}>Cancelar</button >
               </div>
+
+              <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>¡Empresa creada con éxito!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>Ahora puede acceder con sus credenciales.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="success" onClick={handleSuccessModalClose}>
+                  Cerrar
+                  </Button>
+                </Modal.Footer>
+            </Modal>
+
             </div>
           </div>
         </div >
-        <h4>{aviso}</h4>
+        {/*<h4>{aviso}</h4>*/}
       </Form>
     );
   

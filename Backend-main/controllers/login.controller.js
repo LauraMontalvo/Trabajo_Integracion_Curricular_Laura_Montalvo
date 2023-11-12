@@ -20,7 +20,7 @@ module.exports.validateUser = (req, res) => {
                     res.json({ msg: 'Datos incorrectos!!' });
                 }
             } else {
-                res.json({ msg: 'Este usuario no existe' });
+                res.json({ msg: 'El usuario o la contraseña son incorrectos' });
             }
         })
         .catch(err => res.json({ err: err, msg: "Error al validar el usuario." }));
@@ -38,7 +38,7 @@ module.exports.validateCompany = (req, res) => {
                     res.json({ msg: 'Contraseña incorrecta, ingrese nuevamente!!' });
                 }
             } else {
-                res.json({ msg: 'Esta empresa no existe!' });
+                res.json({ msg: 'El usuario o la contraseña son incorrectos' });
             }
         })
         .catch(err => res.json({ err: err, msg: "Error al validar la empresa." }));

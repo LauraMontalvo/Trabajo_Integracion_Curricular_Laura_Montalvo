@@ -17,11 +17,11 @@ const UserSchema = new mongoose.Schema({
     },
     sexo: {
         type: String,
-        required: [true, 'El sexo es obligatorio']
+        required: [true, 'El genero es obligatorio']
     },
     fechaNacimiento:{
         type: Date,
-        required: [true, 'La fechaNacimiento es obligatoria'],
+        required: [true, 'La fecha de Nacimiento es obligatoria'],
     },
     telefono: {
         type: String,
