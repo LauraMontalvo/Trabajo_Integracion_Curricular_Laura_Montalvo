@@ -30,7 +30,7 @@ const LoginForm = (props) => {
             
             console.log(user);
             setLoginStatus(respuesta.data.msg);
-            setTimeout(() => navigate('/Main/'+user._id), 1000);
+            setTimeout(() => navigate('/detalleUsuario/'+user._id), 1000);
           } else {
             setLoginStatus(respuesta.data.msg);
           }

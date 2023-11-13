@@ -32,7 +32,11 @@ const RegistrarseComo= (props) => {
                         <button  onClick={e=>navigate("/usuario")} >Usuario</button>
                         </div>
                         <button   onClick={e=>navigate("/empresa")} >Empresa</button>
-                        
+                        <div>
+                        <button   onClick={e=>navigate("/")} >Cancelar</button>
+
+                        </div>
+                       
 
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 const User = require('../models/user.model');
-
 module.exports.createUser = (request, response) =>{
     
     const {nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password,confirmPassword} = request.body;
@@ -16,7 +15,6 @@ module.exports.getAllUsers = (_,response) =>{
     .then(retrievedUsers => response.json(retrievedUsers))
     .catch(err => response.json(err))
 }
-
 module.exports.getUser = (request, response) =>{
     User.findOne({_id: request.params.id})
     .then(User => response.json(User))
@@ -28,7 +26,6 @@ module.exports.updateUser = (request, response) =>{
     .then(updateUser => response.json(updateUser))
     .catch(err => response.json(err))
 }
-
 module.exports.deleteUser = (request, response) =>{
     User.deleteOne({_id: request.params.id})
     .then(UserDeleted => response.json(UserDeleted))

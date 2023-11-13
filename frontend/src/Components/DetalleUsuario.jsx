@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import {useParams} from 'react-router-dom';
 import LoginForm from './LoginUsuario';
-function Main(props) {
+
+function DetalleUsuario(props) {
     const {id} = useParams();
     const [user, setUser] = useState([]);
    
@@ -23,4 +24,4 @@ function Main(props) {
   );
 }
 
-export default Main;
+export default DetalleUsuario;

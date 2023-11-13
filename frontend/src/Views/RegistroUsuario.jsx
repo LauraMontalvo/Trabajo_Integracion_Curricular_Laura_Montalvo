@@ -61,7 +61,7 @@ const handleSuccessModalShow = () => setShowSuccessModal(true);
   };
 
   const handleInputChange = (e, setterFunction, errorSetter) => {
-      const value = e.target.value.trim();
+      const value = e.target.value;
       setterFunction(value);
       errorSetter(value === '' ? 'Este campo es obligatorio' : '');
     };
