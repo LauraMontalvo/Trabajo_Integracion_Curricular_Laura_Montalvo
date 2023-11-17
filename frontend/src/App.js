@@ -1,13 +1,12 @@
 import React from 'react';
 import Logueo from './Views/Logueo';
-
 import RegistroUsuario from './Views/RegistroUsuario';
-import { BrowserRouter,Route,Routes } from 'react-router-dom';
-import { useState } from 'react'; 
+import * as reactRouterDom from 'react-router-dom';
 import LoginForm from './Components/LoginUsuario';
 import LoginFormEmpresa from './Components/LoginEmpresa';
 import RegistroEmpresa from './Views/RegistroEmpresa';
 import DetalleUsuario from './Components/DetalleUsuario';
+import LoginAdminForm from './Components/LoginAdmin'
 import Main from './Views/Main';
 
 
@@ -18,18 +17,19 @@ function App() {
 
   return (
 
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Main/>}/>
-        <Route exact path="/registrarseComo" element={<Logueo/>}/>
-        <Route exact path="/detalleUsuario/:id" element={<DetalleUsuario/>}/>
-        <Route exact path="/usuario" element={<LoginForm/>}/>
-        <Route exact path="/empresa" element={<LoginFormEmpresa/>}/>
-        <Route exact path="/registrarUsuario" element={<RegistroUsuario/>}/>
-        <Route exact path="/registrarEmpresa" element={<RegistroEmpresa/>}/>
+    <reactRouterDom.BrowserRouter>
+      <reactRouterDom.Routes>
+        <reactRouterDom.Route exact path="/" element={<Main />} />
+        <reactRouterDom.Route exact path="/registrarseComo" element={<Logueo />} />
+        <reactRouterDom.Route exact path="/detalleUsuario/:id" element={<DetalleUsuario />} />
+        <reactRouterDom.Route exact path="/usuario" element={<LoginForm />} />
+        <reactRouterDom.Route exact path="/empresa" element={<LoginFormEmpresa />} />
+        <reactRouterDom.Route exact path="/registrarUsuario" element={<RegistroUsuario />} />
+        <reactRouterDom.Route exact path="/registrarEmpresa" element={<RegistroEmpresa />} />
+        <reactRouterDom.Route exact path="/admin" element={<LoginAdminForm />} />
 
-      </Routes>
-  </BrowserRouter>
+      </reactRouterDom.Routes>
+    </reactRouterDom.BrowserRouter>
   );
 }
 
