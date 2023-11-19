@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button ,Modal} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -36,7 +36,7 @@ const RegistroUsuario = (props) => {
    setShowSuccessModal(false);
    
    // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
-   navigate('/usuario');
+   navigate('/loginusuario');
  };
 
 
@@ -72,6 +72,27 @@ const handleSuccessModalShow = () => setShowSuccessModal(true);
       settelefonoError(value === '' ? 'Este campo es obligatorio' : /^\d+$/.test(value) ? '' : 'Solo se aceptan números');
   };
   
+  //edad
+  const [edad, setEdad] = useState(null);
+  useEffect(() => {
+    // Calcula la edad cuando la fecha de nacimiento cambia
+    if (fechaNacimiento) {
+      const fechaNac = new Date(fechaNacimiento);
+      const hoy = new Date();
+      const edadCalculada = hoy.getFullYear() - fechaNac.getFullYear();
+
+      // Ajusta la edad si aún no ha llegado el cumpleaños
+      if (hoy.getMonth() < fechaNac.getMonth() || (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() < fechaNac.getDate())) {
+        setEdad(edadCalculada - 1);
+      } else {
+        setEdad(edadCalculada);
+      }
+    } else {
+      setEdad(null);
+    }
+  }, [fechaNacimiento]);
+
+
   const onsubmitHandler = (e) => {
       e.preventDefault();
       axios.post('http://localhost:8000/api/user/new', { 
@@ -202,6 +223,14 @@ const handleSuccessModalShow = () => setShowSuccessModal(true);
                   value={fechaNacimiento} />
               </div>
               <p >{fechaNacimientoError}</p>
+
+              <div className='textos_normales'>
+              <p>Edad</p>
+              <input type="text" value={edad !== null ? `${edad} años` : ''}  
+              readOnly // Esto evita que el usuario pueda editar el campo directamente
+            />
+   
+            </div>
   
               <div>
                 <input
@@ -256,8 +285,8 @@ const handleSuccessModalShow = () => setShowSuccessModal(true);
                 <Modal.Header closeButton>
                   <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                  <p>Ahora puede acceder con sus credenciales.</p>
+                <Modal.Body >
+                  Ahora puede acceder con sus credenciales.
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="success" onClick={handleSuccessModalClose}>

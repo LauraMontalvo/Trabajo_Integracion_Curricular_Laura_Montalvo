@@ -16,7 +16,7 @@ const RegistrarseComo= (props) => {
             <div className='cajaRegistrarComo'  >
                 <div>
                 <h2  >Empleos ChavezPamba</h2>
-                    <div class='imgs'>
+                    <div className='imgs'>
                         <div >
                             <img src={logofondo} alt='profile' className='tamañoImagenChavezPamba'/>
                         </div>
@@ -27,7 +27,7 @@ const RegistrarseComo= (props) => {
                         <h2>Iniciar Sesión como</h2>
 
                         </div>
-                        <div class='btn-container'>
+                        <div className='btn-container'>
                         <Button  onClick={e=>navigate("/loginusuario")} >Usuario</Button  >
                         <Button   onClick={e=>navigate("/empresa")} >Empresa</Button>
                         <Button   onClick={e=>navigate("/")} >Cancelar</Button>

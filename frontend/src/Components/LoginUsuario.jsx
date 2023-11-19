@@ -46,10 +46,10 @@ const LoginForm = (props) => {
  
 
   return (
-    <div class="fondo">
+    <div className="fondo">
       <Form onSubmit={handlerLogin}>
-        <div class="caja">
-          <div class="cajaLogin" >
+        <div className="caja">
+          <div className="cajaLogin" >
               <h2 >Empleos ChavezPamba</h2>
               <div className="imgs">
                   <img src={logofondo} alt="profile" className="tamañoImagenChavezPamba" />
@@ -57,14 +57,14 @@ const LoginForm = (props) => {
               <div>
                 <h2>Inicio de sesión de Usuario</h2>
                 <div>
-                  <img src={profile}  class="iconos" />
+                  <img src={profile}  className="iconos" />
                   <input type="text"  placeholder="user" onChange={(e) => {setUsuario(e.target.value);}}value={usuario}/>
                 </div>
                 <div>
-                  <img src={lock} alt="password" class="iconos" />
+                  <img src={lock} alt="password" className="iconos" />
                   <input type="password"   placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value);}}value={password}/>
                 </div>
-                <div class="btn-container" >
+                <div className="btn-container" >
                   <Button>Iniciar Sesión</Button>
                   <Button onClick={(e) => navigate("/")}>Ir a la página principal </Button>
                   <Button   onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
@@ -78,8 +78,7 @@ const LoginForm = (props) => {
                 <div >
                   
                 </div>
-              </div>
-            
+              </div> 
           </div>
         </div>
       </Form>
