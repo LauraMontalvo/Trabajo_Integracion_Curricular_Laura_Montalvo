@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams,useNavigate} from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 function DetalleUsuario(props) {
   const { id } = useParams();
   const [user, setUser] = useState([]);
   //para la foto
   const [newImageUrl, setNewImageUrl] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);///para la foto
   const navigate = useNavigate();
+
+  const editar = () => {
+    navigate(`/detalleUsuario/${id}/editar`);
+}
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/user/${id}`)
@@ -79,8 +84,11 @@ function DetalleUsuario(props) {
           <p>Teléfono: {user.telefono}</p>
         </div>
         <div>
-          <button   onClick={e=>navigate("/usuario")} >Salir</button>
 
+          <button   onClick={e=>navigate("/loginusuario")} >Salir</button>
+          <td>
+            <Button  className='btnEdit' onClick={(e) => {editar(user._id)}}>Editar</Button>
+             </td>
         </div>
                        
       </div>

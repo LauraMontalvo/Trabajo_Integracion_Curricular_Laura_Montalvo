@@ -1,0 +1,148 @@
+
+//variables
+$colo-fondopantalla:#FDFEFE;
+$sombreado-cajagrande: 10px 1px 10px 5px rgb(18, 172, 108);
+$estilo-letra: 'Century Gothic', sans-serif;
+$tamano-letrainput: 18px;
+$tamaño-caja-InputAncho:300px;
+$tamaño-caja-InputLargo:50px;
+$tamano-letraTitulos: 35px;
+$tamaño-letraBotones:15px;
+$Tamañp-letraTextoError:15px;
+$Tamañp-letraTextoNormal:20px;
+$colorBotonLogin:#47dfc0;
+$ColorFondo-Caja:#FDFEFE;
+$Tamaño-botonesancho:150px;
+$Tamaño-botoneslargo:50px;
+////clase
+.fondo{
+  background-color: $colo-fondopantalla;
+}
+//anidacion 
+//mixins son funciones
+@mixin cajageneral_perzonalizada(){
+  text-align: center;
+  justify-content: center;
+  display: flex;
+
+}
+.caja{
+  @include cajageneral_perzonalizada();
+}
+p{
+  font-size: $Tamañp-letraTextoError;
+  color: red;
+  margin-bottom: 5px; // Ajusta el margen inferior según sea necesario
+}
+
+@mixin caja_Personalizada_Login($Tamaño-Loginancho:550px,$Tamaño-Loginlargo:650px){
+  font-family: $estilo-letra;
+  width: $Tamaño-Loginancho;
+  height: $Tamaño-Loginlargo;
+  box-shadow: $sombreado-cajagrande;
+  padding-top:38px ;
+  border-radius: 60px;
+  background-color: $ColorFondo-Caja;
+
+ .textos_normales{
+  p{
+    font-size: $Tamañp-letraTextoNormal;
+    color: black;
+    
+  }
+  
+ }
+  .imgs{
+    padding-top: 30px;
+    justify-content: center;
+    display: flex;
+  }
+  input {
+    width: $tamaño-caja-InputAncho;
+    height: $tamaño-caja-InputLargo;
+    border-radius: 30px;
+    box-shadow: inset 10px 5px 25px 10px #9aceb6;
+    padding-left: 60px;
+    font-size: $tamano-letrainput;
+    margin-bottom: 20px;
+
+  }
+  
+  .tamañoImagenChavezPamba{
+    height: 130px;
+    width: 130px;
+    border-radius: 130px;
+  }
+  h2{
+    background: linear-gradient(to right, rgba(0, 255, 242, 0.671), rgb(255, 115, 0), green);
+    background-clip: text;
+    color: transparent;
+    font-size: $tamano-letraTitulos;
+    margin-bottom: 10px; // Ajusta según sea necesario
+
+  }
+
+  .btn{
+    &:hover {
+      background-color: #20d46b;
+    }
+    width: $Tamaño-botonesancho;
+    height: $Tamaño-botoneslargo;
+    border-radius: 10px;
+    background-color: $colorBotonLogin;
+    color: rgb(26, 25, 25);
+    font-size: $tamaño-letraBotones;
+    box-shadow: inset 2px 4px 6px 0px rgba(1, 0, 0, 0.5); 
+    margin: 2%;
+   
+  }
+  .iconos{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    padding: 5px 0.5px 5.5px 9px;
+    border: none;
+    outline: none;
+  }
+  
+  
+}
+
+.select {
+  width: $tamaño-caja-InputAncho; // Ancho del div
+  height: $tamaño-caja-InputLargo; // Alto del div
+  margin: 0 auto; // Margen automático para centrar horizontalmente
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  select {
+    width: 100%; // Haz que el select ocupe el 100% del ancho del contenedor
+    height: 100%; // Haz que el select ocupe el 100% del alto del contenedor
+    border-radius: 30px; // Borde redondeado
+    box-shadow: inset 10px 5px 25px 10px #9aceb6; // Sombra interna
+    padding-left: 20px; // Espaciado izquierdo
+    font-size: $tamano-letrainput; // Tamaño de la letra
+  
+  }
+}
+//Cuadrado del login empresa , usuario o Administrador
+.cajaLogin{
+  @include caja_Personalizada_Login()
+}
+//Cuadrado registrarse como
+.cajaRegistrarComo{
+  @include caja_Personalizada_Login($Tamaño-Loginancho:540px,
+  $Tamaño-Loginlargo:400px)
+}
+
+.cajaRegistrarUsuario{
+  @include caja_Personalizada_Login($Tamaño-Loginancho:580px,
+  $Tamaño-Loginlargo:1190px)
+}
+
+.cajaRegistrarEmpresa{
+  @include caja_Personalizada_Login($Tamaño-Loginancho:580px,
+  $Tamaño-Loginlargo:1150px)
+}

@@ -10,30 +10,31 @@ import logofondo from "../img/logofondo.png";
 const RegistrarseComo= (props) => {
     const navigate = useNavigate();
   return (
-    <div className='body'>
+    <div className='fondo'>
 
-        <div className='main'>
-            <div className='sub-main' style={{ height: '550px' }} >
+        <div className='caja'>
+            <div className='cajaRegistrarComo'  >
                 <div>
-                <h2 className='LHeader ' >Empleos ChavezPamba</h2>
-                    <div className='imgs'>
-                        
-                        <div className='container-image' >
-                            <img src={logofondo} alt='profile' className='profile'/>
+                <h2  >Empleos ChavezPamba</h2>
+                    <div class='imgs'>
+                        <div >
+                            <img src={logofondo} alt='profile' className='tamañoImagenChavezPamba'/>
                         </div>
                     </div>
                     <div>
                     
                         <div >
-                        <h1 className='LHeader'>Iniciar Sesión como</h1>
+                        <h2>Iniciar Sesión como</h2>
 
                         </div>
-                        <div className='btn'>
-                        <button  onClick={e=>navigate("/usuario")} >Usuario</button>
+                        <div class='btn-container'>
+                        <Button  onClick={e=>navigate("/loginusuario")} >Usuario</Button  >
+                        <Button   onClick={e=>navigate("/empresa")} >Empresa</Button>
+                        <Button   onClick={e=>navigate("/")} >Cancelar</Button>
                         </div>
-                        <button   onClick={e=>navigate("/empresa")} >Empresa</button>
+                        
                         <div>
-                        <button   onClick={e=>navigate("/")} >Cancelar</button>
+                        
 
                         </div>
                        

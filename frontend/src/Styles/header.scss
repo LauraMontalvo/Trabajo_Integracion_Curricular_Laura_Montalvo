@@ -1,0 +1,57 @@
+.nav{
+    height: 10%;
+   
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1%;
+    
+    box-shadow: 11px 12px 13px 12px rgb(191, 226, 145);
+    opacity: 90%;
+    text-align: center;
+    
+    
+  }
+
+  .Titulo {
+    font-size: 55px;
+    background: linear-gradient(to right, rgba(0, 255, 242, 0.671), rgb(255, 115, 0), green);
+    -webkit-background-clip: text;
+    color: transparent;
+    display: inline;
+  }
+  
+  ul{
+    list-style: none;
+    display: inline-block;
+  }
+  
+  ul li{
+    display:inline-block;
+    padding: 1rem 1rem;
+    font-size: 1.5rem;
+   
+    
+    
+  }
+  .nav a{
+    color: white;
+  text-decoration: none;
+    
+  
+  }
+  .nav-links{
+    display:inline-block;
+    width: 30%;
+    align-items:first baseline;
+    justify-content:space-around;
+    position: relative;
+  }
+  .nav ul li a:hover{
+    background-color: rgb(53, 226, 189);
+    display: block;
+  }
+
+  .boton{
+    background-color: rgb(8, 216, 136);
+  }

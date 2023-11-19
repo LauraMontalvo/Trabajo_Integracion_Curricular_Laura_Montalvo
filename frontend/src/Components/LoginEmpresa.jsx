@@ -5,7 +5,8 @@ import { Button } from 'reactstrap';
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
 import "../Styles/loginstyle.css"
-import lock from "../img/candadoempresa.png";
+import lock from "../img/lock.png";
+
 import profile from "../img/empresa.png";
 import { Link, useNavigate} from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
@@ -48,55 +49,41 @@ const LoginFormEmpresa = (props) => {
  
 
   return (
-    <div className='body'>
-    <Form onSubmit={handlerLoginEmpresa }>
-    <div className='main'>
-                <div className='sub-main' style={{ height: '690px' }} >
-                    <div>
-                    <h2 className='LHeader ' >Empleos ChavezPamba</h2>
-                        <div className='imgs'>
-                            
-                            <div className='container-image' >
-                                <img src={logofondo} alt='profile' className='profile'/>
-                            </div>
-                        </div>
-                        <div>
-                            <h1 className='LHeader'>Inicio de sesión de Empresa</h1>
-                            <div>
-                            <img src={profile} alt="email" className='email' />
-                                <input type="text" placeholder='user' className='fill' onChange={e => { setUsuario(e.target.value) }} value={usuario}/>
-                            </div>
-                            <div className='second-input'>
-                                <img src={lock} alt='password' className='email' />
-                                <input type="password" placeholder='Enter Password' className='fill' onChange={e => { setPassword(e.target.value) }} value={password}/>
-                            </div>
-                           
-                            <div className='login-btn'>
-                                <button  >Iniciar Sesion</button>
-                            </div>
-                            <p style={{color:'red'}}>{loginStatus}</p>
-                            
-                            <div>
-                                
-                                <Link className='link' to='/registrarEmpresa'>
-
-                                    <li>Registrate ahora!</li>
-                                </Link>
-                                
-                            </div>
-
-                            <div className='login-btn'>
-                                <button   onClick={e=>navigate("/")}>Ir a la pagina principal</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div className='fondo'>
+    <Form onSubmit={handlerLoginEmpresa}>
+      <div className='caja'>
+        <div className='cajaLogin'>
+          <h2>Empleos ChavezPamba</h2>
+          <div className='imgs'>
+            <img src={logofondo} className="tamañoImagenChavezPamba" />
+          </div>
+          <div>
+            <h2>Inicio de sesión de Empresa</h2>
+            <div>
+              <img src={profile}  className='iconos' />
+              <input type="text" placeholder='user' onChange={e => { setUsuario(e.target.value) }} value={usuario}/>
             </div>
+            <div>
+              <img src={lock} alt='password' className='iconos' />
+              <input type="password" placeholder='Enter Password'  onChange={e => { setPassword(e.target.value) }} value={password} />
+            </div>
+            <div className='btn-container'>
+              <Button>Iniciar Sesión</Button>
+              <Button onClick={e => navigate("/")}>Ir a la pagina principal</Button>
+              <Button   onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
 
-        
+            </div>
+            <p style={{ color: 'red' }}>{loginStatus}</p>
+            <div>
+              <Link to='/registrarEmpresa'>
+                Registrate ahora!
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </Form>
-    
-    </div>
+  </div>
 
         
       
