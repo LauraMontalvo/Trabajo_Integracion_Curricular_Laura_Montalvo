@@ -172,91 +172,57 @@ const RegistroEmpresa = (props) => {
   }
     return (
       <Form onSubmit={onsubmitHandler}>
-        <div className='main'>
-          <div className='sub-main' style={{ height: '960px' }}>
+        <div className='caja'>
+          <div className='cajaRegistrarEmpresa' >
             <div>
-              <div>
-                <input type="text" placeholder='Nombre de la Empresa' className='fill'
-                  onChange={e => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)} value={nombreEmpresa} />
-                <p style={{ color: 'red' }}>{nombreEmpresaError}</p>
-                <input type="text" placeholder='Ingrese correo' className='fill'
-                  onChange={e => handleInputChange(e, setCorreo, setCorreoError)} value={correo} />
-                <p style={{ color: 'red' }}>{correoError}</p>
-              </div>
-              <div>
-                <input type="text" placeholder='Ingrese Direccion' className='fill'
-                  onChange={e => handleInputChange(e, setDireccion, setDireccionError)} value={direccion} />
-                <p style={{ color: 'red' }}>{direccionError}</p>
-                
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Ingrese su teléfono"
-                  className="fill"
-                  onChange={handleTelefonoChange} value={telefono}
-                />
-                <p style={{ color: 'red' }}>{telefonoError}</p>
-              </div>
-              <div>
-                <textarea
-        
-                  placeholder='Ingrese Descripcion'
-                  className='fill'
-                  onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
-                  value={descripcion}
-                />
-                <p style={{ color: 'red' }}>{descripcionError}</p>
+              <input type="text" placeholder='Nombre de la Empresa' 
+                onChange={e => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)} value={nombreEmpresa} />
+                <p >{nombreEmpresaError}</p>
+              <input type="text" placeholder='Ingrese correo' 
+                onChange={e => handleInputChange(e, setCorreo, setCorreoError)} value={correo} />
+                <p >{correoError}</p>
+              <input type="text" placeholder='Ingrese Direccion' 
+                onChange={e => handleInputChange(e, setDireccion, setDireccionError)} value={direccion} />
+                <p >{direccionError}</p>
+              <input type="text" placeholder="Ingrese su teléfono" onChange={handleTelefonoChange} value={telefono}
+              />
+                <p >{telefonoError}</p>
+              <textarea placeholder='Ingrese Descripcion'   onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
+                value={descripcion}
+              />
+                <p>{descripcionError}</p>
+              <input type="text"
+                placeholder='Ingrese Usuario '
+                onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
+                value={usuario}
+              />
+                <p >{usuarioError}</p>
+
+              <input type={showPassword ? 'text' : 'password'} placeholder="Ingrese su contraseña" 
+                title="Debe tener al menos una mayúscula, una minúscula y un dígito"
+                onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
+                value={password}
+              />
+              <p>{passwordError}</p>
+              <div> <Button style={{ padding: '5px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
+                type="button" onClick={togglePasswordVisibility} variant="link">
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+              </Button>
               </div>
 
-              <div>
-                <input
-                  type="text"
-                  placeholder='Ingrese Usuario '
-                  className='fill'
-                  onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
-                  value={usuario}
-                />
-                <p style={{ color: 'red' }}>{usuarioError}</p>
-              </div>
-  
-              <div>
-                <input type={showPassword ? 'text' : 'password'} placeholder="Ingrese su contraseña" className="fill"
-                  title="Debe tener al menos una mayúscula, una minúscula y un dígito"
-                  onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
-                  value={password}
-                />
-                <Button style={{ padding: '5px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
-                  type="button" onClick={togglePasswordVisibility} variant="link">
-                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-                </Button>
-                <p style={{ color: 'red' }}>{passwordError}</p>
-              </div>
-  
-              <div>
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirmar Contraseña"
-                  className="fill"
-                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
-                  value={confirmPassword}
-                />
-                <Button style={{ padding: '5px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
-                  type="button"
-                  onClick={toggleConfirmPasswordVisibility}
-                  variant="link">
-                  <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} />
-                </Button>
-                <p style={{ color: 'red' }}>{confirmPasswordError}</p>
-              </div>
-  
-              <div className='btn'>
-                <button type='submit' >Crear cuenta</button >
-              </div>
-              <div>
-                <button onClick={e => navigate("/empresa")}>Cancelar</button >
-              </div>
+              <input  type={showConfirmPassword ? 'text' : 'password'} placeholder="Confirmar Contraseña"  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}  value={confirmPassword} />
+              <p>{confirmPasswordError}</p>
+              <div><Button style={{ padding: '5px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}  onClick={toggleConfirmPasswordVisibility} variant="link">
+                <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} />
+              </Button></div>
+              
+               
+            </div>
 
+            <div className='btn-container'>
+              <Button type='submit' >Crear cuenta</Button >
+              <Button onClick={e => navigate("/empresa")}>Cancelar</Button >
+            </div>
               <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
                 <Modal.Header closeButton>
                   <Modal.Title>¡Empresa creada con éxito!</Modal.Title>
@@ -269,11 +235,10 @@ const RegistroEmpresa = (props) => {
                   Cerrar
                   </Button>
                 </Modal.Footer>
-            </Modal>
-
+              </Modal>
             </div>
-          </div>
-        </div >
+        </div>
+      
         {/*<h4>{aviso}</h4>*/}
       </Form>
     );

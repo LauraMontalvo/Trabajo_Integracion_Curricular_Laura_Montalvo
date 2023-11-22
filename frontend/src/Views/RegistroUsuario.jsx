@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button ,Modal} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -36,7 +36,7 @@ const RegistroUsuario = (props) => {
    setShowSuccessModal(false);
    
    // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
-   navigate('/usuario');
+   navigate('/loginusuario');
  };
 
 
@@ -72,6 +72,27 @@ const handleSuccessModalShow = () => setShowSuccessModal(true);
       settelefonoError(value === '' ? 'Este campo es obligatorio' : /^\d+$/.test(value) ? '' : 'Solo se aceptan números');
   };
   
+  //edad
+  const [edad, setEdad] = useState(null);
+  useEffect(() => {
+    // Calcula la edad cuando la fecha de nacimiento cambia
+    if (fechaNacimiento) {
+      const fechaNac = new Date(fechaNacimiento);
+      const hoy = new Date();
+      const edadCalculada = hoy.getFullYear() - fechaNac.getFullYear();
+
+      // Ajusta la edad si aún no ha llegado el cumpleaños
+      if (hoy.getMonth() < fechaNac.getMonth() || (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() < fechaNac.getDate())) {
+        setEdad(edadCalculada - 1);
+      } else {
+        setEdad(edadCalculada);
+      }
+    } else {
+      setEdad(null);
+    }
+  }, [fechaNacimiento]);
+
+
   const onsubmitHandler = (e) => {
       e.preventDefault();
       axios.post('http://localhost:8000/api/user/new', { 
@@ -173,98 +194,99 @@ const handleSuccessModalShow = () => setShowSuccessModal(true);
   }
     return (
       <Form onSubmit={onsubmitHandler}>
-        <div className='main'>
-          <div className='sub-main' style={{ height: '960px' }}>
+        <div className='caja'>
+          <div className='cajaRegistrarUsuario'>
             <div>
               <div>
-                <input type="text" placeholder='Ingrese su Nombre' className='fill'
+                <input type="text" placeholder='Ingrese su Nombre'
                   onChange={e => handleInputChange(e, setNombre, setNombreError)} value={nombre} />
-                <p style={{ color: 'red' }}>{nombreError}</p>
-                <input type="text" placeholder='Ingrese su Apellido' className='fill'
+                  
+                <p>{nombreError}</p>
+                <input type="text" placeholder='Ingrese su Apellido'
                   onChange={e => handleInputChange(e, setApellido, setApellidoError)} value={apellido} />
-                <p style={{ color: 'red' }}>{apellidoError}</p>
+                <p>{apellidoError}</p>
               </div>
   
               <div className='select'>
-                <select onChange={e => handleInputChange(e, setSexo, setSexoError)} value={sexo}>
+                <select  onChange={e => handleInputChange(e, setSexo, setSexoError)} value={sexo}>
                   <option value="">--Seleccione el género--</option>
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino">Femenino</option>
                 </select>
               </div>
-              <p style={{ color: 'red' }}>{sexoError}</p>
+              <p>{sexoError}</p>
   
-              <div>
+              <div className='textos_normales'>
                 <p>Seleccione su fecha de nacimiento </p>
-                <input type="date" className='fill'
+                <input type="date" 
                   onChange={e => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
                   value={fechaNacimiento} />
-                <p style={{ color: 'red' }}>{fechaNacimientoError}</p>
               </div>
+              <p >{fechaNacimientoError}</p>
+
+              <div className='textos_normales'>
+              <p>Edad</p>
+              <input type="text" value={edad !== null ? `${edad} años` : ''}  
+              readOnly // Esto evita que el usuario pueda editar el campo directamente
+            />
+   
+            </div>
   
               <div>
                 <input
                   type="text"
                   placeholder="Ingrese su teléfono"
-                  className="fill"
                   onChange={handleTelefonoChange} value={telefono}
                 />
-                <p style={{ color: 'red' }}>{telefonoError}</p>
+                <p >{telefonoError}</p>
               </div>
   
               <div>
                 <input
                   type="text"
                   placeholder='Ingrese Usuario '
-                  className='fill'
                   onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
                   value={usuario}
                 />
-                <p style={{ color: 'red' }}>{usuarioError}</p>
+                <p >{usuarioError}</p>
               </div>
   
               <div>
-                <input type={showPassword ? 'text' : 'password'} placeholder="Ingrese su contraseña" className="fill"
+                <input type={showPassword ? 'text' : 'password'} placeholder="Ingrese su contraseña" 
                   title="Debe tener al menos una mayúscula, una minúscula y un dígito"
                   onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
                   value={password}
                 />
-                <Button style={{ padding: '5px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
-                  type="button" onClick={togglePasswordVisibility} variant="link">
-                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-                </Button>
-                <p style={{ color: 'red' }}>{passwordError}</p>
+                <div><Button style={{ padding: '1px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
+                   onClick={togglePasswordVisibility} variant="link"><FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                </Button></div>
+                <p >{passwordError}</p>
               </div>
   
               <div>
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirmar Contraseña"
-                  className="fill"
-                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
-                  value={confirmPassword}
-                />
-                <Button style={{ padding: '5px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
-                  type="button"
-                  onClick={toggleConfirmPasswordVisibility}
-                  variant="link">
+                <input type={showConfirmPassword ? 'text' : 'password'} placeholder="Confirmar Contraseña"
+                 onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)} value={confirmPassword} />
+                 <div>
+                 <Button style={{ padding: '1px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}onClick={toggleConfirmPasswordVisibility} variant="link">
                   <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} />
                 </Button>
-                <p style={{ color: 'red' }}>{confirmPasswordError}</p>
+                 </div>
+                <p >{confirmPasswordError}</p>
               </div>
   
-              <div className='btn'>
-                <button type='submit' >Crear cuenta</button >
+              <div className='btn-container'>
+                <Button type='submit' >Crear cuenta</Button >
+                <Button onClick={e => navigate("/loginusuario")}>Cancelar</Button >
               </div>
               <div>
-                <button onClick={e => navigate("/usuario")}>Cancelar</button >
+                
               </div>
               <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
                 <Modal.Header closeButton>
                   <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                  <p>Ahora puede acceder con sus credenciales.</p>
+                <Modal.Body >
+                  Ahora puede acceder con sus credenciales.
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="success" onClick={handleSuccessModalClose}>

@@ -46,45 +46,48 @@ const LoginForm = (props) => {
  
 
   return (
-    <div className='body'>
-            <Form onSubmit={handlerLogin}>
-                <div className='main'>
-                    <div className='sub-main'>
-                        <div className='header'>
-                            <h2 className='LHeader'>Empleos ChavezPamba</h2>
-                        </div>
-                        <div className='imgs'>
-                            <div className='container-image'>
-                                <img src={logofondo} alt='profile' className='profile' />
-                            </div>
-                        </div>
-                        <div className='content'>
-                            <h1 className='LHeader'>Inicio de sesión de Usuario</h1>
-                            <div className='input-group'>
-                                <img src={profile} alt="email" className='icon' />
-                                <input type="text" placeholder='Usuario' className='fill' onChange={e => setUsuario(e.target.value)} value={usuario} />
-                            </div>
-                            <div className='input-group'>
-                                <img src={lock} alt='password' className='icon' />
-                                <input type="password" placeholder='Contraseña' className='fill' onChange={e => setPassword(e.target.value)} value={password} />
-                            </div>
-                            <div className='login-btn'>
-                                <button type="submit">Iniciar Sesión</button>
-                            </div>
-                            <p style={{ color: 'red' }}>{loginStatus}</p>
-                            <div className='registration-link'>
-                                <Link to='/registrarUsuario'>
-                                    <li>Regístrate ahora!</li>
-                                </Link>
-                            </div>
-                            <div className='login-btn'>
-                                <button onClick={() => navigate("/")}>Ir a la página principal</button>
-                            </div>
-                        </div>
-                    </div>
+    <div className="fondo">
+      <Form onSubmit={handlerLogin}>
+        <div className="caja">
+          <div className="cajaLogin" >
+              <h2 >Empleos ChavezPamba</h2>
+              <div className="imgs">
+                  <img src={logofondo} alt="profile" className="tamañoImagenChavezPamba" />
+              </div>
+              <div>
+                <h2>Inicio de sesión de Usuario</h2>
+                <div>
+                  <img src={profile}  className="iconos" />
+                  <input type="text"  placeholder="user" onChange={(e) => {setUsuario(e.target.value);}}value={usuario}/>
                 </div>
-            </Form>
+                <div>
+                  <img src={lock} alt="password" className="iconos" />
+                  <input type="password"   placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value);}}value={password}/>
+                </div>
+                <div className="btn-container" >
+                  <Button>Iniciar Sesión</Button>
+                  <Button onClick={(e) => navigate("/")}>Ir a la página principal </Button>
+                  <Button   onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
+                </div>
+                <p style={{ color: 'red' }}>{loginStatus}</p>
+                <div>
+                  <Link to="/registrarUsuario">
+                    Regístrate ahora!
+                  </Link>
+                </div>
+                <div >
+                  
+                </div>
+              </div> 
+          </div>
         </div>
+      </Form>
+  </div>
+
+    
+
+        
+      
   )
 }
 
