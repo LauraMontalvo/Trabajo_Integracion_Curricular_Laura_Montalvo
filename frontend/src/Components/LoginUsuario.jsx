@@ -42,6 +42,10 @@ const LoginForm = (props) => {
         });
     }
   }
+  const RegresarPaginaPrincipal = () => {
+    navigate("/");
+  }
+  const RegresarRegistrarComo = () => navigate("/registrarseComo");
 
  
 
@@ -65,9 +69,9 @@ const LoginForm = (props) => {
                   <input type="password"   placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value);}}value={password}/>
                 </div>
                 <div className="btn-container" >
-                  <Button>Iniciar Sesión</Button>
-                  <Button onClick={(e) => navigate("/")}>Ir a la página principal </Button>
-                  <Button   onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
+                  <Button type="submit">Iniciar Sesión</Button>
+                  <Button onClick={RegresarPaginaPrincipal}>Ir a la página principal </Button>
+                  <Button   onClick={RegresarRegistrarComo} >Cancelar</Button>
                 </div>
                 <p style={{ color: 'red' }}>{loginStatus}</p>
                 <div>
