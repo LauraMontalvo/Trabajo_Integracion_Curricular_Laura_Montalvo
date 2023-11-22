@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams,useNavigate} from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Button, Image, InputGroup, FormControl, Row, Col, Modal, Form } from 'react-bootstrap';
 
 function DetalleUsuario(props) {
   const { id } = useParams();
-  const [user, setUser] = useState([]);
-  //para la foto
+  const [user, setUser] = useState({});
+  const [acadTraining, setAcadTraining] = useState([]);
   const [newImageUrl, setNewImageUrl] = useState('');
-  const [isEditing, setIsEditing] = useState(false);///para la foto
+  const [isEditing, setIsEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [tituloObtenido, setTituloObtenido] = useState('');
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const [editingAcadTrainingId, setEditingAcadTrainingId] = useState(null);
   const navigate = useNavigate();
+  
 
-  const editar = () => {
-    navigate(`/detalleUsuario/${id}/editar`);
-}
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/user/${id}`)
+    axios.get(`http://localhost:8000/api/user/${id}`)
       .then((res) => setUser({ ...res.data }))
+      .catch((err) => console.log(err));
+
+    axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`)
+      .then((res) => setAcadTraining(res.data))
       .catch((err) => console.log(err));
   }, [id]);
 
   const handleEditClick = () => {
     setNewImageUrl(user.foto);
-  setIsEditing(true);
+    setIsEditing(true);
   };
 
   const handleSaveClick = async () => {
     try {
-      // Realizar la llamada a la API para guardar la nueva URL en el servidor
       await axios.put(`http://localhost:8000/api/user/${id}`, { foto: newImageUrl });
-
-      // Actualizar el estado local con la nueva URL
       setUser({ ...user, foto: newImageUrl });
       setIsEditing(false);
     } catch (error) {
       console.error('Error al guardar la nueva URL:', error.response.data.error);
-      // Manejar el error según las necesidades
     }
   };
 
@@ -45,90 +47,194 @@ function DetalleUsuario(props) {
     setNewImageUrl('');
   };
 
-  // Función para formatear la fecha
+  const handleShowModal = (acadTrainingId) => {
+    setShowModal(true);
+  
+    // Comprobar si hay un acadTraining seleccionado para editar
+    const selectedAcadTraining = acadTraining.find((item) => item._id === acadTrainingId);
+    if (selectedAcadTraining) {
+      // Si se está editando, establecer los valores en el estado para la edición
+      setEditingAcadTrainingId(acadTrainingId);
+      setTituloObtenido(selectedAcadTraining.tituloObtenido);
+      setFechaInicio(selectedAcadTraining.fechaInicio);
+      setFechaFin(selectedAcadTraining.fechaFin);
+    } else {
+      // Si no se está editando, restablecer los valores del estado para agregar nuevo
+      setEditingAcadTrainingId(null);
+      setTituloObtenido('');
+      setFechaInicio('');
+      setFechaFin('');
+    }
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingAcadTrainingId(null);
+    setTituloObtenido('');
+    setFechaInicio('');
+    setFechaFin('');
+  };
+
+  const handleAddAcadTraining = async () => {
+    try {
+      if (editingAcadTrainingId) {
+        // Si editingAcadTrainingId está definido, significa que estamos editando
+        await axios.put(`http://localhost:8000/api/acadTraining/${editingAcadTrainingId}`, {
+          tituloObtenido,
+          fechaInicio,
+          fechaFin,
+        });
+
+        // Limpiar el estado de edición
+        setEditingAcadTrainingId(null);
+      } else {
+        // Si no hay editingAcadTrainingId, significa que estamos agregando nuevo
+        await axios.post('http://localhost:8000/api/acadTraining/new', {
+          idInstitucion: 'institucion', // Reemplaza con el ID de la institución
+          idUsuario: id,
+          tituloObtenido,
+          fechaInicio,
+          fechaFin,
+        });
+      }
+
+      // Recargar la información académica después de agregar o editar
+      const response = await axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`);
+      setAcadTraining(response.data);
+
+      // Cerrar la ventana modal
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error al agregar/editar datos académicos:', error.response.data.error);
+    }
+  };
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.infoBox}>
-        <div style={styles.imageContainer}>
-          {isEditing ? (
-            <input
-              type="text"
-              placeholder="Ingrese la URL de la foto de perfil"
-              value={newImageUrl}
-              onChange={(e) => setNewImageUrl(e.target.value)}
-            />
-          ) : (
-            <img src={user.foto} alt="Foto de perfil" style={styles.profileImage} />
-          )}
-        </div>
+    <div className="container mt-4">
+      <Row>
+        <Col md={6}>
+          <div className="text-center">
+            {isEditing ? (
+              <InputGroup className="mb-3">
+                <FormControl
+                  placeholder="Ingrese la URL de la foto de perfil"
+                  value={newImageUrl}
+                  onChange={(e) => setNewImageUrl(e.target.value)}
+                />
+              </InputGroup>
+            ) : (
+              <Image src={user.foto} alt="Foto de perfil" roundedCircle fluid />
+            )}
 
-        {isEditing ? (
-          <div>
-            <button onClick={handleSaveClick}>Guardar</button>
-            <button onClick={handleCancelClick}>Cancelar</button>
+            {isEditing ? (
+              <div>
+                <Button variant="success" onClick={handleSaveClick} className="mr-2">
+                  Guardar
+                </Button>
+                <Button variant="secondary" onClick={handleCancelClick}>
+                  Cancelar
+                </Button>
+              </div>
+            ) : (
+              <Button variant="info" onClick={handleEditClick}>
+                Editar Foto
+              </Button>
+            )}
           </div>
-        ) : (
-          <button onClick={handleEditClick}>Editar Foto</button>
-        )}
 
-        <div><h3>Bienvenido a ChavezEmpleo</h3></div>
-        <div style={styles.userInfo}>
-          <p>Nombre: {user.nombre} {user.apellido}</p>
-          <p>Género: {user.sexo}</p>
-          <p>Fecha de Nacimiento: {formatDate(user.fechaNacimiento)}</p>
-          <p>Teléfono: {user.telefono}</p>
-        </div>
-        <div>
+          <div className="mt-4">
+            <h3>Bienvenido a ChavezEmpleo</h3>
+            <p>Nombre: {user.nombre} {user.apellido}</p>
+            <p>Género: {user.sexo}</p>
+            <p>Fecha de Nacimiento:{formatDate(user.fechaNacimiento)}</p>
+            <p>Teléfono: {user.telefono}</p>
+            <p>Edad: {user.edad}</p>
+          </div>
 
-          <button   onClick={e=>navigate("/loginusuario")} >Salir</button>
-          <td>
-            <Button  className='btnEdit' onClick={(e) => {editar(user._id)}}>Editar</Button>
-             </td>
-        </div>
-                       
-      </div>
+          <div className="mt-4">
+            <Button variant="primary" onClick={() => navigate(`/detalleUsuario/${id}/editar`)}>
+              Editar Información
+            </Button>
+            <Button variant="danger" onClick={() => navigate("/loginusuario")}>
+              Salir
+            </Button>
+          </div>
+        </Col>
+
+        <Col md={6}>
+          <div className="mt-4">
+            <h3>Información Académica</h3>
+            {acadTraining.map((item) => (
+              <div key={item._id} className="mb-3">
+                <p>Título obtenido: {item.tituloObtenido}</p>
+                <p>Fecha de inicio: {formatDate(item.fechaInicio)}</p>
+                <p>Fecha de fin: {formatDate(item.fechaFin)}</p>
+                <Button
+              variant="warning"
+              onClick={() => handleShowModal(item._id)}
+            >
+              Editar
+            </Button>
+              </div>
+            ))}
+
+            <Button variant="primary" onClick={handleShowModal} className="mt-3">
+              Sumar Experiencia
+            </Button>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>{editingAcadTrainingId ? 'Editar' : 'Agregar'} Información Académica</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group controlId="formTitulo">
+                    <Form.Label>Título obtenido</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Ingrese el título obtenido"
+                      value={tituloObtenido}
+                      onChange={(e) => setTituloObtenido(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="formFechaInicio">
+                    <Form.Label>Fecha de inicio</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={fechaInicio}
+                      onChange={(e) => setFechaInicio(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="formFechaFin">
+                    <Form.Label>Fecha de fin</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={fechaFin}
+                      onChange={(e) => setFechaFin(e.target.value)}
+                    />
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                  Cerrar
+                </Button>
+                <Button variant="primary" onClick={handleAddAcadTraining}>
+                  {editingAcadTrainingId ? 'Guardar Cambios' : 'Agregar'}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'left',
-    alignItems: 'center',
-    height: '90vh', // Ajusta según tus necesidades
-    
-  },
-  infoBox: {
-    textAlign: 'center',
-    border: '3px solid rgb(19, 18, 18)',
-    padding: '20px',
-    borderRadius: '70px',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-  },
-  imageContainer: {
-    width: '100px',
-    height: '100px',
-    overflow: 'hidden',
-    borderRadius: '50%',
-    margin: '0 auto',
-    marginBottom: '10px',
-    border: '2px solid black', // Agrega un borde negro de 2px alrededor del círculo
-  },
-
-  profileImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  userInfo: {
-    marginTop: '50px',
-  },
-};
 
 export default DetalleUsuario;
