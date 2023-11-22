@@ -7,7 +7,7 @@ import lock from "../img/lock.png";
 import profile from "../img/icon.png";
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
-import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION, MENSAJE_LOGIN_EXITO, TEXTO_REGISTRATE, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO } from "../Models/Constantes"
+import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../Models/Constantes"
 
 const LoginAdminForm = (props) => {
   const [password, setPassword] = useState("");
@@ -24,11 +24,11 @@ const LoginAdminForm = (props) => {
       axios.post(URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
           console.log(respuesta);
-          if (respuesta.data.msg === MENSAJE_LOGIN_EXITO && respuesta.data.user.rol === "Administrador") {
+          if (respuesta.data.msg === MENSAJE_LOGIN_EXITO && respuesta.data.user.rol === ROL_ADMINISTRADOR) {
             const user = respuesta.data.user;
             console.log(user);
             setLoginStatus(respuesta.data.msg);
-            setTimeout(() => navigate('/detalleUsuario/' + user._id), 1000);
+            setTimeout(() => navigate(URL_ADMIN_CONSOLA + user._id), 1000);
           } else {
             setLoginStatus(MENSAJE_LOGIN_FALLIDO);
           }
