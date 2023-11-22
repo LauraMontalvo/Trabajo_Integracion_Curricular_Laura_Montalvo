@@ -5,7 +5,7 @@ import { Form } from 'react-bootstrap';
 import md5 from 'md5';
 import "../Styles/loginstyle.css"
 import lock from "../img/lock.png";
-
+import * as constantes from '../Models/Constantes'
 import profile from "../img/empresa.png";
 import { Link, useNavigate} from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
@@ -20,14 +20,14 @@ const LoginFormEmpresa = (props) => {
   const handlerLoginEmpresa = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
-      setLoginStatus("Ingrese su usuario y contraseña");
+      setLoginStatus(constantes.TEXTO_INGRESE_DATOS);
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
-      axios.post('http://localhost:8000/api/company/login', { usuario, password: hashedPassword })
+      axios.post(constantes.URL_VALIDAR_AUTENTICACION_EMPRESA, { usuario, password: hashedPassword })
         .then(respuesta => {
           console.log(respuesta);
-          if (respuesta.data.msg === "Empresa validado correctamente!!") {
+          if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO_EMPRESA) {
             const user = respuesta.data.user;
             
             console.log(user);
@@ -57,7 +57,7 @@ const LoginFormEmpresa = (props) => {
             <img src={logofondo} className="tamañoImagenChavezPamba" />
           </div>
           <div>
-            <h2>Inicio de sesión de Empresa</h2>
+            <h2>{constantes.TEXTO_INICIO_SESION_EMPRESA}</h2>
             <div>
               <img src={profile}  className='iconos' />
               <input type="text" placeholder='user' onChange={e => { setUsuario(e.target.value) }} value={usuario}/>

@@ -25,7 +25,7 @@ const LoginForm = (props) => {
       axios.post(constantes.URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
           console.log(respuesta);
-          if (respuesta.data.msg === "Usuario validado correctamente!!") {
+          if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO) {
             const user = respuesta.data.user;
 
             console.log(user);

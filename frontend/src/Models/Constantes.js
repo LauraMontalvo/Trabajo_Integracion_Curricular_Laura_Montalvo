@@ -8,12 +8,17 @@ export const TEXTO_INICIAR_SESION = "Iniciar Sesión";
 export const TEXTO_IR_PAGINA_PRINCIPAL = "Ir a la pagina principal";
 export const TEXTO_INICIO_SESION = "Inicio de sesión de Usuario";
 export const TEXTO_REGISTRATE = "Regístrate ahora!";
+//Empresa
+export const MENSAJE_LOGIN_EXITO_EMPRESA = "Empresa validado correctamente!!";
+export const TEXTO_INICIO_SESION_EMPRESA = "Inicio de sesión de Empresa";
 
 //CONSTANTES USUARIO
 export const ROL_ADMINISTRADOR = "Administrador";
 
 //URLS Backend
 export const URL_VALIDAR_AUTENTICACION = "http://localhost:8000/api/user/login";
+//Empresa
+export const URL_VALIDAR_AUTENTICACION_EMPRESA ="http://localhost:8000/api/company/login"
 
 //URLS FrontEnd
 export const URL_DETALLE_USUARIO = "/detalleUsuario/";

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Image, InputGroup, FormControl, Row, Col, Modal, Form } from 'react-bootstrap';
+import "../Styles/loginstyle.css"
 
 function DetalleUsuario(props) {
   const { id } = useParams();
@@ -117,7 +118,7 @@ function DetalleUsuario(props) {
     <div className="container mt-4">
       <Row>
         <Col md={6}>
-          <div className="text-center">
+          <div className="text-center border border-info border-4 p-3">
             {isEditing ? (
               <InputGroup className="mb-3">
                 <FormControl
@@ -127,7 +128,7 @@ function DetalleUsuario(props) {
                 />
               </InputGroup>
             ) : (
-              <Image src={user.foto} alt="Foto de perfil" roundedCircle fluid />
+              <Image src={user.foto} alt="Foto de perfil" rounded className="img-fluid img-smaller rounded-circle"  />
             )}
 
             {isEditing ? (
@@ -146,7 +147,7 @@ function DetalleUsuario(props) {
             )}
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 border border-info border-4 p-3">
             <h3>Bienvenido a ChavezEmpleo</h3>
             <p>Nombre: {user.nombre} {user.apellido}</p>
             <p>Género: {user.sexo}</p>
@@ -166,10 +167,10 @@ function DetalleUsuario(props) {
         </Col>
 
         <Col md={6}>
-          <div className="mt-4">
+          <div className="mt-4 border border-info border-4 p-3">
             <h3>Información Académica</h3>
             {acadTraining.map((item) => (
-              <div key={item._id} className="mb-3">
+              <div key={item._id} className="mt-4 border p-3">
                 <p>Título obtenido: {item.tituloObtenido}</p>
                 <p>Fecha de inicio: {formatDate(item.fechaInicio)}</p>
                 <p>Fecha de fin: {formatDate(item.fechaFin)}</p>
