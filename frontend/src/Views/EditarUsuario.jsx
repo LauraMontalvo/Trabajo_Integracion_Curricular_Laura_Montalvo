@@ -85,84 +85,84 @@ const EditarUsuario = () => {
     };
 
     return (
-        <div>
-            <h1>Editar Usuario</h1>
-            <Form onSubmit={handlerUpdateUsuario}>
-                <Row>
-                    <Col md={6}>
-                        <Form.Group controlId="formNombre">
-                            <Form.Label>Nombre:</Form.Label>
-                            <Form.Control type="text" onChange={(e) => setNombre(e.target.value)} value={nombre} />
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group controlId="formApellido">
-                            <Form.Label>Apellido:</Form.Label>
-                            <Form.Control type="text" onChange={(e) => setApellido(e.target.value)} value={apellido} />
-                        </Form.Group>
-                    </Col>
-                </Row>
+        <div className="container mt-4">
+        <h1>Editar Usuario</h1>
+        <Form onSubmit={handlerUpdateUsuario}>
+            <Row>
+                <Col md={6}>
+                    <Form.Group controlId="formNombre">
+                        <Form.Label>Nombre:</Form.Label>
+                        <Form.Control type="text" onChange={(e) => setNombre(e.target.value)} value={nombre} />
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group controlId="formApellido">
+                        <Form.Label>Apellido:</Form.Label>
+                        <Form.Control type="text" onChange={(e) => setApellido(e.target.value)} value={apellido} />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-                <Row>
-                    <Col md={6}>
-                        <Form.Group controlId="formGenero">
-                            <Form.Label>Género:</Form.Label>
-                            <Form.Control as="select" onChange={e => setSexo(e.target.value)} value={sexo}>
-                                <option value="">--Seleccione el género--</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group controlId="formFechaNacimiento">
-                            <Form.Label>Fecha de Nacimiento:</Form.Label>
-                            <Form.Control type="date" onChange={(e) => setFechaNacimiento(e.target.value)} value={fechaNacimiento} />
-                        </Form.Group>
-                    </Col>
-                </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group controlId="formGenero">
+                        <Form.Label>Género:</Form.Label>
+                        <Form.Control as="select" onChange={e => setSexo(e.target.value)} value={sexo}>
+                            <option value="">--Seleccione el género--</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group controlId="formFechaNacimiento">
+                        <Form.Label>Fecha de Nacimiento:</Form.Label>
+                        <Form.Control type="date" onChange={(e) => setFechaNacimiento(e.target.value)} value={fechaNacimiento} />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-                <Row>
-                    <Col md={6}>
-                        <Form.Group controlId="formTelefono">
-                            <Form.Label>Teléfono:</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese su teléfono" onChange={handleTelefonoChange} value={telefono} />
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group controlId="formUsuario">
-                            <Form.Label>Usuario:</Form.Label>
-                            <Form.Control type="text" onChange={(e) => setUsuario(e.target.value)} value={usuario} />
-                        </Form.Group>
-                    </Col>
-                </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group controlId="formTelefono">
+                        <Form.Label>Teléfono:</Form.Label>
+                        <Form.Control type="text" placeholder="Ingrese su teléfono" onChange={handleTelefonoChange} value={telefono} />
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group controlId="formUsuario">
+                        <Form.Label>Usuario:</Form.Label>
+                        <Form.Control type="text" onChange={(e) => setUsuario(e.target.value)} value={usuario} />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-                <Row>
-                    <Col md={6}>
-                        <Form.Group controlId="formPassword">
-                            <Form.Label>Contraseña:</Form.Label>
-                            <Form.Control type="password" onChange={handlePasswrod} value={password} />
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group controlId="formConfirmPassword">
-                            <Form.Label>Confirmar Contraseña:</Form.Label>
-                            <Form.Control type="password" onChange={handleConfPasswrod} value={confirmPassword} />
-                        </Form.Group>
-                    </Col>
-                </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group controlId="formPassword">
+                        <Form.Label>Contraseña:</Form.Label>
+                        <Form.Control type="password" onChange={handlePasswrod} value={password} />
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group controlId="formConfirmPassword">
+                        <Form.Label>Confirmar Contraseña:</Form.Label>
+                        <Form.Control type="password" onChange={handleConfPasswrod} value={confirmPassword} />
+                    </Form.Group>
+                </Col>
+            </Row>
 
-                <div>
+            <div>
                 <p style={{ color: 'green' }}>{updateSuccess}</p>
-                    <p style={{ color: 'red' }}>{updateError}</p>
-                </div>
+                <p style={{ color: 'red' }}>{updateError}</p>
+            </div>
 
-                <div className='btnseccion1'>
-                    <Button color='primary' type="submit" className='btn'>Guardar</Button>
-                    <Button color='primary' type="button" className='btn' onClick={e => navigate(`/detalleUsuario/${id}`)}>Cancelar</Button>
-                </div><br />
-            </Form>
-        </div>
+            <div className='btnseccion1'>
+                <Button variant='primary' type="submit" className='btn'>Guardar</Button>
+                <Button variant='secondary' type="button" className='btn' onClick={e => navigate(`/detalleUsuario/${id}`)}>Cancelar</Button>
+            </div><br />
+        </Form>
+    </div>
     );
 };
 
