@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button } from 'reactstrap';
-
-import { Form } from 'react-bootstrap';
+import { Form, FloatingLabel } from 'react-bootstrap';
 import md5 from 'md5';
 import "../Styles/loginstyle.css"
 import lock from "../img/lock.png";
 import profile from "../img/icon.png";
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
+import * as constantes from '../Models/Constantes'
 
 const LoginForm = (props) => {
   const [password, setPassword] = useState("");
@@ -18,19 +18,19 @@ const LoginForm = (props) => {
   const handlerLogin = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
-      setLoginStatus("Ingrese su usuario y contraseña");
+      setLoginStatus(constantes.TEXTO_INGRESE_DATOS);
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
-      axios.post('http://localhost:8000/api/user/login', { usuario, password: hashedPassword })
+      axios.post(constantes.URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
           console.log(respuesta);
-          if (respuesta.data.msg === "Usuario validado correctamente!!") {
+          if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO) {
             const user = respuesta.data.user;
-            
+
             console.log(user);
             setLoginStatus(respuesta.data.msg);
-            setTimeout(() => navigate('/detalleUsuario/'+user._id), 1000);
+            setTimeout(() => navigate(constantes.URL_DETALLE_USUARIO + user._id), 1000);
           } else {
             setLoginStatus(respuesta.data.msg);
           }
@@ -38,22 +38,33 @@ const LoginForm = (props) => {
         .catch(err => {
           console.log(err);
           setLoginStatus(err.msg);
-          
+
         });
     }
   }
+  const RegresarPaginaPrincipal = () => {
+    navigate("/");
+  }
+  const RegresarRegistrarComo = () => navigate("/registrarseComo");
 
- 
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // Puedes agregar más lógica aquí si es necesario
+  };
 
   return (
     <div className="fondo">
       <Form onSubmit={handlerLogin}>
         <div className="caja">
-          <div className="cajaLogin" >
-              <h2 >Empleos ChavezPamba</h2>
-              <div className="imgs">
-                  <img src={logofondo} alt="profile" className="tamañoImagenChavezPamba" />
-              </div>
+          <div className="cajaLogin">
+            <h2>Empleos ChavezPamba</h2>
+            <div className="imgs">
+              <img src={logofondo} alt="profile" className="tamañoImagenChavezPamba" />
+            </div>
+            <div>
+              <h2>Inicio de sesión de Usuario</h2>
               <div>
                 <h2>Inicio de sesión de Usuario</h2>
                 <div>
@@ -82,12 +93,12 @@ const LoginForm = (props) => {
           </div>
         </div>
       </Form>
-  </div>
+    </div>
 
-    
 
-        
-      
+
+
+
   )
 }
 

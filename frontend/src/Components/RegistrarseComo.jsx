@@ -2,9 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Button } from 'reactstrap';
 import { Link, useNavigate} from 'react-router-dom';
-
 import "../Styles/loginstyle.css"
-
 import logofondo from "../img/logofondo.png";
 
 const RegistrarseComo= (props) => {

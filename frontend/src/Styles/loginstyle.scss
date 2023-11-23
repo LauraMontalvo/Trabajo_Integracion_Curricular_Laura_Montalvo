@@ -107,6 +107,18 @@ p{
   
   
 }
+.img-container {
+  overflow: hidden;
+  border-radius: 60%;
+}
+
+.img-smaller {
+  width: 45%; // o el porcentaje que desees
+}
+.img-circular {
+  border-radius: 50%;
+}
+
 
 .select {
   width: $tamaño-caja-InputAncho; // Ancho del div
