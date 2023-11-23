@@ -112,7 +112,21 @@ function DetalleUsuario(props) {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
   };
-
+  const handleDeleteAcadTraining = async (acadTrainingId) => {
+    const isConfirmed = window.confirm("¿Está seguro de eliminar este campo de información académica?");
+  
+    if (isConfirmed) {
+      try {
+        await axios.delete(`http://localhost:8000/api/acadTraining/${acadTrainingId}`);
+  
+        // Update the state after deletion
+        const updatedAcadTrainings = acadTraining.filter(item => item._id !== acadTrainingId);
+        setAcadTraining(updatedAcadTrainings);
+      } catch (error) {
+        console.error('Error al eliminar información académica:', error.response.data.error);
+      }
+    }
+  };
   return (
     <div className="container mt-4">
       <Row>
@@ -178,6 +192,13 @@ function DetalleUsuario(props) {
               onClick={() => handleShowModal(item._id)}
             >
               Editar
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => handleDeleteAcadTraining(item._id)}
+              className="ml-2"
+            >
+              Eliminar
             </Button>
               </div>
             ))}

@@ -67,7 +67,7 @@ const LoginForm = (props) => {
                 <div className="btn-container" >
                   <Button>Iniciar Sesión</Button>
                   <Button onClick={(e) => navigate("/")}>Ir a la página principal </Button>
-                  <Button   onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
+                  <Button  onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
                 </div>
                 <p style={{ color: 'red' }}>{loginStatus}</p>
                 <div>
