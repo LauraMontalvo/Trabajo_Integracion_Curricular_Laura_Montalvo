@@ -61,7 +61,7 @@ const LoginAdminForm = (props) => {
             </div>
             <div>
               <img src={lock} alt='password' className='iconos' />
-              <input type="password" placeholder='Contraseña' className='fill' onChange={e => setPassword(e.target.value)} value={password} />
+              <input type="password" placeholder='Contraseña' onChange={e => setPassword(e.target.value)} value={password} />
             </div>
             <div className='btn-container'>
               <button type="submit">{TEXTO_INICIAR_SESION}</button>
