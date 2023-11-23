@@ -68,17 +68,17 @@ const LoginForm = (props) => {
               <div>
                 <h2>Inicio de sesión de Usuario</h2>
                 <div>
-                  <img src={profile}  className="iconos" />
-                  <input type="text"  placeholder="user" onChange={(e) => {setUsuario(e.target.value);}}value={usuario}/>
+                  <img src={profile} className="iconos" />
+                  <input type="text" placeholder="user" onChange={(e) => { setUsuario(e.target.value); }} value={usuario} />
                 </div>
                 <div>
                   <img src={lock} alt="password" className="iconos" />
-                  <input type="password"   placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value);}}value={password}/>
+                  <input type="password" placeholder="Enter Password" onChange={(e) => { setPassword(e.target.value); }} value={password} />
                 </div>
                 <div className="btn-container" >
                   <Button>Iniciar Sesión</Button>
                   <Button onClick={(e) => navigate("/")}>Ir a la página principal </Button>
-                  <Button  onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
+                  <Button onClick={e => navigate("/registrarseComo")} >Cancelar</Button>
                 </div>
                 <p style={{ color: 'red' }}>{loginStatus}</p>
                 <div>
@@ -87,12 +87,14 @@ const LoginForm = (props) => {
                   </Link>
                 </div>
                 <div >
-                  
+
                 </div>
-              </div> 
+              </div>
+            </div>
           </div>
-        </div>
+          </div>
       </Form>
+      
     </div>
 
 
