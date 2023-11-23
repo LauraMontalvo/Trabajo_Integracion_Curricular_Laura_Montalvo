@@ -107,11 +107,12 @@ const EditarUsuario = () => {
                 <Col md={6}>
                     <Form.Group controlId="formGenero">
                         <Form.Label>Género:</Form.Label>
-                        <Form.Control as="select" onChange={e => setSexo(e.target.value)} value={sexo}>
-                            <option value="">--Seleccione el género--</option>
+                        <Form.Select as="select" onChange={e => setSexo(e.target.value)} value={sexo}>>
+                        <option value="">--Seleccione el género--</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
-                        </Form.Control>
+                            </Form.Select>                           
+                        
                     </Form.Group>
                 </Col>
                 <Col md={6}>
