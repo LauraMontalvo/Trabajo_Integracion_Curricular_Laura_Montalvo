@@ -3,6 +3,8 @@ import axios from "axios";
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { FaTrash } from "react-icons/fa"; // Importa el icono de Font Awesome
 import 'bootstrap/dist/css/bootstrap.css';
+import Cabecera from "./Cabecera";
+import TabsAdministracionComp from "./Administracion/TabsAdministracionComp";
 
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -40,7 +42,12 @@ const ListaUsuarios = () => {
   }
 
   return (
+    <div className="App">
+      <Cabecera/>
+      <TabsAdministracionComp/>
+    
     <div className="container">
+
       <h1 className="mt-4 mb-4">Usuarios Existentes</h1>
 
       <div className="table-responsive">
@@ -92,6 +99,7 @@ const ListaUsuarios = () => {
           <Button color="secondary" onClick={toggleDeleteModal}>Cancelar</Button>
         </ModalFooter>
       </Modal>
+    </div>
     </div>
   );
 }

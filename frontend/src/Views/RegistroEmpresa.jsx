@@ -6,6 +6,8 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/loginstyle.css'
 import { Link, useNavigate} from 'react-router-dom';
+import Cabecera from '../Components/Cabecera';
+import TabsAdministracionComp from '../Components/Administracion/TabsAdministracionComp';
 
 const RegistroEmpresa = (props) => {
   const [ nombreEmpresa, setNombreEmpresa] = useState("");
@@ -171,6 +173,9 @@ const RegistroEmpresa = (props) => {
       })  
   }
     return (
+      <div className='App'>
+        <Cabecera/>
+        <TabsAdministracionComp/>
       <Form onSubmit={onsubmitHandler}>
         <div className='caja'>
           <div className='cajaRegistrarEmpresa' >
@@ -241,6 +246,7 @@ const RegistroEmpresa = (props) => {
       
         {/*<h4>{aviso}</h4>*/}
       </Form>
+      </div>
     );
   
 }

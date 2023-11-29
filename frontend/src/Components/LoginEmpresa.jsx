@@ -32,7 +32,7 @@ const LoginFormEmpresa = (props) => {
             
             console.log(user);
             setLoginStatus(respuesta.data.msg);
-            setTimeout(() => navigate('/detalleUsuario/'+user.id), 1000);
+            setTimeout(() => navigate(constantes.URL_DETALLE_EMPRESA+user._id), 1000);
           } else {
             setLoginStatus(respuesta.data.msg);
           }

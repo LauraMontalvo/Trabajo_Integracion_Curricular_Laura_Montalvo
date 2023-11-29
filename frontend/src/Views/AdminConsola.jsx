@@ -2,18 +2,32 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Cabecera from "../Components/Cabecera";
 import { useNavigate } from "react-router";
 import ListaEmpresas from "../Components/ListaEmpresas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
 import ListaUsuarios from "../Components/ListaUsuarios";
 import { FaBuilding, FaUser } from "react-icons/fa"; // Importa iconos de Font Awesome
 import "../Styles/header.css"
+import * as constantes from "../Models/Constantes";
+import axios from "axios";
+import TabsAdministracionComp from "../Components/Administracion/TabsAdministracionComp";
 
 const Main = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
+    const [admin, setAdmin] = useState({});
     const [modalEmpresas, setModalEmpresas] = useState(false);
     const [modalUsuarios, setModalUsuarios] = useState(false);
 
     const toggleEmpresas = () => setModalEmpresas(!modalEmpresas);
     const toggleUsuarios = () => setModalUsuarios(!modalUsuarios);
+
+    useEffect(() => {
+        axios.post(`${constantes.URL_CONSULTAR_DATOS_USUARIO}${id}`).then(res => {
+            setAdmin({ ...res.data });
+            console.log(admin);
+        }).catch(err => console.log(err))
+    });
 
     const VerListaEmpresas = () => {
         toggleEmpresas();
@@ -26,6 +40,8 @@ const Main = () => {
     return (
         <div className="App">
             <Cabecera />
+            <TabsAdministracionComp/>
+
             <div className="button-container">
                 <Button color="primary" className="custom-button" onClick={VerListaEmpresas}>
                     <FaBuilding /> Ver Empresas Existentes

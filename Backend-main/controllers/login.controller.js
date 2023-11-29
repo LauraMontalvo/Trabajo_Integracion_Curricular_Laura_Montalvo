@@ -33,7 +33,10 @@ module.exports.validateCompany = (req, res) => {
                 // Hashea la contraseña de entrada
                 const hashedPassword = (req.body.password);
                 if (hashedPassword === company.password) {
-                    res.json({ msg: 'Empresa validada correctamente!!' });
+                    res.json({
+                        msg: 'Empresa validada correctamente!!',
+                        user: company
+                    });
                 } else {
                     res.json({ msg: 'Contraseña incorrecta, ingrese nuevamente!!' });
                 }

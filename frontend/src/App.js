@@ -53,7 +53,7 @@ function App() {
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
             <Route path="/admin" element={<LoginAdminForm />} />
-            <Route path="/admin/consola" element={<AdminConsola />} />
+            <Route path="/admin/consola/:id" element={<AdminConsola />} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}
             <Route path="/*" element={<Navigate to={constantes.URL_PAGINA_PRINCIPAL} />} />
           </Routes>

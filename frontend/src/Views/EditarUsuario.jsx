@@ -107,7 +107,7 @@ const EditarUsuario = () => {
                 <Col md={6}>
                     <Form.Group controlId="formGenero">
                         <Form.Label>Género:</Form.Label>
-                        <Form.Select as="select" onChange={e => setSexo(e.target.value)} value={sexo}>>
+                        <Form.Select as="select" onChange={e => setSexo(e.target.value)} value={sexo}>
                         <option value="">--Seleccione el género--</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>

@@ -8,6 +8,7 @@ import profile from "../img/icon.png";
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
 import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../Models/Constantes"
+import { Button } from 'reactstrap';
 
 const LoginAdminForm = (props) => {
   const [password, setPassword] = useState("");
@@ -64,7 +65,7 @@ const LoginAdminForm = (props) => {
               <input type="password" placeholder='Contraseña' onChange={e => setPassword(e.target.value)} value={password} />
             </div>
             <div className='btn-container'>
-              <button type="submit">{TEXTO_INICIAR_SESION}</button>
+              <Button type="submit">{TEXTO_INICIAR_SESION}</Button>
             </div>
             <p style={{ color: 'red' }}>{loginStatus}</p>
             <div className='login-btn'>
