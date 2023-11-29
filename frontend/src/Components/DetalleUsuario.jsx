@@ -16,12 +16,30 @@ function DetalleUsuario(props) {
   const [fechaFin, setFechaFin] = useState('');
   const [editingAcadTrainingId, setEditingAcadTrainingId] = useState(null);
   const navigate = useNavigate();
+  const [edad, setEdad] = useState(null);
   
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/user/${id}`)
-      .then((res) => setUser({ ...res.data }))
-      .catch((err) => console.log(err));
+    .then((res) => {
+      setUser({ ...res.data });
+
+      // Calcula la edad
+      const fechaNac = new Date(res.data.fechaNacimiento);
+      const hoy = new Date();
+      const edadCalculada = hoy.getFullYear() - fechaNac.getFullYear();
+
+      // Ajusta la edad si aún no ha llegado el cumpleaños
+      if (
+        hoy.getMonth() < fechaNac.getMonth() ||
+        (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() < fechaNac.getDate())
+      ) {
+        setEdad(edadCalculada - 1);
+      } else {
+        setEdad(edadCalculada);
+      }
+    })
+    .catch((err) => console.log(err));
 
     axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`)
       .then((res) => setAcadTraining(res.data))
@@ -167,7 +185,7 @@ function DetalleUsuario(props) {
             <p>Género: {user.sexo}</p>
             <p>Fecha de Nacimiento:{formatDate(user.fechaNacimiento)}</p>
             <p>Teléfono: {user.telefono}</p>
-            <p>Edad: {user.edad}</p>
+            <p>Edad: {edad !== null ? `${edad} años` : ''}</p>
           </div>
 
           <div className="mt-4">
@@ -205,7 +223,7 @@ function DetalleUsuario(props) {
             ))}
 
             <Button variant="primary" onClick={handleShowModal} className="mt-3">
-              Sumar Experiencia
+              Sumar Estudio
             </Button>
 
             <Modal show={showModal} onHide={handleCloseModal}>

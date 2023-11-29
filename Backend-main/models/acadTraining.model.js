@@ -24,4 +24,4 @@ const AcadTrainingSchema = new mongoose.Schema({
 });
 
 const AcadTraining = mongoose.model('AcadTraining', AcadTrainingSchema);
-module.exports = AcadTraining;
+module.exports = AcadTraining; 

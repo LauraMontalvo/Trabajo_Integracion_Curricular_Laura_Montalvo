@@ -1,6 +1,7 @@
-import React from 'react';
+// Importa las librerías necesarias
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Logueo from './Views/Logueo';
-import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import RegistroUsuario from './Views/RegistroUsuario';
 import LoginForm from './Components/LoginUsuario';
 import LoginFormEmpresa from './Components/LoginEmpresa';
@@ -10,26 +11,55 @@ import LoginAdminForm from './Components/LoginAdmin';
 import AdminConsola from './Views/AdminConsola';
 import Main from './Views/Main';
 import EditarUsuario from './Views/EditarUsuario';
-import * as constantes from './Models/Constantes' ;
+import * as constantes from './Models/Constantes';
+import ListaEmpresas from './Components/ListaEmpresas';
+import ListaUsuarios from './Components/ListaUsuarios';
+import SumarEstudio from './Components/SumarEstudio';
+import DetalleEmpresa from './Components/DetalleEmpresa';
+import EditarEmpresa from './Views/EditarEmpresa';
+import LoadingModal from './Components/LoadingModal';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Lógica de simulación de carga
+    const simulateAsyncLoad = () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);  // Ajusta el tiempo de simulación según tus necesidades
+    };
+
+    simulateAsyncLoad();
+  }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path={constantes.URL_PAGINA_PRINCIPAL} element={<Main/>}/>
-        <Route exact path="/registrarseComo" element={<Logueo/>}/>
-        <Route exact path="/detalleUsuario/:id" element={<DetalleUsuario/>}/>
-        <Route exact path="/loginusuario" element={<LoginForm/>}/>
-        <Route exact path="/empresa" element={<LoginFormEmpresa/>}/>
-        <Route exact path="/registrarUsuario" element={<RegistroUsuario/>}/>
-        <Route exact path="/detalleUsuario/:id/editar" element={<EditarUsuario/>}/>
-        <Route exact path="/registrarEmpresa" element={<RegistroEmpresa/>}/>
-        <Route exact path="/admin" element={<LoginAdminForm />} />
-        <Route exact path="/admin/consola" element={<AdminConsola />} />
-      </Routes>
-  </BrowserRouter>
+    <Router>
+      <>
+        {isLoading ? (
+          <LoadingModal/>
+        ) : (
+          <Routes>
+            <Route path={constantes.URL_PAGINA_PRINCIPAL} element={<Main />} />
+            <Route path="/registrarseComo" element={<Logueo />} />
+            <Route path="/detalleUsuario/:id" element={<DetalleUsuario />} />
+            <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
+            <Route path="/loginusuario" element={<LoginForm />} />
+            <Route path="/empresa" element={<LoginFormEmpresa />} />
+            <Route path="/registrarUsuario" element={<RegistroUsuario />} />
+            <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
+            <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
+            <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
+            <Route path="/listaEmpresas" element={<ListaEmpresas />} />
+            <Route path="/listaUsuarios" element={<ListaUsuarios />} />
+            <Route path="/admin" element={<LoginAdminForm />} />
+            <Route path="/admin/consola" element={<AdminConsola />} />
+            {/* Asegúrate de tener una ruta de redirección al componente principal */}
+            <Route path="/*" element={<Navigate to={constantes.URL_PAGINA_PRINCIPAL} />} />
+          </Routes>
+        )}
+      </>
+    </Router>
   );
 }
 

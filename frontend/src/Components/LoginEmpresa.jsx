@@ -32,7 +32,7 @@ const LoginFormEmpresa = (props) => {
             
             console.log(user);
             setLoginStatus(respuesta.data.msg);
-            setTimeout(() => navigate('/Main/'+user._id), 1000);
+            setTimeout(() => navigate('/detalleUsuario/'+user.id), 1000);
           } else {
             setLoginStatus(respuesta.data.msg);
           }
@@ -73,11 +73,7 @@ const LoginFormEmpresa = (props) => {
 
             </div>
             <p style={{ color: 'red' }}>{loginStatus}</p>
-            <div>
-              <Link to='/registrarEmpresa'>
-                Registrate ahora!
-              </Link>
-            </div>
+          
           </div>
         </div>
       </div>

@@ -45,4 +45,4 @@ module.exports.getSchoolAcadTraining = (request,response) =>{
     AcadTraining.find({idInstitucion: request.params.id})
     .then(retrievedCertifications => response.json(retrievedCertifications))
     .catch(err => response.json(err))
-}
+} 

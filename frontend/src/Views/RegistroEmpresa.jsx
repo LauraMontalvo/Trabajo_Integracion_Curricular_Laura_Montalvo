@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useParams} from 'react';
 import { Form, Button,Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';

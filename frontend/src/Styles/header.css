@@ -1,3 +1,9 @@
+@charset "UTF-8";
+.custom-button {
+  margin-right: 30px; /* Ajusta el valor según sea necesario */
+  margin-left: 30px;
+}
+
 .nav {
   height: 10%;
   display: flex;

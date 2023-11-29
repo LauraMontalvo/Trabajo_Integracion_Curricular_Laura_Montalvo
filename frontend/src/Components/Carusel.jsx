@@ -1,16 +1,14 @@
 // components/ExampleCarouselImage.jsx
 import React from 'react';
 import { Card } from 'react-bootstrap';
-
-
-function ExampleCarouselImage({ imageUrl }) {
+import "../Styles/carusel.css"
+function ExampleCarouselImage({ imageUrl, description }) {
   return (
-    <Card>
+    <Card className="carousel-card">
       <Card.Img variant="top" src={imageUrl} alt="Imagen del carrusel" className="img-fluid rounded" />
-      {/* Puedes ajustar la clase "rounded" y agregar otras clases de Bootstrap según sea necesario */}
-      <Card.Body>
-        <Card.Text>
-          Descripción de la imagen.
+      <Card.Body className="carousel-body">
+        <Card.Text className="carousel-description">
+          {description}
         </Card.Text>
       </Card.Body>
     </Card>
