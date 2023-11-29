@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Modal } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
+
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
+import { Form,  Button, Modal, Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 const RegistroUsuario = (props) => {
   const [nombre, setNombre] = useState('');
@@ -39,15 +41,9 @@ const RegistroUsuario = (props) => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+ 
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
 
   const handleInputChange = (e, setterFunction, errorSetter) => {
     const value = e.target.value;
@@ -62,25 +58,9 @@ const RegistroUsuario = (props) => {
   };
 
   //edad
-  const [edad, setEdad] = useState(null);
 
-  useEffect(() => {
-    // Calcula la edad cuando la fecha de nacimiento cambia
-    if (fechaNacimiento) {
-      const fechaNac = new Date(fechaNacimiento);
-      const hoy = new Date();
-      const edadCalculada = hoy.getFullYear() - fechaNac.getFullYear();
 
-      // Ajusta la edad si aún no ha llegado el cumpleaños
-      if (hoy.getMonth() < fechaNac.getMonth() || (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() < fechaNac.getDate())) {
-        setEdad(edadCalculada - 1);
-      } else {
-        setEdad(edadCalculada);
-      }
-    } else {
-      setEdad(null);
-    }
-  }, [fechaNacimiento]);
+  
 
   const onsubmitHandler = (e) => {
     e.preventDefault();
@@ -98,9 +78,8 @@ const RegistroUsuario = (props) => {
       })
       .then((res) => {
         console.log(res);
-         // Extraer la edad de la respuesta del servidor y establecerla en el estado
-  const { edad } = res.data;
-  setEdad(edad);
+        // Extraer la edad de la respuesta del servidor y establecerla en el estado
+    
         handleSuccessModalShow();
         setNombre('');
         setApellido('');
@@ -172,130 +151,164 @@ const RegistroUsuario = (props) => {
   };
 
   return (
-    <Form onSubmit={onsubmitHandler}>
-      <div className="caja">
-        <div className="cajaRegistrarUsuario">
-          <div>
-            <div>
-              <input
+ 
+    
+    <Form onSubmit={onsubmitHandler} className="mi-formulario">
+      <Row>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Nombre</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faUser} className="input-icon" />
+              <Form.Control
                 type="text"
                 placeholder="Ingrese su Nombre"
-                onChange={(e) => handleInputChange(e, setNombre, setNombreError)}
                 value={nombre}
-              />
-              <p>{nombreError}</p>
-              <input
+                onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
+            </div>
+            {nombreError && <p className="error-message">{nombreError}</p>}
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Apellido</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon className="input-icon" />
+              <Form.Control
                 type="text"
                 placeholder="Ingrese su Apellido"
-                onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
                 value={apellido}
-              />
-              <p>{apellidoError}</p>
+                onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
+                className="input-with-icon" />
             </div>
+            {apellidoError && <p className="text-danger">{apellidoError}</p>}
+          </Form.Group>
+        </Col>
 
-            <div className="select">
-              <select onChange={(e) => handleInputChange(e, setSexo, setSexoError)} value={sexo}>
-                <option value="">--Seleccione el género--</option>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Género</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
+              <Form.Control as="select"
+                onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
+                value={sexo}
+                className="input-with-icon">
+                <option value=" "> --Seleccione el género--</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Femenino">Femenino</option>
-              </select>
+              </Form.Control>
             </div>
-            <p>{sexoError}</p>
-
-            <div className="textos_normales">
-              <p>Seleccione su fecha de nacimiento </p>
-              <input
+            {sexoError && <p className="text-danger">{sexoError}</p>}
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Fecha de Nacimiento</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+              <Form.Control
                 type="date"
                 onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
                 value={fechaNacimiento}
-              />
+                className="input-with-icon" />
             </div>
-            <p>{fechaNacimientoError}</p>
+            {fechaNacimientoError && <p className="text-danger">{fechaNacimientoError}</p>}
+          </Form.Group>
+        </Col>
+        {/* Repite la misma estructura para otros campos */}
 
-            <div className="textos_normales">
-              <p>Edad</p>
-              <input type="text" value={edad !== null ? `${edad} años` : ''} readOnly />
-            </div>
-
-            <div>
-              <input
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Teléfono</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faPhone} className="input-icon" />
+              <Form.Control
                 type="text"
                 placeholder="Ingrese su teléfono"
-                onChange={handleTelefonoChange}
                 value={telefono}
-              />
-              <p>{telefonoError}</p>
+                onChange={handleTelefonoChange} />
             </div>
-
-            <div>
-              <input
+            {telefonoError && <p className="text-danger">{telefonoError}</p>}
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Usuario</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
+              <Form.Control
                 type="text"
-                placeholder="Ingrese Usuario "
-                onChange={(e) => handleInputChange(e, setUsuario, setUsuarioError)}
+                placeholder="Ingrese Usuario"
                 value={usuario}
-              />
-              <p>{usuarioError}</p>
+                onChange={(e) => handleInputChange(e, setUsuario, setUsuarioError)}
+                className="input-with-icon" />
             </div>
-
-            <div>
-              <input
-                type={showPassword ? 'text' : 'password'}
+            {usuarioError && <p className="text-danger">{usuarioError}</p>}
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Contraseña</Form.Label>
+            <div className="password-field">
+              <FontAwesomeIcon icon={faLock} className="field-icon" />
+              <Form.Control
+                type={showPassword ? "text" : "password"}
                 placeholder="Ingrese su contraseña"
-                title="Debe tener al menos una mayúscula, una minúscula y un dígito"
-                onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
                 value={password}
-              />
-              <div>
-                <Button
-                  style={{ padding: '1px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
-                  onClick={togglePasswordVisibility}
-                  variant="link"
-                >
-                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-                </Button>
-              </div>
-              <p>{passwordError}</p>
+                onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
+                className="password-input" />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="toggle-password-icon"
+                onClick={() => setShowPassword(!showPassword)} />
             </div>
+            {passwordError && <p className="text-danger">{passwordError}</p>}
+          </Form.Group>
+        </Col>
 
-            <div>
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Confirmar Contraseña</Form.Label>
+            <div className="password-field">
+              <FontAwesomeIcon icon={faLock} className="field-icon" />
+              <Form.Control
+                type={showPassword ? "text" : "password"}
                 placeholder="Confirmar Contraseña"
-                onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
                 value={confirmPassword}
-              />
-              <div>
-                <Button
-                  style={{ padding: '1px', width: '50px', borderRadius: '100%', color: 'black', backgroundColor: '#ABEBC6' }}
-                  onClick={toggleConfirmPasswordVisibility}
-                  variant="link"
-                >
-                  <FontAwesomeIcon icon={showConfirmPassword ? faEye : faEyeSlash} />
-                </Button>
-              </div>
-              <p>{confirmPasswordError}</p>
+                onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
+                className="password-input" />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="toggle-password-icon"
+                onClick={() => setShowPassword(!showPassword)} />
             </div>
+            {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
+          </Form.Group>
+        </Col>
 
-            <div className="btn-container">
-              <Button type="submit">Crear cuenta</Button>
-              <Button onClick={(e) => navigate('/loginusuario')}>Cancelar</Button>
-            </div>
-            <div></div>
-            <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Ahora puede acceder con sus credenciales.</Modal.Body>
-              <Modal.Footer>
-                <Button variant="success" onClick={handleSuccessModalClose}>
-                  Cerrar
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </div>
-        </div>
+
+      </Row>
+      <div className="botones-centrados">
+        <Button type="submit" variant="primary">Crear cuenta</Button>
+        <Button variant="secondary" onClick={() => navigate('/loginusuario')}>Cancelar</Button>
       </div>
+      <div></div>
+      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Ahora puede acceder con sus credenciales.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleSuccessModalClose}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
     </Form>
+
   );
 };
 

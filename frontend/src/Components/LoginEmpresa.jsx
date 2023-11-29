@@ -52,10 +52,11 @@ const LoginFormEmpresa = (props) => {
     <Form onSubmit={handlerLoginEmpresa}>
       <div className='caja'>
         <div className='cajaLogin'>
-          <h2>Empleos ChavezPamba</h2>
-          <div className='imgs'>
+        <div className='imgs'>
             <img src={logofondo} className="tamañoImagenChavezPamba" />
           </div>
+          <h2>Empleos ChavezPamba</h2>
+          
           <div>
             <h2>{constantes.TEXTO_INICIO_SESION_EMPRESA}</h2>
             <div>

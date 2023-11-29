@@ -68,11 +68,7 @@ p{
 
   }
   
-  .tamañoImagenChavezPamba{
-    height: 130px;
-    width: 130px;
-    border-radius: 130px;
-  }
+  
   h2{
     background: linear-gradient(to right, rgba(0, 255, 242, 0.671), rgb(255, 115, 0), green);
     background-clip: text;
@@ -158,3 +154,135 @@ p{
   @include caja_Personalizada_Login($Tamaño-Loginancho:580px,
   $Tamaño-Loginlargo:1150px)
 }
+$color-primary: #0056b3;
+$color-secondary: #6c757d;
+$color-icon: #717171;
+$color-border: #ced4da;
+$color-focus: #80bdff;
+$shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+$focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+
+.mi-formulario {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background-color: rgb(240, 239, 224);
+  border-radius: 10px;
+  box-shadow: $shadow;
+
+  .botones-centrados {
+    display: flex;
+    justify-content: center;
+    gap: 20px; // Espacio entre botones
+    margin-top: 20px; // Espacio entre los botones y los campos del formulario
+
+  
+  }
+
+  
+  .tamañoImagenChavezPamba{
+    width: 150px; /* Ancho de la imagen */
+    height: 150px; /* Altura de la imagen, igual al ancho para un círculo perfecto */
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+    object-fit: cover; /* Asegura que la imagen cubra completamente el espacio sin deformarse */
+    display: block; /* Asegura que la imagen sea un bloque para centrarla */
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .input-icon {
+      position: absolute;
+      left: 10px;
+      color: $color-icon;
+      
+    }
+
+    .form-control {
+      padding-left: 30px;
+      border-radius: 5px;
+      border: 1px solid $color-border;
+      transition: border-color 0.3s;
+
+      &:focus {
+        border-color: $color-focus;
+        outline: none;
+        box-shadow: $focus-shadow;
+      }
+    }
+  }
+
+  .btn-primary {
+ background-color: $color-primary;    border: none;
+    border-radius: 5px;
+  }
+
+  .btn-secondary {
+    background-color: $color-secondary;
+  }
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .field-icon, .toggle-password-icon {
+    position: absolute;
+    color: $color-icon;
+    cursor: pointer;
+  }
+
+  .field-icon {
+    left: 10px;
+  }
+
+  .toggle-password-icon {
+    right: 10px;
+  }
+
+  .password-input {
+    width: 100%;
+    padding-left: 30px; // Espacio para el icono de candado
+    padding-right: 30px; // Espacio para el icono de ojo
+    border-radius: 5px;
+    border: 1px solid $color-border;
+
+    &:focus {
+      border-color: $color-focus;
+      outline: none;
+      box-shadow: $focus-shadow;
+    }
+  }
+
+ 
+  
+  .campo-formulario {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    .icono-formulario {
+      position: absolute;
+      left: 10px;
+      color: #717171;
+    }
+
+    .input-con-icono {
+      width: 100%;
+      padding-left: 30px; // Asegura espacio para el ícono
+      // Añade aquí más estilos para el input si lo deseas
+    }
+  }
+
+  
+}
+
+
