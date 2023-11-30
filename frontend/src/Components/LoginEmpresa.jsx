@@ -9,13 +9,16 @@ import * as constantes from '../Models/Constantes'
 import profile from "../img/empresa.png";
 import { Link, useNavigate} from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
+import { Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faBuilding,faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const LoginFormEmpresa = (props) => {
   const [password, setPassword] = useState("");
   const [usuario, setUsuario] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const navigate = useNavigate();
-
+ const [showPassword, setShowPassword] = useState(false);
 
   const handlerLoginEmpresa = (e) => {
     e.preventDefault();
@@ -45,41 +48,71 @@ const LoginFormEmpresa = (props) => {
     }
   }
 
- 
+  const RegresarPaginaPrincipal = () => {
+    navigate("/");
+  }
+  const RegresarRegistrarComo = () => navigate("/registrarseComo");
 
   return (
-  <div className='fondo'>
-    <Form onSubmit={handlerLoginEmpresa}>
-      <div className='caja'>
-        <div className='cajaLogin'>
-        <div className='imgs'>
-            <img src={logofondo} className="tamañoImagenChavezPamba" />
-          </div>
+ 
+    <Form onSubmit={handlerLoginEmpresa} className="mi-formulario">
+      
+            
+         
           <h2>Empleos ChavezPamba</h2>
-          
-          <div>
+          <div className='imgs'>
+        <img src={logofondo} className="tamañoImagenChavezPamba" />
+      </div>
             <h2>{constantes.TEXTO_INICIO_SESION_EMPRESA}</h2>
-            <div>
-              <img src={profile}  className='iconos' />
-              <input type="text" placeholder='user' onChange={e => { setUsuario(e.target.value) }} value={usuario}/>
-            </div>
-            <div>
-              <img src={lock} alt='password' className='iconos' />
-              <input type="password" placeholder='Enter Password'  onChange={e => { setPassword(e.target.value) }} value={password} />
-            </div>
-            <div className='btn-container'>
-              <Button>Iniciar Sesión</Button>
-              <Button onClick={e => navigate("/")}>Ir a la pagina principal</Button>
-              <Button   onClick={e=>navigate("/registrarseComo")} >Cancelar</Button>
+            
+              <Row>
+              <Col md={6}>
+  <Form.Group>
+    <Form.Label>Usuario de la Empresa</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" /> {/* Cambiar el icono a uno que represente una empresa */}
+      <Form.Control
+        type="text"
+        placeholder="Ingrese el usuario de la empresa"
+        onChange={(e) => setUsuario(e.target.value)}
+        value={usuario}
+      />
+    </div>
+  </Form.Group>
+</Col>    
+<Col md={6}>
+          <Form.Group>
+            <Form.Label>Contraseña</Form.Label>
+            <div className="password-field">
+              <FontAwesomeIcon icon={faLock} className="field-icon" />
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Ingrese su contraseña"
 
+                onChange={(e) => { setPassword(e.target.value); }} value={password}
+                className="password-input" />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="toggle-password-icon"
+                onClick={() => setShowPassword(!showPassword)} />
             </div>
+
+          </Form.Group>
+        </Col>
+
+              </Row>
+                  
+            <div className="botones-centrados">
+        <Button className='btn-primary'>Iniciar Sesión</Button>
+        <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>Ir a la página principal</Button>
+        <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
+      </div>
+
             <p style={{ color: 'red' }}>{loginStatus}</p>
           
-          </div>
-        </div>
-      </div>
+         
     </Form>
-  </div>
+ 
 
         
       

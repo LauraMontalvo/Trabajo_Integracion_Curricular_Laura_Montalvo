@@ -8,6 +8,7 @@ $tamaño-caja-InputAncho:300px;
 $tamaño-caja-InputLargo:50px;
 $tamano-letraTitulos: 35px;
 $tamaño-letraBotones:15px;
+
 $Tamañp-letraTextoError:15px;
 $Tamañp-letraTextoNormal:20px;
 $colorBotonLogin:#47dfc0;
@@ -69,15 +70,7 @@ p{
   }
   
   
-  h2{
-    background: linear-gradient(to right, rgba(0, 255, 242, 0.671), rgb(255, 115, 0), green);
-    background-clip: text;
-    color: transparent;
-    font-size: $tamano-letraTitulos;
-    margin-bottom: 10px; // Ajusta según sea necesario
-
-  }
-
+ 
   .btn{
     &:hover {
       background-color: #20d46b;
@@ -154,8 +147,10 @@ p{
   @include caja_Personalizada_Login($Tamaño-Loginancho:580px,
   $Tamaño-Loginlargo:1150px)
 }
-$color-primary: #0056b3;
-$color-secondary: #6c757d;
+$tamaño-letra-Formularios:15px;
+$color-primary:  #1287ec;
+$color-secondary: #1287ec;
+$color-danger: #ec5012;
 $color-icon: #717171;
 $color-border: #ced4da;
 $color-focus: #80bdff;
@@ -163,7 +158,8 @@ $shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 
 .mi-formulario {
-  max-width: 500px;
+  font-family: $estilo-letra;
+  max-width: 590px;
   margin: auto;
   padding: 20px;
   background-color: rgb(240, 239, 224);
@@ -175,8 +171,20 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     justify-content: center;
     gap: 20px; // Espacio entre botones
     margin-top: 20px; // Espacio entre los botones y los campos del formulario
+    
+
+
 
   
+  }
+  h2{
+    background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    font-size: $tamano-letraTitulos;
+    margin-bottom: 10px; // Ajusta según sea necesario
+
   }
 
   
@@ -190,6 +198,7 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   }
   .form-group {
     margin-bottom: 15px;
+    
   }
 
   .input-icon-wrapper {
@@ -203,12 +212,17 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       color: $color-icon;
       
     }
-
+    .large-input {
+      height: 40px; /* Ajusta la altura según tus necesidades */
+    width: 260px;
+      padding: 10px 1px; /* Ajusta el espacio interior según tus necesidades */
+    }
     .form-control {
       padding-left: 30px;
       border-radius: 5px;
       border: 1px solid $color-border;
       transition: border-color 0.3s;
+      font-size: $tamaño-letra-Formularios;
 
       &:focus {
         border-color: $color-focus;
@@ -219,12 +233,16 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   }
 
   .btn-primary {
- background-color: $color-primary;    border: none;
-    border-radius: 5px;
+ background-color: $color-primary; 
+
+  
   }
 
   .btn-secondary {
     background-color: $color-secondary;
+  }
+  .btn-danger {
+    background-color: $color-danger;
   }
 }
 
@@ -253,6 +271,7 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     padding-right: 30px; // Espacio para el icono de ojo
     border-radius: 5px;
     border: 1px solid $color-border;
+    font-size: $tamaño-letra-Formularios;
 
     &:focus {
       border-color: $color-focus;

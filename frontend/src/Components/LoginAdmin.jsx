@@ -1,20 +1,34 @@
+
+import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../Models/Constantes"
+
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Button } from 'reactstrap';
+
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
 import "../Styles/loginstyle.css"
-import lock from "../img/lock.png";
-import profile from "../img/icon.png";
+
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
-import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../Models/Constantes"
-import { Button } from 'reactstrap';
+import { Row, Col } from 'react-bootstrap';
+
+
+
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const LoginAdminForm = (props) => {
   const [password, setPassword] = useState("");
   const [usuario, setUsuario] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const navigate = useNavigate();
+
+  const RegresarPaginaPrincipal = () => {
+    navigate("/");
+  }
+  const [showPassword, setShowPassword] = useState(false);
   const handlerLogin = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
@@ -40,41 +54,63 @@ const LoginAdminForm = (props) => {
 
         });
     }
+    
   }
 
   return (
-    <div className='fondo'>
-      <Form onSubmit={handlerLogin}>
-        <div className='caja'>
-          <div className='cajaLogin'>
-            <div className='im'>
+
+      <Form onSubmit={handlerLogin} className="mi-formulario" >
+        
               <h2>Empleos ChavezPamba</h2>
-            </div>
-            <div className='imgs'>
-              <div className='container-image'>
-                <img src={logofondo} alt='profile' className='tamañoImagenChavezPamba' />
-              </div>
-            </div>
+           
+              <div className='imgs'>
+        <img src={logofondo} className="tamañoImagenChavezPamba" />
+      </div>
             <h2>{TEXTO_INICIO_SESION}</h2>
-            <div>
-              <img src={profile} className='iconos' />
-              <input type="text" placeholder='Usuario' onChange={e => setUsuario(e.target.value)} value={usuario} />
+            <Row>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Usuario</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg " />
+              <Form.Control
+                type="text"
+                placeholder="Ingrese su usuario"
+                onChange={(e) => setUsuario(e.target.value)}
+                value={usuario}
+              />
             </div>
-            <div>
-              <img src={lock} alt='password' className='iconos' />
-              <input type="password" placeholder='Contraseña' onChange={e => setPassword(e.target.value)} value={password} />
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Contraseña</Form.Label>
+            <div className="password-field">
+              <FontAwesomeIcon icon={faLock} className="field-icon" />
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Ingrese su contraseña"
+
+                onChange={(e) => { setPassword(e.target.value); }} value={password}
+                className="password-input" />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className="toggle-password-icon"
+                onClick={() => setShowPassword(!showPassword)} />
             </div>
-            <div className='btn-container'>
+
+          </Form.Group>
+        </Col>
+      </Row>
+            <div className="botones-centrados">
               <Button type="submit">{TEXTO_INICIAR_SESION}</Button>
+              <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>{TEXTO_IR_PAGINA_PRINCIPAL}</Button>
             </div>
             <p style={{ color: 'red' }}>{loginStatus}</p>
-            <div className='login-btn'>
-              <button onClick={() => navigate("/")}>{TEXTO_IR_PAGINA_PRINCIPAL}</button>
-            </div>
-          </div>
-        </div>
+           
+        
       </Form>
-    </div>
+    
   )
 }
 

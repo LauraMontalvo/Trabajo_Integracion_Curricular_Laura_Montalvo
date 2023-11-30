@@ -42,15 +42,7 @@ const Main = () => {
             <Cabecera />
             <TabsAdministracionComp/>
 
-            <div className="button-container">
-                <Button color="primary" className="custom-button" onClick={VerListaEmpresas}>
-                    <FaBuilding /> Ver Empresas Existentes
-                </Button>
-                <Button color="info" className="custom-button" onClick={VerListaUsuarios}>
-                    <FaUser /> Ver Usuarios Existentes
-                </Button>
-            </div>
-            {/* Modal para Empresas */}
+            
             <Modal isOpen={modalEmpresas} toggle={toggleEmpresas} size="xl">
                 <ModalHeader toggle={toggleEmpresas}>Lista de Empresas</ModalHeader>
                 <ModalBody>

@@ -290,8 +290,8 @@ const RegistroUsuario = (props) => {
 
       </Row>
       <div className="botones-centrados">
-        <Button type="submit" variant="primary">Crear cuenta</Button>
-        <Button variant="secondary" onClick={() => navigate('/loginusuario')}>Cancelar</Button>
+        <Button type="submit" className='btn-primary'>Crear cuenta</Button>
+        <Button className='btn-danger'onClick={() => navigate('/loginusuario')}>Cancelar</Button>
       </div>
       <div></div>
       <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>

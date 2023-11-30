@@ -160,7 +160,7 @@ function DetalleUsuario(props) {
                 />
               </InputGroup>
             ) : (
-              <Image src={user.foto} alt="Foto de perfil" rounded className="img-fluid img-smaller rounded-circle"  />
+              <Image src={user.foto} alt="Foto de perfil" rounded className="img-fluid img-smaller rounded-circle" sm />
             )}
 
             {isEditing ? (

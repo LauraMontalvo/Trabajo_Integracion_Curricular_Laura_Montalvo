@@ -105,9 +105,9 @@ const LoginForm = (props) => {
 
 
       <div className="botones-centrados">
-        <Button type="submit" variant="primary">Iniciar Sesión</Button>
-        <Button onClick={RegresarPaginaPrincipal} variant="secondary">Ir a la página principal</Button>
-        <Button onClick={RegresarRegistrarComo} variant="danger">Cancelar</Button>
+        <Button className='btn-primary'>Iniciar Sesión</Button>
+        <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>Ir a la página principal</Button>
+        <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
       </div>
 
 
