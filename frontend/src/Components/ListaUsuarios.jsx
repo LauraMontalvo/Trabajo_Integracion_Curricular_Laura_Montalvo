@@ -43,7 +43,7 @@ const ListaUsuarios = () => {
 
   return (
     <div className="App">
-      <Cabecera/>
+     
       <TabsAdministracionComp/>
     
     <div className="container">

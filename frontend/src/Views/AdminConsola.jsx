@@ -39,7 +39,7 @@ const Main = () => {
 
     return (
         <div className="App">
-            <Cabecera />
+   
             <TabsAdministracionComp/>
 
             

@@ -174,7 +174,7 @@ const RegistroEmpresa = (props) => {
   }
   return (
     <div className='App'>
-      <Cabecera />
+    
       <TabsAdministracionComp />
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
         <Row>

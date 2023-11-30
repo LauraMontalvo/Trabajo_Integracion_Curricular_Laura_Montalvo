@@ -55,7 +55,7 @@ const ListaEmpresas = () => {
   return (
 
     <div className="App">
-      <Cabecera />
+    
       <TabsAdministracionComp/>
       <h1 className="mt-4 mb-4">Empresas Existentes</h1>
       <div className="text-center mb-4">

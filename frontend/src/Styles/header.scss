@@ -1,61 +1,104 @@
-.custom-button {
-  margin-right: 30px; /* Ajusta el valor según sea necesario */
-  margin-left: 30px;
-}
-.nav{
-    height: 10%;
-   
-    display:flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 1%;
-    
-    box-shadow: 11px 12px 13px 12px rgb(191, 226, 145);
-    opacity: 90%;
-    text-align: center;
-    
-    
-  }
+// Definición de colores y fuentes
+$estilo-letra: 'Century Gothic', sans-serif;
+$color-primary: #0056b3; // Un azul oscuro elegante
+$color-secondary: #6c757d; // Gris para textos menos importantes
+$color-accent: #e9ecef; // Un gris claro para fondos
+$color-text: #333; // Un color de texto oscuro para contraste
+$color-text-light: #000000; // Blanco para textos sobre fondos oscuros
+$color-hover: #2e8cb1; // Un color para hover, como un naranja vibrante
+$tamaño-letra-nav:20px;
+// Estilos base para la navbar
 
-  .Titulo {
-    font-size: 55px;
-    background: linear-gradient(to right, rgba(0, 255, 242, 0.671), rgb(255, 115, 0), green);
-    -webkit-background-clip: text;
+.navbar {
+  background-color: $color-primary;
+  padding: 1rem 2rem;
+  font-family: $estilo-letra;
+
+
+    background-clip: text;
     color: transparent;
-    display: inline;
-  }
-  
-  ul{
-    list-style: none;
-    display: inline-block;
-  }
-  
-  ul li{
-    display:inline-block;
-    padding: 1rem 1rem;
-    font-size: 1.5rem;
+    text-align: center;
+    font-size: $tamaño-letra-nav;
+
+
+
+  .navbar-brand {
+    color: $color-text-light;
    
-    
-    
+    font-weight: 500; // Peso de la fuente para el título
+
+    &:hover {
+      color: lighten($color-text-light, 10%);
+      text-decoration: none; // Eliminar el subrayado al pasar el mouse
+    }
   }
-  .nav a{
-    color: rgb(144, 22, 22);
-  text-decoration: none;
-    
-  
-  }
-  .nav-links{
-    display:inline-block;
-    width: 30%;
-    align-items:first baseline;
-    justify-content:space-around;
-    position: relative;
-  }
-  .nav ul li a:hover{
-    background-color: rgb(53, 226, 189);
-    display: block;
+  // Tus estilos existentes...
+
+.titulo-Chavp {
+  display: flex;
+  align-items: center; // Asegura que la imagen y el texto estén verticalmente alineados
+
+  img {
+    margin-right: 0.5rem; // Añade un pequeño margen a la derecha de la imagen
   }
 
-  .boton{
-    background-color: rgb(8, 216, 136);
+  h2 {
+    margin-bottom: 0; // Elimina el margen inferior del título para evitar espaciado extra
   }
+}
+
+h2{
+  background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+   
+    margin-bottom: 10px; // Ajusta según sea necesario
+}
+  .navbar-toggler {
+    border-color: rgba($color-text-light, 0.5); // Botón más sutil para menús colapsables
+  }
+}
+
+// Estilos para los enlaces de navegación
+.nav-link {
+  color: $color-text-light;
+  margin-right: 1rem; // Espaciado entre enlaces
+
+  &:hover,
+  &:focus {
+    color: $color-hover;
+    text-decoration: none; // Quitar el subrayado al pasar el mouse
+  }
+
+  &.active {
+    color: $color-hover;
+    background-color: transparent; // Sin fondo para el enlace activo
+  }
+}
+
+// Estilo para el menú desplegable
+.nav-dropdown {
+  .dropdown-menu {
+    background-color: $color-primary;
+    border: none; // Quitar bordes del menú desplegable
+
+    .dropdown-item {
+      color: $color-text-light;
+      &:hover {
+        background-color: $color-accent;
+        color: $color-text;
+      }
+    }
+  }
+}
+
+// Estilos para la versión móvil
+@media (max-width: 991px) {
+  .navbar {
+    .nav-link {
+      padding: 0.5rem 1rem; // Más espacio en los enlaces para facilitar la interacción táctil
+      border-bottom: 1px solid lighten($color-primary, 10%); // Separador visual en el menú colapsable
+    }
+  }
+}

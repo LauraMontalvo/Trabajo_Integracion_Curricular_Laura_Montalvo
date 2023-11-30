@@ -1,32 +1,27 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import { Nav, NavDropdown } from "react-bootstrap";
-
+import { Navbar, Nav,NavDropdown } from "react-bootstrap";
+import "../../Styles/header.scss";
 
 const TabsAdministracionComp = () => {
   return (
 
-      <div>
-        <Nav
-          variant="underline"
-          defaultActiveKey="/listaEmpresas"
-          className="justify-content-start"
-        >
-          <NavDropdown title="Empresas" id="nav-dropdown">
-            <NavDropdown.Item as={Link} to="/listaEmpresas">
-              Ver Empresas
-            </NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/registrarEmpresa">
-              Registrar Empresa
-            </NavDropdown.Item>
+    <Navbar bg="light" expand="lg" className="mb-4">
+    <Navbar.Brand as={Link} to="/" className="titulo-Chavp">
+      <h2>Empleos ChavezPamba
+        </h2>
+    </Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="mr-auto" variant="tabs">
+      <NavDropdown title="Empresas" id="nav-dropdown">
+            <NavDropdown.Item as={Link} to="/listaEmpresas">Ver Empresas</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/registrarEmpresa">Registrar Empresa</NavDropdown.Item>
           </NavDropdown>
-          <Nav.Item>
-            <Nav.Link as={Link} to="/listaUsuarios">
-              NavLink 1 content
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </div>
+          <Nav.Link as={Link} to="/listaUsuarios">Lista de Usuarios</Nav.Link>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
 
   );
 };
