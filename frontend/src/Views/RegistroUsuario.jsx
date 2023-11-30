@@ -29,6 +29,7 @@ const RegistroUsuario = (props) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
@@ -36,7 +37,13 @@ const RegistroUsuario = (props) => {
     navigate('/loginusuario');
   };
 
+  const handleErrorModalClose = () => {
+    setShowErrorModal(false);
+  };
+
   const handleSuccessModalShow = () => setShowSuccessModal(true);
+
+  const handleErrorModalShow = () => setShowErrorModal(true);
 
   const navigate = useNavigate();
 
@@ -99,54 +106,15 @@ const RegistroUsuario = (props) => {
         setConfirmPasswordError('');
       })
       .catch((err) => {
-        const errorResponse = err.response.data.errors;
-        if (Object.keys(errorResponse).includes('nombre')) {
-          setNombreError(errorResponse['nombre'].message);
-        } else {
-          setNombreError('');
+        console.log(err)
+        
+        if (err.response.data.msg === "Usuario existe"){
+          handleErrorModalShow();
+          setPassword('');
+          setConfirmPassword('');
+          setUsuario('');
         }
-
-        if (Object.keys(errorResponse).includes('apellido')) {
-          setApellidoError(errorResponse['apellido'].message);
-        } else {
-          setApellidoError('');
-        }
-
-        if (Object.keys(errorResponse).includes('sexo')) {
-          setSexoError(errorResponse['sexo'].message);
-        } else {
-          setSexoError('');
-        }
-
-        if (Object.keys(errorResponse).includes('fechaNacimiento')) {
-          setFechaNacimientoError(errorResponse['fechaNacimiento'].message);
-        } else {
-          setFechaNacimientoError('');
-        }
-
-        if (Object.keys(errorResponse).includes('telefono')) {
-          setTelefonoError(errorResponse['telefono'].message);
-        } else {
-          setTelefonoError('');
-        }
-
-        if (Object.keys(errorResponse).includes('usuario')) {
-          setUsuarioError(errorResponse['usuario'].message);
-        } else {
-          setUsuarioError('');
-        }
-
-        if (Object.keys(errorResponse).includes('password')) {
-          setPasswordError(errorResponse['password'].message);
-        } else {
-          setPasswordError('');
-        }
-
-        if (Object.keys(errorResponse).includes('confirmPassword')) {
-          setConfirmPasswordError(errorResponse['confirmPassword'].message);
-        } else {
-          setConfirmPasswordError('');
-        }
+        
       });
   };
 
@@ -301,6 +269,18 @@ const RegistroUsuario = (props) => {
         <Modal.Body>Ahora puede acceder con sus credenciales.</Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={handleSuccessModalClose}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showErrorModal} onHide={handleErrorModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>¡Error!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Usuario ya existe.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleErrorModalClose}>
             Cerrar
           </Button>
         </Modal.Footer>
