@@ -58,11 +58,7 @@ const ListaEmpresas = () => {
     
       <TabsAdministracionComp/>
       <h1 className="mt-4 mb-4">Empresas Existentes</h1>
-      <div className="text-center mb-4">
-        <Button color="success" onClick={RegistrarEmpresa}>
-          <FaEdit /> Ingresar nueva Empresa
-        </Button>
-      </div>
+      <div className="container">
       <div className="table-responsive">
         <Table striped bordered hover responsive>
           <thead>
@@ -100,6 +96,8 @@ const ListaEmpresas = () => {
           </tbody>
         </Table>
       </div>
+      </div>
+      
 
       {/* Modal de eliminación */}
       <Modal isOpen={deleteModal} toggle={toggleDeleteModal} className="modal-danger">

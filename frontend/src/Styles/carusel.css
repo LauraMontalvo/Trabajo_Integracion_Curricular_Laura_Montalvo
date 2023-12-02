@@ -1,23 +1,39 @@
-.carousel-card {
+@charset "UTF-8";
+.carousel-container {
+  max-width: 90%;
+  margin: auto;
+  max-height: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.carousel-container .carousel-item img {
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+  max-height: 550px;
 }
-.carousel-card:hover {
-  transform: scale(1.05);
+.carousel-container .carousel-control-prev, .carousel-container .carousel-control-next {
+  color: #fff; /* Cambia el color según sea necesario */
+}
+.carousel-container .carousel-control-prev .carousel-control-prev-icon,
+.carousel-container .carousel-control-prev .carousel-control-next-icon, .carousel-container .carousel-control-next .carousel-control-prev-icon,
+.carousel-container .carousel-control-next .carousel-control-next-icon {
+  filter: invert(100%);
+}
+.carousel-container .carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
-.carousel-body {
-  padding: 1rem;
+@media (max-width: 768px) {
+  .carousel-container {
+    max-height: 300px;
+  }
+  .carousel-container img {
+    max-height: 300px;
+  }
 }
-
-.carousel-description {
-  font-size: 1.2rem;
-  color: #333;
-}
-
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -25,54 +41,66 @@
   justify-content: center;
   height: 100vh;
   position: relative;
+  text-align: center;
 }
-
-.background-gradient {
-  background: linear-gradient(to right, #ff8a00, #da1b60);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  animation: moveGradient 10s linear infinite;
-}
-
-.image-container {
+.loading-container .image-container {
+  animation: rotateImage 5s linear infinite;
+  border-radius: 50%;
   overflow: hidden;
+  margin-bottom: 20px;
+}
+.loading-container .image-container .loading-image {
+  width: 100px;
+  height: auto;
+}
+.loading-container .loading-text {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+@keyframes rotateImage {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner-container .spinner {
+  width: 50px;
+  height: 50px;
+  color: #6c5ce7;
+}
+.spinner-container .spinner:after {
   border-radius: 50%;
 }
 
-.loading-image {
-  width: 200px;
-  height: 200px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  z-index: 1;
+.background-gradient {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  animation: gradientBG 15s ease infinite;
+  background-size: 400% 400%;
 }
 
-.loading-text {
-  text-align: center;
-  color: #fff;
-  z-index: 0;
-  margin-top: 20px;
-}
-
-.spinner-container {
-  display: flex;
-  gap: 10px;
-}
-
-.spinner-item {
-  width: 40px;
-  height: 40px;
-}
-
-@keyframes moveGradient {
+@keyframes gradientBG {
   0% {
     background-position: 0% 50%;
   }
-  100% {
+  50% {
     background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }/*# sourceMappingURL=carusel.css.map */

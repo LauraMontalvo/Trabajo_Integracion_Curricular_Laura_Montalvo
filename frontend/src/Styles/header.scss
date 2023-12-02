@@ -6,7 +6,7 @@ $color-accent: #e9ecef; // Un gris claro para fondos
 $color-text: #333; // Un color de texto oscuro para contraste
 $color-text-light: #000000; // Blanco para textos sobre fondos oscuros
 $color-hover: #2e8cb1; // Un color para hover, como un naranja vibrante
-$tamaño-letra-nav:20px;
+$tamaño-letra-nav: 20px;
 // Estilos base para la navbar
 
 .navbar {
@@ -15,16 +15,16 @@ $tamaño-letra-nav:20px;
   font-family: $estilo-letra;
 
 
-    background-clip: text;
-    color: transparent;
-    text-align: center;
-    font-size: $tamaño-letra-nav;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+  font-size: $tamaño-letra-nav;
 
 
 
   .navbar-brand {
     color: $color-text-light;
-   
+
     font-weight: 500; // Peso de la fuente para el título
 
     &:hover {
@@ -32,29 +32,31 @@ $tamaño-letra-nav:20px;
       text-decoration: none; // Eliminar el subrayado al pasar el mouse
     }
   }
+
   // Tus estilos existentes...
 
-.titulo-Chavp {
-  display: flex;
-  align-items: center; // Asegura que la imagen y el texto estén verticalmente alineados
+  .titulo-Chavp {
+    display: flex;
+    align-items: center; // Asegura que la imagen y el texto estén verticalmente alineados
 
-  img {
-    margin-right: 0.5rem; // Añade un pequeño margen a la derecha de la imagen
+    img {
+      margin-right: 0.5rem; // Añade un pequeño margen a la derecha de la imagen
+    }
+
+    h2 {
+      margin-bottom: 0; // Elimina el margen inferior del título para evitar espaciado extra
+    }
   }
 
   h2 {
-    margin-bottom: 0; // Elimina el margen inferior del título para evitar espaciado extra
-  }
-}
-
-h2{
-  background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+    background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
     background-clip: text;
     color: transparent;
     text-align: center;
-   
+
     margin-bottom: 10px; // Ajusta según sea necesario
-}
+  }
+
   .navbar-toggler {
     border-color: rgba($color-text-light, 0.5); // Botón más sutil para menús colapsables
   }
@@ -85,6 +87,7 @@ h2{
 
     .dropdown-item {
       color: $color-text-light;
+
       &:hover {
         background-color: $color-accent;
         color: $color-text;

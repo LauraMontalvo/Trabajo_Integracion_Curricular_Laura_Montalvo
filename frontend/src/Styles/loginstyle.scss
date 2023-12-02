@@ -30,11 +30,7 @@ $Tamaño-botoneslargo:50px;
 .caja{
   @include cajageneral_perzonalizada();
 }
-p{
-  font-size: $Tamañp-letraTextoError;
-  color: red;
-  margin-bottom: 5px; // Ajusta el margen inferior según sea necesario
-}
+
 
 @mixin caja_Personalizada_Login($Tamaño-Loginancho:550px,$Tamaño-Loginlargo:650px){
   font-family: $estilo-letra;
@@ -231,7 +227,11 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       }
     }
   }
-
+  p{
+    font-size: $Tamañp-letraTextoError;
+    color: red;
+    margin-bottom: 5px; // Ajusta el margen inferior según sea necesario
+  }
   .btn-primary {
  background-color: $color-primary; 
 

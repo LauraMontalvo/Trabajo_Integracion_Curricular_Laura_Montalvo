@@ -1,25 +1,44 @@
 // styles/_carousel.scss
 
-.carousel-card {
-    width: 100%;
-    border: 1px solid #ddd; // Añade un borde sutil alrededor de la tarjeta
-    border-radius: 10px; // Bordes redondeados
-    overflow: hidden; // Para evitar que las imágenes salgan del contenedor
-    transition: transform 0.3s ease-in-out; // Efecto de transición suave al hacer hover
+.carousel-container {
+  max-width: 90%; // Ajusta el ancho máximo del carrusel
+  margin: auto; // Centra el carrusel
+  max-height: 500px; // Ajusta la altura máxima del carrusel
+  margin-left: auto;
+  margin-right: auto;
+  .carousel-item img {
+    width: 100%;       // Asegura que la imagen ocupe todo el ancho disponible
+    height: auto;      // Ajusta la altura automáticamente para mantener la relación de aspecto
+    object-fit: contain; // Asegura que la imagen completa sea visible
+    max-height: 550px; // Establece una altura máxima para la imagen//aqui tambien se puede modificar el cuadro.
+  }
   
-    &:hover {
-      transform: scale(1.05); // Efecto de escala al hacer hover
+  .carousel-control-prev, .carousel-control-next {
+    color: #fff; /* Cambia el color según sea necesario */
+  
+    // Aumentar tamaño de las flechas, si es necesario
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      filter: invert(100%); // Cambia el color a blanco, ajusta según tu diseño
     }
   }
-  
-  .carousel-body {
-    padding: 1rem; // Añade un relleno interno
+  .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5); // Fondo semi-transparente para las leyendas
+    color: white; // Texto en color claro
   }
-  
-  .carousel-description {
-    font-size: 1.2rem; // Tamaño de fuente más grande para la descripción
-    color: #333; // Color de texto más oscuro
+}
+
+// Responsividad para pantallas pequeñas
+@media (max-width: 768px) {
+  .carousel-container {
+    max-height: 300px;
+
+    img {
+      max-height: 300px;
+    }
   }
+}
+
   ///////////////
   /// 
   ///
@@ -30,54 +49,68 @@
     justify-content: center;
     height: 100vh;
     position: relative;
-  }
-  
-  .background-gradient {
-    background: linear-gradient(to right, #ff8a00, #da1b60);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    animation: moveGradient 10s linear infinite;
-  }
-  
-  .image-container {
-    overflow: hidden;
-    border-radius: 50%;
-  }
-  
-  .loading-image {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    z-index: 1;
-  }
-  
-  .loading-text {
     text-align: center;
-    color: #fff;
-    z-index: 0;
-    margin-top: 20px; // Ajusta según sea necesario
+  
+   
+  
+    .image-container {
+      animation: rotateImage 5s linear infinite;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 20px;
+  
+      .loading-image {
+        width: 100px; // Ajusta este tamaño según tus necesidades
+        height: auto;
+      }
+    }
+  
+    .loading-text {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+  }
+  
+ 
+  
+  @keyframes rotateImage {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
   .spinner-container {
     display: flex;
-    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  
+    .spinner {
+      width: 50px;
+      height: 50px;
+      color: #6c5ce7; // Cambia el color a uno más suave y amigable
+  
+      &:after {
+        border-radius: 50%; // Hace que la animación del spinner sea más suave
+      }
+    }
   }
   
-  .spinner-item {
-    width: 40px; // Ajusta según sea necesario
-    height: 40px; // Ajusta según sea necesario
+  .background-gradient {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  
+    animation: gradientBG 15s ease infinite;
+    background-size: 400% 400%;
   }
   
-  @keyframes moveGradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    100% {
-      background-position: 100% 50%;
-    }
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
   

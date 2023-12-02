@@ -1,0 +1,89 @@
+$estilo-letra: 'Century Gothic', sans-serif;
+$tamaño-letra:15px;
+.container {
+    font-family: $estilo-letra;
+    font-size: $tamaño-letra;
+
+    .usuario-info-container {
+        position: relative;
+        border: 4px solid #1ea7bd;
+        padding: 15px;
+        margin-top: 15px;
+        max-width: 350px; // Ajusta este valor según tus necesidades
+  padding: 10px; // Ajusta el padding si es necesario
+      
+      
+        .bienvenido-titulo {
+          margin-bottom: 10px;
+         
+        }
+      
+        .edit-icon {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          font-size: 1.5em;
+          cursor: pointer;
+          color: #0275d8; // Cambia este color si necesitas
+      
+          &:hover {
+            color: #63a7e2; // Cambia este color para el hover si necesitas
+          }
+        }
+      }
+      .image-container {
+        margin-bottom: 15px; // Ajusta según sea necesario
+       
+        .img-fluid {
+          max-width: 150px;
+          max-height: 150px;
+          border-radius: 60%; // Esto es para hacer la imagen circular, similar a roundedCircle
+        }
+      }
+      .editing-container {
+        text-align: center;
+   
+        border: 4px solid #1ea7bd;
+        padding: 15px;
+        margin-top: 15px;
+        max-width: 350px; // Ajusta este valor según tus necesidades
+  padding: 10px; // Ajusta el padding si es necesario
+        
+       
+      }
+      .info-academica-container{
+
+   
+        border: 4px solid #1ea7bd;
+        padding: 15px;
+        margin-top: 15px;
+        max-width: 350px; // Ajusta este valor según tus necesidades
+  padding: 10px; // Ajusta el padding si es necesario
+  float: left; // Alinea a la izquierda
+  margin-right: 100px;
+        
+      }
+        .bienvenido-titulo {
+          color: #0275d8; // Un azul suave para el título
+          margin-bottom: 15px;
+        }
+      
+        p {
+          margin-bottom: 10px;
+        }
+      
+        .edit-icon {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          font-size: 1.5em;
+          cursor: pointer;
+          color: #0275d8; // Color del ícono a juego con el título
+      
+          &:hover {
+            color: darken(#0275d8, 10%); // Un poco más oscuro al pasar el mouse
+          }
+        }
+     
+    }
+ 

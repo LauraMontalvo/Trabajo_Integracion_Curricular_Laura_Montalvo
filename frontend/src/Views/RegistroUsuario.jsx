@@ -5,9 +5,10 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
-import { Form,  Button, Modal, Row, Col } from 'react-bootstrap';
+import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import Cabecera from '../Components/Cabecera';
 
 const RegistroUsuario = (props) => {
   const [nombre, setNombre] = useState('');
@@ -48,7 +49,7 @@ const RegistroUsuario = (props) => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
- 
+
 
 
 
@@ -67,7 +68,7 @@ const RegistroUsuario = (props) => {
   //edad
 
 
-  
+
 
   const onsubmitHandler = (e) => {
     e.preventDefault();
@@ -86,7 +87,7 @@ const RegistroUsuario = (props) => {
       .then((res) => {
         console.log(res);
         // Extraer la edad de la respuesta del servidor y establecerla en el estado
-    
+
         handleSuccessModalShow();
         setNombre('');
         setApellido('');
@@ -107,187 +108,192 @@ const RegistroUsuario = (props) => {
       })
       .catch((err) => {
         console.log(err)
-        
-        if (err.response.data.msg === "Usuario existe"){
+        const errorResponse = err.response.data.errors;
+
+        if (err.response.data.msg === "Usuario existe") {
           handleErrorModalShow();
           setPassword('');
           setConfirmPassword('');
           setUsuario('');
         }
-        
+
       });
   };
 
   return (
- 
-    
-    <Form onSubmit={onsubmitHandler} className="mi-formulario">
-      <Row>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Nombre</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faUser} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese su Nombre"
-                value={nombre}
-                onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
-            </div>
-            {nombreError && <p className="error-message">{nombreError}</p>}
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Apellido</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese su Apellido"
-                value={apellido}
-                onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
-                className="input-with-icon" />
-            </div>
-            {apellidoError && <p className="text-danger">{apellidoError}</p>}
-          </Form.Group>
-        </Col>
 
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Género</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
-              <Form.Control as="select"
-                onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
-                value={sexo}
-                className="input-with-icon">
-                <option value=" "> --Seleccione el género--</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-              </Form.Control>
-            </div>
-            {sexoError && <p className="text-danger">{sexoError}</p>}
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Fecha de Nacimiento</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
-              <Form.Control
-                type="date"
-                onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
-                value={fechaNacimiento}
-                className="input-with-icon" />
-            </div>
-            {fechaNacimientoError && <p className="text-danger">{fechaNacimientoError}</p>}
-          </Form.Group>
-        </Col>
-        {/* Repite la misma estructura para otros campos */}
+    <div className='App'>
+      <Cabecera />
+      <Form onSubmit={onsubmitHandler} className="mi-formulario">
+        <Row>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Nombre</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faUser} className="input-icon" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese su Nombre"
+                  value={nombre}
+                  onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
+              </div>
+              {nombreError && <p className="text-danger">{nombreError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Apellido</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon className="input-icon" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese su Apellido"
+                  value={apellido}
+                  onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
+                  className="input-with-icon" />
+              </div>
+              {apellidoError && <p className="text-danger">{apellidoError}</p>}
+            </Form.Group>
+          </Col>
 
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Teléfono</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faPhone} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese su teléfono"
-                value={telefono}
-                onChange={handleTelefonoChange} />
-            </div>
-            {telefonoError && <p className="text-danger">{telefonoError}</p>}
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Usuario</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese Usuario"
-                value={usuario}
-                onChange={(e) => handleInputChange(e, setUsuario, setUsuarioError)}
-                className="input-with-icon" />
-            </div>
-            {usuarioError && <p className="text-danger">{usuarioError}</p>}
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Contraseña</Form.Label>
-            <div className="password-field">
-              <FontAwesomeIcon icon={faLock} className="field-icon" />
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                placeholder="Ingrese su contraseña"
-                value={password}
-                onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
-                className="password-input" />
-              <FontAwesomeIcon
-                icon={showPassword ? faEyeSlash : faEye}
-                className="toggle-password-icon"
-                onClick={() => setShowPassword(!showPassword)} />
-            </div>
-            {passwordError && <p className="text-danger">{passwordError}</p>}
-          </Form.Group>
-        </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Género</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
+                <Form.Control as="select"
+                  onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
+                  value={sexo}
+                  className="input-with-icon">
+                  <option value=" "> --Seleccione el género--</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                </Form.Control>
+              </div>
+              {sexoError && <p className="text-danger">{sexoError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Fecha de Nacimiento</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+                <Form.Control
+                  type="date"
+                  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
+                  value={fechaNacimiento}
+                  className="input-with-icon" />
+              </div>
+              {fechaNacimientoError && <p className="text-danger">{fechaNacimientoError}</p>}
+            </Form.Group>
+          </Col>
+          {/* Repite la misma estructura para otros campos */}
 
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Confirmar Contraseña</Form.Label>
-            <div className="password-field">
-              <FontAwesomeIcon icon={faLock} className="field-icon" />
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirmar Contraseña"
-                value={confirmPassword}
-                onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
-                className="password-input" />
-              <FontAwesomeIcon
-                icon={showPassword ? faEyeSlash : faEye}
-                className="toggle-password-icon"
-                onClick={() => setShowPassword(!showPassword)} />
-            </div>
-            {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
-          </Form.Group>
-        </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Teléfono</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faPhone} className="input-icon" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese su teléfono"
+                  value={telefono}
+                  onChange={handleTelefonoChange} />
+              </div>
+              {telefonoError && <p className="text-danger">{telefonoError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Usuario</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese Usuario"
+                  value={usuario}
+                  onChange={(e) => handleInputChange(e, setUsuario, setUsuarioError)}
+                  className="input-with-icon" />
+              </div>
+              {usuarioError && <p className="text-danger">{usuarioError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Contraseña</Form.Label>
+              <div className="password-field">
+                <FontAwesomeIcon icon={faLock} className="field-icon" />
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Ingrese su contraseña"
+                  value={password}
+                  onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
+                  className="password-input" />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="toggle-password-icon"
+                  onClick={() => setShowPassword(!showPassword)} />
+              </div>
+              {passwordError && <p className="text-danger">{passwordError}</p>}
+            </Form.Group>
+          </Col>
 
-
-      </Row>
-      <div className="botones-centrados">
-        <Button type="submit" className='btn-primary'>Crear cuenta</Button>
-        <Button className='btn-danger'onClick={() => navigate('/loginusuario')}>Cancelar</Button>
-      </div>
-      <div></div>
-      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Ahora puede acceder con sus credenciales.</Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleSuccessModalClose}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showErrorModal} onHide={handleErrorModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>¡Error!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Usuario ya existe.</Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleErrorModalClose}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Confirmar Contraseña</Form.Label>
+              <div className="password-field">
+                <FontAwesomeIcon icon={faLock} className="field-icon" />
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirmar Contraseña"
+                  value={confirmPassword}
+                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
+                  className="password-input" />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="toggle-password-icon"
+                  onClick={() => setShowPassword(!showPassword)} />
+              </div>
+              {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
+            </Form.Group>
+          </Col>
 
 
-    </Form>
+        </Row>
+        <div className="botones-centrados">
+          <Button type="submit" className='btn-primary'>Crear cuenta</Button>
+          <Button className='btn-danger' onClick={() => navigate('/loginusuario')}>Cancelar</Button>
+        </div>
+        <div></div>
+        <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Ahora puede acceder con sus credenciales.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={handleSuccessModalClose}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={showErrorModal} onHide={handleErrorModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>¡Error!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Usuario ya existe.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={handleErrorModalClose}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+
+      </Form>
+
+    </div>
+
 
   );
 };

@@ -12,13 +12,9 @@ const LoadingModal = () => {
       <div className="loading-text">
         <h1>Empleos Chavez Pamba</h1>
       </div>
-      <>
-      <Spinner animation="border" size="sm" />
-      <Spinner animation="border" />
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" />
-    </>
-      
+      <div className="spinner-container">
+        <Spinner animation="grow" className="spinner" />
+      </div>
     </div>
   );
 };

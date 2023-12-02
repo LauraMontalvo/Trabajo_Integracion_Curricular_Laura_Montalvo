@@ -6,7 +6,7 @@ module.exports.createJob = (request, response) =>{
     Job.create({
         idEmpresa, descripcion, conocimientos,aptitudes, numeroVacantes
     })
-    ///Laurasss
+    
         .then(Job => response.json({insertedJob: Job, msg: 'Succesful creation'}))
         .catch(err => response.status(400).json(err));
 }

@@ -2,8 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Image, InputGroup, FormControl, Row, Col } from 'react-bootstrap';
-import '../Styles/loginstyle.css';
+
 import * as constantes from '../Models/Constantes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { Modal, Form } from 'react-bootstrap';
+import EditarEmpresa from '../Views/EditarEmpresa';
+import "../Styles/detalle.scss"
+
 function DetalleEmpresa() {
   const { id } = useParams();
   const [empresa, setEmpresa] = useState({});
@@ -11,13 +17,33 @@ function DetalleEmpresa() {
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
+
+  // Estados y manejadores para el modal de editar usuario
+  // Estados y manejadores para el modal de editar usuario
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const handleShowEditUserModal = () => setShowEditUserModal(true);
+  const handleCloseEditUserModal = () => setShowEditUserModal(false);
+
+  const [user, setUser] = useState({});
+
+  const recargarInformacionUsuario = () => {
+    axios.get(`http://localhost:8000/api/company/${id}`)
+      .then((res) => {
+        setEmpresa({ ...res.data });
+
+      })
+      .catch((err) => console.log(err));
+  };
+
+
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
-        
-      console.log(empresa); // Añadir esta línea
+        recargarInformacionUsuario();
+        console.log(empresa); // Añadir esta línea
+
       })
       .catch((err) => console.error(err));
   }, [id]);
@@ -46,7 +72,7 @@ function DetalleEmpresa() {
     <div className="container mt-4">
       <Row>
         <Col md={6}>
-          <div className="text-center border border-info border-4 p-3">
+          <div className="editing-container">
             {isEditing ? (
               <InputGroup className="mb-3">
                 <FormControl
@@ -75,23 +101,39 @@ function DetalleEmpresa() {
             )}
           </div>
 
-          <div className="mt-4 border border-info border-4 p-3">
+          <div className="usuario-info-container">
             <h3>{constantes.TEXTO_BIENVENIDO}</h3>
             <p>Nombre: {empresa.nombreEmpresa} </p>
             <p>Correo: {empresa.correo}</p>
             <p>Dirección: {empresa.direccion}</p>
             <p>Teléfono: {empresa.telefono}</p>
             <p>Descripción: {empresa.descripcion}</p>
-          </div>
 
+            <FontAwesomeIcon icon={faEdit} className="edit-icon" onClick={handleShowEditUserModal} />
+
+          </div>
+          <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
+            <Modal.Header closeButton>
+              <Modal.Title>Editar Usuario</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <EditarEmpresa onActualizar={recargarInformacionUsuario} />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseEditUserModal}>
+                Cerrar
+              </Button>
+            </Modal.Footer>
+          </Modal>
           <div className="mt-4">
-            <Button variant="primary" onClick={() => navigate(`/detalleEmpresa/${id}/editar`)}>
-              Editar Información
-            </Button>
             <Button variant="danger" onClick={() => navigate("/empresa")}>
               Salir
             </Button>
+            <Button variant="primary" onClick={() => navigate(`/publicarempleo/${id}`)}>
+              Publicar Empleo
+            </Button>
           </div>
+
         </Col>
       </Row>
     </div>

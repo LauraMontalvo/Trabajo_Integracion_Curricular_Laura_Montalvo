@@ -174,41 +174,41 @@ const RegistroEmpresa = (props) => {
   }
   return (
     <div className='App'>
-    
+
       <TabsAdministracionComp />
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
         <Row>
-        <Col md={6}>
-  <Form.Group>
-    <Form.Label>Nombre de la Empresa</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" /> {/* Cambiar el icono a uno que represente una empresa */}
-      <Form.Control
-        type="text"
-        placeholder="Ingrese Nombre de la Empresa"
-        onChange={(e) => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)}
-        value={nombreEmpresa}
-      />
-    </div>
-    <p className="error-message">{nombreEmpresaError}</p>
-  </Form.Group>
-</Col>
-<Col md={6}>
-  <Form.Group>
-    <Form.Label>Correo Electrónico</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" /> {/* Icono de correo */}
-      <Form.Control
-        type="text"
-        placeholder="Ingrese el correo electrónico"
-        onChange={(e) => handleInputChange(e, setCorreo, setCorreoError)}
-        value={correo}
-        className="large-input" // Agregar la clase "large-input" para hacerlo más grande
-      />
-    </div>
-    <p className="error-message">{correoError}</p>
-  </Form.Group>
-</Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Nombre de la Empresa</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" /> {/* Cambiar el icono a uno que represente una empresa */}
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese Nombre de la Empresa"
+                  onChange={(e) => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)}
+                  value={nombreEmpresa}
+                />
+              </div>
+              <p className="text-danger">{nombreEmpresaError}</p>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Correo Electrónico</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" /> {/* Icono de correo */}
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese el correo electrónico"
+                  onChange={(e) => handleInputChange(e, setCorreo, setCorreoError)}
+                  value={correo}
+                  className="large-input" // Agregar la clase "large-input" para hacerlo más grande
+                />
+              </div>
+              <p className="text-danger">{correoError}</p>
+            </Form.Group>
+          </Col>
           <Col md={6}>
             <Form.Group>
               <Form.Label>Dirección</Form.Label>
@@ -222,7 +222,7 @@ const RegistroEmpresa = (props) => {
                   value={direccion}
                 />
               </div>
-              <p className="error-message">{direccionError}</p>
+              <p className="text-danger">{direccionError}</p>
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -251,7 +251,7 @@ const RegistroEmpresa = (props) => {
                   value={usuario}
                 />
               </div>
-              <p className="error-message">{usuarioError}</p>
+              <p className="text-danger">{usuarioError}</p>
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -267,7 +267,7 @@ const RegistroEmpresa = (props) => {
                   value={descripcion}
                 />
               </div>
-              <p className="error-message">{descripcionError}</p>
+              <p className="text-danger">{descripcionError}</p>
             </Form.Group>
           </Col>
           <Col md={6}>

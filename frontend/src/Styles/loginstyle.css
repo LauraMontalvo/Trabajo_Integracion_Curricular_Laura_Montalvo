@@ -9,12 +9,6 @@
   display: flex;
 }
 
-p {
-  font-size: 15px;
-  color: red;
-  margin-bottom: 5px;
-}
-
 .img-container {
   overflow: hidden;
   border-radius: 60%;
@@ -304,6 +298,11 @@ p {
   border-color: #80bdff;
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.mi-formulario p {
+  font-size: 15px;
+  color: red;
+  margin-bottom: 5px;
 }
 .mi-formulario .btn-primary {
   background-color: #1287ec;

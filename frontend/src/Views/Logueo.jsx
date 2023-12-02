@@ -6,7 +6,7 @@ const Logueo = () => {
     
     return (
         <div>
-            <h1 className="bienvenido">Bienvenido!</h1>
+            <h1 className="bienvenido"></h1>
             <div className="contenedor1">
                 <div className='contproyectos'>
                   

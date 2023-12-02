@@ -1,0 +1,69 @@
+.container {
+  font-family: "Century Gothic", sans-serif;
+  font-size: 15px;
+}
+.container .usuario-info-container {
+  position: relative;
+  border: 4px solid #1ea7bd;
+  padding: 15px;
+  margin-top: 15px;
+  max-width: 350px;
+  padding: 10px;
+}
+.container .usuario-info-container .bienvenido-titulo {
+  margin-bottom: 10px;
+}
+.container .usuario-info-container .edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #0275d8;
+}
+.container .usuario-info-container .edit-icon:hover {
+  color: #63a7e2;
+}
+.container .image-container {
+  margin-bottom: 15px;
+}
+.container .image-container .img-fluid {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 60%;
+}
+.container .editing-container {
+  text-align: center;
+  border: 4px solid #1ea7bd;
+  padding: 15px;
+  margin-top: 15px;
+  max-width: 350px;
+  padding: 10px;
+}
+.container .info-academica-container {
+  border: 4px solid #1ea7bd;
+  padding: 15px;
+  margin-top: 15px;
+  max-width: 350px;
+  padding: 10px;
+  float: left;
+  margin-right: 100px;
+}
+.container .bienvenido-titulo {
+  color: #0275d8;
+  margin-bottom: 15px;
+}
+.container p {
+  margin-bottom: 10px;
+}
+.container .edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #0275d8;
+}
+.container .edit-icon:hover {
+  color: #025aa5;
+}/*# sourceMappingURL=detalle.css.map */

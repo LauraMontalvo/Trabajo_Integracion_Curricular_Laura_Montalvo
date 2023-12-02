@@ -15,6 +15,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import Cabecera from './Cabecera';
 
 const LoginForm = (props) => {
   const [password, setPassword] = useState("");
@@ -57,71 +58,74 @@ const LoginForm = (props) => {
 
 
   return (
+    <div className='App'>
+      <Cabecera></Cabecera>
+      <Form onSubmit={handlerLogin} className="mi-formulario" >
 
-    <Form onSubmit={handlerLogin} className="mi-formulario" >
+        <h2>Empleos ChavezPamba</h2>
+        <div className='imgs'>
+          <img src={logofondo} className="tamañoImagenChavezPamba" />
+        </div>
 
-      <h2>Empleos ChavezPamba</h2>
-      <div className='imgs'>
-        <img src={logofondo} className="tamañoImagenChavezPamba" />
-      </div>
+        <h2>Inicio de sesión de Usuario</h2>
 
-      <h2>Inicio de sesión de Usuario</h2>
+        <Row>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Usuario</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg " />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese su usuario"
+                  onChange={(e) => setUsuario(e.target.value)}
+                  value={usuario}
+                />
+              </div>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Contraseña</Form.Label>
+              <div className="password-field">
+                <FontAwesomeIcon icon={faLock} className="field-icon" />
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Ingrese su contraseña"
 
-      <Row>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Usuario</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg " />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese su usuario"
-                onChange={(e) => setUsuario(e.target.value)}
-                value={usuario}
-              />
-            </div>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Contraseña</Form.Label>
-            <div className="password-field">
-              <FontAwesomeIcon icon={faLock} className="field-icon" />
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                placeholder="Ingrese su contraseña"
+                  onChange={(e) => { setPassword(e.target.value); }} value={password}
+                  className="password-input" />
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className="toggle-password-icon"
+                  onClick={() => setShowPassword(!showPassword)} />
+              </div>
 
-                onChange={(e) => { setPassword(e.target.value); }} value={password}
-                className="password-input" />
-              <FontAwesomeIcon
-                icon={showPassword ? faEyeSlash : faEye}
-                className="toggle-password-icon"
-                onClick={() => setShowPassword(!showPassword)} />
-            </div>
-
-          </Form.Group>
-        </Col>
-      </Row>
-
-
-      <div className="botones-centrados">
-        <Button className='btn-primary'>Iniciar Sesión</Button>
-        <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>Ir a la página principal</Button>
-        <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
-      </div>
+            </Form.Group>
+          </Col>
+        </Row>
 
 
+        <div className="botones-centrados">
+          <Button className='btn-primary'>Iniciar Sesión</Button>
 
-      <p style={{ color: 'red' }}>{loginStatus}</p>
-
-      <Link to="/registrarUsuario">
-        Regístrate ahora!
-      </Link>
+          <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
+        </div>
 
 
 
+        <p style={{ color: 'red' }}>{loginStatus}</p>
 
-    </Form>
+        <Link to="/registrarUsuario">
+          Regístrate ahora!
+        </Link>
+
+
+
+
+      </Form>
+    </div>
+
 
 
 

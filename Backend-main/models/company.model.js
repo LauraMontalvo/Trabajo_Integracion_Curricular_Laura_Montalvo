@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const md5 = require('md5');
 const CompanySchema = new mongoose.Schema({   
+    foto:{
+        type: String,
+        
+    },
     nombreEmpresa:{
         type: String,
         required: [true, 'El nombre de la empresa es obligatorio'],

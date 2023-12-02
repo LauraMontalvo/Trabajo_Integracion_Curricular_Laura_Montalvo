@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../Styles/loginstyle.css"
+
+
 import md5 from 'md5';
 const EditarUsuario = () => {
     const [nombre, setNombre] = useState("");
@@ -47,7 +50,18 @@ const EditarUsuario = () => {
             })
             .catch(err => console.log(err));
     }, [id]);
-
+    const refrescarDatosUsuario = () => {
+        axios.get(`http://localhost:8000/api/user/${id}`)
+            .then(res => {
+                setNombre(res.data.nombre);
+                setApellido(res.data.apellido);
+                setSexo(res.data.sexo);
+                setFechaNacimiento(res.data.fechaNacimiento);
+                setTelefono(res.data.telefono);
+                setUsuario(res.data.usuario);
+            })
+            .catch(err => console.log(err));
+    };
     const handlerUpdateUsuario = (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
@@ -62,28 +76,25 @@ const EditarUsuario = () => {
             fechaNacimiento,
             telefono,
             usuario,
+            // Solo incluye las contraseñas si realmente se han ingresado nuevas
+            ...(password && confirmPassword && { password: md5(password) })
         };
-
-        if (password && confirmPassword) {
-            // Cifra la nueva contraseña antes de enviarla al servidor
-            dataToUpdate.password = md5(password);
-            dataToUpdate.confirmPassword = md5(confirmPassword);
-        }
+    
         axios.put(`http://localhost:8000/api/user/${id}`, dataToUpdate)
             .then((res) => {
-                console.log(res.data);
                 setUpdateSuccess("Se ha actualizado correctamente");
-                // Limpia el mensaje de error en caso de que hubiera uno previamente
                 setUpdateError('');
-               navigate(`/detalleUsuario/${id}`);
-
+                // Limpia los campos de contraseña después de la actualización
+                setPassword('');
+                setConfirmPassword('');
+                // Refresca los datos del usuario
+                refrescarDatosUsuario();
             })
             .catch((err) => {
                 setUpdateError(err.response?.data?.msg || 'Error desconocido');
                 console.log(err);
             });
     };
-
     return (
         <div className="container mt-4">
         <h1>Editar Usuario</h1>
@@ -158,7 +169,7 @@ const EditarUsuario = () => {
                 <p style={{ color: 'red' }}>{updateError}</p>
             </div>
 
-            <div className='btnseccion1'>
+            <div className="botones-centrados">
                 <Button variant='primary' type="submit" className='btn'>Guardar</Button>
                 <Button variant='secondary' type="button" className='btn' onClick={e => navigate(`/detalleUsuario/${id}`)}>Cancelar</Button>
             </div><br />

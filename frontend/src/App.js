@@ -18,6 +18,8 @@ import SumarEstudio from './Components/SumarEstudio';
 import DetalleEmpresa from './Components/DetalleEmpresa';
 import EditarEmpresa from './Views/EditarEmpresa';
 import LoadingModal from './Components/LoadingModal';
+import PublicarEmpleo from './Views/PublicarEmpleo';
+import ExperienciaLaboral from './Views/ExperienciaLaboral';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,13 +39,14 @@ function App() {
     <Router>
       <>
         {isLoading ? (
-          <LoadingModal/>
+          <LoadingModal />
         ) : (
           <Routes>
             <Route path={constantes.URL_PAGINA_PRINCIPAL} element={<Main />} />
             <Route path="/registrarseComo" element={<Logueo />} />
             <Route path="/detalleUsuario/:id" element={<DetalleUsuario />} />
             <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
+            <Route path='/publicarEmpleo/:id' element={<PublicarEmpleo />} />
             <Route path="/loginusuario" element={<LoginForm />} />
             <Route path="/empresa" element={<LoginFormEmpresa />} />
             <Route path="/registrarUsuario" element={<RegistroUsuario />} />
@@ -52,6 +55,7 @@ function App() {
             <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
+            <Route path="/experienciaLaboral" element={<ExperienciaLaboral />} />
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}
