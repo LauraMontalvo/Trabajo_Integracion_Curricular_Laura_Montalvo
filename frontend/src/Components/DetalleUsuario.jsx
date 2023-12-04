@@ -269,7 +269,7 @@ function DetalleUsuario(props) {
                   <FontAwesomeIcon icon={faEdit} className="edit-icon" onClick={handleShowEditUserModal} style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '1.5em', cursor: 'pointer' }} />
                   <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
                     <Modal.Header closeButton>
-                      <Modal.Title>Editar Usuario</Modal.Title>
+                      <Modal.Title className='tituloModal' >Editar Usuario</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <EditarUsuario onActualizar={recargarInformacionUsuario} />
@@ -285,12 +285,11 @@ function DetalleUsuario(props) {
               </Card.Body>
 
             </Card>
-
-            <Button variant="danger" onClick={() => navigate("/loginusuario")}>
-              Salir
-            </Button>
-
-
+            <div className="botones-centrados">
+              <Button variant="danger" onClick={() => navigate("/loginusuario")}>
+                Salir
+              </Button>
+            </div>
 
           </Col>
           <Col md={8}>
@@ -338,7 +337,7 @@ function DetalleUsuario(props) {
                         </div>
                       ))}                  </ListGroup>
                     <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
-                      Sumar Estudio
+                      Agregar
                     </Button>
                     <Modal show={showAcadTrainingModal} onHide={handleCloseAcadTrainingModal}>
                       <Modal.Header closeButton>
@@ -403,7 +402,7 @@ function DetalleUsuario(props) {
                     <Button variant="primary" onClick={() => showExperienceForm()}>Agregar Experiencia Laboral</Button>
                     <Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)}>
                       <Modal.Header closeButton>
-                        <Modal.Title>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
+                        <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
                         <ExperieciaLaboral />

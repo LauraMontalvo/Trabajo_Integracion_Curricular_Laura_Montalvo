@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import "../Styles/header.scss"; // Importa tus estilos personalizados
 import axios from 'axios';
-
+/////quiero poner el id del usuario par auqe no se salga de se
 const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const { id } = useParams();

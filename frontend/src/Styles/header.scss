@@ -1,24 +1,37 @@
 // Definición de colores y fuentes
 $estilo-letra: 'Century Gothic', sans-serif;
-$color-primary: #0056b3; // Un azul oscuro elegante
+$color-primary: #ffffff; // Un azul oscuro elegante
 $color-secondary: #6c757d; // Gris para textos menos importantes
-$color-accent: #e9ecef; // Un gris claro para fondos
+$color-accent: #1a6abb; // Un gris claro para fondos
 $color-text: #333; // Un color de texto oscuro para contraste
 $color-text-light: #000000; // Blanco para textos sobre fondos oscuros
-$color-hover: #2e8cb1; // Un color para hover, como un naranja vibrante
+$color-hover: #fdfdfd; // Un color para hover, como un naranja vibrante
 $tamaño-letra-nav: 20px;
+
 // Estilos base para la navbar
+@keyframes fondoMovimiento {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 .navbar {
   background-color: $color-primary;
   padding: 1rem 2rem;
-  font-family: $estilo-letra;
-
-
+  margin-bottom: 0; // Elimina el margen inferior
+  border-bottom: 3px solid $color-secondary; // Puedes ajustar el color y el grosor
   background-clip: text;
   color: transparent;
   text-align: center;
   font-size: $tamaño-letra-nav;
+  font-family: $estilo-letra;
+
+  // Configuración del fondo animado
+  background: linear-gradient(270deg, #a6e3e9, #f5cbe7, #a1effd);
+  background-size: 400% 400%;
+  animation: fondoMovimiento 15s ease infinite;
+
+  border-bottom: 2px solid $color-secondary;
 
 
 

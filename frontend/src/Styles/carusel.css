@@ -81,8 +81,19 @@
   border-radius: 50%;
 }
 
+h1 {
+  background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: "Century Gothic", sans-serif;
+  font-size: 50px;
+}
+
 .background-gradient {
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background: linear-gradient(270deg, #a6e3e9, #f5cbe7, #a1effd);
   position: absolute;
   top: 0;
   left: 0;

@@ -3,11 +3,23 @@ const Company = require('../models/company.model');
 module.exports.createCompany = (request, response) =>{
     const {nombreEmpresa, correo, direccion, telefono, descripcion, rol, usuario, password, confirmPassword} = request.body;
     console.log(request.body)
-    Company.create({
-        nombreEmpresa, correo, direccion, telefono, descripcion, rol, usuario, password, confirmPassword
-    })
-        .then(Company => response.json({insertedCompany: Company, msg: 'Succesful creation'}))
-        .catch(err => response.status(400).json(err));
+    Company.findOne({ usuario: usuario })
+    .then(company =>{
+        if(company){
+            response.status(400).json({ msg: "Usuario existe" });
+        }else{
+            Company.create({
+                nombreEmpresa, correo, direccion, telefono, descripcion, rol, usuario, password, confirmPassword
+            }).then(Company => response.json({insertedCompany: Company, msg: 'Succesful creation'}))
+            .catch(err => response.status(400).json(err));
+
+        }
+    }
+
+    )
+   
+        
+       
 }
 
 module.exports.getAllCompanies = (_,response) =>{

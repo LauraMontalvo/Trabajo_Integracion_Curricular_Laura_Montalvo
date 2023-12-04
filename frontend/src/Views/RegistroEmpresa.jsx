@@ -3,28 +3,52 @@ import { useState, useParams } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/loginstyle.css'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Cabecera from '../Components/Cabecera';
 import TabsAdministracionComp from '../Components/Administracion/TabsAdministracionComp';
 import { Form, Button, Modal, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faInfoCircle, faPhone, faEnvelope, faMapMarker, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faInfoCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import "../Styles/detalle.scss"
 
+import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+const CampoEstado = ({ valido, mensajeError }) => {
+  if (mensajeError) {
+    return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />;
+  } else if (valido) {
+    return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />;
+  } else {
+    return null; // No muestra nada si el campo aún no ha sido validado
+  }
+};
 const RegistroEmpresa = (props) => {
   const [nombreEmpresa, setNombreEmpresa] = useState("");
   const [correo, setCorreo] = useState("");
   ///
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
+  const handleErrorModalShow = () => setShowErrorModal(true);
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
 
     // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
     navigate('/empresa');
   };
+  const handleErrorModalClose = () => {
+    setShowErrorModal(false);
+  };
 
   const handleSuccessModalShow = () => setShowSuccessModal(true);
   ////
+  const esCampoValido = (valor, error) => {
+    return valor !== '' && error === '';
+  };
+
+
+  ///////////
+
+
+
 
 
   const [direccion, setDireccion] = useState("");
@@ -47,130 +71,115 @@ const RegistroEmpresa = (props) => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
-  const handleInputChange = (e, setterFunction, errorSetter) => {
-    const value = e.target.value;
+  const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
+    const { name, value } = e.target;
     setterFunction(value);
-    errorSetter(value === '' ? 'Este campo es obligatorio' : '');
-  };
 
-  const handleTelefonoChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setTelefono(value);
-    settelefonoError(value === '' ? 'Este campo es obligatorio' : /^\d+$/.test(value) ? '' : 'Solo se aceptan números');
-  };
+    // Validación del Correo Electrónico
+    if (name === 'correo') {
+        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value) {
+            errorSetter('El correo electrónico es obligatorio');
+        } else if (!regexCorreo.test(value)) {
+            errorSetter('Ingrese un correo electrónico válido');
+        } else {
+            errorSetter('');
+        }
+    }
+    // Validación de la Contraseña
+    else if (name === 'password') {
+        const regexMayuscula = /[A-Z]/;
+        const regexCaracterEspecial = /[^A-Za-z0-9]/;
+        if (!value) {
+            errorSetter('La contraseña es obligatoria');
+        } else if (value.length < 8) {
+            errorSetter('La contraseña debe tener al menos 8 caracteres');
+        } else if (!regexMayuscula.test(value)) {
+            errorSetter('La contraseña debe contener al menos una letra mayúscula');
+        } else if (!regexCaracterEspecial.test(value)) {
+            errorSetter('La contraseña debe contener al menos un carácter especial');
+        } else {
+            errorSetter('');
+        }
+    }
+    // Validación de la Confirmación de la Contraseña
+    else if (name === 'confirmPassword') {
+        if (value !== otherValue) {
+            errorSetter('Las contraseñas no coinciden');
+        } else {
+            errorSetter('');
+        }
+    }
+    // Validación para otros campos
+    else {
+        if (!value) {
+            errorSetter('Este campo es obligatorio');
+        } else {
+            errorSetter('');
+        }
+    }
+};
+
+const handleTelefonoChange = (e) => {
+  let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+
+  if (value.length > 10) {
+      value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
+  }
+
+  setTelefono(value);
+
+  if (value.length !== 10) {
+      settelefonoError('El número de teléfono debe tener 10 dígitos');
+  } else {
+      settelefonoError('');
+  }
+};
 
   const onsubmitHandler = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8000/api/company/new', {
       nombreEmpresa, correo, rol, direccion, telefono, descripcion, usuario, password, confirmPassword
     })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         handleSuccessModalShow();
-        setNombreEmpresa("");
-        setCorreo("");
+        setNombreEmpresa('');
+        setCorreo('');
         //setRol("");
-        setDireccion("");
+        setDireccion('');
 
-        setTelefono("");
-        setDescripcion("");
-        setUsuario("");
-        setPassword("");
-        setConfirmPassword("");
+        setTelefono('');
+        setDescripcion('');
+        setUsuario('');
+        setPassword('');
+        setConfirmPassword('');
         //setAviso("Empresa creada con exito!!");
 
-        setNombreEmpresaError("");
+        setNombreEmpresaError('');
         setCorreoError("");
-        // setRolError("");
-        setDireccionError("");
+        // setRolError('');
+        setDireccionError('');
 
-        settelefonoError("");
-        setDescripcionError("");
-        setusuarioError("");
-        setPasswordError("");
-        setConfirmPasswordError("");
+        settelefonoError('');
+        setDescripcionError('');
+        setusuarioError('');
+        setPasswordError('');
+        setConfirmPasswordError('');
       })
-      .catch(err => {
+      .catch((err) => {
+        console.log(err)
         const errorResponse = err.response.data.errors;
-        if (Object.keys(errorResponse).includes('nombreEmpresa')) {
-          setNombreEmpresaError(errorResponse['nombreEmpresa'].message);
-          //setAviso("");
-        }
-        else {
-          setNombreEmpresaError("");
 
-        }
-
-        if (Object.keys(errorResponse).includes('correo')) {
-          setCorreoError(errorResponse['correo'].message);
-          //setAviso("");
-        }
-        else {
-          setCorreoError("");
-
-        }
-        if (Object.keys(errorResponse).includes('direccion')) {
-          setDireccionError(errorResponse['direccion'].message);
-          //setAviso("");
-        }
-        else {
-          setDireccionError("");
-
+        if (err.response.data.msg === "Usuario existe") {
+          handleErrorModalShow();
+          setPassword('');
+          setConfirmPassword('');
+          setUsuario('');
         }
 
-        if (Object.keys(errorResponse).includes('telefono')) {
-          settelefonoError(errorResponse['telefono'].message);
-          //setAviso("");
-        }
-        else {
-          settelefonoError("");
-
-        }
-        if (Object.keys(errorResponse).includes('descripcion')) {
-          setDescripcionError(errorResponse['descripcion'].message);
-          //setAviso("");
-        }
-        else {
-          setDescripcionError("");
-
-        }
-        if (Object.keys(errorResponse).includes('usuario')) {
-          setusuarioError(errorResponse['usuario'].message);
-          //setAviso("");
-        }
-        else {
-          setusuarioError("");
-
-        }
-
-        if (Object.keys(errorResponse).includes('password')) {
-          setPasswordError(errorResponse['password'].message);
-          //setAviso("");
-        }
-        else {
-          setPasswordError("");
-
-        }
-        if (Object.keys(errorResponse).includes('confirmPassword')) {
-          setConfirmPasswordError(errorResponse['confirmPassword'].message);
-          //setAviso("");
-        }
-        else {
-          setConfirmPasswordError("");
-
-        }
-
-      })
+      });
   }
   return (
     <div className='App'>
@@ -178,98 +187,108 @@ const RegistroEmpresa = (props) => {
       <TabsAdministracionComp />
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
         <Row>
+        <Col md={6}>
+        <Form.Group>
+          <Form.Label>Nombre de la Empresa</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" />
+            <Form.Control
+              type="text"
+              placeholder="Ingrese Nombre de la Empresa"
+              onChange={(e) => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)}
+              value={nombreEmpresa}
+            />
+            <CampoEstado valido={esCampoValido(nombreEmpresa, nombreEmpresaError)} mensajeError={nombreEmpresaError} />
+          </div>
+          {nombreEmpresaError && <p className="text-danger">{nombreEmpresaError}</p>}
+        </Form.Group>
+      </Col>
+      <Col md={6}>
+        <Form.Group>
+          <Form.Label>Correo Electrónico</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" />
+            <Form.Control
+              type="email"
+              name="correo"
+              placeholder="Ingrese el correo electrónico"
+              onChange={(e) => handleInputChange(e, setCorreo, setCorreoError)}
+              value={correo}
+            />
+<CampoEstado valido={esCampoValido(correo, correoError)} mensajeError={correoError} />
+
+
+          </div>
+          {correoError && <p className="text-danger">{correoError}</p>}
+        </Form.Group>
+      </Col>
+      <Col md={6}>
+  <Form.Group>
+    <Form.Label>Dirección</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" />
+      <Form.Control
+        type="text"
+        placeholder="Ingrese la dirección"
+        className="large-input"
+        onChange={(e) => handleInputChange(e, setDireccion, setDireccionError)}
+        value={direccion}
+      />
+      <CampoEstado valido={esCampoValido(direccion, direccionError)} mensajeError={direccionError} />
+    </div>
+    <p className="text-danger">{direccionError}</p>
+  </Form.Group>
+</Col>
           <Col md={6}>
-            <Form.Group>
-              <Form.Label>Nombre de la Empresa</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" /> {/* Cambiar el icono a uno que represente una empresa */}
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese Nombre de la Empresa"
-                  onChange={(e) => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)}
-                  value={nombreEmpresa}
-                />
-              </div>
-              <p className="text-danger">{nombreEmpresaError}</p>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Correo Electrónico</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" /> {/* Icono de correo */}
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese el correo electrónico"
-                  onChange={(e) => handleInputChange(e, setCorreo, setCorreoError)}
-                  value={correo}
-                  className="large-input" // Agregar la clase "large-input" para hacerlo más grande
-                />
-              </div>
-              <p className="text-danger">{correoError}</p>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Dirección</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" /> {/* Icono de dirección */}
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese la dirección"
-                  className="large-input"
-                  onChange={(e) => handleInputChange(e, setDireccion, setDireccionError)}
-                  value={direccion}
-                />
-              </div>
-              <p className="text-danger">{direccionError}</p>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Teléfono</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faPhone} className="input-icon" />
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese su teléfono"
-                  value={telefono}
-                  onChange={handleTelefonoChange} />
-              </div>
-              {telefonoError && <p className="text-danger">{telefonoError}</p>}
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Usuario</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" /> {/* Icono de usuario */}
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese el usuario"
-                  onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
-                  value={usuario}
-                />
-              </div>
-              <p className="text-danger">{usuarioError}</p>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Descripción</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faInfoCircle} className="input-icon fa-lg" /> {/* Icono de descripción */}
-                <Form.Control
-                  as="textarea" // Utiliza un textarea en lugar de un input
-                  rows={4} // Puedes ajustar la cantidad de filas según tus preferencias
-                  placeholder="Ingrese la descripción de la empresa"
-                  onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
-                  value={descripcion}
-                />
-              </div>
-              <p className="text-danger">{descripcionError}</p>
-            </Form.Group>
-          </Col>
+        <Form.Group>
+          <Form.Label>Teléfono</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faPhone} className="input-icon" />
+            <Form.Control
+              type="text"
+              placeholder="Ingrese su teléfono"
+              value={telefono}
+              onChange={handleTelefonoChange}
+            />
+            <CampoEstado valido={esCampoValido(telefono, telefonoError)} mensajeError={telefonoError} />
+          </div>
+          {telefonoError && <p className="text-danger">{telefonoError}</p>}
+        </Form.Group>
+      </Col>
+         <Col md={6}>
+  <Form.Group>
+    <Form.Label>Usuario</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
+      <Form.Control
+        type="text"
+        placeholder="Ingrese el usuario"
+        onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
+        value={usuario}
+      />
+      <CampoEstado valido={esCampoValido(usuario, usuarioError)} mensajeError={usuarioError} />
+    </div>
+    <p className="text-danger">{usuarioError}</p>
+  </Form.Group>
+</Col>
+<Col md={6}>
+  <Form.Group>
+    <Form.Label>Descripción</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faInfoCircle} className="input-icon fa-lg" />
+      <Form.Control
+        as="textarea"
+        rows={4}
+        placeholder="Ingrese la descripción de la empresa"
+        onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
+        value={descripcion}
+      />
+      <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
+    </div>
+    <p className="text-danger">{descripcionError}</p>
+  </Form.Group>
+</Col>
+
           <Col md={6}>
             <Form.Group>
               <Form.Label>Contraseña</Form.Label>
@@ -279,14 +298,19 @@ const RegistroEmpresa = (props) => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Ingrese su contraseña"
                   value={password}
+                  name="password"
                   onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
+<CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
+
               </div>
               {passwordError && <p className="text-danger">{passwordError}</p>}
+
+
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -296,15 +320,25 @@ const RegistroEmpresa = (props) => {
                 <FontAwesomeIcon icon={faLock} className="field-icon" />
                 <Form.Control
                   type={showPassword ? "text" : "password"}
-                  placeholder="Confirmar Contraseña"
+             
                   value={confirmPassword}
-                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
+                  name="confirmPassword"
+  placeholder="Confirme su contraseña"
+  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError, password)}
+
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
+<div>
+<CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
+
+
+</div>
+
               </div>
+              
               {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
             </Form.Group>
           </Col>
@@ -321,9 +355,9 @@ const RegistroEmpresa = (props) => {
             </div>
             <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
               <Modal.Header closeButton>
-                <Modal.Title>¡Empresa creada con éxito!</Modal.Title>
+                <Modal.Title className='tituloModal'>¡Empresa creada con éxito!</Modal.Title>
               </Modal.Header>
-              <Modal.Body>
+              <Modal.Body >
                 <p>Ahora puede acceder con sus credenciales.</p>
               </Modal.Body>
               <Modal.Footer>
@@ -332,6 +366,23 @@ const RegistroEmpresa = (props) => {
                 </Button>
               </Modal.Footer>
             </Modal>
+
+            <Modal show={showErrorModal} onHide={handleErrorModalClose} centered>
+              <Modal.Header closeButton className="bg-danger text-white">
+                <Modal.Title className='tituloModal'>¡Error!</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="text-center">
+                <FontAwesomeIcon icon={faExclamationTriangle} size="3x" className="text-danger mb-3" />
+                <p >Este usuario ya existe, por favor ingrese uno diferente.</p>
+              </Modal.Body>
+              <Modal.Footer className="d-flex justify-content-center">
+                <Button variant="danger" onClick={handleErrorModalClose}>
+                  Cerrar
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+
           </div>
         </div>
 

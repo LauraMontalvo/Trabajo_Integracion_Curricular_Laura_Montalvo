@@ -1,5 +1,6 @@
 // styles/_carousel.scss
-
+$estilo-letra: 'Century Gothic', sans-serif;
+$tamaño-letra-centro: 50px;
 .carousel-container {
   max-width: 90%; // Ajusta el ancho máximo del carrusel
   margin: auto; // Centra el carrusel
@@ -50,7 +51,7 @@
     height: 100vh;
     position: relative;
     text-align: center;
-  
+
    
   
     .image-container {
@@ -94,9 +95,19 @@
       }
     }
   }
-  
+
+h1{
+  background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+
+  margin-bottom: 10px; // Ajusta según sea necesario
+  font-family: $estilo-letra;
+  font-size: $tamaño-letra-centro;
+}
   .background-gradient {
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background: linear-gradient(270deg, #a6e3e9, #f5cbe7, #a1effd);
     position: absolute;
     top: 0;
     left: 0;

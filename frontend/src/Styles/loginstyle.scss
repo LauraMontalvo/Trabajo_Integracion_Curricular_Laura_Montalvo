@@ -208,6 +208,7 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
       color: $color-icon;
       
     }
+    
     .large-input {
       height: 40px; /* Ajusta la altura según tus necesidades */
     width: 260px;
@@ -263,8 +264,15 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 
   .toggle-password-icon {
     right: 10px;
-  }
+    margin-right: 10px; /* Ajusta según sea necesario */
 
+  }
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+ 
   .password-input {
     width: 100%;
     padding-left: 30px; // Espacio para el icono de candado

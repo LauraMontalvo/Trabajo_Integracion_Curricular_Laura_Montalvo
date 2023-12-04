@@ -7,9 +7,18 @@ import '../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle,faExclamationCircle,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../Components/Cabecera';
 
+const CampoEstado = ({ valido, mensajeError }) => {
+  if (mensajeError) {
+    return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />;
+  } else if (valido) {
+    return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />;
+  } else {
+    return null; // No muestra nada si el campo aún no ha sido validado
+  }
+};
 const RegistroUsuario = (props) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -32,6 +41,10 @@ const RegistroUsuario = (props) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
 
+  const esCampoValido = (valor, error) => {
+    return valor !== '' && error === '';
+  };
+
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
     // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
@@ -51,19 +64,70 @@ const RegistroUsuario = (props) => {
   const [showPassword, setShowPassword] = useState(false);
 
 
+  
 
-
-  const handleInputChange = (e, setterFunction, errorSetter) => {
-    const value = e.target.value;
+ const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
+    const { name, value } = e.target;
     setterFunction(value);
-    errorSetter(value === '' ? 'Este campo es obligatorio' : '');
-  };
+    if (name === 'sexo') {
+      if (!value || value === " ") {
+          errorSetter('Debe seleccionar un género');
+      } else {
+          errorSetter('');
+      }
+  }
+  
+    // Validación de la Contraseña
+ else if (name === 'password') {
+        const regexMayuscula = /[A-Z]/;
+        const regexCaracterEspecial = /[^A-Za-z0-9]/;
+        if (!value) {
+            errorSetter('La contraseña es obligatoria');
+        } else if (value.length < 8) {
+            errorSetter('La contraseña debe tener al menos 8 caracteres');
+        } else if (!regexMayuscula.test(value)) {
+            errorSetter('La contraseña debe contener al menos una letra mayúscula');
+        } else if (!regexCaracterEspecial.test(value)) {
+            errorSetter('La contraseña debe contener al menos un carácter especial');
+        } else {
+            errorSetter('');
+        }
+    }
+    // Validación de la Confirmación de la Contraseña
+    else if (name === 'confirmPassword') {
+        if (value !== otherValue) {
+            errorSetter('Las contraseñas no coinciden');
+        } else {
+            errorSetter('');
+        }
+    }
+    // Validación para otros campos
+    else {
+        if (!value) {
+            errorSetter('Este campo es obligatorio');
+        } else {
+            errorSetter('');
+        }
+    }
+};
 
-  const handleTelefonoChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setTelefono(value);
-    setTelefonoError(value === '' ? 'Este campo es obligatorio' : /^\d+$/.test(value) ? '' : 'Solo se aceptan números');
-  };
+const handleTelefonoChange = (e) => {
+  let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+
+  if (value.length > 10) {
+      value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
+  }
+
+  setTelefono(value);
+
+  if (value.length !== 10) {
+      setTelefonoError('El número de teléfono debe tener 10 dígitos');
+  } else {
+      setTelefonoError('');
+  }
+};
+
+
 
   //edad
 
@@ -136,21 +200,25 @@ const RegistroUsuario = (props) => {
                   placeholder="Ingrese su Nombre"
                   value={nombre}
                   onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
+                      <CampoEstado valido={esCampoValido(nombre,nombreError)} mensajeError={nombreError} />
+
               </div>
               {nombreError && <p className="text-danger">{nombreError}</p>}
+              
             </Form.Group>
           </Col>
           <Col md={6}>
             <Form.Group>
               <Form.Label>Apellido</Form.Label>
               <div className="input-icon-wrapper">
-                <FontAwesomeIcon className="input-icon" />
                 <Form.Control
                   type="text"
                   placeholder="Ingrese su Apellido"
                   value={apellido}
                   onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
                   className="input-with-icon" />
+              <CampoEstado valido={esCampoValido(apellido,apellidoError)} mensajeError={apellidoError} />
+
               </div>
               {apellidoError && <p className="text-danger">{apellidoError}</p>}
             </Form.Group>
@@ -164,11 +232,14 @@ const RegistroUsuario = (props) => {
                 <Form.Control as="select"
                   onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
                   value={sexo}
+                  name="sexo"
                   className="input-with-icon">
                   <option value=" "> --Seleccione el género--</option>
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino">Femenino</option>
                 </Form.Control>
+                <CampoEstado valido={esCampoValido(sexo,sexoError)} mensajeError={sexoError} />
+
               </div>
               {sexoError && <p className="text-danger">{sexoError}</p>}
             </Form.Group>
@@ -183,6 +254,8 @@ const RegistroUsuario = (props) => {
                   onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
                   value={fechaNacimiento}
                   className="input-with-icon" />
+                                <CampoEstado valido={esCampoValido(fechaNacimiento,fechaNacimientoError)} mensajeError={fechaNacimientoError} />
+
               </div>
               {fechaNacimientoError && <p className="text-danger">{fechaNacimientoError}</p>}
             </Form.Group>
@@ -199,6 +272,8 @@ const RegistroUsuario = (props) => {
                   placeholder="Ingrese su teléfono"
                   value={telefono}
                   onChange={handleTelefonoChange} />
+                              <CampoEstado valido={esCampoValido(telefono, telefonoError)} mensajeError={telefonoError} />
+
               </div>
               {telefonoError && <p className="text-danger">{telefonoError}</p>}
             </Form.Group>
@@ -214,6 +289,8 @@ const RegistroUsuario = (props) => {
                   value={usuario}
                   onChange={(e) => handleInputChange(e, setUsuario, setUsuarioError)}
                   className="input-with-icon" />
+                        <CampoEstado valido={esCampoValido(usuario, usuarioError)} mensajeError={usuarioError} />
+
               </div>
               {usuarioError && <p className="text-danger">{usuarioError}</p>}
             </Form.Group>
@@ -227,12 +304,15 @@ const RegistroUsuario = (props) => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Ingrese su contraseña"
                   value={password}
+                  name="password"
                   onChange={(e) => handleInputChange(e, setPassword, setPasswordError)}
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
+                  <CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
+
               </div>
               {passwordError && <p className="text-danger">{passwordError}</p>}
             </Form.Group>
@@ -247,12 +327,15 @@ const RegistroUsuario = (props) => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Confirmar Contraseña"
                   value={confirmPassword}
+                  name="confirmPassword"
                   onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
+                  <CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
+
               </div>
               {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
             </Form.Group>
@@ -283,7 +366,7 @@ const RegistroUsuario = (props) => {
           </Modal.Header>
           <Modal.Body>Usuario ya existe.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={handleErrorModalClose}>
+            <Button className="botones-centrados" variant="success" onClick={handleErrorModalClose}>
               Cerrar
             </Button>
           </Modal.Footer>

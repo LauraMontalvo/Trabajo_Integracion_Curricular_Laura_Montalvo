@@ -10,7 +10,7 @@ const LoadingModal = () => {
         <img src={logofondo} alt="Loading" className="loading-image" />
       </div>
       <div className="loading-text">
-        <h1>Empleos Chavez Pamba</h1>
+        <h1>Empleos ChavezPamba</h1>
       </div>
       <div className="spinner-container">
         <Spinner animation="grow" className="spinner" />

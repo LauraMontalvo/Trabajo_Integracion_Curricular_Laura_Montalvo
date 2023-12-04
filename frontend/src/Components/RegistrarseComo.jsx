@@ -11,7 +11,7 @@ const RegistrarseComo = (props) => {
     const navigate = useNavigate();
     return (
         <div className='App'>
-            <CabeceraRegistrar />
+            <CabeceraRegistrar></CabeceraRegistrar>
             <div className="mi-formulario">
                 <h2>Empleos ChavezPamba</h2>
                 <div className='imgs'>

@@ -329,6 +329,11 @@
 }
 .password-field .toggle-password-icon {
   right: 10px;
+  margin-right: 10px; /* Ajusta según sea necesario */
+}
+.password-field .icon-wrapper {
+  display: flex;
+  align-items: center;
 }
 .password-field .password-input {
   width: 100%;
