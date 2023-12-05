@@ -7,7 +7,7 @@ import '../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle,faExclamationCircle,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../Components/Cabecera';
 
 const CampoEstado = ({ valido, mensajeError }) => {
@@ -64,68 +64,71 @@ const RegistroUsuario = (props) => {
   const [showPassword, setShowPassword] = useState(false);
 
 
-  
 
- const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
+
+  const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
     setterFunction(value);
     if (name === 'sexo') {
       if (!value || value === " ") {
-          errorSetter('Debe seleccionar un género');
+        errorSetter('Debe seleccionar un género');
       } else {
-          errorSetter('');
+        errorSetter('');
       }
-  }
-  
+    }
+
     // Validación de la Contraseña
- else if (name === 'password') {
-        const regexMayuscula = /[A-Z]/;
-        const regexCaracterEspecial = /[^A-Za-z0-9]/;
-        if (!value) {
-            errorSetter('La contraseña es obligatoria');
-        } else if (value.length < 8) {
-            errorSetter('La contraseña debe tener al menos 8 caracteres');
-        } else if (!regexMayuscula.test(value)) {
-            errorSetter('La contraseña debe contener al menos una letra mayúscula');
-        } else if (!regexCaracterEspecial.test(value)) {
-            errorSetter('La contraseña debe contener al menos un carácter especial');
-        } else {
-            errorSetter('');
-        }
+   if (name === 'password') {
+      const regexMayuscula = /[A-Z]/;
+      const regexCaracterEspecial = /[^A-Za-z0-9]/;
+      if (!value) {
+        errorSetter('La contraseña es obligatoria');
+      } else if (value.length < 8) {
+        errorSetter('La contraseña debe tener al menos 8 caracteres');
+      } else if (!regexMayuscula.test(value)) {
+        errorSetter('La contraseña debe contener al menos una letra mayúscula');
+      } else if (!regexCaracterEspecial.test(value)) {
+        errorSetter('La contraseña debe contener al menos un carácter especial');
+      } else {
+        errorSetter('');
+      }
     }
     // Validación de la Confirmación de la Contraseña
     else if (name === 'confirmPassword') {
-        if (value !== otherValue) {
-            errorSetter('Las contraseñas no coinciden');
-        } else {
-            errorSetter('');
-        }
+      if (value !== otherValue) {
+        console.log(value)
+        errorSetter('Las contraseñas no coinciden');
+      } else {
+        errorSetter('');
+      }
     }
     // Validación para otros campos
     else {
-        if (!value) {
-            errorSetter('Este campo es obligatorio');
-        } else {
-            errorSetter('');
-        }
+      if (!value) {
+        errorSetter('Este campo es obligatorio');
+      } else {
+        errorSetter('');
+      }
     }
-};
+    // Validación para otros campos
 
-const handleTelefonoChange = (e) => {
-  let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+  };
 
-  if (value.length > 10) {
+  const handleTelefonoChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+
+    if (value.length > 10) {
       value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
-  }
+    }
 
-  setTelefono(value);
+    setTelefono(value);
 
-  if (value.length !== 10) {
+    if (value.length !== 10) {
       setTelefonoError('El número de teléfono debe tener 10 dígitos');
-  } else {
+    } else {
       setTelefonoError('');
-  }
-};
+    }
+  };
 
 
 
@@ -200,11 +203,11 @@ const handleTelefonoChange = (e) => {
                   placeholder="Ingrese su Nombre"
                   value={nombre}
                   onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
-                      <CampoEstado valido={esCampoValido(nombre,nombreError)} mensajeError={nombreError} />
+                <CampoEstado valido={esCampoValido(nombre, nombreError)} mensajeError={nombreError} />
 
               </div>
               {nombreError && <p className="text-danger">{nombreError}</p>}
-              
+
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -217,7 +220,7 @@ const handleTelefonoChange = (e) => {
                   value={apellido}
                   onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
                   className="input-with-icon" />
-              <CampoEstado valido={esCampoValido(apellido,apellidoError)} mensajeError={apellidoError} />
+                <CampoEstado valido={esCampoValido(apellido, apellidoError)} mensajeError={apellidoError} />
 
               </div>
               {apellidoError && <p className="text-danger">{apellidoError}</p>}
@@ -238,7 +241,7 @@ const handleTelefonoChange = (e) => {
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino">Femenino</option>
                 </Form.Control>
-                <CampoEstado valido={esCampoValido(sexo,sexoError)} mensajeError={sexoError} />
+                <CampoEstado valido={esCampoValido(sexo, sexoError)} mensajeError={sexoError} />
 
               </div>
               {sexoError && <p className="text-danger">{sexoError}</p>}
@@ -254,7 +257,7 @@ const handleTelefonoChange = (e) => {
                   onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
                   value={fechaNacimiento}
                   className="input-with-icon" />
-                                <CampoEstado valido={esCampoValido(fechaNacimiento,fechaNacimientoError)} mensajeError={fechaNacimientoError} />
+                <CampoEstado valido={esCampoValido(fechaNacimiento, fechaNacimientoError)} mensajeError={fechaNacimientoError} />
 
               </div>
               {fechaNacimientoError && <p className="text-danger">{fechaNacimientoError}</p>}
@@ -272,7 +275,7 @@ const handleTelefonoChange = (e) => {
                   placeholder="Ingrese su teléfono"
                   value={telefono}
                   onChange={handleTelefonoChange} />
-                              <CampoEstado valido={esCampoValido(telefono, telefonoError)} mensajeError={telefonoError} />
+                <CampoEstado valido={esCampoValido(telefono, telefonoError)} mensajeError={telefonoError} />
 
               </div>
               {telefonoError && <p className="text-danger">{telefonoError}</p>}
@@ -289,7 +292,7 @@ const handleTelefonoChange = (e) => {
                   value={usuario}
                   onChange={(e) => handleInputChange(e, setUsuario, setUsuarioError)}
                   className="input-with-icon" />
-                        <CampoEstado valido={esCampoValido(usuario, usuarioError)} mensajeError={usuarioError} />
+                <CampoEstado valido={esCampoValido(usuario, usuarioError)} mensajeError={usuarioError} />
 
               </div>
               {usuarioError && <p className="text-danger">{usuarioError}</p>}
@@ -311,13 +314,14 @@ const handleTelefonoChange = (e) => {
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
-                  <CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
+<CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
 
               </div>
               {passwordError && <p className="text-danger">{passwordError}</p>}
+
+
             </Form.Group>
           </Col>
-
           <Col md={6}>
             <Form.Group>
               <Form.Label>Confirmar Contraseña</Form.Label>
@@ -325,24 +329,31 @@ const handleTelefonoChange = (e) => {
                 <FontAwesomeIcon icon={faLock} className="field-icon" />
                 <Form.Control
                   type={showPassword ? "text" : "password"}
-                  placeholder="Confirmar Contraseña"
+             
                   value={confirmPassword}
                   name="confirmPassword"
-                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError)}
+  placeholder="Confirme su contraseña"
+  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError, password)}
+
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
-                  <CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
+<div>
+<CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
+
+
+</div>
 
               </div>
+              
               {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
             </Form.Group>
           </Col>
 
-
         </Row>
+
         <div className="botones-centrados">
           <Button type="submit" className='btn-primary'>Crear cuenta</Button>
           <Button className='btn-danger' onClick={() => navigate('/loginusuario')}>Cancelar</Button>
