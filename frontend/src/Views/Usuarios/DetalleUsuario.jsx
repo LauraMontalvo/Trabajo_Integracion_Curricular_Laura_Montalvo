@@ -7,12 +7,13 @@ import {
   Button, Image, InputGroup, FormControl, Row, Col, Modal, Form, Tab, Tabs, ListGroup, Card,
   Container
 } from 'react-bootstrap';
-import EditarUsuario from '../Views/EditarUsuario.jsx';
-import "../Styles/loginstyle.css"
-import "../Styles/detalle.scss"
-import ExperieciaLaboral from '../Views/ExperienciaLaboral.jsx';
-import CabeceraRegistrar from './CabeceraRegistrar.jsx';
-import CabeceraUsuarioInicio from './CabeceraUsuarioInicio.jsx';
+import EditarUsuario from '../EditarUsuario.jsx';
+import "../../Styles/loginstyle.css"
+import "../../Styles/detalle.scss"
+import ExperieciaLaboral from '../../Components/ExperienciaLaboral.jsx';
+import CabeceraRegistrar from '../../Components/CabeceraRegistrar.jsx';
+import CabeceraUsuarioInicio from '../../Components/CabeceraUsuarioInicio.jsx';
+
 function DetalleUsuario(props) {
   const { id } = useParams();
   const [user, setUser] = useState({});
@@ -32,7 +33,7 @@ function DetalleUsuario(props) {
   const [deleteAcadTrainingId, setDeleteAcadTrainingId] = useState(null);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [isEditingExperience, setIsEditingExperience] = useState(false);
-
+  const [instituciones, setInstituciones] = useState([]);
 
   const handleShowDeleteModal = (id) => {
     setDeleteAcadTrainingId(id);
@@ -405,7 +406,7 @@ function DetalleUsuario(props) {
                         <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <ExperieciaLaboral />
+                        <ExperieciaLaboral idUsuario={id} />
                       </Modal.Body>
                       <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowExperienceModal(false)}>

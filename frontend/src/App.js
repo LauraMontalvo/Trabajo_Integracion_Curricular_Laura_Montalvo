@@ -6,7 +6,7 @@ import RegistroUsuario from './Views/RegistroUsuario';
 import LoginForm from './Components/LoginUsuario';
 import LoginFormEmpresa from './Components/LoginEmpresa';
 import RegistroEmpresa from './Views/RegistroEmpresa';
-import DetalleUsuario from './Components/DetalleUsuario';
+import DetalleUsuario from './Views/Usuarios/DetalleUsuario';
 import LoginAdminForm from './Components/LoginAdmin';
 import AdminConsola from './Views/AdminConsola';
 import Main from './Views/Main';
@@ -19,7 +19,7 @@ import DetalleEmpresa from './Components/DetalleEmpresa';
 import EditarEmpresa from './Views/EditarEmpresa';
 import LoadingModal from './Components/LoadingModal';
 import PublicarEmpleo from './Views/PublicarEmpleo';
-import ExperienciaLaboral from './Views/ExperienciaLaboral';
+import ExperienciaLaboral from './Components/ExperienciaLaboral';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +55,6 @@ function App() {
             <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
-            <Route path="/experienciaLaboral" element={<ExperienciaLaboral />} />
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}

@@ -4,18 +4,17 @@ import { Form, Button, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faBuilding, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate } from 'react-router-dom';
-const ExperieciaLaboral = () => {
+const ExperieciaLaboral = (props) => {
+  const {idUsuario} = props;
   const [descripcionResponsabilidades, setDescripcionResponsabilidades] = useState('');
   const [ambitoLaboral, setAmbitoLaboral] = useState('');
   const [empresa, setEmpresa] = useState('');
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
-  const [idUsuario, setIdUsuario] = useState(''); // Asumiendo que obtienes este valor de alguna manera
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const { id } = useParams();
   const handleSuccessModalClose = () => setShowSuccessModal(false);
   const handleErrorModalClose = () => setShowErrorModal(false);
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
@@ -26,7 +25,6 @@ const ExperieciaLaboral = () => {
       setError('Todos los campos son obligatorios');
       return;
     }
-
     axios.post('http://localhost:8000/api/workExperience/new', {
       descripcionResponsabilidades,
       ambitoLaboral,
