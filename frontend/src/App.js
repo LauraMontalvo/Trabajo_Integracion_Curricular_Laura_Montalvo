@@ -12,7 +12,7 @@ import AdminConsola from './Views/AdminConsola';
 import Main from './Views/Main';
 import EditarUsuario from './Views/EditarUsuario';
 import * as constantes from './Models/Constantes';
-import ListaEmpresas from './Components/ListaEmpresas';
+
 import ListaUsuarios from './Components/ListaUsuarios';
 import SumarEstudio from './Components/SumarEstudio';
 import DetalleEmpresa from './Components/DetalleEmpresa';
@@ -20,6 +20,10 @@ import EditarEmpresa from './Views/EditarEmpresa';
 import LoadingModal from './Components/LoadingModal';
 import PublicarEmpleo from './Views/PublicarEmpleo';
 import ExperienciaLaboral from './Components/ExperienciaLaboral';
+import ListaInstituciones from './Views/ListaInstituciones';
+import RegistroInstitucionesComp from './Views/RegistroInstitucionesView';
+import RegistroInstituciones from './Views/RegistroInstitucionesView';
+import ListaEmpresas from './Views/ListaEmpresas';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -53,8 +57,10 @@ function App() {
             <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
             <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
             <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
-            <Route path="/listaEmpresas" element={<ListaEmpresas />} />
+            <Route path="/listaEmpresas" element={<ListaEmpresas/>} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
+            <Route path="/registrarInstitucion" element={<RegistroInstituciones/>} />
+            <Route path="/listaInstituciones" element={<ListaInstituciones />} />
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}

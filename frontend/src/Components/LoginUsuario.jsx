@@ -9,10 +9,7 @@ import "../Styles/loginstyle.css"
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
-
-
-
-
+import * as constantes from '../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from './Cabecera';
@@ -26,14 +23,14 @@ const LoginForm = (props) => {
   const handlerLogin = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
-      setLoginStatus("Ingrese su usuario y contraseña");
+      setLoginStatus(constantes.TEXTO_INGRESE_DATOS);
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
-      axios.post('http://localhost:8000/api/user/login', { usuario, password: hashedPassword })
+      axios.post(constantes.URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
           console.log(respuesta);
-          if (respuesta.data.msg === "Usuario validado correctamente!!") {
+          if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO) {
             const user = respuesta.data.user;
 
             console.log(user);
@@ -62,12 +59,12 @@ const LoginForm = (props) => {
       <Cabecera></Cabecera>
       <Form onSubmit={handlerLogin} className="mi-formulario" >
 
-        <h2>Empleos ChavezPamba</h2>
+        <h2>{constantes.TEXTO_TITULO}</h2>
         <div className='imgs'>
           <img src={logofondo} className="tamañoImagenChavezPamba" />
         </div>
 
-        <h2>Inicio de sesión de Usuario</h2>
+        <h2>{constantes.TEXTO_INICIO_SESION}</h2>
 
         <Row>
           <Col md={6}>

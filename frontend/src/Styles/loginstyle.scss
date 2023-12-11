@@ -15,134 +15,18 @@ $colorBotonLogin:#47dfc0;
 $ColorFondo-Caja:#FDFEFE;
 $Tamaño-botonesancho:150px;
 $Tamaño-botoneslargo:50px;
-////clase
-.fondo{
-  background-color: $colo-fondopantalla;
-}
-//anidacion 
-//mixins son funciones
-@mixin cajageneral_perzonalizada(){
-  text-align: center;
-  justify-content: center;
-  display: flex;
-
-}
-.caja{
-  @include cajageneral_perzonalizada();
-}
 
 
-@mixin caja_Personalizada_Login($Tamaño-Loginancho:550px,$Tamaño-Loginlargo:650px){
-  font-family: $estilo-letra;
-  width: $Tamaño-Loginancho;
-  height: $Tamaño-Loginlargo;
-  box-shadow: $sombreado-cajagrande;
-  padding-top:38px ;
-  border-radius: 60px;
-  background-color: $ColorFondo-Caja;
 
- .textos_normales{
-  p{
-    font-size: $Tamañp-letraTextoNormal;
-    color: black;
-    
-  }
-  
- }
-  .imgs{
-    padding-top: 30px;
-    justify-content: center;
-    display: flex;
-  }
-  input {
-    width: $tamaño-caja-InputAncho;
-    height: $tamaño-caja-InputLargo;
-    border-radius: 30px;
-    box-shadow: inset 10px 5px 25px 10px #9aceb6;
-    padding-left: 60px;
-    font-size: $tamano-letrainput;
-    margin-bottom: 20px;
 
-  }
-  
-  
  
-  .btn{
-    &:hover {
-      background-color: #20d46b;
-    }
-    width: $Tamaño-botonesancho;
-    height: $Tamaño-botoneslargo;
-    border-radius: 10px;
-    background-color: $colorBotonLogin;
-    color: rgb(26, 25, 25);
-    font-size: $tamaño-letraBotones;
-    box-shadow: inset 2px 4px 6px 0px rgba(1, 0, 0, 0.5); 
-    margin: 2%;
-   
-  }
-  .iconos{
-    height: 50px;
-    width: 50px;
-    position: absolute;
-    padding: 5px 0.5px 5.5px 9px;
-    border: none;
-    outline: none;
-  }
-  
-  
-}
-.img-container {
-  overflow: hidden;
-  border-radius: 60%;
-}
-
-.img-smaller {
-  width: 45%; // o el porcentaje que desees
-}
-.img-circular {
-  border-radius: 50%;
-}
 
 
-.select {
-  width: $tamaño-caja-InputAncho; // Ancho del div
-  height: $tamaño-caja-InputLargo; // Alto del div
-  margin: 0 auto; // Margen automático para centrar horizontalmente
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 
-  select {
-    width: 100%; // Haz que el select ocupe el 100% del ancho del contenedor
-    height: 100%; // Haz que el select ocupe el 100% del alto del contenedor
-    border-radius: 30px; // Borde redondeado
-    box-shadow: inset 10px 5px 25px 10px #9aceb6; // Sombra interna
-    padding-left: 20px; // Espaciado izquierdo
-    font-size: $tamano-letrainput; // Tamaño de la letra
-  
-  }
-}
-//Cuadrado del login empresa , usuario o Administrador
-.cajaLogin{
-  @include caja_Personalizada_Login()
-}
-//Cuadrado registrarse como
-.cajaRegistrarComo{
-  @include caja_Personalizada_Login($Tamaño-Loginancho:540px,
-  $Tamaño-Loginlargo:400px)
-}
 
-.cajaRegistrarUsuario{
-  @include caja_Personalizada_Login($Tamaño-Loginancho:580px,
-  $Tamaño-Loginlargo:1190px)
-}
 
-.cajaRegistrarEmpresa{
-  @include caja_Personalizada_Login($Tamaño-Loginancho:580px,
-  $Tamaño-Loginlargo:1150px)
-}
+
+
 $tamaño-letra-Formularios:15px;
 $color-primary:  #1287ec;
 $color-secondary: #1287ec;
@@ -246,7 +130,112 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     background-color: $color-danger;
   }
 }
+@media (max-width: 991px)  {
+  
+    // Aquí puedes personalizar los estilos específicamente para pantallas medianas
+   
+    // Otros estilos específicos para pantallas medianas...
 
+    .mi-formulario {
+      max-width: 700px; // Ejemplo: cambiar el ancho máximo
+      padding: 30px; // Ejemplo: aumentar el padding
+      font-family: $estilo-letra;
+      
+      margin: auto;
+     
+      background-color: rgb(240, 239, 224);
+      border-radius: 10px;
+      box-shadow: $shadow;
+    
+      .botones-centrados {
+        display: flex;
+        justify-content: center;
+        gap: 20px; // Espacio entre botones
+        margin-top: 20px; // Espacio entre los botones y los campos del formulario
+        
+    
+    
+    
+      
+      }
+      h2{
+        background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+        background-clip: text;
+        color: transparent;
+        text-align: center;
+        font-size: $tamano-letraTitulos;
+        margin-bottom: 10px; // Ajusta según sea necesario
+    
+      }
+    
+      
+      .tamañoImagenChavezPamba{
+        width: 150px; /* Ancho de la imagen */
+        height: 150px; /* Altura de la imagen, igual al ancho para un círculo perfecto */
+        border-radius: 50%; /* Hace que la imagen sea redonda */
+        object-fit: cover; /* Asegura que la imagen cubra completamente el espacio sin deformarse */
+        display: block; /* Asegura que la imagen sea un bloque para centrarla */
+        margin: 0 auto; /* Centra la imagen horizontalmente */
+      }
+      .form-group {
+        margin-bottom: 15px;
+        
+      }
+    
+      .input-icon-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    
+        .input-icon {
+          position: absolute;
+          left: 10px;
+          color: $color-icon;
+          
+        }
+        
+        
+        .large-input {
+          height: 40px; /* Ajusta la altura según tus necesidades */
+        width: 260px;
+          padding: 10px 1px; /* Ajusta el espacio interior según tus necesidades */
+        }
+        .form-control {
+          padding-left: 30px;
+          border-radius: 5px;
+          border: 1px solid $color-border;
+          transition: border-color 0.3s;
+          font-size: $tamaño-letra-Formularios;
+    
+          &:focus {
+            border-color: $color-focus;
+            outline: none;
+            box-shadow: $focus-shadow;
+          }
+        }
+      }
+      p{
+        font-size: $Tamañp-letraTextoError;
+        color: red;
+        margin-bottom: 5px; // Ajusta el margen inferior según sea necesario
+      }
+      .btn-primary {
+     background-color: $color-primary; 
+    
+      
+      }
+    
+      .btn-secondary {
+        background-color: $color-secondary;
+      }
+      .btn-danger {
+        background-color: $color-danger;
+      }
+    }
+  }
+
+
+  ///CONTRASEÑAS
 .password-field {
   position: relative;
   display: flex;
@@ -311,5 +300,5 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 
   
 }
-
+//Institucion 
 

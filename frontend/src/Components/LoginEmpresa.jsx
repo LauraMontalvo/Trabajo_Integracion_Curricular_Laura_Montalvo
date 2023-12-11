@@ -61,7 +61,7 @@ const LoginFormEmpresa = (props) => {
 
 
 
-        <h2>Empleos ChavezPamba</h2>
+        <h2>{constantes.TEXTO_TITULO}</h2>
         <div className='imgs'>
           <img src={logofondo} className="tamañoImagenChavezPamba" />
         </div>

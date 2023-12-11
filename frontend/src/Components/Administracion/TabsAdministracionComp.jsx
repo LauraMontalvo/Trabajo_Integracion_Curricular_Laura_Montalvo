@@ -19,6 +19,10 @@ const TabsAdministracionComp = () => {
             <NavDropdown.Item as={Link} to="/registrarEmpresa">Registrar Empresa</NavDropdown.Item>
           </NavDropdown>
           <Nav.Link as={Link} to="/listaUsuarios">Lista de Usuarios</Nav.Link>
+          <NavDropdown title="Instituciones" id="nav-dropdown">
+            <NavDropdown.Item as={Link} to="/listaInstituciones" >Ver Institucion</NavDropdown.Item>
+            <NavDropdown.Item  as={Link} to="/registrarInstitucion"  >Registrar Institucion</NavDropdown.Item>
+          </NavDropdown>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

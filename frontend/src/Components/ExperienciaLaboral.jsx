@@ -41,6 +41,7 @@ const ExperieciaLaboral = (props) => {
         setEmpresa('');
         setFechaInicio('');
         setFechaFin('');
+       
       })
       .catch((error) => {
         console.error(error.response);
@@ -51,84 +52,85 @@ const ExperieciaLaboral = (props) => {
 
   return (
     <Form onSubmit={handleSubmit} className="mi-formulario">
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Row>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Descripción de Responsabilidades</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese la descripción de sus responsabilidades"
-                value={descripcionResponsabilidades}
-                onChange={(e) => setDescripcionResponsabilidades(e.target.value)}
-              />
-            </div>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Ámbito Laboral</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faBuilding} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el ámbito laboral"
-                value={ambitoLaboral}
-                onChange={(e) => setAmbitoLaboral(e.target.value)}
-              />
-            </div>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Empresa</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faBuilding} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el nombre de la empresa"
-                value={empresa}
-                onChange={(e) => setEmpresa(e.target.value)}
-              />
-            </div>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Fecha de Inicio</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
-              <Form.Control
-                type="date"
-                value={fechaInicio}
-                onChange={(e) => setFechaInicio(e.target.value)}
-              />
-            </div>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Fecha de Fin</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
-              <Form.Control
-                type="date"
-                value={fechaFin}
-                onChange={(e) => setFechaFin(e.target.value)}
-              />
-            </div>
-          </Form.Group>
-        </Col>
-      </Row>
-      {/* Botón para enviar el formulario */}
-      <div className="botones-centrados">
-        <Button type="submit" className='btn-primary'>Guardar</Button>
-
-      </div>
-
-    </Form>
+    {error && <Alert variant="danger">{error}</Alert>}
+    <Row>
+      <Col md={12}>
+        <Form.Group>
+          <Form.Label>Descripción de Responsabilidades</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Ingrese la descripción de sus responsabilidades"
+              value={descripcionResponsabilidades}
+              onChange={(e) => setDescripcionResponsabilidades(e.target.value)}
+            />
+          </div>
+        </Form.Group>
+      </Col>
+      <Col md={12}>
+        <Form.Group>
+          <Form.Label>Ámbito Laboral</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faBuilding} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Ingrese el ámbito laboral"
+              value={ambitoLaboral}
+              onChange={(e) => setAmbitoLaboral(e.target.value)}
+            />
+          </div>
+        </Form.Group>
+      </Col>
+      <Col md={12}>
+        <Form.Group>
+          <Form.Label>Empresa</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faBuilding} className="input-icon" />
+            <Form.Control
+              type="text"
+              placeholder="Ingrese el nombre de la empresa"
+              value={empresa}
+              onChange={(e) => setEmpresa(e.target.value)}
+            />
+          </div>
+        </Form.Group>
+      </Col>
+      <Col md={6}>
+        <Form.Group>
+          <Form.Label>Fecha de Inicio</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+            <Form.Control
+              type="date"
+              value={fechaInicio}
+              onChange={(e) => setFechaInicio(e.target.value)}
+            />
+          </div>
+        </Form.Group>
+      </Col>
+      <Col md={6}>
+        <Form.Group>
+          <Form.Label>Fecha de Fin</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+            <Form.Control
+              type="date"
+              value={fechaFin}
+              onChange={(e) => setFechaFin(e.target.value)}
+            />
+          </div>
+        </Form.Group>
+      </Col>
+    </Row>
+    {/* Botón para enviar el formulario */}
+    <div className="botones-centrados">
+      <Button type="submit" className='btn-primary'>Guardar</Button>
+    </div>
+  </Form>
+  
 
   );
 }

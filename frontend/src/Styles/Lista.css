@@ -1,0 +1,31 @@
+.icon-button {
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.edit-icon {
+  color: #17a2b8;
+}
+
+.delete-icon {
+  color: #dc3545;
+}
+
+.table-responsive-Institucion table {
+  width: 50%;
+  margin: auto;
+}
+.table-responsive-Institucion table thead th {
+  padding: 8px;
+}
+.table-responsive-Institucion table tbody tr td {
+  padding: 8px;
+  font-size: 14px;
+}
+.table-responsive-Institucion table tbody tr td .icon-button {
+  font-size: 1.2rem;
+  margin: 0 10px;
+}/*# sourceMappingURL=Lista.css.map */

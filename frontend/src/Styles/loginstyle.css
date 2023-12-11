@@ -1,241 +1,4 @@
 @charset "UTF-8";
-.fondo {
-  background-color: #FDFEFE;
-}
-
-.caja {
-  text-align: center;
-  justify-content: center;
-  display: flex;
-}
-
-.img-container {
-  overflow: hidden;
-  border-radius: 60%;
-}
-
-.img-smaller {
-  width: 45%;
-}
-
-.img-circular {
-  border-radius: 50%;
-}
-
-.select {
-  width: 300px;
-  height: 50px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.select select {
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
-  box-shadow: inset 10px 5px 25px 10px #9aceb6;
-  padding-left: 20px;
-  font-size: 18px;
-}
-
-.cajaLogin {
-  font-family: "Century Gothic", sans-serif;
-  width: 550px;
-  height: 650px;
-  box-shadow: 10px 1px 10px 5px rgb(18, 172, 108);
-  padding-top: 38px;
-  border-radius: 60px;
-  background-color: #FDFEFE;
-}
-.cajaLogin .textos_normales p {
-  font-size: 20px;
-  color: black;
-}
-.cajaLogin .imgs {
-  padding-top: 30px;
-  justify-content: center;
-  display: flex;
-}
-.cajaLogin input {
-  width: 300px;
-  height: 50px;
-  border-radius: 30px;
-  box-shadow: inset 10px 5px 25px 10px #9aceb6;
-  padding-left: 60px;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-.cajaLogin .btn {
-  width: 150px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #47dfc0;
-  color: rgb(26, 25, 25);
-  font-size: 15px;
-  box-shadow: inset 2px 4px 6px 0px rgba(1, 0, 0, 0.5);
-  margin: 2%;
-}
-.cajaLogin .btn:hover {
-  background-color: #20d46b;
-}
-.cajaLogin .iconos {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  padding: 5px 0.5px 5.5px 9px;
-  border: none;
-  outline: none;
-}
-
-.cajaRegistrarComo {
-  font-family: "Century Gothic", sans-serif;
-  width: 540px;
-  height: 400px;
-  box-shadow: 10px 1px 10px 5px rgb(18, 172, 108);
-  padding-top: 38px;
-  border-radius: 60px;
-  background-color: #FDFEFE;
-}
-.cajaRegistrarComo .textos_normales p {
-  font-size: 20px;
-  color: black;
-}
-.cajaRegistrarComo .imgs {
-  padding-top: 30px;
-  justify-content: center;
-  display: flex;
-}
-.cajaRegistrarComo input {
-  width: 300px;
-  height: 50px;
-  border-radius: 30px;
-  box-shadow: inset 10px 5px 25px 10px #9aceb6;
-  padding-left: 60px;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-.cajaRegistrarComo .btn {
-  width: 150px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #47dfc0;
-  color: rgb(26, 25, 25);
-  font-size: 15px;
-  box-shadow: inset 2px 4px 6px 0px rgba(1, 0, 0, 0.5);
-  margin: 2%;
-}
-.cajaRegistrarComo .btn:hover {
-  background-color: #20d46b;
-}
-.cajaRegistrarComo .iconos {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  padding: 5px 0.5px 5.5px 9px;
-  border: none;
-  outline: none;
-}
-
-.cajaRegistrarUsuario {
-  font-family: "Century Gothic", sans-serif;
-  width: 580px;
-  height: 1190px;
-  box-shadow: 10px 1px 10px 5px rgb(18, 172, 108);
-  padding-top: 38px;
-  border-radius: 60px;
-  background-color: #FDFEFE;
-}
-.cajaRegistrarUsuario .textos_normales p {
-  font-size: 20px;
-  color: black;
-}
-.cajaRegistrarUsuario .imgs {
-  padding-top: 30px;
-  justify-content: center;
-  display: flex;
-}
-.cajaRegistrarUsuario input {
-  width: 300px;
-  height: 50px;
-  border-radius: 30px;
-  box-shadow: inset 10px 5px 25px 10px #9aceb6;
-  padding-left: 60px;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-.cajaRegistrarUsuario .btn {
-  width: 150px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #47dfc0;
-  color: rgb(26, 25, 25);
-  font-size: 15px;
-  box-shadow: inset 2px 4px 6px 0px rgba(1, 0, 0, 0.5);
-  margin: 2%;
-}
-.cajaRegistrarUsuario .btn:hover {
-  background-color: #20d46b;
-}
-.cajaRegistrarUsuario .iconos {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  padding: 5px 0.5px 5.5px 9px;
-  border: none;
-  outline: none;
-}
-
-.cajaRegistrarEmpresa {
-  font-family: "Century Gothic", sans-serif;
-  width: 580px;
-  height: 1150px;
-  box-shadow: 10px 1px 10px 5px rgb(18, 172, 108);
-  padding-top: 38px;
-  border-radius: 60px;
-  background-color: #FDFEFE;
-}
-.cajaRegistrarEmpresa .textos_normales p {
-  font-size: 20px;
-  color: black;
-}
-.cajaRegistrarEmpresa .imgs {
-  padding-top: 30px;
-  justify-content: center;
-  display: flex;
-}
-.cajaRegistrarEmpresa input {
-  width: 300px;
-  height: 50px;
-  border-radius: 30px;
-  box-shadow: inset 10px 5px 25px 10px #9aceb6;
-  padding-left: 60px;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-.cajaRegistrarEmpresa .btn {
-  width: 150px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #47dfc0;
-  color: rgb(26, 25, 25);
-  font-size: 15px;
-  box-shadow: inset 2px 4px 6px 0px rgba(1, 0, 0, 0.5);
-  margin: 2%;
-}
-.cajaRegistrarEmpresa .btn:hover {
-  background-color: #20d46b;
-}
-.cajaRegistrarEmpresa .iconos {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  padding: 5px 0.5px 5.5px 9px;
-  border: none;
-  outline: none;
-}
-
 .mi-formulario {
   font-family: "Century Gothic", sans-serif;
   max-width: 590px;
@@ -314,6 +77,85 @@
   background-color: #ec5012;
 }
 
+@media (max-width: 991px) {
+  .mi-formulario {
+    max-width: 700px;
+    padding: 30px;
+    font-family: "Century Gothic", sans-serif;
+    margin: auto;
+    background-color: rgb(240, 239, 224);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .mi-formulario .botones-centrados {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .mi-formulario h2 {
+    background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 10px;
+  }
+  .mi-formulario .tamañoImagenChavezPamba {
+    width: 150px; /* Ancho de la imagen */
+    height: 150px; /* Altura de la imagen, igual al ancho para un círculo perfecto */
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+    -o-object-fit: cover;
+       object-fit: cover; /* Asegura que la imagen cubra completamente el espacio sin deformarse */
+    display: block; /* Asegura que la imagen sea un bloque para centrarla */
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+  }
+  .mi-formulario .form-group {
+    margin-bottom: 15px;
+  }
+  .mi-formulario .input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .mi-formulario .input-icon-wrapper .input-icon {
+    position: absolute;
+    left: 10px;
+    color: #717171;
+  }
+  .mi-formulario .input-icon-wrapper .large-input {
+    height: 40px; /* Ajusta la altura según tus necesidades */
+    width: 260px;
+    padding: 10px 1px; /* Ajusta el espacio interior según tus necesidades */
+  }
+  .mi-formulario .input-icon-wrapper .form-control {
+    padding-left: 30px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s;
+    font-size: 15px;
+  }
+  .mi-formulario .input-icon-wrapper .form-control:focus {
+    border-color: #80bdff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  .mi-formulario p {
+    font-size: 15px;
+    color: red;
+    margin-bottom: 5px;
+  }
+  .mi-formulario .btn-primary {
+    background-color: #1287ec;
+  }
+  .mi-formulario .btn-secondary {
+    background-color: #1287ec;
+  }
+  .mi-formulario .btn-danger {
+    background-color: #ec5012;
+  }
+}
 .password-field {
   position: relative;
   display: flex;

@@ -12,10 +12,7 @@ import "../Styles/loginstyle.css"
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
-
-
-
-
+import * as constantes from '../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 
@@ -61,7 +58,7 @@ const LoginAdminForm = (props) => {
 
       <Form onSubmit={handlerLogin} className="mi-formulario" >
         
-              <h2>Empleos ChavezPamba</h2>
+              <h2>{constantes.TEXTO_TITULO}</h2>
            
               <div className='imgs'>
         <img src={logofondo} className="tamañoImagenChavezPamba" />

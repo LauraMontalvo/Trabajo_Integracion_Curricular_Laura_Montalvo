@@ -1,7 +1,7 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Cabecera from "../Components/Cabecera";
 import { useNavigate } from "react-router";
-import ListaEmpresas from "../Components/ListaEmpresas";
+
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
@@ -11,6 +11,8 @@ import "../Styles/header.css"
 import * as constantes from "../Models/Constantes";
 import axios from "axios";
 import TabsAdministracionComp from "../Components/Administracion/TabsAdministracionComp";
+import ListaInstituciones from "./ListaInstituciones";
+import ListaEmpresas from "../Views/ListaEmpresas";
 
 const Main = () => {
     const { id } = useParams();
@@ -18,9 +20,11 @@ const Main = () => {
     const [admin, setAdmin] = useState({});
     const [modalEmpresas, setModalEmpresas] = useState(false);
     const [modalUsuarios, setModalUsuarios] = useState(false);
-
+    const [modalInstituciones, setModalInstituciones] = useState(false);
     const toggleEmpresas = () => setModalEmpresas(!modalEmpresas);
     const toggleUsuarios = () => setModalUsuarios(!modalUsuarios);
+    const toggleInstituciones = () => setModalUsuarios(!modalInstituciones);
+
 
     useEffect(() => {
         axios.post(`${constantes.URL_CONSULTAR_DATOS_USUARIO}${id}`).then(res => {
@@ -47,7 +51,7 @@ const Main = () => {
                 <ModalHeader toggle={toggleEmpresas}>Lista de Empresas</ModalHeader>
                 <ModalBody>
                     {/* Contenido del modal, por ejemplo: */}
-                    <ListaEmpresas />
+                    <ListaEmpresas/>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={toggleEmpresas}>
@@ -69,6 +73,20 @@ const Main = () => {
                     </Button>
                 </ModalFooter>
             </Modal>
+            <Modal isOpen={modalInstituciones} toggle={toggleInstituciones} size="xl">
+                <ModalHeader toggle={toggleInstituciones}>Lista de Empresas</ModalHeader>
+                <ModalBody>
+                    {/* Contenido del modal, por ejemplo: */}
+                    <ListaInstituciones/>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={toggleInstituciones}>
+                        Cerrar
+                    </Button>
+                </ModalFooter>
+            </Modal>
+
+
         </div>
     );
 };

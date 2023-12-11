@@ -8,6 +8,7 @@ export const TEXTO_INICIAR_SESION = "Iniciar Sesión";
 export const TEXTO_IR_PAGINA_PRINCIPAL = "Ir a la pagina principal";
 export const TEXTO_INICIO_SESION = "Inicio de sesión de Usuario";
 export const TEXTO_REGISTRATE = "Regístrate ahora!";
+export const TEXTO_TITULO = "Empleos ChavezPamba";
 //Empresa
 export const MENSAJE_LOGIN_EXITO_EMPRESA = "Empresa validada correctamente!!";
 export const TEXTO_INICIO_SESION_EMPRESA = "Inicio de sesión de Empresa";

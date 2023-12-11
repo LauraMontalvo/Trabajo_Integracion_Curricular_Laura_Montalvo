@@ -1,0 +1,42 @@
+.icon-button {
+    cursor: pointer;
+    font-size: 1.2rem; // Aumenta el tamaño del icono
+    margin-right: 10px; // Espacio entre iconos
+    display: inline-block; // Asegura que se muestren en línea
+    vertical-align: middle; // Alineación vertical en medio de la celda
+  }
+  
+  .edit-icon {
+    color: #17a2b8; // Color para el icono de editar, por ejemplo, azul
+  }
+  
+  .delete-icon {
+    color: #dc3545; // Color para el icono de eliminar, por ejemplo, rojo
+  }
+  .table-responsive-Institucion {
+    table {
+      width: 50%; // Reducir el ancho de la tabla
+      margin: auto; // Centrar la tabla si se reduce su tamaño
+  
+      thead {
+        th {
+          padding: 8px; // Reducir el espaciado en los encabezados
+        }
+      }
+  
+      tbody {
+        tr {
+          td {
+            padding: 8px; // Reducir el espaciado en las celdas
+            font-size: 14px; // Reducir el tamaño del texto si es necesario
+            
+            .icon-button {
+              font-size: 1.2rem; // Reducir el tamaño de los iconos
+              margin: 0 10px; // Reducir el espacio entre iconos
+            }
+          }
+        }
+      }
+    }
+  }
+  

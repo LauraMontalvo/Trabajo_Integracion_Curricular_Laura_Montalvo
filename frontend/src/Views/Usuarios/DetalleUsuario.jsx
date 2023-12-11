@@ -2,17 +2,29 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faGraduationCap, faUniversity, faCalendarAlt,faExclamationCircle,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   Button, Image, InputGroup, FormControl, Row, Col, Modal, Form, Tab, Tabs, ListGroup, Card,
   Container
 } from 'react-bootstrap';
+
 import EditarUsuario from '../EditarUsuario.jsx';
 import "../../Styles/loginstyle.css"
 import "../../Styles/detalle.scss"
 import ExperieciaLaboral from '../../Components/ExperienciaLaboral.jsx';
 import CabeceraRegistrar from '../../Components/CabeceraRegistrar.jsx';
 import CabeceraUsuarioInicio from '../../Components/CabeceraUsuarioInicio.jsx';
+import Select from 'react-select/creatable';
+
+const CampoEstado = ({ valido, mensajeError }) => {
+  if (mensajeError) {
+    return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />;
+  } else if (valido) {
+    return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />;
+  } else {
+    return null; // No muestra nada si el campo aún no ha sido validado
+  }
+};
 
 function DetalleUsuario(props) {
   const { id } = useParams();
@@ -27,13 +39,18 @@ function DetalleUsuario(props) {
   const [editingAcadTrainingId, setEditingAcadTrainingId] = useState(null);
   const navigate = useNavigate();
   const [edad, setEdad] = useState(null);
-  const [institucion, setInstitucion] = useState('');
+  const [institucion, setInstitucion] = useState(null);
   const [showAcadTrainingModal, setShowAcadTrainingModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteAcadTrainingId, setDeleteAcadTrainingId] = useState(null);
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [instituciones, setInstituciones] = useState([]);
+
+  const esCampoValido = (valor, error) => {
+    return valor !== '' && error === '';
+  };
+
 
   const handleShowDeleteModal = (id) => {
     setDeleteAcadTrainingId(id);
@@ -81,13 +98,13 @@ function DetalleUsuario(props) {
         } else {
           setEdad(edadCalculada);
         }
-        // ... resto del código para calcular la edad, etc. ...
       })
       .catch((err) => console.log(err));
   };
 
 
   useEffect(() => {
+
     axios.get(`http://localhost:8000/api/user/${id}`)
       .then((res) => {
         setUser({ ...res.data });
@@ -115,9 +132,24 @@ function DetalleUsuario(props) {
 
 
     axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`)
-      .then((res) => setAcadTraining(res.data))
+      .then((res) => {
+        let institucionC = res.data;
+        console.log(institucionC)
+        institucionC.map(x => {
+          axios.get(`http://localhost:8000/api/school/${x.idInstitucion}`).then((response) => {
+            x.nombreInstitucion = response.data.nombreInstitucion
+          })
+        })
+        setAcadTraining(institucionC)
+      })
       .catch((err) => console.log(err));
+
+    cargarInstituciones();
   }, [id]);
+
+  const cargarInstituciones = () => {
+    axios.get('http://localhost:8000/api/schools').then(res => setInstituciones(res.data)).catch(err => console.log(err));
+  }
 
   const handleEditClick = () => {
     setNewImageUrl(user.foto);
@@ -169,8 +201,42 @@ function DetalleUsuario(props) {
     setFechaFin('');
   };
 
+  const handleInstitucion = (institucionCarga) => {
+    console.log(institucion)
+    setInstitucion(institucionCarga);
+    console.log(institucion)
+  }
+
+  const cargaInstitucion = (institucionCarga) => {
+    console.log(institucion)
+    setInstitucion(institucionCarga);
+    setInstitucion(institucionCarga);
+    console.log(institucion)
+  }
+
+  const creaAcademia = async (datos) => {
+
+  }
+
   const handleAddAcadTraining = async () => {
     try {
+      let esNuevaInstitucion = false;
+      let institucionCarga;
+      if (institucion && !instituciones.find(inst => inst.nombreInstitucion === institucion.label)) {
+        esNuevaInstitucion = true;
+        const response = await axios.post('http://localhost:8000/api/school/new', { nombreInstitucion: institucion.label })
+        institucionCarga = {
+          label: response.data.insertedSchool.nombreInstitucion,
+          value: response.data.insertedSchool._id
+        };
+
+        console.log(institucionCarga)
+        cargaInstitucion(institucionCarga)
+
+        cargarInstituciones();
+      }
+
+
       if (editingAcadTrainingId) {
         // Si editingAcadTrainingId está definido, significa que estamos editando
         await axios.put(`http://localhost:8000/api/acadTraining/${editingAcadTrainingId}`, {
@@ -182,9 +248,10 @@ function DetalleUsuario(props) {
         // Limpiar el estado de edición
         setEditingAcadTrainingId(null);
       } else {
+        console.log(institucion);
         // Si no hay editingAcadTrainingId, significa que estamos agregando nuevo
         await axios.post('http://localhost:8000/api/acadTraining/new', {
-          idInstitucion: 'institucion', // Reemplaza con el ID de la institución
+          idInstitucion: esNuevaInstitucion ? institucionCarga.value : institucion.value, // Reemplaza con el ID de la institución
           idUsuario: id,
           tituloObtenido,
           fechaInicio,
@@ -199,7 +266,7 @@ function DetalleUsuario(props) {
       // Cerrar la ventana modal
       handleCloseAcadTrainingModal();
     } catch (error) {
-      console.error('Error al agregar/editar datos académicos:', error.response.data.error);
+      console.error('Error al agregar/editar datos académicos:', error);
     }
   };
 
@@ -304,6 +371,7 @@ function DetalleUsuario(props) {
                       {acadTraining.map((item) => (
                         <div key={item._id} className="mt-4 border p-3">
                           <p>Título obtenido: {item.tituloObtenido}</p>
+                          <p>Institucion: {item.nombreInstitucion}</p>
                           <p>Fecha de inicio: {formatDate(item.fechaInicio)}</p>
                           <p>Fecha de fin: {formatDate(item.fechaFin)}</p>
                           <Button
@@ -337,51 +405,83 @@ function DetalleUsuario(props) {
                           </Modal>
                         </div>
                       ))}                  </ListGroup>
+
                     <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
                       Agregar
                     </Button>
                     <Modal show={showAcadTrainingModal} onHide={handleCloseAcadTrainingModal}>
                       <Modal.Header closeButton>
-                        <Modal.Title>{editingAcadTrainingId ? 'Editar' : 'Agregar'} Información Académica</Modal.Title>
+                        <Modal.Title className='tituloModal'>{editingAcadTrainingId ? 'Editar' : 'Agregar'} Información Académica</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <Form>
+                        <Form className="mi-formulario">
+
                           <Form.Group controlId="formTitulo">
                             <Form.Label>Título obtenido</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Ingrese el título obtenido"
-                              value={tituloObtenido}
-                              onChange={(e) => setTituloObtenido(e.target.value)}
-                            />
+                            <div className="input-icon-wrapper">
+                              <FontAwesomeIcon icon={faGraduationCap} className="input-icon" /> {/* Cambia el ícono según corresponda */}
+                              <Form.Control
+                                type="text"
+                                placeholder="Ingrese el título obtenido"
+                                value={tituloObtenido}
+                                onChange={(e) => setTituloObtenido(e.target.value)}
+                                className="input-with-icon" />
+                              {/* Agrega aquí validaciones o mensajes de error si es necesario */}
+                            </div>
                           </Form.Group>
-                          <Form.Group controlId="formTitulo">
+                          <Form.Group >
                             <Form.Label>Institucion</Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Ingrese Institucion"
-                              value={institucion}
-                              onChange={(e) => setInstitucion(e.target.value)}
-                            />
+                            <div className="input-icon-wrapper-select">
+
+                              <Select
+                                isCreatable
+                                onChange={handleInstitucion}
+                                options={instituciones.map((institucion) => ({
+                                  label: institucion.nombreInstitucion,
+                                  value: institucion._id
+                                }))}
+                                value={institucion}
+                              />
+                            </div>
                           </Form.Group>
 
-                          <Form.Group controlId="formFechaInicio">
-                            <Form.Label>Fecha de inicio</Form.Label>
-                            <Form.Control
-                              type="date"
-                              value={fechaInicio}
-                              onChange={(e) => setFechaInicio(e.target.value)}
-                            />
-                          </Form.Group>
 
-                          <Form.Group controlId="formFechaFin">
-                            <Form.Label>Fecha de fin</Form.Label>
-                            <Form.Control
-                              type="date"
-                              value={fechaFin}
-                              onChange={(e) => setFechaFin(e.target.value)}
-                            />
-                          </Form.Group>
+
+                          <Row>
+                            <Col md={6}>
+                              <Form.Group>
+                                <Form.Label>Fecha de inicio</Form.Label>
+                                <div className="input-icon-wrapper">
+                                  <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+                                  <Form.Control
+                                    type="date"
+                                    value={fechaInicio}
+                                    onChange={(e) => setFechaInicio(e.target.value)}
+                                    className="input-with-icon" />
+                                  {/* Validaciones o mensajes de error */}
+                                </div>
+                                {/* Mensaje de error para fecha de inicio */}
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group>
+                                <Form.Label>Fecha de fin</Form.Label>
+                                <div className="input-icon-wrapper">
+                                  <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+                                  <Form.Control
+                                    type="date"
+                                    value={fechaFin}
+                                    onChange={(e) => setFechaFin(e.target.value)}
+                                    className="input-with-icon" />
+                                  {/* Validaciones o mensajes de error */}
+                                </div>
+                                {/* Mensaje de error para fecha de fin */}
+                              </Form.Group>
+                            </Col>
+                          </Row>
+
+
+
                         </Form>
                       </Modal.Body>
                       <Modal.Footer>
