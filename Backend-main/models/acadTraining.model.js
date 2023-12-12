@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
+
 const AcadTrainingSchema = new mongoose.Schema({   
     idInstitucion: {
-        type: String,
-        required: [true, 'El idInstitucion es obligatorio']
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'School', 
+        required: [true, 'El campo school es obligatorio']
     },
     idUsuario: {
         type: String,

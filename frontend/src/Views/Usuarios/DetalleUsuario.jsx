@@ -133,14 +133,7 @@ function DetalleUsuario(props) {
 
     axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`)
       .then((res) => {
-        let institucionC = res.data;
-        console.log(institucionC)
-        institucionC.map(x => {
-          axios.get(`http://localhost:8000/api/school/${x.idInstitucion}`).then((response) => {
-            x.nombreInstitucion = response.data.nombreInstitucion
-          })
-        })
-        setAcadTraining(institucionC)
+        setAcadTraining(res.data);
       })
       .catch((err) => console.log(err));
 
@@ -371,7 +364,7 @@ function DetalleUsuario(props) {
                       {acadTraining.map((item) => (
                         <div key={item._id} className="mt-4 border p-3">
                           <p>Título obtenido: {item.tituloObtenido}</p>
-                          <p>Institucion: {item.nombreInstitucion}</p>
+                          <p>Institucion: {item.idInstitucion.nombreInstitucion}</p>
                           <p>Fecha de inicio: {formatDate(item.fechaInicio)}</p>
                           <p>Fecha de fin: {formatDate(item.fechaFin)}</p>
                           <Button
@@ -444,9 +437,6 @@ function DetalleUsuario(props) {
                               />
                             </div>
                           </Form.Group>
-
-
-
                           <Row>
                             <Col md={6}>
                               <Form.Group>
@@ -479,9 +469,6 @@ function DetalleUsuario(props) {
                               </Form.Group>
                             </Col>
                           </Row>
-
-
-
                         </Form>
                       </Modal.Body>
                       <Modal.Footer>
@@ -515,7 +502,6 @@ function DetalleUsuario(props) {
                         {/* Agrega un botón para guardar la experiencia laboral aquí */}
                       </Modal.Footer>
                     </Modal>
-
                   </Card.Body>
                 </Card>
               </Tab>
