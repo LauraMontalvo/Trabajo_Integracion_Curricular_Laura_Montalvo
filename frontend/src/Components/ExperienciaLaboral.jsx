@@ -26,7 +26,8 @@ const ExperieciaLaboral = (props) => {
       return;
     }
     axios.post('http://localhost:8000/api/workExperience/new', {
-      descripcionResponsabilidades,
+    
+    descripcionResponsabilidades,
       ambitoLaboral,
       empresa,
       fechaInicio,
@@ -41,6 +42,7 @@ const ExperieciaLaboral = (props) => {
         setEmpresa('');
         setFechaInicio('');
         setFechaFin('');
+        props.onExperienciaAdded();
        
       })
       .catch((error) => {

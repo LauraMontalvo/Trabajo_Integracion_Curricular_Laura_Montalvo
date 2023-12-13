@@ -4,7 +4,7 @@ import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faTools, faClipboardList, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
-const PublicarEmpleo = () => {
+const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
   const [descripcion, setDescripcion] = useState('');
   const [conocimientos, setConocimientos] = useState('');
   const [aptitudes, setAptitudes] = useState('');
@@ -37,7 +37,8 @@ const PublicarEmpleo = () => {
 
     axios
       .post('http://localhost:8000/api/job/new', {
-        descripcion,
+        idEmpresa,  
+      descripcion,
         conocimientos,
         aptitudes,
         numeroVacantes,
@@ -54,6 +55,7 @@ const PublicarEmpleo = () => {
         setConocimientosError('');
         setAptitudesError('');
         setNumeroVacantesError('');
+        onEmpleoPublicado(res.data.insertedJob);
       })
       .catch((err) => {
         console.error(err);
@@ -164,7 +166,7 @@ const PublicarEmpleo = () => {
       </Row>
       <div className="botones-centrados">
         <Button type="submit" className="btn-primary">
-          Publicar Empleo
+          Guardar
         </Button>
       </div>
       <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>

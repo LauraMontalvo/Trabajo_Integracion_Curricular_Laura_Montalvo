@@ -78,4 +78,49 @@
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
+}
+
+.empleos-lista h3 {
+  color: #007bff;
+}
+.empleos-lista .list-group-item {
+  padding: 15px;
+  margin-top: -5px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+}
+.empleos-lista .list-group-item:first-child {
+  margin-top: 10px;
+}
+.empleos-lista .list-group-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.empleos-lista .list-group-item .empleo-detalle {
+  margin-bottom: 10px;
+}
+.empleos-lista .list-group-item .empleo-detalle span {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+.empleos-lista .list-group-item .empleo-detalle span strong {
+  color: #343a40;
+  margin-right: 5px;
+}
+.empleos-lista .list-group-item .iconos-acciones {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.empleos-lista .list-group-item .iconos-acciones .fa-icon {
+  font-size: 1.2em;
+  margin-left: 15px;
+  cursor: pointer;
+  color: #6c757d;
+}
+.empleos-lista .list-group-item .iconos-acciones .fa-icon:hover {
+  color: #3a89dd;
 }/*# sourceMappingURL=detalle.css.map */

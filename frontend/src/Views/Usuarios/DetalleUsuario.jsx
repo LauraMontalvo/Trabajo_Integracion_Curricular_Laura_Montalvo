@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faGraduationCap, faUniversity, faCalendarAlt,faExclamationCircle,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faGraduationCap, faTrashAlt, faUniversity, faCalendarAlt, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   Button, Image, InputGroup, FormControl, Row, Col, Modal, Form, Tab, Tabs, ListGroup, Card,
   Container
@@ -46,6 +46,7 @@ function DetalleUsuario(props) {
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [instituciones, setInstituciones] = useState([]);
+  const [experienciaLaboral, setexperienciaLaboral] = useState([]);
 
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
@@ -77,10 +78,9 @@ function DetalleUsuario(props) {
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const handleShowEditUserModal = () => setShowEditUserModal(true);
   const handleCloseEditUserModal = () => setShowEditUserModal(false);
-  const handleSelect = (k) => setActiveTab(k);
 
-  // Tienes que definir un estado para la pestaña activa
-  const [activeTab, setActiveTab] = useState('personal');
+
+
   const recargarInformacionUsuario = () => {
     axios.get(`http://localhost:8000/api/user/${id}`)
       .then((res) => {
@@ -102,6 +102,13 @@ function DetalleUsuario(props) {
       .catch((err) => console.log(err));
   };
 
+  const cargarExperienciaLaboral = () => {
+    axios.get(`http://localhost:8000/api/workExperiences/user/${id}`)
+      .then((res) => {
+        setexperienciaLaboral(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
 
@@ -138,6 +145,7 @@ function DetalleUsuario(props) {
       .catch((err) => console.log(err));
 
     cargarInstituciones();
+    cargarExperienciaLaboral();
   }, [id]);
 
   const cargarInstituciones = () => {
@@ -186,6 +194,8 @@ function DetalleUsuario(props) {
       setEditingAcadTrainingId(null); // No hay un ID específico en este caso
     }
   };
+
+
   const handleCloseAcadTrainingModal = () => {
     setShowAcadTrainingModal(false);
     setEditingAcadTrainingId(null);
@@ -359,27 +369,30 @@ function DetalleUsuario(props) {
               <Tab eventKey="academic" title="Información Académica">
                 <Card>
                   <Card.Body>
-                    <ListGroup variant="flush">
+
+                    <ListGroup className="empleos-lista" variant="flush">
                       <h3>Información Académica</h3>
                       {acadTraining.map((item) => (
-                        <div key={item._id} className="mt-4 border p-3">
-                          <p>Título obtenido: {item.tituloObtenido}</p>
-                          <p>Institucion: {item.idInstitucion.nombreInstitucion}</p>
-                          <p>Fecha de inicio: {formatDate(item.fechaInicio)}</p>
-                          <p>Fecha de fin: {formatDate(item.fechaFin)}</p>
-                          <Button
-                            variant="primary"
-                            onClick={() => handleShowAcadTrainingModal(item._id)}
-                          >
-                            Editar
-                          </Button>
-                          <Button
-                            variant="danger"
-                            onClick={() => handleShowDeleteModal(item._id)}
+                        <ListGroup.Item key={item._id} className="mt-4 border p-3 position-relative">
+                          <div className="empleo-detalle">
+                            <span><strong>Título obtenido:</strong> {item.tituloObtenido}</span>
+                          </div>
+                          <div className="empleo-detalle">
+                            <span><strong>Institución:</strong> {item.idInstitucion.nombreInstitucion}</span>
+                          </div>
+                          <div className="empleo-detalle">
+                            <span><strong>Fecha de inicio:</strong> {formatDate(item.fechaInicio)}</span>
+                          </div>
+                          <div className="empleo-detalle">
+                            <span><strong>Fecha de fin:</strong> {formatDate(item.fechaFin)}</span>
+                          </div>
 
-                          >
-                            Eliminar
-                          </Button>
+                          <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                            <FontAwesomeIcon icon={faEdit} onClick={() => handleShowAcadTrainingModal(item._id)} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }} />
+                            <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleShowDeleteModal(item._id)} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }} />
+                          </div>
+
+
                           <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
                             <Modal.Header closeButton>
                               <Modal.Title>Confirmar Eliminación</Modal.Title>
@@ -396,7 +409,7 @@ function DetalleUsuario(props) {
                               </Button>
                             </Modal.Footer>
                           </Modal>
-                        </div>
+                        </ListGroup.Item>
                       ))}                  </ListGroup>
 
                     <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
@@ -486,14 +499,71 @@ function DetalleUsuario(props) {
               <Tab eventKey="laboral" title="Experiencia Laboral">
                 <Card>
                   <Card.Body>
+                    {experienciaLaboral.length > 0 ? (
+                      <ListGroup className="empleos-lista">
+                        <h3>Experiencia Laboral</h3>
+                        {experienciaLaboral.map((experiencia) => (
+
+                          <ListGroup.Item className="mt-4 border p-3 position-relative">
+                            <div className="empleo-detalle">
+                              <span><strong>Descripción de Responsabilidades:</strong> {experiencia.descripcionResponsabilidades}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Ámbito Laboral:</strong> {experiencia.ambitoLaboral}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Empresa en la que trabajó:</strong> {experiencia.empresa}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Fecha de inicio:</strong> {formatDate(experiencia.fechaInicio)}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Fecha de fin:</strong> {formatDate(experiencia.fechaFin)}</span>
+                            </div>
+
+                            <Button
+                              variant="primary"
+                            >
+                              Editar
+                            </Button>
+                            <Button
+                              variant="danger"
+                            >
+                              Eliminar
+                            </Button>
+                            <Modal >
+                              <Modal.Header closeButton>
+                                <Modal.Title>Confirmar Eliminación</Modal.Title>
+                              </Modal.Header>
+                              <Modal.Body>
+                                ¿Estás seguro de que deseas eliminar esta formación académica?
+                              </Modal.Body>
+                              <Modal.Footer>
+                                <Button variant="secondary" >
+                                  Cancelar
+                                </Button>
+                                <Button variant="danger" >
+                                  Eliminar
+                                </Button>
+                              </Modal.Footer>
+                            </Modal>
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    ) : (
+                      <p>No hay empleos publicados actualmente.</p>
+                    )}
                     {/* ... Contenido de experiencia laboral ... */}
-                    <Button variant="primary" onClick={() => showExperienceForm()}>Agregar Experiencia Laboral</Button>
+                    <div className='botones-centrados'>
+                      <Button variant="primary" onClick={() => showExperienceForm()}>Agregar Experiencia Laboral</Button>
+
+                    </div>
                     <Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)}>
                       <Modal.Header closeButton>
                         <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <ExperieciaLaboral idUsuario={id} />
+                        <ExperieciaLaboral idUsuario={id} onExperienciaAdded={cargarExperienciaLaboral} />
                       </Modal.Body>
                       <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowExperienceModal(false)}>

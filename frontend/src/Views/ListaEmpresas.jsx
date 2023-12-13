@@ -18,7 +18,7 @@ const ListaEmpresas = () => {
   const navigate = useNavigate();
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
 
- 
+
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/companies')
@@ -56,51 +56,51 @@ const ListaEmpresas = () => {
   return (
 
     <div className="App">
-    
-      <TabsAdministracionComp/>
+
+      <TabsAdministracionComp />
       <h1 className="mt-4 mb-4">Empresas Existentes</h1>
       <div className="container">
-      <div className="table-responsive">
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Correo</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
-              <th>Descripción</th>
-              <th>Rol</th>
-              <th>Usuario</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {empresas.map((empresa, ind) => (
-              <tr key={ind}>
-                <td>{empresa.nombreEmpresa}</td>
-                <td>{empresa.correo}</td>
-                <td>{empresa.direccion}</td>
-                <td>{empresa.telefono}</td>
-                <td>{empresa.descripcion}</td>
-                <td>{empresa.rol}</td>
-                <td>{empresa.usuario}</td>
-                <td>
-                  
-
-                  <span className="icon-button" onClick={() => editar(empresa._id)}>
-          <FontAwesomeIcon icon={faEdit} />
-        </span>
-        <span className="icon-button"  onClick={() => prepareDelete(empresa)}>
-          <FontAwesomeIcon icon={faTrash} />
-        </span>
-                </td>
+        <div className="table-responsive">
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Descripción</th>
+                <th>Rol</th>
+                <th>Usuario</th>
+                <th >Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {empresas.map((empresa, ind) => (
+                <tr key={ind}>
+                  <td>{empresa.nombreEmpresa}</td>
+                  <td>{empresa.correo}</td>
+                  <td>{empresa.direccion}</td>
+                  <td>{empresa.telefono}</td>
+                  <td>{empresa.descripcion}</td>
+                  <td>{empresa.rol}</td>
+                  <td >{empresa.usuario}</td>
+                  <td style={{ textAlign: 'center' }}>
+
+
+                    <span className="icon-button" onClick={() => editar(empresa._id)}>
+                      <FontAwesomeIcon className="text-primary mr-2" icon={faEdit} />
+                    </span>
+                    <span className="icon-button" onClick={() => prepareDelete(empresa)}>
+                      <FontAwesomeIcon className="text-danger" icon={faTrash} />
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </div>
-      </div>
-      
+
 
       {/* Modal de eliminación */}
       <Modal isOpen={deleteModal} toggle={toggleDeleteModal} className="modal-danger">
