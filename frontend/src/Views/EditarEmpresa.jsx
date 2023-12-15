@@ -93,27 +93,27 @@ const EditarEmpresa = () => {
                 <Row>
                     <Col md={6}>
                         <Form.Group>
-                        <Form.Label>Nombre de la Empresa</Form.Label>
-                        <div className="input-icon-wrapper">
-                        <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" />
-                            <Form.Control 
-                            type="text" 
-                            placeholder="Ingrese Nombre de la Empresa"
-                            onChange={(e) => setNombreEmpresa(e.target.value)} value={nombreEmpresa} />
-                       
-                        </div>
+                            <Form.Label>Nombre de la Empresa</Form.Label>
+                            <div className="input-icon-wrapper">
+                                <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Ingrese Nombre de la Empresa"
+                                    onChange={(e) => setNombreEmpresa(e.target.value)} value={nombreEmpresa} />
+
+                            </div>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group controlId="formApellido">
                             <Form.Label>Correo Electrónico:</Form.Label>
                             <div className="input-icon-wrapper">
-                            <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" /> {/* Icono de correo */}
+                                <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" /> {/* Icono de correo */}
 
-                            <Form.Control 
-                            type="email" 
-                            className="large-input"
-                            onChange={(e) => setCorreo(e.target.value)} value={correo} />
+                                <Form.Control
+                                    type="email"
+                                    className="large-input"
+                                    onChange={(e) => setCorreo(e.target.value)} value={correo} />
 
                             </div>
                         </Form.Group>
@@ -125,23 +125,23 @@ const EditarEmpresa = () => {
                         <Form.Group controlId="formNombre">
                             <Form.Label> Dirección </Form.Label>
                             <div className="input-icon-wrapper">
-                            <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" /> {/* Icono de dirección */}
-                            <Form.Control 
-                            placeholder="Ingrese su teléfono"
-                            type="text" onChange={(e) => setDireccion(e.target.value)} value={direccion} />
+                                <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" /> {/* Icono de dirección */}
+                                <Form.Control
+                                    placeholder="Ingrese su teléfono"
+                                    type="text" onChange={(e) => setDireccion(e.target.value)} value={direccion} />
 
                             </div>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                         <Form.Group controlId="formTelefono">
-                        <Form.Label>Teléfono:</Form.Label>
+                            <Form.Label>Teléfono:</Form.Label>
 
                             <div className="input-icon-wrapper">
-                            <FontAwesomeIcon icon={faPhone} className="input-icon" />
+                                <FontAwesomeIcon icon={faPhone} className="input-icon" />
 
-                            <Form.Control type="text"
-                            placeholder="Ingrese su teléfono" onChange={handleTelefonoChange} value={telefono} />
+                                <Form.Control type="text"
+                                    placeholder="Ingrese su teléfono" onChange={handleTelefonoChange} value={telefono} />
 
                             </div>
                         </Form.Group>
@@ -150,9 +150,9 @@ const EditarEmpresa = () => {
                         <Form.Group controlId="formUsuario">
                             <Form.Label>Usuario:</Form.Label>
                             <div className="input-icon-wrapper">
-                            <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" /> {/* Icono de usuario */}
+                                <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" /> {/* Icono de usuario */}
 
-                            <Form.Control type="text" onChange={(e) => setUsuario(e.target.value)} value={usuario} />
+                                <Form.Control type="text" onChange={(e) => setUsuario(e.target.value)} value={usuario} />
 
                             </div>
                         </Form.Group>
@@ -161,12 +161,12 @@ const EditarEmpresa = () => {
                         <Form.Group >
                             <Form.Label>Descripción</Form.Label>
                             <div className="input-icon-wrapper">
-                            <Form.Control as="textarea"
-                                rows={4}
-                                placeholder="Ingrese la descripción de la empresa" 
-                                onChange={(e) => setDescripcion(e.target.value)} value={descripcion} />
+                                <Form.Control as="textarea"
+                                    rows={4}
+                                    placeholder="Ingrese la descripción de la empresa"
+                                    onChange={(e) => setDescripcion(e.target.value)} value={descripcion} />
                             </div>
-                            
+
                         </Form.Group>
                     </Col>
                 </Row>
@@ -179,41 +179,41 @@ const EditarEmpresa = () => {
                 <Row>
 
                     <Col md={6}>
-            <Form.Group>
-              <Form.Label>Contraseña </Form.Label>
-              <div className="password-field">
-                <FontAwesomeIcon icon={faLock} className="field-icon" />
-                <Form.Control
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Ingrese nueva Contraseña"
-                  value={password}
-                  onChange={handlePasswrod}
-                  className="password-input" />
-                <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
-                  className="toggle-password-icon"
-                  onClick={() => setShowPassword(!showPassword)} />
-              </div>
-            </Form.Group>
-          </Col>
+                        <Form.Group>
+                            <Form.Label>Contraseña </Form.Label>
+                            <div className="password-field">
+                                <FontAwesomeIcon icon={faLock} className="field-icon" />
+                                <Form.Control
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Ingrese nueva Contraseña"
+                                    value={password}
+                                    onChange={handlePasswrod}
+                                    className="password-input" />
+                                <FontAwesomeIcon
+                                    icon={showPassword ? faEyeSlash : faEye}
+                                    className="toggle-password-icon"
+                                    onClick={() => setShowPassword(!showPassword)} />
+                            </div>
+                        </Form.Group>
+                    </Col>
                     <Col md={6}>
-            <Form.Group>
-              <Form.Label>Confirmar Contraseña</Form.Label>
-              <div className="password-field">
-                <FontAwesomeIcon icon={faLock} className="field-icon" />
-                <Form.Control
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Confirmar Contraseña"
-                  value={confirmPassword}
-                  onChange={handleConfPasswrod}
-                  className="password-input" />
-                <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
-                  className="toggle-password-icon"
-                  onClick={() => setShowPassword(!showPassword)} />
-              </div>
-            </Form.Group>
-          </Col>
+                        <Form.Group>
+                            <Form.Label>Confirmar Contraseña</Form.Label>
+                            <div className="password-field">
+                                <FontAwesomeIcon icon={faLock} className="field-icon" />
+                                <Form.Control
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Confirmar Contraseña"
+                                    value={confirmPassword}
+                                    onChange={handleConfPasswrod}
+                                    className="password-input" />
+                                <FontAwesomeIcon
+                                    icon={showPassword ? faEyeSlash : faEye}
+                                    className="toggle-password-icon"
+                                    onClick={() => setShowPassword(!showPassword)} />
+                            </div>
+                        </Form.Group>
+                    </Col>
 
 
                 </Row>
@@ -225,7 +225,7 @@ const EditarEmpresa = () => {
 
                 <div className="botones-centrados">
                     <Button variant='primary' type="submit" className='btn'>Guardar</Button>
-                    <Button variant='secondary' type="button" className='btn' onClick={e => navigate(`/detalleUsuario/${id}`)}>Cancelar</Button>
+                 
                 </div><br />
             </Form>
         </div>

@@ -50,7 +50,21 @@ function DetalleEmpresa() {
     setShowModalEditar(true);
   };
 
+// Estado para controlar la visibilidad del modal de edición
+const [showEditJobModal, setShowEditJobModal] = useState(false);
+const [currentJobToEdit, setCurrentJobToEdit] = useState(null);
 
+// Función para mostrar el modal de edición
+const handleShowEditJobModal = (job) => {
+  setCurrentJobToEdit(job);
+  setShowEditJobModal(true);
+};
+
+// Función para cerrar el modal de edición
+const handleCloseEditJobModal = () => {
+  setShowEditJobModal(false);
+  setCurrentJobToEdit(null);
+};
   //INFORMACION DE LA EMPRESA
   const recargarInformacionUsuario = () => {
     axios.get(`http://localhost:8000/api/company/${id}`)

@@ -112,14 +112,8 @@ const LoginForm = (props) => {
 
 
         <p style={{ color: 'red' }}>{loginStatus}</p>
-
-        <Link to="/registrarUsuario">
-          Regístrate ahora!
-        </Link>
-
-
-
-
+  <h6>¿Aún no estás registrado?</h6>
+  <Link to="/registrarUsuario">Regístrate ahora!</Link>
       </Form>
     </div>
 

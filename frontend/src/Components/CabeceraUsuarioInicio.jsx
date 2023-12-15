@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import "../Styles/header.scss"; // Importa tus estilos personalizados
 import axios from 'axios';
+import * as constantes from '../Models/Constantes'
 /////quiero poner el id del usuario par auqe no se salga de se
 const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
   return (
     <Navbar bg="light" expand="lg" className="mb-4">
       <Navbar.Brand as={Link} to="/" className="titulo-Chavp">
-        <h2>Empleos ChavezPamba</h2>
+        <h2>{constantes.TEXTO_TITULO}</h2>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

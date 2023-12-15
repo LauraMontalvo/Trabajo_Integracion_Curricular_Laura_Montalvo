@@ -502,14 +502,14 @@ function DetalleUsuario(props) {
                     {experienciaLaboral.length > 0 ? (
                       <ListGroup className="empleos-lista">
                         <h3>Experiencia Laboral</h3>
-                        {experienciaLaboral.map((experiencia) => (
-
-                          <ListGroup.Item className="mt-4 border p-3 position-relative">
+                        {experienciaLaboral.map((experiencia, index) => (
+  <ListGroup.Item key={index} className="mt-4 border p-3 position-relative">
+    {/* ... Contenido del ListGroup.Item ... */}
                             <div className="empleo-detalle">
                               <span><strong>Descripción de Responsabilidades:</strong> {experiencia.descripcionResponsabilidades}</span>
                             </div>
                             <div className="empleo-detalle">
-                              <span><strong>Ámbito Laboral:</strong> {experiencia.ambitoLaboral}</span>
+                              <span><strong>Ámbito Laboral/Departamento:</strong> {experiencia.ambitoLaboral}</span>
                             </div>
                             <div className="empleo-detalle">
                               <span><strong>Empresa en la que trabajó:</strong> {experiencia.empresa}</span>

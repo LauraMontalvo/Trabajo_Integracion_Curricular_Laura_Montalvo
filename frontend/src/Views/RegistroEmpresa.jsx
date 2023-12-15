@@ -1,5 +1,4 @@
 import { useState, useParams } from 'react';
-
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/loginstyle.css'
@@ -10,8 +9,9 @@ import { Form, Button, Modal, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faInfoCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import "../Styles/detalle.scss"
-
+import * as constantes from '../Models/Constantes'
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
     return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />;
@@ -37,20 +37,6 @@ const RegistroEmpresa = (props) => {
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
-
-  const handleSuccessModalShow = () => setShowSuccessModal(true);
-  ////
-  const esCampoValido = (valor, error) => {
-    return valor !== '' && error === '';
-  };
-
-
-  ///////////
-
-
-
-
-
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -71,6 +57,13 @@ const RegistroEmpresa = (props) => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const handleSuccessModalShow = () => setShowSuccessModal(true);
+  ////
+  const esCampoValido = (valor, error) => {
+    return valor !== '' && error === '';
+  };
+
+ 
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
@@ -80,9 +73,9 @@ const RegistroEmpresa = (props) => {
     if (name === 'correo') {
         const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!value) {
-            errorSetter('El correo electrónico es obligatorio');
+            errorSetter(constantes.TEXTO_CORREO_OBLIGATORIO);
         } else if (!regexCorreo.test(value)) {
-            errorSetter('Ingrese un correo electrónico válido');
+            errorSetter(constantes.TEXTO_INGRESE_CORREO_VALIDO);
         } else {
             errorSetter('');
         }
@@ -92,13 +85,13 @@ const RegistroEmpresa = (props) => {
         const regexMayuscula = /[A-Z]/;
         const regexCaracterEspecial = /[^A-Za-z0-9]/;
         if (!value) {
-            errorSetter('La contraseña es obligatoria');
+            errorSetter(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
         } else if (value.length < 8) {
-            errorSetter('La contraseña debe tener al menos 8 caracteres');
+            errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_8_CARACTERES);
         } else if (!regexMayuscula.test(value)) {
-            errorSetter('La contraseña debe contener al menos una letra mayúscula');
+            errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UNA_LETRA_MAYUS);
         } else if (!regexCaracterEspecial.test(value)) {
-            errorSetter('La contraseña debe contener al menos un carácter especial');
+            errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UN_CARACTER_ESPECIAL);
         } else {
             errorSetter('');
         }
@@ -106,7 +99,7 @@ const RegistroEmpresa = (props) => {
     // Validación de la Confirmación de la Contraseña
     else if (name === 'confirmPassword') {
         if (value !== otherValue) {
-            errorSetter('Las contraseñas no coinciden');
+            errorSetter(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
         } else {
             errorSetter('');
         }
@@ -114,7 +107,7 @@ const RegistroEmpresa = (props) => {
     // Validación para otros campos
     else {
         if (!value) {
-            errorSetter('Este campo es obligatorio');
+            errorSetter(constantes.TEXTO_ESTE_CAMPO_ES_OBLIGATORIO);
         } else {
             errorSetter('');
         }
@@ -131,15 +124,91 @@ const handleTelefonoChange = (e) => {
   setTelefono(value);
 
   if (value.length !== 10) {
-      settelefonoError('El número de teléfono debe tener 10 dígitos');
+      settelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
   } else {
       settelefonoError('');
   }
 };
 
+const validarFormularioAntesDeEnviar = () => {
+  let formularioEsValido = true;
+
+  // Validar nombre de la empresa
+  if (!nombreEmpresa) {
+    setNombreEmpresaError(constantes.TEXTO_NOMBRE_EMPRESA_OBLIGATORIO);
+    formularioEsValido = false;
+  } else {
+    setNombreEmpresaError('');
+  }
+
+  // Validar correo
+  const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!correo || !regexCorreo.test(correo)) {
+    setCorreoError(constantes.TEXTO_INGRESE_CORREO_VALIDO);
+    formularioEsValido = false;
+  } else {
+    setCorreoError('');
+  }
+
+  // Validar dirección
+  if (!direccion) {
+    setDireccionError(constantes.TEXTO_DIRECCION_EMPRESA_OBLIGATORIO);
+    formularioEsValido = false;
+  } else {
+    setDireccionError('');
+  }
+
+  // Validar teléfono
+  if (!telefono || telefono.length !== 10) {
+    settelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
+    formularioEsValido = false;
+  } else {
+    settelefonoError('');
+  }
+
+  // Validar descripción
+  if (!descripcion) {
+    setDescripcionError(constantes.TEXTO_DESCRIPCION_EMPRESA_OBLIGATORIO);
+    formularioEsValido = false;
+  } else {
+    setDescripcionError('');
+  }
+
+  // Validar usuario
+  if (!usuario) {
+    setusuarioError(constantes.TEXTO_USUARIO_OBLIGATORIO);
+    formularioEsValido = false;
+  } else {
+    setusuarioError('');
+  }
+
+  // Validar contraseña
+  if (!password) {
+    setPasswordError(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
+    formularioEsValido = false;
+  } else {
+    setPasswordError('');
+  }
+
+  // Validar confirmación de contraseña
+  if (!confirmPassword || confirmPassword !== password) {
+    setConfirmPasswordError(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
+    formularioEsValido = false;
+  } else {
+    setConfirmPasswordError('');
+  }
+
+  return formularioEsValido;
+};
+
+
   const onsubmitHandler = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/company/new', {
+    if (!validarFormularioAntesDeEnviar()) {
+      // Si el formulario no es válido, termina la función aquí
+      return;
+    }
+    axios.post(constantes.URL_EMPRESA_NUEVA, {
       nombreEmpresa, correo, rol, direccion, telefono, descripcion, usuario, password, confirmPassword
     })
       .then((res) => {

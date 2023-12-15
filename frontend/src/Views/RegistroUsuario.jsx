@@ -9,6 +9,7 @@ import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../Components/Cabecera';
+import * as constantes from '../Models/Constantes'
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -22,7 +23,7 @@ const CampoEstado = ({ valido, mensajeError }) => {
 const RegistroUsuario = (props) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
-  const [sexo, setSexo] = useState('');
+  const [sexo, setSexo] = useState(null);
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [telefono, setTelefono] = useState('');
   const [usuario, setUsuario] = useState('');
@@ -63,32 +64,102 @@ const RegistroUsuario = (props) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-
+  const validarFormularioAntesDeEnviar = () => {
+    let formularioEsValido = true;
+  
+    // Validar nombre
+    if (!nombre) {
+      setNombreError(constantes.TEXTO_NOMBRE_USUARIO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setNombreError('');
+    }
+  
+    // Validar apellido
+    if (!apellido) {
+      setApellidoError(constantes.TEXTO_APELLIDO_USUARIO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setApellidoError('');
+    }
+  
+    // Validar sexo
+    if (!sexo || sexo === ' ') {
+      setSexoError(constantes.TEXTO_SELECCIONAR_GENERO);
+      formularioEsValido = false;
+    } else {
+      setSexoError('');
+    }
+  
+    // Validar fecha de nacimiento
+    if (!fechaNacimiento) {
+      setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setFechaNacimientoError('');
+    }
+  
+    // Validar teléfono
+    if (!telefono || telefono.length !== 10) { // Asumiendo que el teléfono debe tener 10 dígitos
+      setTelefonoError(constantes.TEXTO_NUMERO_TELEFONOOBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setTelefonoError('');
+    }
+  
+    // Validar usuario
+    if (!usuario) {
+      setUsuarioError(constantes.TEXTO_USUARIO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setUsuarioError('');
+    }
+  
+    // Validar contraseña
+    if (!password) {
+      setPasswordError(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setPasswordError('');
+    }
+  
+    // Validar confirmación de contraseña
+    if (!confirmPassword || confirmPassword !== password) {
+      setConfirmPasswordError(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
+      formularioEsValido = false;
+    } else {
+      setConfirmPasswordError('');
+    }
+  
+    return formularioEsValido;
+  };
+  
 
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
     setterFunction(value);
     if (name === 'sexo') {
-      if (!value || value === " ") {
-        errorSetter('Debe seleccionar un género');
+      if (!value || value === ' ') {
+        errorSetter(constantes.TEXTO_SELECCIONAR_GENERO);
       } else {
         errorSetter('');
       }
     }
-
+    // ... Lógica para otros campos ...
+    setterFunction(value);
     // Validación de la Contraseña
    if (name === 'password') {
       const regexMayuscula = /[A-Z]/;
       const regexCaracterEspecial = /[^A-Za-z0-9]/;
       if (!value) {
-        errorSetter('La contraseña es obligatoria');
+        errorSetter(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
       } else if (value.length < 8) {
-        errorSetter('La contraseña debe tener al menos 8 caracteres');
+        errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_8_CARACTERES);
       } else if (!regexMayuscula.test(value)) {
-        errorSetter('La contraseña debe contener al menos una letra mayúscula');
+        errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UNA_LETRA_MAYUS);
       } else if (!regexCaracterEspecial.test(value)) {
-        errorSetter('La contraseña debe contener al menos un carácter especial');
+        errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UN_CARACTER_ESPECIAL);
       } else {
         errorSetter('');
       }
@@ -97,7 +168,7 @@ const RegistroUsuario = (props) => {
     else if (name === 'confirmPassword') {
       if (value !== otherValue) {
         console.log(value)
-        errorSetter('Las contraseñas no coinciden');
+        errorSetter(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
       } else {
         errorSetter('');
       }
@@ -105,7 +176,7 @@ const RegistroUsuario = (props) => {
     // Validación para otros campos
     else {
       if (!value) {
-        errorSetter('Este campo es obligatorio');
+        errorSetter(constantes.TEXTO_ESTE_CAMPO_ES_OBLIGATORIO);
       } else {
         errorSetter('');
       }
@@ -124,7 +195,7 @@ const RegistroUsuario = (props) => {
     setTelefono(value);
 
     if (value.length !== 10) {
-      setTelefonoError('El número de teléfono debe tener 10 dígitos');
+      setTelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
     } else {
       setTelefonoError('');
     }
@@ -139,8 +210,13 @@ const RegistroUsuario = (props) => {
 
   const onsubmitHandler = (e) => {
     e.preventDefault();
+     // Validar formulario
+  if (!validarFormularioAntesDeEnviar()) {
+    // Si el formulario no es válido, termina la función aquí
+    return;
+  }
     axios
-      .post('http://localhost:8000/api/user/new', {
+      .post(constantes.URL_USUARIO_NUEVO, {
         nombre,
         apellido,
         rol: 'Usuario',
@@ -177,7 +253,7 @@ const RegistroUsuario = (props) => {
         console.log(err)
         const errorResponse = err.response.data.errors;
 
-        if (err.response.data.msg === "Usuario existe") {
+        if (err.response.data.msg === constantes.TEXTO_USUARIO_EXISTE) {
           handleErrorModalShow();
           setPassword('');
           setConfirmPassword('');
@@ -228,25 +304,25 @@ const RegistroUsuario = (props) => {
           </Col>
 
           <Col md={6}>
-            <Form.Group>
-              <Form.Label>Género</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
-                <Form.Control as="select"
-                  onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
-                  value={sexo}
-                  name="sexo"
-                  className="input-with-icon">
-                  <option value=" "> --Seleccione el género--</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
-                </Form.Control>
-                <CampoEstado valido={esCampoValido(sexo, sexoError)} mensajeError={sexoError} />
+  <Form.Group>
+    <Form.Label>Género</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
+      <Form.Control as="select"
+        onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
+        value={sexo || ' '}
+        name="sexo"
+        className="input-with-icon">
+        <option value=' '> --Seleccione el género--</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Femenino">Femenino</option>
+      </Form.Control>
+      <CampoEstado valido={sexo !== ' ' && sexoError === ''} mensajeError={sexoError} />
+    </div>
+    {sexoError && <p className="text-danger">{sexoError}</p>}
+  </Form.Group>
+</Col>
 
-              </div>
-              {sexoError && <p className="text-danger">{sexoError}</p>}
-            </Form.Group>
-          </Col>
           <Col md={6}>
             <Form.Group>
               <Form.Label>Fecha de Nacimiento</Form.Label>
