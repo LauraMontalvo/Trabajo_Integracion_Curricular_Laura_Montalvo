@@ -51,40 +51,40 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
     setterFunction(value);
 
     if (validationFunction) {
-        validationFunction(value, errorSetter);
+      validationFunction(value, errorSetter);
     }
-};
-const validateDescripcion = (value, setError) => {
-  if (!value.trim()) {
+  };
+  const validateDescripcion = (value, setError) => {
+    if (!value.trim()) {
       setError('La descripción del empleo es obligatoria');
-  } else {
+    } else {
       setError('');
-  }
-};
+    }
+  };
 
-const validateConocimientos= (value, setError) => {
-  if (!value.trim()) {
+  const validateConocimientos = (value, setError) => {
+    if (!value.trim()) {
       setError('Conocimientos es obligatorio');
-  } else {
+    } else {
       setError('');
-  }
-};
-const validateAptitudes= (value, setError) => {
-  if (!value.trim()) {
+    }
+  };
+  const validateAptitudes = (value, setError) => {
+    if (!value.trim()) {
       setError('Aptitudes es obligatorio');
-  } else {
+    } else {
       setError('');
-  }
-};
-const validateNumeroVacantes = (value, setError) => {
-  if (!value.trim()) {
+    }
+  };
+  const validateNumeroVacantes = (value, setError) => {
+    if (!value.trim()) {
       setError('El número de vacantes es obligatorio');
-  } else if (isNaN(value) || parseInt(value) <= 0) {
+    } else if (isNaN(value) || parseInt(value) <= 0) {
       setError('Debe ingresar un número válido de vacantes');
-  } else {
+    } else {
       setError('');
-  }
-};
+    }
+  };
 
 
   const validarFormularioAntesDeEnviar = () => {
@@ -161,7 +161,7 @@ const validateNumeroVacantes = (value, setError) => {
       })
       .catch((err) => {
         console.error(err);
-        
+
 
       });
   };
@@ -175,12 +175,12 @@ const validateNumeroVacantes = (value, setError) => {
             <div className="input-icon-wrapper">
               <FontAwesomeIcon icon={faFileAlt} className="input-icon" />
               <Form.Control
-    type="text"
-    placeholder="Ingrese la descripción del empleo"
-    value={descripcion}
-    onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError, validateDescripcion)}
-/>
-<CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
+                type="text"
+                placeholder="Ingrese la descripción del empleo"
+                value={descripcion}
+                onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError, validateDescripcion)}
+              />
+              <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
 
 
             </div>
@@ -199,7 +199,6 @@ const validateNumeroVacantes = (value, setError) => {
                 onChange={(e) => handleInputChange(e, setConocimientos, setConocimientosError, validateConocimientos)}
               />
               <CampoEstado valido={esCampoValido(conocimientos, conocimientosError)} mensajeError={conocimientosError} />
-
             </div>
             {conocimientosError && <p className="text-danger">{conocimientosError}</p>}
           </Form.Group>

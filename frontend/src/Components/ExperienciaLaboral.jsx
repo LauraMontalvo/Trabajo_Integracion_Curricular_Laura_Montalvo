@@ -109,7 +109,7 @@ const ExperieciaLaboral = (props) => {
 
       });
   };
-
+  
   return (
     <Form onSubmit={handleSubmit} className="mi-formulario">
     {error && <Alert variant="danger">{error}</Alert>}

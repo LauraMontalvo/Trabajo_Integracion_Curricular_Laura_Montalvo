@@ -1,10 +1,16 @@
 $estilo-letra: 'Century Gothic', sans-serif;
 $tamaño-letra: 15px;
 $tamaño-letra-modal: 50px;
-
+$tamaño-letra-modalbody: 18px;
 .tituloModal {
   font-family: $estilo-letra;
   font-size: $tamaño-letra-modal;
+
+}
+
+.tituloModalBody {
+  font-family: $estilo-letra;
+  font-size: $tamaño-letra-modalbody;
 
 }
 

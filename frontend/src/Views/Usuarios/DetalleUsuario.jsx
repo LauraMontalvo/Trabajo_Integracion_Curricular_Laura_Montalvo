@@ -12,9 +12,9 @@ import EditarUsuario from '../EditarUsuario.jsx';
 import "../../Styles/loginstyle.css"
 import "../../Styles/detalle.scss"
 import ExperieciaLaboral from '../../Components/ExperienciaLaboral.jsx';
-import CabeceraRegistrar from '../../Components/CabeceraRegistrar.jsx';
-import CabeceraUsuarioInicio from '../../Components/CabeceraUsuarioInicio.jsx';
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicio.jsx';
 import Select from 'react-select/creatable';
+import EditarExperienciaLaboral from '../../Components/EditarExperienciaLaboralComp.jsx';
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -47,7 +47,91 @@ function DetalleUsuario(props) {
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [instituciones, setInstituciones] = useState([]);
   const [experienciaLaboral, setexperienciaLaboral] = useState([]);
+  const [institucionSeleccionada, setInstitucionSeleccionada] = useState(null);
+  ///
+  const [tituloObtenidoError, setTituloObtenidoError] = useState('');
+  const [institucionError, setInstitucionError] = useState('');
+  const [fechaInicioError, setFechaInicioError] = useState('');
+  const [fechaFinError, setFechaFinError] = useState('');
+  // ... otros estados ...
+  const [showEditExperienceModal, setShowEditExperienceModal] = useState(false);
+  const [editingExperienceId, setEditingExperienceId] = useState(null);
 
+  ///
+
+  //Eliminar exoe laboral
+  const [showDeleteExperienceModal, setShowDeleteExperienceModal] = useState(false);
+  const [deleteExperienceId, setDeleteExperienceId] = useState(null);
+
+  const handleShowDeleteExperienceModal = (id) => {
+    setDeleteExperienceId(id);
+    setShowDeleteExperienceModal(true);
+  };
+  const handleCloseDeleteExperienceModal = () => {
+    setShowDeleteExperienceModal(false);
+    setDeleteExperienceId(null);
+  };
+  const confirmDeleteExperience = async () => {
+    if (deleteExperienceId) {
+      try {
+        await axios.delete(`http://localhost:8000/api/workExperience/${deleteExperienceId}`);
+        // Aquí actualizarías el estado para reflejar la eliminación
+        cargarExperienciaLaboral(); // Suponiendo que esta función recarga la experiencia laboral
+        handleCloseDeleteExperienceModal();
+      } catch (error) {
+        console.error('Error al eliminar experiencia laboral', error);
+      }
+    }
+  };
+
+  const handleEditExperienceClick = (experienceId) => {
+    setEditingExperienceId(experienceId);
+    setShowEditExperienceModal(true);
+  };
+
+  //
+  const validarTituloObtenido = () => {
+    if (!tituloObtenido.trim()) {
+      setTituloObtenidoError('El título obtenido es obligatorio.');
+      return false;
+    }
+    setTituloObtenidoError('');
+    return true;
+  };
+
+  const validarFechas = () => {
+    let valido = true;
+    if (!fechaInicio) {
+      setFechaInicioError('La fecha de inicio es obligatoria.');
+      valido = false;
+    } else {
+      setFechaInicioError('');
+    }
+
+    if (!fechaFin) {
+      setFechaFinError('La fecha de fin es obligatoria.');
+      valido = false;
+    } else if (fechaFin < fechaInicio) {
+      setFechaFinError('La fecha de fin no puede ser anterior a la fecha de inicio.');
+      valido = false;
+    } else {
+      setFechaFinError('');
+    }
+
+    return valido;
+  };
+  const validarInstitucion = () => {
+    if (!institucion || !institucion.value) {
+      setInstitucionError('La selección de una institución es obligatoria.');
+      return false;
+    }
+    setInstitucionError('');
+    return true;
+  };
+
+  // ... validaciones adicionales si son necesarias ...
+
+  //
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
   };
@@ -102,6 +186,11 @@ function DetalleUsuario(props) {
       .catch((err) => console.log(err));
   };
 
+  function toShortDateFormat(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+}
+
   const cargarExperienciaLaboral = () => {
     axios.get(`http://localhost:8000/api/workExperiences/user/${id}`)
       .then((res) => {
@@ -116,23 +205,7 @@ function DetalleUsuario(props) {
       .then((res) => {
         setUser({ ...res.data });
 
-        const fechaNac = new Date(res.data.fechaNacimiento);
-        const hoy = new Date();
-        const edadCalculada = hoy.getFullYear() - fechaNac.getFullYear();
 
-        // Ajusta la edad si aún no ha llegado el cumpleaños
-        if (
-          hoy.getMonth() < fechaNac.getMonth() ||
-          (hoy.getMonth() === fechaNac.getMonth() && hoy.getDate() < fechaNac.getDate())
-        ) {
-          setEdad(edadCalculada - 1);
-        } else {
-          setEdad(edadCalculada);
-        }
-
-        // Resto del código...
-
-        // Llama a recargarInformacionUsuario aquí después de obtener la fecha de nacimiento
         recargarInformacionUsuario();
       })
       .catch((err) => console.log(err));
@@ -180,10 +253,13 @@ function DetalleUsuario(props) {
       const selectedAcadTraining = acadTraining.find((item) => item._id === acadTrainingId);
 
       if (selectedAcadTraining) {
+        console.log(selectedAcadTraining)
+        console.log(instituciones)
         // Establecer los estados con los valores de la formación académica seleccionada.
+        setInstitucionSeleccionada(selectedAcadTraining.idInstitucion)
         setTituloObtenido(selectedAcadTraining.tituloObtenido);
-        setFechaInicio(selectedAcadTraining.fechaInicio);
-        setFechaFin(selectedAcadTraining.fechaFin);
+        setFechaInicio(toShortDateFormat(selectedAcadTraining.fechaInicio));
+        setFechaFin(toShortDateFormat(selectedAcadTraining.fechaFin));
         setEditingAcadTrainingId(acadTrainingId); // Guarda el ID para uso en la edición
       }
     } else {
@@ -202,26 +278,30 @@ function DetalleUsuario(props) {
     setTituloObtenido('');
     setFechaInicio('');
     setFechaFin('');
+    setInstitucion('')
   };
 
   const handleInstitucion = (institucionCarga) => {
     console.log(institucion)
     setInstitucion(institucionCarga);
+    setInstitucionSeleccionada(null);
     console.log(institucion)
   }
 
   const cargaInstitucion = (institucionCarga) => {
-    console.log(institucion)
     setInstitucion(institucionCarga);
-    setInstitucion(institucionCarga);
-    console.log(institucion)
-  }
-
-  const creaAcademia = async (datos) => {
-
   }
 
   const handleAddAcadTraining = async () => {
+    const esTituloValido = validarTituloObtenido();
+    const sonFechasValidas = validarFechas();
+    const esInstitucionValida = validarInstitucion();
+
+    if (!esTituloValido || !sonFechasValidas || !esInstitucionValida) {
+      // No continuar si hay errores
+      return;
+    }
+
     try {
       let esNuevaInstitucion = false;
       let institucionCarga;
@@ -244,6 +324,7 @@ function DetalleUsuario(props) {
         // Si editingAcadTrainingId está definido, significa que estamos editando
         await axios.put(`http://localhost:8000/api/acadTraining/${editingAcadTrainingId}`, {
           tituloObtenido,
+          idInstitucion: esNuevaInstitucion ? institucionCarga.value : institucion.value, 
           fechaInicio,
           fechaFin,
         });
@@ -340,16 +421,11 @@ function DetalleUsuario(props) {
                   <FontAwesomeIcon icon={faEdit} className="edit-icon" onClick={handleShowEditUserModal} style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '1.5em', cursor: 'pointer' }} />
                   <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
                     <Modal.Header closeButton>
-                      <Modal.Title className='tituloModal' >Editar Usuario</Modal.Title>
+                      <Modal.Title className='tituloModal'>Editar Usuario</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <EditarUsuario onActualizar={recargarInformacionUsuario} />
+                      <EditarUsuario id={id} onUsuarioUpdated={recargarInformacionUsuario} closeEditModal={() => setShowEditUserModal(false)} />
                     </Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleCloseEditUserModal}>
-                        Cerrar
-                      </Button>
-                    </Modal.Footer>
                   </Modal>
                 </ListGroup>
 
@@ -434,11 +510,12 @@ function DetalleUsuario(props) {
                                 className="input-with-icon" />
                               {/* Agrega aquí validaciones o mensajes de error si es necesario */}
                             </div>
-                          </Form.Group>
-                          <Form.Group >
-                            <Form.Label>Institucion</Form.Label>
-                            <div className="input-icon-wrapper-select">
+                            {tituloObtenidoError && <p className="text-danger">{tituloObtenidoError}</p>}
 
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Institución</Form.Label>
+                            <div className="input-icon-wrapper-select">
                               <Select
                                 isCreatable
                                 onChange={handleInstitucion}
@@ -446,10 +523,18 @@ function DetalleUsuario(props) {
                                   label: institucion.nombreInstitucion,
                                   value: institucion._id
                                 }))}
-                                value={institucion}
+                                value={
+                                  editingAcadTrainingId && institucionSeleccionada
+                                    ? {label: institucionSeleccionada.nombreInstitucion,
+                                    value: institucionSeleccionada._id} : institucion
+                                }
+                                placeholder="Seleccionar institución" // Placeholder añadido aquí
+                                formatCreateLabel={(inputValue) => `Crear "${inputValue}"`}
                               />
                             </div>
+                            {institucionError && <p className="text-danger">{institucionError}</p>}
                           </Form.Group>
+
                           <Row>
                             <Col md={6}>
                               <Form.Group>
@@ -463,7 +548,8 @@ function DetalleUsuario(props) {
                                     className="input-with-icon" />
                                   {/* Validaciones o mensajes de error */}
                                 </div>
-                                {/* Mensaje de error para fecha de inicio */}
+                                {fechaInicioError && <p className="text-danger">{fechaInicioError}</p>}
+
                               </Form.Group>
                             </Col>
                             <Col md={6}>
@@ -478,18 +564,40 @@ function DetalleUsuario(props) {
                                     className="input-with-icon" />
                                   {/* Validaciones o mensajes de error */}
                                 </div>
+                                {fechaFinError && <p className="text-danger">{fechaFinError}</p>}
+
                                 {/* Mensaje de error para fecha de fin */}
+
                               </Form.Group>
+
+
                             </Col>
                           </Row>
+                          <div className='botones-centrados' >
+                            <Button variant="secondary" onClick={handleCloseAcadTrainingModal}>
+                              Cerrar
+                            </Button>
+                            <Button variant="primary" onClick={handleAddAcadTraining}>
+                              {editingAcadTrainingId ? 'Guardar Cambios' : 'Agregar'}
+                            </Button>
+                          </div>
                         </Form>
                       </Modal.Body>
+
+                    </Modal>
+                    <Modal >
+                      <Modal.Header closeButton>
+                        <Modal.Title>Confirmar Eliminación</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        ¿Estás seguro de que deseas eliminar esta formación académica?
+                      </Modal.Body>
                       <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseAcadTrainingModal}>
-                          Cerrar
+                        <Button variant="secondary" >
+                          Cancelar
                         </Button>
-                        <Button variant="primary" onClick={handleAddAcadTraining}>
-                          {editingAcadTrainingId ? 'Guardar Cambios' : 'Agregar'}
+                        <Button variant="danger" >
+                          Eliminar
                         </Button>
                       </Modal.Footer>
                     </Modal>
@@ -503,8 +611,8 @@ function DetalleUsuario(props) {
                       <ListGroup className="empleos-lista">
                         <h3>Experiencia Laboral</h3>
                         {experienciaLaboral.map((experiencia, index) => (
-  <ListGroup.Item key={index} className="mt-4 border p-3 position-relative">
-    {/* ... Contenido del ListGroup.Item ... */}
+                          <ListGroup.Item key={index} className="mt-4 border p-3 position-relative">
+                            {/* ... Contenido del ListGroup.Item ... */}
                             <div className="empleo-detalle">
                               <span><strong>Descripción de Responsabilidades:</strong> {experiencia.descripcionResponsabilidades}</span>
                             </div>
@@ -520,43 +628,55 @@ function DetalleUsuario(props) {
                             <div className="empleo-detalle">
                               <span><strong>Fecha de fin:</strong> {formatDate(experiencia.fechaFin)}</span>
                             </div>
+                            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                              <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
+                                onClick={() => handleEditExperienceClick(experiencia._id)}
+                              />
+                              <FontAwesomeIcon
+                                icon={faTrashAlt}
+                                className="text-danger"
+                                style={{ cursor: 'pointer', fontSize: '1.5em' }}
+                                onClick={() => handleShowDeleteExperienceModal(experiencia._id)}
+                              />
+                            </div>
 
-                            <Button
-                              variant="primary"
-                            >
-                              Editar
-                            </Button>
-                            <Button
-                              variant="danger"
-                            >
-                              Eliminar
-                            </Button>
-                            <Modal >
-                              <Modal.Header closeButton>
-                                <Modal.Title>Confirmar Eliminación</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                ¿Estás seguro de que deseas eliminar esta formación académica?
-                              </Modal.Body>
-                              <Modal.Footer>
-                                <Button variant="secondary" >
-                                  Cancelar
-                                </Button>
-                                <Button variant="danger" >
-                                  Eliminar
-                                </Button>
-                              </Modal.Footer>
-                            </Modal>
+
                           </ListGroup.Item>
                         ))}
                       </ListGroup>
                     ) : (
-                      <p>No hay empleos publicados actualmente.</p>
+                      <p>No hay experiencia laboral publicada actualmente.</p>
                     )}
                     {/* ... Contenido de experiencia laboral ... */}
+                    {/* Modal para editar experiencia laboral */}
+                    <Modal show={showEditExperienceModal} onHide={() => setShowEditExperienceModal(false)}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Editar Experiencia Laboral</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        {editingExperienceId && <EditarExperienciaLaboral idExperiencia={editingExperienceId} onExperienciaEdited={cargarExperienciaLaboral}
+                          closeEditModal={() => setShowEditExperienceModal(false)} />}
+                      </Modal.Body>
+
+                    </Modal>
+                    <Modal show={showDeleteExperienceModal} onHide={handleCloseDeleteExperienceModal}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Confirmar Eliminación</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        ¿Estás seguro de que deseas eliminar esta experiencia laboral?
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseDeleteExperienceModal}>
+                          Cancelar
+                        </Button>
+                        <Button variant="danger" onClick={confirmDeleteExperience}>
+                          Eliminar
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                     <div className='botones-centrados'>
                       <Button variant="primary" onClick={() => showExperienceForm()}>Agregar Experiencia Laboral</Button>
-
                     </div>
                     <Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)}>
                       <Modal.Header closeButton>
@@ -565,13 +685,9 @@ function DetalleUsuario(props) {
                       <Modal.Body>
                         <ExperieciaLaboral idUsuario={id} onExperienciaAdded={cargarExperienciaLaboral} />
                       </Modal.Body>
-                      <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowExperienceModal(false)}>
-                          Cerrar
-                        </Button>
-                        {/* Agrega un botón para guardar la experiencia laboral aquí */}
-                      </Modal.Footer>
+
                     </Modal>
+
                   </Card.Body>
                 </Card>
               </Tab>

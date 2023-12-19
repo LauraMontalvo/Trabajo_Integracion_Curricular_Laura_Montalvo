@@ -17,7 +17,7 @@ const CampoEstado = ({ valido, mensajeError }) => {
   } else if (valido) {
     return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />;
   } else {
-    return null; // No muestra nada si el campo aún no ha sido validado
+    return null; 
   }
 };
 const RegistroUsuario = (props) => {

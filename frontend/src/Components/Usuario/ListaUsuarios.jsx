@@ -3,10 +3,12 @@ import axios from "axios";
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { FaTrash } from "react-icons/fa"; // Importa el icono de Font Awesome
 import 'bootstrap/dist/css/bootstrap.css';
-import Cabecera from "./Cabecera";
-import TabsAdministracionComp from "./Administracion/TabsAdministracionComp";
+import Cabecera from "../Cabecera";
+import TabsAdministracionComp from "../Administracion/TabsAdministracionComp";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as constantes from '../../Models/Constantes'
+
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -14,7 +16,7 @@ const ListaUsuarios = () => {
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/users')
+    axios.get(constantes.URL_OBTENER_USUARIOS)
       .then(res => {
         setUsuarios(res.data.sort((a, b) => a.nombre.localeCompare(b.nombre)))
       })

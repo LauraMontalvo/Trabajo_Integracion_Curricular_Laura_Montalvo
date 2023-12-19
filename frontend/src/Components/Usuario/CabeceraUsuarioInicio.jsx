@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"; // Importa useEffect desde react
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import "../Styles/header.scss"; // Importa tus estilos personalizados
+import "../../Styles/header.scss"; // Importa tus estilos personalizados
 import axios from 'axios';
-import * as constantes from '../Models/Constantes'
+import * as constantes from '../../Models/Constantes'
 /////quiero poner el id del usuario par auqe no se salga de se
 const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
   const navigate = useNavigate();

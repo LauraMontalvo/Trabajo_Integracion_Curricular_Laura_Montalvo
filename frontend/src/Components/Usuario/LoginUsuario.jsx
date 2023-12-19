@@ -4,15 +4,15 @@ import { Button } from 'reactstrap';
 
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
-import "../Styles/loginstyle.css"
-
+import "../../Styles/loginstyle.css"
 import { Link, useNavigate } from 'react-router-dom';
-import logofondo from "../img/logofondo.png";
+
+import logofondo from "../../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
-import * as constantes from '../Models/Constantes'
+import * as constantes from '../../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
-import Cabecera from './Cabecera';
+import Cabecera from '../Cabecera';
 
 const LoginForm = (props) => {
   const [password, setPassword] = useState("");

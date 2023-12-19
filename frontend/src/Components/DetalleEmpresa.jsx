@@ -12,8 +12,9 @@ import "../Styles/detalle.scss"
 import Cabecera from './Cabecera';
 import CabeceraRegistrar from './CabeceraRegistrar';
 import PublicarEmpleo from '../Views/PublicarEmpleo';
+import EditarEmpleoComp from './Empresa/EditarEmpleoComp';
 
-function DetalleEmpresa() {
+function DetalleEmpresa(props) {
   const { id } = useParams();
   const [empresa, setEmpresa] = useState({});
   const [newImageUrl, setNewImageUrl] = useState('');
@@ -30,8 +31,20 @@ function DetalleEmpresa() {
   ///PUBLICAR  , ELIMINAR Y EDITAR EMPLEO:
   const [empleoAEliminar, setEmpleoAEliminar] = useState(null);
   const [showModalEliminar, setShowModalEliminar] = useState(false);
-  const [empleoAEditar, setEmpleoAEditar] = useState(null);
-  const [showModalEditar, setShowModalEditar] = useState(false);
+  ///
+  ///
+  // ... otros estados ...
+  const [showEditEmpleoModal, setShowEditEmpleoModal] = useState(false);
+  const [editingEmpleoId, setEditingEmpleoId] = useState(null);
+  const [empleoid, setempleoid] = useState([]);
+
+
+
+  //
+  const handleEditEmpleoClick = (experienceId) => {
+    setEditingEmpleoId(experienceId);
+    setShowEditEmpleoModal(true);
+  };
 
   const handleShowModalEliminar = (empleoId) => {
     setEmpleoAEliminar(empleoId);
@@ -45,42 +58,18 @@ function DetalleEmpresa() {
       })
       .catch(err => console.error(err));
   };
-  const handleShowModalEditar = (empleo) => {
-    setEmpleoAEditar(empleo);
-    setShowModalEditar(true);
-  };
 
-// Estado para controlar la visibilidad del modal de edición
-const [showEditJobModal, setShowEditJobModal] = useState(false);
-const [currentJobToEdit, setCurrentJobToEdit] = useState(null);
 
-// Función para mostrar el modal de edición
-const handleShowEditJobModal = (job) => {
-  setCurrentJobToEdit(job);
-  setShowEditJobModal(true);
-};
 
-// Función para cerrar el modal de edición
-const handleCloseEditJobModal = () => {
-  setShowEditJobModal(false);
-  setCurrentJobToEdit(null);
-};
   //INFORMACION DE LA EMPRESA
-  const recargarInformacionUsuario = () => {
+  const recargarInformacionEmpresa = () => {
     axios.get(`http://localhost:8000/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
-
       })
       .catch((err) => console.log(err));
   };
-  const cargarEmpleos = () => {
-    axios.get(`http://localhost:8000/api/jobs/company/${id}`)
-      .then((res) => {
-        setEmpleos(res.data);
-      })
-      .catch((err) => console.error(err));
-  };
+
 
   const actualizarListaEmpleos = (nuevoEmpleo) => {
     setEmpleos([...empleos, nuevoEmpleo]);
@@ -91,11 +80,17 @@ const handleCloseEditJobModal = () => {
       .get(`http://localhost:8000/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
-        recargarInformacionUsuario();
-        console.log(empresa); // Añadir esta línea
+        recargarInformacionEmpresa();
         cargarEmpleos();
       })
       .catch((err) => console.error(err));
+    axios.get(`http://localhost:8000/api/job/${id}`)
+      .then((res) => {
+        setempleoid(res.data);
+      })
+      .catch((err) => console.log(err));
+
+    cargarEmpleoid();
   }, [id]);
 
   const handleEditClick = () => {
@@ -116,6 +111,31 @@ const handleCloseEditJobModal = () => {
   const handleCancelClick = () => {
     setIsEditing(false);
     setNewImageUrl('');
+  };
+  const cargarEmpleos = () => {
+    axios.get(`http://localhost:8000/api/jobs/company/${id}`)
+      .then((res) => {
+        setEmpleos(res.data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const cargarEmpleoid = () => {
+    axios.get(`http://localhost:8000/api/job/${id}`)
+      .then((res) => {
+        setempleoid(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const onEmpleoEditado = (empleoEditado) => {
+    // Actualizar la lista de empleos con la información del empleo editado
+    const empleosActualizados = empleos.map(empleo => {
+      if (empleo._id === empleoEditado._id) {
+        return empleoEditado;
+      }
+      return empleo;
+    });
+    setEmpleos(empleosActualizados);
   };
 
   return (
@@ -172,13 +192,9 @@ const handleCloseEditJobModal = () => {
                       <Modal.Title className='tituloModal'>Editar Empresa</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <EditarEmpresa onActualizar={recargarInformacionUsuario} />
+                      <EditarEmpresa id={id} onEmpresaUpdated={recargarInformacionEmpresa} closeEditModal={() => setShowEditUserModal(false)}
+                      />
                     </Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleCloseEditUserModal}>
-                        Cerrar
-                      </Button>
-                    </Modal.Footer>
                   </Modal>
                 </ListGroup>
 
@@ -203,27 +219,23 @@ const handleCloseEditJobModal = () => {
                         <h3>Empleos publicados</h3>
                         {empleos.map((empleo) => (
                           <ListGroup.Item key={empleo._id} className="mt-4 border p-3 position-relative">
-                          <div className="empleo-detalle">
-                            <span><strong>Descripción del Empleo:</strong> {empleo.descripcion}</span>
-                          </div>
-                          <div className="empleo-detalle">
-                            <span><strong>Conocimientos Requeridos:</strong> {empleo.conocimientos}</span>
-                          </div>
-                          <div className="empleo-detalle">
-                            <span><strong>Aptitudes Necesarias:</strong> {empleo.aptitudes}</span>
-                          </div>
-                          <div className="empleo-detalle">
-                            <span><strong>Número de Vacantes:</strong> {empleo.numeroVacantes}</span>
-                          </div>
-                         <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-                           <FontAwesomeIcon icon={faEdit} onClick={() => handleShowModalEditar(empleo)} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }} />
-                           <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleShowModalEliminar(empleo._id)} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }} />
-                         </div>
-                            <Modal show={showModalEditar} onHide={() => setShowModalEditar(false)}>
-                              {/* ... Contenido del Modal de Edición ... */}
-                            </Modal>
-
-
+                            <div className="empleo-detalle">
+                              <span><strong>Descripción del Empleo:</strong> {empleo.descripcion}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Conocimientos Requeridos:</strong> {empleo.conocimientos}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Aptitudes Necesarias:</strong> {empleo.aptitudes}</span>
+                            </div>
+                            <div className="empleo-detalle">
+                              <span><strong>Número de Vacantes:</strong> {empleo.numeroVacantes}</span>
+                            </div>
+                            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                              <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
+                                onClick={() => handleEditEmpleoClick(empleo._id)}
+                              />                              <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleShowModalEliminar(empleo._id)} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }} />
+                            </div>
                             <Modal show={showModalEliminar} onHide={() => setShowModalEliminar(false)}>
                               <Modal.Header closeButton>
                                 <Modal.Title>Confirmar Eliminación</Modal.Title>
@@ -246,6 +258,7 @@ const handleCloseEditJobModal = () => {
                     ) : (
                       <p>No hay empleos publicados actualmente.</p>
                     )}
+
                     <div className='botones-centrados'>
                       <Button variant="primary" onClick={() => setShowPublicarEmpleoModal(true)}>
                         Publicar Empleo
@@ -261,6 +274,19 @@ const handleCloseEditJobModal = () => {
                         <PublicarEmpleo idEmpresa={id} onEmpleoPublicado={actualizarListaEmpleos} />
                       </Modal.Body>
                     </Modal>
+                    {/* Modal para Editar Empleo */}
+
+                    <Modal show={showEditEmpleoModal} onHide={() => setShowEditEmpleoModal(false)} size="lg">
+                      <Modal.Header closeButton>
+                        <Modal.Title>Editar Empleo</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        {editingEmpleoId && <EditarEmpleoComp idEmpleo={editingEmpleoId}
+                          onEmpleoEditado={onEmpleoEditado} closeEditModal={() => setShowEditEmpleoModal(false)} />}
+                      </Modal.Body>
+
+                    </Modal>
+
                   </Card.Body>
                 </Card>
               </Tab>

@@ -3,6 +3,11 @@
   font-size: 50px;
 }
 
+.tituloModalBody {
+  font-family: "Century Gothic", sans-serif;
+  font-size: 18px;
+}
+
 .container {
   font-family: "Century Gothic", sans-serif;
   font-size: 15px;

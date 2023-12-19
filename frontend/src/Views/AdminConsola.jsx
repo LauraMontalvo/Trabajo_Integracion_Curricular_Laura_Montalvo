@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
-import ListaUsuarios from "../Components/ListaUsuarios";
+import ListaUsuarios from "../Components/Usuario/ListaUsuarios";
 import { FaBuilding, FaUser } from "react-icons/fa"; // Importa iconos de Font Awesome
 import "../Styles/header.css"
 import * as constantes from "../Models/Constantes";

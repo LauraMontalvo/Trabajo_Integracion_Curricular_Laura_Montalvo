@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { faUser, faLock, faInfoCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCheckCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const EditarEmpresa = () => {
+const EditarEmpresa = ({ id, onEmpresaUpdated,closeEditModal  }) => {
     const [nombreEmpresa, setNombreEmpresa] = useState("");
     const [correo, setCorreo] = useState("");
     const [direccion, setDireccion] = useState("");
@@ -19,7 +19,17 @@ const EditarEmpresa = () => {
     const navigate = useNavigate();
     const [updateSuccess, setUpdateSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
+///
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    //modal de conrfirmacion
+   
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        if (closeEditModal) {
+            closeEditModal();
+        }
+    };
+    
 
     const handlePasswrod = (e) => {
         setPassword(e.target.value);
@@ -27,7 +37,6 @@ const EditarEmpresa = () => {
     const handleConfPasswrod = (e) => {
         setConfirmPassword(e.target.value);
     };
-    const { id } = useParams();
     const rol = "Empresa";
 
     const handleTelefonoChange = (e) => {
@@ -77,7 +86,10 @@ const EditarEmpresa = () => {
                 setUpdateSuccess("Se ha actualizado correctamente");
                 // Limpia el mensaje de error en caso de que hubiera uno previamente
                 setUpdateError('');
-                navigate(`/detalleEmpresa/${id}`);
+                if (onEmpresaUpdated) {
+                    onEmpresaUpdated(); // Llama a la función callback
+                }
+                setShowSuccessModal(true);  // Muestra el modal de éxito
 
             })
             .catch((err) => {
@@ -214,8 +226,6 @@ const EditarEmpresa = () => {
                             </div>
                         </Form.Group>
                     </Col>
-
-
                 </Row>
 
                 <div>
@@ -226,7 +236,19 @@ const EditarEmpresa = () => {
                 <div className="botones-centrados">
                     <Button variant='primary' type="submit" className='btn'>Guardar</Button>
                  
-                </div><br />
+                </div>
+                <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+    <Modal.Header closeButton>
+        <Modal.Title>Empresa actualizada con éxito</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>La información de la empresa ha sido actualizada correctamente.</Modal.Body>
+    <Modal.Footer>
+        <Button variant="success" onClick={handleSuccessModalClose}>
+            Cerrar
+        </Button>
+    </Modal.Footer>
+</Modal>
+
             </Form>
         </div>
     );

@@ -34,6 +34,8 @@ export const TEXTO_AMBITO_LABORAL_OBLIGATORIO='El Ámbito Laboral es obligatorio
 export const TEXTO_RAZON_SOCIAL_OBLIGATORIO='La Razón social es obligatoria';
 export const TEXTO_FECHA_INICIO='La Fecha de Inicio es obligatoria';
 export const TEXTO_FECHA_FIN='La Fecha de Fin es obligatoria';
+//INTITUCION
+export const TEXTO_NOMBRE_INSTITUCION_OBLIGATORIO='El nombre de la institución es obligatorio'
 
 
 //Empresa
@@ -47,6 +49,7 @@ export const ROL_ADMINISTRADOR = "Administrador";
 export const URL_VALIDAR_AUTENTICACION = "http://localhost:8000/api/user/login";
 export const URL_VALIDAR_AUTENTICACION_EMPRESA ="http://localhost:8000/api/company/login";
 export const URL_CONSULTAR_DATOS_USUARIO = "http://localhost:8000/api/user/";
+export const URL_OBTENER_USUARIOS ='http://localhost:8000/api/users'
 export const URL_USUARIO_NUEVO='http://localhost:8000/api/user/new'
 export const URL_EMPRESA_NUEVA= 'http://localhost:8000/api/company/new'
 export const URL_EXPERIENCIA_LABORAL_NUEVA= 'http://localhost:8000/api/workExperience/new';

@@ -28,17 +28,15 @@ const RegistroInstituciones = (props) => {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
   };
 
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
-
-
+  const handleCloseModal = () => {
+    setShowModal(false);
+    // Agregar cualquier acción adicional necesaria al cerrar el modal
   };
-
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
@@ -85,6 +83,8 @@ const RegistroInstituciones = (props) => {
     axios.post('http://localhost:8000/api/school/new', { nombreInstitucion })
       .then((res) => {
         console.log(res);
+        setShowModal(true); // Mostrar modal al registrar con éxito
+
         handleSuccessModalShow();
         setNombreInstitucion('');
         setNombreInstitucionError('');
@@ -104,10 +104,10 @@ const RegistroInstituciones = (props) => {
     <div className='App'>
       <TabsAdministracionComp />
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
-        <Row>
-          <Col md={6}>
+        
+      
             <Form.Group>
-              <Form.Label>Nombre</Form.Label>
+            <Form.Label>Nombre de la Institución</Form.Label>
               <div className="input-icon-wrapper">
                 <FontAwesomeIcon icon={faSchool} className="input-icon" />
                 <Form.Control
@@ -122,8 +122,8 @@ const RegistroInstituciones = (props) => {
 
             </Form.Group>
 
-          </Col>
-        </Row>
+          
+       
         <div className="botones-centrados">
           <Button type="submit" className='btn-primary'>Crear Institucion</Button>
 
@@ -132,7 +132,20 @@ const RegistroInstituciones = (props) => {
 
 
       </Form>
-
+      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal.Header closeButton>
+        <Modal.Title className='tituloModal'>
+          <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+          Institución Registrada
+        </Modal.Title>
+      </Modal.Header>
+        <Modal.Body className='tituloModalBody'>La institución ha sido registrada con éxito.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
 
 

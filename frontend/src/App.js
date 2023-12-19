@@ -1,9 +1,8 @@
 // Importa las librerías necesarias
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Logueo from './Views/Logueo';
 import RegistroUsuario from './Views/RegistroUsuario';
-import LoginForm from './Components/LoginUsuario';
+import LoginForm from './Components/Usuario/LoginUsuario';
 import LoginFormEmpresa from './Components/LoginEmpresa';
 import RegistroEmpresa from './Views/RegistroEmpresa';
 import DetalleUsuario from './Views/Usuarios/DetalleUsuario';
@@ -12,9 +11,7 @@ import AdminConsola from './Views/AdminConsola';
 import Main from './Views/Main';
 import EditarUsuario from './Views/EditarUsuario';
 import * as constantes from './Models/Constantes';
-
-import ListaUsuarios from './Components/ListaUsuarios';
-import SumarEstudio from './Components/SumarEstudio';
+import ListaUsuarios from './Components/Usuario/ListaUsuarios';
 import DetalleEmpresa from './Components/DetalleEmpresa';
 import EditarEmpresa from './Views/EditarEmpresa';
 import LoadingModal from './Components/LoadingModal';
@@ -47,7 +44,7 @@ function App() {
         ) : (
           <Routes>
             <Route path={constantes.URL_PAGINA_PRINCIPAL} element={<Main />} />
-            <Route path="/registrarseComo" element={<Logueo />} />
+
             <Route path="/detalleUsuario/:id" element={<DetalleUsuario />} />
             <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
             <Route path='/publicarEmpleo/:id' element={<PublicarEmpleo />} />
