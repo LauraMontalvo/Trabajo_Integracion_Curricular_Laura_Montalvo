@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate ,Link} from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faGraduationCap, faTrashAlt, faInfoCircle, faCalendarAlt, faCircleNotch, faHourglassHalf, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -739,8 +739,8 @@ function DetalleUsuario(props) {
                           <ListGroup.Item key={postulacion._id} className="mt-4 border p-3 position-relative">
                             <Row>
 
-                           <Col>
-                           <div className="empleo-detalle">
+                              <Col>
+                                <div className="empleo-detalle">
                                   <span>
                                     <strong>Empresa:</strong> <Link> {postulacion.idEmpleo?.idEmpresa?.nombreEmpresa}</Link>
                                     <button className="icon-button" onClick={() => handleShowModal(postulacion.idEmpleo)}>
@@ -748,30 +748,30 @@ function DetalleUsuario(props) {
                                     </button>
                                   </span>
                                 </div>
-                           </Col>
-                               
+                              </Col>
+
                               <Col>
-                              <div className="empleo-detalle">
+                                <div className="empleo-detalle">
                                   <span>
                                     <strong>Estado:</strong> {postulacion.estado}
                                     {postulacion.estado === 'En Espera' && (
                                       <FontAwesomeIcon icon={faCircleNotch} className="icono-estado" />
                                     )}
-                                  </span> 
-                                           
-                                   </div>
+                                  </span>
+
+                                </div>
                               </Col>
 
                             </Row>
-                             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-                                  {/* Otros detalles de la postulación */}
-                                  <FontAwesomeIcon
-                                    icon={faTrashAlt}
-                                    className="text-danger"
-                                    style={{ cursor: 'pointer', fontSize: '1.5em' }}
-                                    onClick={() => eliminarPostulacion(postulacion._id)}
-                                  />
-                                </div>
+                            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                              {/* Otros detalles de la postulación */}
+                              <FontAwesomeIcon
+                                icon={faTrashAlt}
+                                className="text-danger"
+                                style={{ cursor: 'pointer', fontSize: '1.5em' }}
+                                onClick={() => eliminarPostulacion(postulacion._id)}
+                              />
+                            </div>
                           </ListGroup.Item>
 
                         ))}

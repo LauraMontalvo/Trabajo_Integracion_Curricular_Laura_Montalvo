@@ -19,24 +19,24 @@ const ListaEmpleos = () => {
                 // Obtener las postulaciones almacenadas en el almacenamiento local
                 const postulacionesGuardadas = localStorage.getItem('postulacionesUsuario');
                 const postulacionesGuardadasArray = postulacionesGuardadas ? JSON.parse(postulacionesGuardadas) : [];
-                
+
                 const respuestaEmpleos = await axios.get('http://localhost:8000/api/jobs');
                 const empleosConEmpresa = await Promise.all(respuestaEmpleos.data.map(async (empleo) => {
                     const resEmpresa = await axios.get(`http://localhost:8000/api/company/${empleo.idEmpresa}`);
                     return { ...empleo, nombreEmpresa: resEmpresa.data.nombreEmpresa };
                 }));
                 setEmpleos(empleosConEmpresa);
-    
+
                 // Inicializar el estado con las postulaciones guardadas
                 setPostulacionesUsuario(postulacionesGuardadasArray);
             } catch (error) {
                 console.error('Error al obtener empleos o postulaciones:', error);
             }
         };
-    
+
         obtenerEmpleosYPostulaciones();
     }, []);
-    
+
 
     const yaPostulado = (idEmpleo) => {
         return postulacionesUsuario.some(postulacion => postulacion.idEmpleo === idEmpleo);
@@ -56,10 +56,10 @@ const ListaEmpleos = () => {
             });
             const nuevasPostulaciones = [...postulacionesUsuario, response.data.insertedPostulation];
             setPostulacionesUsuario(nuevasPostulaciones);
-            
+
             // Guardar las postulaciones en el almacenamiento local
             localStorage.setItem('postulacionesUsuario', JSON.stringify(nuevasPostulaciones));
-            
+
             setShowModal(false);
         } catch (error) {
             console.error('Error al realizar la postulación:', error);
@@ -83,14 +83,14 @@ const ListaEmpleos = () => {
                                     <Button disabled>Ya Postulado</Button>
                                 ) : (
                                     <div>
-                                    <FontAwesomeIcon 
-                                        icon={faPaperPlane} 
-                                        onClick={() => handlePostularseClick(empleo._id)} 
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                    <span> Postularse</span>
-                                </div>
-                                    
+                                        <FontAwesomeIcon
+                                            icon={faPaperPlane}
+                                            onClick={() => handlePostularseClick(empleo._id)}
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                        <span> Postularse</span>
+                                    </div>
+
                                 )}
                             </Card.Body>
                         </Card>
