@@ -1,4 +1,5 @@
 const Job = require('../models/job.model');
+const Company = require('../models/company.model'); // Asegúrate de que este modelo esté correctamente definido
 
 module.exports.createJob = (request, response) =>{
     const {idEmpresa, descripcion, conocimientos,aptitudes, numeroVacantes} = request.body;
@@ -11,11 +12,16 @@ module.exports.createJob = (request, response) =>{
         .catch(err => response.status(400).json(err));
 }
 
-module.exports.getAllJobs = (_,response) =>{
+module.exports.getAllJobs = (_, response) => {
     Job.find({})
-    .then(retrievedJobs => response.json(retrievedJobs))
-    .catch(err => response.json(err))
-}
+        .populate('idEmpresa', 'nombreEmpresa')
+        .then(retrievedJobs => {
+            console.log(retrievedJobs); // Imprime para diagnóstico
+            response.json(retrievedJobs);
+        })
+        .catch(err => response.json(err));
+};
+
 
 module.exports.getJob = (request, response) =>{
     Job.findOne({_id: request.params.id})

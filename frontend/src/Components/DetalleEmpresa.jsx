@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Image, InputGroup, FormControl, Row, Col, Container, Card, ListGroup, Tab, Tabs } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 import * as constantes from '../Models/Constantes';
 import { Modal, Form } from 'react-bootstrap';
@@ -13,6 +13,7 @@ import Cabecera from './Cabecera';
 import CabeceraRegistrar from './CabeceraRegistrar';
 import PublicarEmpleo from '../Views/PublicarEmpleo';
 import EditarEmpleoComp from './Empresa/EditarEmpleoComp';
+import VerPostulaciones from './VerPostulaciones';
 
 function DetalleEmpresa(props) {
   const { id } = useParams();
@@ -38,6 +39,20 @@ function DetalleEmpresa(props) {
   const [editingEmpleoId, setEditingEmpleoId] = useState(null);
   const [empleoid, setempleoid] = useState([]);
 
+  ///postuklacion
+  const [showModal, setShowModal] = useState(false);
+  const [postulantes, setPostulantes] = useState([]);
+
+  // Función para mostrar los postulantes de un empleo específico
+  const mostrarPostulantes = async (idEmpleo) => {
+    try {
+      const respuesta = await axios.get(`http://localhost:8000/api/postulations/job/${idEmpleo}`);
+      setPostulantes(respuesta.data); // Actualiza el estado con los postulantes obtenidos
+      setShowModal(true);             // Muestra el modal
+    } catch (error) {
+      console.error('Error al obtener postulantes:', error);
+    }
+  };
 
 
   //
@@ -165,7 +180,7 @@ function DetalleEmpresa(props) {
                       <Button variant="success" onClick={handleSaveClick} className="me-2">
                         Guardar
                       </Button>
-                      <Button variant="secondary" onClick={handleCancelClick}>
+                      <Button variant="secondary" onCly ick={handleCancelClick}>
                         Cancelar
                       </Button>
                     </div>
@@ -197,8 +212,6 @@ function DetalleEmpresa(props) {
                     </Modal.Body>
                   </Modal>
                 </ListGroup>
-
-
               </Card.Body>
             </Card>
             <div className="botones-centrados">
@@ -231,10 +244,13 @@ function DetalleEmpresa(props) {
                             <div className="empleo-detalle">
                               <span><strong>Número de Vacantes:</strong> {empleo.numeroVacantes}</span>
                             </div>
+                            <FontAwesomeIcon icon={faUsers} onClick={() => mostrarPostulantes(empleo._id)} />
+                           
+
                             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
                               <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
                                 onClick={() => handleEditEmpleoClick(empleo._id)}
-                              />                              <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleShowModalEliminar(empleo._id)} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }} />
+                              /> <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleShowModalEliminar(empleo._id)} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }} />
                             </div>
                             <Modal show={showModalEliminar} onHide={() => setShowModalEliminar(false)}>
                               <Modal.Header closeButton>
@@ -264,7 +280,21 @@ function DetalleEmpresa(props) {
                         Publicar Empleo
                       </Button>
                     </div>
-
+ {/* Modal para mostrar postulantes */}
+ <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Postulantes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {/* Asegúrate de que VerPostulaciones maneje correctamente la lista de postulantes */}
+          <VerPostulaciones postulantes={postulantes} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
                     {/* Modal para Publicar Empleo */}
                     <Modal show={showPublicarEmpleoModal} onHide={() => setShowPublicarEmpleoModal(false)} size="lg">
                       <Modal.Header closeButton>
@@ -293,14 +323,10 @@ function DetalleEmpresa(props) {
 
 
 
-              <Tab eventKey="laboral" title="Ver Estadisticas">
-                <Card>
-                  <Card.Body>
 
 
-                  </Card.Body>
-                </Card>
-              </Tab>
+
+
             </Tabs>
           </Col>
         </Row>

@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const JobSchema = new mongoose.Schema({   
+   
     idEmpresa: {
-        type: String,
-        required: [true, 'El id de la Empresa es obligatorio']
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company'
     },
     descripcion: {
         type: String,

@@ -21,6 +21,7 @@ import ListaInstituciones from './Views/ListaInstituciones';
 import RegistroInstitucionesComp from './Views/RegistroInstitucionesView';
 import RegistroInstituciones from './Views/RegistroInstitucionesView';
 import ListaEmpresas from './Views/ListaEmpresas';
+import ListaEmpleos from './Views/ListaEmpleos';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +57,7 @@ function App() {
             <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
             <Route path="/listaEmpresas" element={<ListaEmpresas/>} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
+            <Route path="/buscarEmpleos/:id" element={<ListaEmpleos/>} />
             <Route path="/registrarInstitucion" element={<RegistroInstituciones/>} />
             <Route path="/listaInstituciones" element={<ListaInstituciones />} />
             <Route path="/admin" element={<LoginAdminForm />} />

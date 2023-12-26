@@ -6,7 +6,8 @@ const PostulationSchema = new mongoose.Schema({
         required: [true, 'El idUsuario es obligatorio']
     },
     idEmpleo: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId, // Cambia a ObjectId
+        ref: 'Job',
         required: [true, 'El idEmpleo es obligatorio']
     },
     estado:{

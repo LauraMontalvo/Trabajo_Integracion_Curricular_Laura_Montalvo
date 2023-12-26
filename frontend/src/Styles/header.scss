@@ -118,3 +118,15 @@ $tamaño-letra-nav: 20px;
     }
   }
 }
+.user-initials-circle {
+  width: 35px;
+  height: 35px;
+  background-color: #007bff; /* El color de fondo del círculo */
+  color: white; /* Color del texto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 1em;
+  margin-left: 10px; /* Espaciado si es necesario */
+}

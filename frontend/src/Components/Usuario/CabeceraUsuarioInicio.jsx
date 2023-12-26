@@ -1,34 +1,39 @@
-import React, { useEffect } from "react"; // Importa useEffect desde react
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import "../../Styles/header.scss"; // Importa tus estilos personalizados
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import "../../Styles/header.scss";
 import axios from 'axios';
-import * as constantes from '../../Models/Constantes'
-/////quiero poner el id del usuario par auqe no se salga de se
+import * as constantes from '../../Models/Constantes';
+
 const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation(); // Asegúrate de que useLocation se llama aquí, dentro del componente
+
+  // Determina si está en la página de buscar empleos
+  const enBuscarEmpleos = location.pathname.includes(`/buscarEmpleos/${id}`);
 
   const handleInicioClick = () => {
     if (isAuthenticated && id) {
-      navigate(`/detalleUsuario/${id}/inicio`); // Redirige a la página principal del usuario
+      navigate(`/detalleUsuario/${id}/inicio`);
     } else {
-      // Si el usuario no está autenticado o id no está definido, redirige a la página de inicio de sesión.
       navigate("/loginUsuario");
     }
   };
 
   useEffect(() => {
-    // Verifica si id está definido antes de hacer la solicitud.
     if (id) {
       axios.get(`http://localhost:8000/api/user/${id}`)
         .then((res) => {
-          // Aquí puedes agregar la lógica para manejar la respuesta si es necesario.
+          // Manejar respuesta
         })
         .catch((err) => console.log(err));
     }
   }, [id]);
 
+  
   return (
     <Navbar bg="light" expand="lg" className="mb-4">
       <Navbar.Brand as={Link} to="/" className="titulo-Chavp">
@@ -36,7 +41,18 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav.Link onClick={handleInicioClick}>Inicio</Nav.Link>
+        <Nav className="mr-auto">
+          <Nav.Link onClick={handleInicioClick}>Inicio</Nav.Link>
+          {enBuscarEmpleos ? (
+            <Nav.Link as={Link} to={`/detalleUsuario/${id}`}>
+              Ver Perfil
+            </Nav.Link>
+          ) : (
+            <Nav.Link as={Link} to={`/buscarEmpleos/${id}`}>
+              <FontAwesomeIcon icon={faSearch} /> Buscar Empleo
+            </Nav.Link>
+          )}
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
   );

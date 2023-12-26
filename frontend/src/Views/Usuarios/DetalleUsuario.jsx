@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate ,Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faGraduationCap, faTrashAlt, faUniversity, faCalendarAlt, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faGraduationCap, faTrashAlt, faInfoCircle, faCalendarAlt, faCircleNotch, faHourglassHalf, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   Button, Image, InputGroup, FormControl, Row, Col, Modal, Form, Tab, Tabs, ListGroup, Card,
   Container
@@ -62,6 +62,32 @@ function DetalleUsuario(props) {
   //Eliminar exoe laboral
   const [showDeleteExperienceModal, setShowDeleteExperienceModal] = useState(false);
   const [deleteExperienceId, setDeleteExperienceId] = useState(null);
+
+
+  //POSTULACIONES y modal de empleo
+  const [postulaciones, setPostulaciones] = useState([]);
+  const [empleoSeleccionado, setEmpleoSeleccionado] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = (empleo) => {
+    console.log('Empleo seleccionado:', empleo);
+    setEmpleoSeleccionado(empleo);
+    setShowModal(true);
+  };
+
+  const eliminarPostulacion = async (idPostulacion) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/postulation/${idPostulacion}`);
+      // Filtra para eliminar la postulación del estado
+      const postulacionesActualizadas = postulaciones.filter(postulacion => postulacion._id !== idPostulacion);
+      setPostulaciones(postulacionesActualizadas);
+    } catch (error) {
+      console.error('Error al eliminar postulación:', error);
+    }
+  };
+  ///////////////////
+
+  ///
 
   const handleShowDeleteExperienceModal = (id) => {
     setDeleteExperienceId(id);
@@ -189,7 +215,7 @@ function DetalleUsuario(props) {
   function toShortDateFormat(dateString) {
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
-}
+  }
 
   const cargarExperienciaLaboral = () => {
     axios.get(`http://localhost:8000/api/workExperiences/user/${id}`)
@@ -200,6 +226,16 @@ function DetalleUsuario(props) {
   };
 
   useEffect(() => {
+    const cargarPostulaciones = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/postulations/user/${id}`);
+        setPostulaciones(response.data);
+      } catch (error) {
+        console.error('Error al cargar postulaciones:', error);
+      }
+    };
+
+    cargarPostulaciones();
 
     axios.get(`http://localhost:8000/api/user/${id}`)
       .then((res) => {
@@ -324,7 +360,7 @@ function DetalleUsuario(props) {
         // Si editingAcadTrainingId está definido, significa que estamos editando
         await axios.put(`http://localhost:8000/api/acadTraining/${editingAcadTrainingId}`, {
           tituloObtenido,
-          idInstitucion: esNuevaInstitucion ? institucionCarga.value : institucion.value, 
+          idInstitucion: esNuevaInstitucion ? institucionCarga.value : institucion.value,
           fechaInicio,
           fechaFin,
         });
@@ -367,6 +403,7 @@ function DetalleUsuario(props) {
       console.error(error.response.data.error);
     }
   };
+
   return (
     <div className='App'>
       <CabeceraUsuarioInicio />
@@ -525,8 +562,10 @@ function DetalleUsuario(props) {
                                 }))}
                                 value={
                                   editingAcadTrainingId && institucionSeleccionada
-                                    ? {label: institucionSeleccionada.nombreInstitucion,
-                                    value: institucionSeleccionada._id} : institucion
+                                    ? {
+                                      label: institucionSeleccionada.nombreInstitucion,
+                                      value: institucionSeleccionada._id
+                                    } : institucion
                                 }
                                 placeholder="Seleccionar institución" // Placeholder añadido aquí
                                 formatCreateLabel={(inputValue) => `Crear "${inputValue}"`}
@@ -691,7 +730,93 @@ function DetalleUsuario(props) {
                   </Card.Body>
                 </Card>
               </Tab>
+              <Tab eventKey="misPostulaciones" title="Mis Postulaciones">
+                <Card>
+                  <Card.Body>
+                    {postulaciones.length > 0 ? (
+                      <ListGroup className="empleos-lista">
+                        {postulaciones.map((postulacion) => (
+                          <ListGroup.Item key={postulacion._id} className="mt-4 border p-3 position-relative">
+                            <Row>
+
+                           <Col>
+                           <div className="empleo-detalle">
+                                  <span>
+                                    <strong>Empresa:</strong> <Link> {postulacion.idEmpleo?.idEmpresa?.nombreEmpresa}</Link>
+                                    <button className="icon-button" onClick={() => handleShowModal(postulacion.idEmpleo)}>
+                                      <FontAwesomeIcon icon={faInfoCircle} />
+                                    </button>
+                                  </span>
+                                </div>
+                           </Col>
+                               
+                              <Col>
+                              <div className="empleo-detalle">
+                                  <span>
+                                    <strong>Estado:</strong> {postulacion.estado}
+                                    {postulacion.estado === 'En Espera' && (
+                                      <FontAwesomeIcon icon={faCircleNotch} className="icono-estado" />
+                                    )}
+                                  </span> 
+                                           
+                                   </div>
+                              </Col>
+
+                            </Row>
+                             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                                  {/* Otros detalles de la postulación */}
+                                  <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    className="text-danger"
+                                    style={{ cursor: 'pointer', fontSize: '1.5em' }}
+                                    onClick={() => eliminarPostulacion(postulacion._id)}
+                                  />
+                                </div>
+                          </ListGroup.Item>
+
+                        ))}
+                      </ListGroup>
+                    ) : (
+                      <p>No tienes postulaciones.</p>
+                    )}
+                  </Card.Body>
+                </Card>
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+
+                  <Modal.Header closeButton>
+                    <Modal.Title className='tituloModal'>Detalles Del empleo al que postuló</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body className="tituloModalBody ">
+
+
+                    {empleoSeleccionado && (
+                      <>
+                        <div className="empleo-detalle">
+                          <span><strong>Descripción:</strong> {empleoSeleccionado.descripcion}</span>
+                        </div>
+                        <div className="empleo-detalle">
+                          <span><strong>Conocimientos:</strong> {empleoSeleccionado.conocimientos}</span>
+                        </div>
+                        <div className="empleo-detalle">
+                          <span><strong>Aptitudes:</strong> {empleoSeleccionado.aptitudes}</span>
+                        </div>
+                        <div className="empleo-detalle">
+                          <span><strong>Vacantes:</strong> {empleoSeleccionado.numeroVacantes}</span>
+                        </div>
+                        {/* ...otros detalles... */}
+                      </>
+                    )}
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                      Cerrar
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Tab>
+
             </Tabs>
+
           </Col>
         </Row>
       </Container>
