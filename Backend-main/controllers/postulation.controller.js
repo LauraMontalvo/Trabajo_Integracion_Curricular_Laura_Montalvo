@@ -38,7 +38,7 @@ module.exports.deletePostulation = (request, response) =>{
 }
 
 module.exports.getUserPostulations = (request, response) => {
-    Postulation.find({ idUsuario: request.params.id }).populate('idUsuario')
+    Postulation.find({ idUsuario: request.params.id }).populate('idEmpleo')
         .then(postulaciones => response.json(postulaciones))
         .catch(err => response.json(err));
 };
