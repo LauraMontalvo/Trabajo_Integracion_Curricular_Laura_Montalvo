@@ -228,7 +228,11 @@ function DetalleUsuario(props) {
   useEffect(() => {
     const cargarPostulaciones = async () => {
       try {
+        console.log("POSTULACIONES")
+        console.log(id)
         const response = await axios.get(`http://localhost:8000/api/postulations/user/${id}`);
+        console.log(response);
+
         setPostulaciones(response.data);
       } catch (error) {
         console.error('Error al cargar postulaciones:', error);

@@ -20,7 +20,7 @@ module.exports.getAllPostulations = (_,response) =>{
 }
 
 module.exports.getPostulation = (request, response) =>{
-    Postulation.findOne({_id: request.params.id})
+    Postulation.findOne({_id: request.params.id}).populate('idUsuario')
     .then(Postulation => response.json(Postulation))
     .catch(err => response.json(err))
 }
@@ -38,22 +38,14 @@ module.exports.deletePostulation = (request, response) =>{
 }
 
 module.exports.getUserPostulations = (request, response) => {
-    Postulation.find({ idUsuario: request.params.id })
-        .populate({
-            path: 'idEmpleo',
-            populate: {
-                path: 'idEmpresa',
-                model: 'Company', // Asegúrate de que 'Company' sea el nombre correcto de tu modelo de empresas
-                select: 'nombreEmpresa' // Selecciona solo el campo nombreEmpresa
-            }
-        })
+    Postulation.find({ idUsuario: request.params.id }).populate('idUsuario')
         .then(postulaciones => response.json(postulaciones))
         .catch(err => response.json(err));
 };
 
 
 module.exports.getJobPostulations = (request,response) =>{
-    Postulation.find({idEmpleo: request.params.id})
+    Postulation.find({idEmpleo: request.params.id}).populate('idUsuario')
     .then(retrievedCertifications => response.json(retrievedCertifications))
     .catch(err => response.json(err))
 }

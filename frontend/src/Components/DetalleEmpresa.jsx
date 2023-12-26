@@ -245,7 +245,7 @@ function DetalleEmpresa(props) {
                               <span><strong>Número de Vacantes:</strong> {empleo.numeroVacantes}</span>
                             </div>
                             <FontAwesomeIcon icon={faUsers} onClick={() => mostrarPostulantes(empleo._id)} />
-                           
+
 
                             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
                               <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
@@ -280,21 +280,21 @@ function DetalleEmpresa(props) {
                         Publicar Empleo
                       </Button>
                     </div>
- {/* Modal para mostrar postulantes */}
- <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Postulantes</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* Asegúrate de que VerPostulaciones maneje correctamente la lista de postulantes */}
-          <VerPostulaciones postulantes={postulantes} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+                    {/* Modal para mostrar postulantes */}
+                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Postulantes</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        {/* Asegúrate de que VerPostulaciones maneje correctamente la lista de postulantes */}
+                        <VerPostulaciones postulantes={postulantes} />
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                          Cerrar
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                     {/* Modal para Publicar Empleo */}
                     <Modal show={showPublicarEmpleoModal} onHide={() => setShowPublicarEmpleoModal(false)} size="lg">
                       <Modal.Header closeButton>
