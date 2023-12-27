@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const UserPhoto = require('../models/userPhoto.model');
 module.exports.createUser = (request, response) => {
     const { nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword } = request.body;
     User.findOne({ usuario: usuario })
@@ -44,3 +45,44 @@ module.exports.deleteUser = (request, response) => {
         .then(UserDeleted => response.json(UserDeleted))
         .catch(err => response.json(err))
 }
+
+module.exports.addPhoto = (request, response) => {
+    const { foto } = request.body;
+
+    UserPhoto.findOne({idUsuario: request.params.id})
+        .then(fotoUsuario => {
+            if (!fotoUsuario) {
+                // No se encontró un UserPhoto, buscamos un usuario
+                return User.findById(request.params.id);
+            }
+
+            // Se encontró un UserPhoto, actualizamos la foto
+            fotoUsuario.foto = foto;
+            return fotoUsuario.save();
+        })
+        .then(userOrFoto => {
+            // userOrFoto puede ser un usuario o un UserPhoto actualizado
+            if (!userOrFoto) {
+                return Promise.reject({ status: 404, message: 'Usuario no encontrado' });
+            }
+
+            // Si userOrFoto es un usuario, creamos un nuevo UserPhoto
+            if (userOrFoto instanceof User) {
+                return UserPhoto.create({ idUsuario: request.params.id, foto: foto });
+            }
+
+            // Si userOrFoto es un UserPhoto actualizado, no hacemos nada más
+            return userOrFoto;
+        })
+        .then(() => {
+            return response.json({ mensaje: 'Foto agregada exitosamente' });
+        })
+        .catch(error => {
+            console.error('Error al agregar la foto:', error);
+            if (error.status) {
+                return response.status(error.status).json({ error: error.message });
+            } else {
+                return response.status(500).json({ error: 'Error interno del servidor' });
+            }
+        });
+};

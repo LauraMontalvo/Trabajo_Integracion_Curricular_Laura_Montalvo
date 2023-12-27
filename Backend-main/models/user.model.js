@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
 
     foto:{
         type: String,
-        
+        default: ''
     },
     nombre:{
         type: String,
