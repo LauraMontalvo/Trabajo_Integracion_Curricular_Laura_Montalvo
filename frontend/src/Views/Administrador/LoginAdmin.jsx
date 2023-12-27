@@ -1,5 +1,5 @@
 
-import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../Models/Constantes"
+import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../../Models/Constantes"
 
 import axios from 'axios';
 import React, { useState } from 'react';
@@ -7,12 +7,12 @@ import { Button } from 'reactstrap';
 
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
-import "../Styles/loginstyle.css"
+import "../../Styles/loginstyle.css"
 
 import { Link, useNavigate } from 'react-router-dom';
-import logofondo from "../img/logofondo.png";
+import logofondo from "../../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
-import * as constantes from '../Models/Constantes'
+import * as constantes from '../../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 

@@ -5,7 +5,7 @@ import { faBriefcase, faBuilding, faCalendarAlt } from '@fortawesome/free-solid-
 import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faTools, faClipboardList, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import * as constantes from '../Models/Constantes'
+import * as constantes from '../../Models/Constantes'
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {

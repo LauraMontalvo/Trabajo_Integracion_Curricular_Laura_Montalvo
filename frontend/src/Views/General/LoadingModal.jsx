@@ -1,7 +1,7 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import logofondo from "../img/logofondo.png";
-import * as constantes from '../Models/Constantes'
+import logofondo from "../../img/logofondo.png";
+import * as constantes from '../../Models/Constantes'
 const LoadingModal = () => {
   return (
     <div className="loading-container">

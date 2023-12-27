@@ -1,42 +1,41 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button } from 'reactstrap';
+
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
-import "../Styles/loginstyle.css"
-import lock from "../img/lock.png";
-import * as constantes from '../Models/Constantes'
-import profile from "../img/empresa.png";
+import "../../Styles/loginstyle.css"
 import { Link, useNavigate } from 'react-router-dom';
-import logofondo from "../img/logofondo.png";
-import { Row, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
-import Cabecera from './Cabecera';
 
-const LoginFormEmpresa = (props) => {
+import logofondo from "../../img/logofondo.png";
+import { Row, Col } from 'react-bootstrap';
+import * as constantes from '../../Models/Constantes'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import Cabecera from '../../Components/General/Cabecera';
+
+const LoginForm = (props) => {
   const [password, setPassword] = useState("");
   const [usuario, setUsuario] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
-  const handlerLoginEmpresa = (e) => {
+  const navigate = useNavigate();
+  const handlerLogin = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
       setLoginStatus(constantes.TEXTO_INGRESE_DATOS);
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
-      axios.post(constantes.URL_VALIDAR_AUTENTICACION_EMPRESA, { usuario, password: hashedPassword })
+      axios.post(constantes.URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
           console.log(respuesta);
-          if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO_EMPRESA) {
+          if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO) {
             const user = respuesta.data.user;
 
             console.log(user);
             setLoginStatus(respuesta.data.msg);
-            setTimeout(() => navigate(constantes.URL_DETALLE_EMPRESA + user._id), 1000);
+            setTimeout(() => navigate('/detalleUsuario/' + user._id), 1000);
           } else {
             setLoginStatus(respuesta.data.msg);
           }
@@ -48,34 +47,34 @@ const LoginFormEmpresa = (props) => {
         });
     }
   }
-
   const RegresarPaginaPrincipal = () => {
     navigate("/");
   }
   const RegresarRegistrarComo = () => navigate("/registrarseComo");
 
+
+
   return (
     <div className='App'>
       <Cabecera></Cabecera>
-      <Form onSubmit={handlerLoginEmpresa} className="mi-formulario">
-
-
+      <Form onSubmit={handlerLogin} className="mi-formulario" >
 
         <h2>{constantes.TEXTO_TITULO}</h2>
         <div className='imgs'>
           <img src={logofondo} className="tamañoImagenChavezPamba" />
         </div>
-        <h2>{constantes.TEXTO_INICIO_SESION_EMPRESA}</h2>
+
+        <h2>{constantes.TEXTO_INICIO_SESION}</h2>
 
         <Row>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Usuario de la Empresa</Form.Label>
+              <Form.Label>Usuario</Form.Label>
               <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" /> {/* Cambiar el icono a uno que represente una empresa */}
+                <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg " />
                 <Form.Control
                   type="text"
-                  placeholder="Ingrese el usuario de la empresa"
+                  placeholder="Ingrese su usuario"
                   onChange={(e) => setUsuario(e.target.value)}
                   value={usuario}
                 />
@@ -101,8 +100,8 @@ const LoginFormEmpresa = (props) => {
 
             </Form.Group>
           </Col>
-
         </Row>
+
 
         <div className="botones-centrados">
           <Button className='btn-primary'>Iniciar Sesión</Button>
@@ -110,12 +109,16 @@ const LoginFormEmpresa = (props) => {
           <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
         </div>
 
-        <p className='alertaerror'>{loginStatus}</p>
 
 
+        <p style={{ color: 'red' }}>{loginStatus}</p>
+  <h6>¿Aún no estás registrado?</h6>
+  <Link to="/registrarUsuario">Regístrate ahora!</Link>
       </Form>
-
     </div>
+
+
+
 
 
 
@@ -123,4 +126,4 @@ const LoginFormEmpresa = (props) => {
   )
 }
 
-export default LoginFormEmpresa;
+export default LoginForm;

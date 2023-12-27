@@ -1,7 +1,7 @@
 // components/ExampleCarouselImage.jsx
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import "../Styles/carusel.css"
+import "../../Styles/carusel.css"
 function ExampleCarouselImage({ imageUrl, description }) {
   return (
     <Card className="carousel-card">

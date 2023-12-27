@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Form, Row, Col,Modal } from 'react-bootstrap';
+import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../Styles/loginstyle.css"
+import "../../Styles/loginstyle.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 import md5 from 'md5';
-const EditarUsuario = ({ id, onUsuarioUpdated,closeEditModal  }) => {
+const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [sexo, setSexo] = useState("");
@@ -25,7 +25,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated,closeEditModal  }) => {
 
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     //modal de conrfirmacion
-   
+
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
         if (closeEditModal) {
@@ -91,7 +91,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated,closeEditModal  }) => {
 
         axios.put(`http://localhost:8000/api/user/${id}`, dataToUpdate)
             .then((res) => {
-             
+
                 setUpdateError('');
                 // Limpia los campos de contraseña después de la actualización
                 setPassword('');
@@ -271,17 +271,17 @@ const EditarUsuario = ({ id, onUsuarioUpdated,closeEditModal  }) => {
                 </div><br />
             </Form>
             <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-    <Modal.Header closeButton>
-        <Modal.Title className='tituloModal'>
-        <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />Usuario actualizado con éxito</Modal.Title>
-    </Modal.Header>
-    <Modal.Body className='tituloModalBody' >La información ha sido actualizada correctamente.</Modal.Body>
-    <Modal.Footer>
-        <Button variant="success" onClick={handleSuccessModalClose}>
-            Cerrar
-        </Button>
-    </Modal.Footer>
-</Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title className='tituloModal'>
+                        <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />Usuario actualizado con éxito</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='tituloModalBody' >La información ha sido actualizada correctamente.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={handleSuccessModalClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

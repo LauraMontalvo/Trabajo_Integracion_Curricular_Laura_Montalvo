@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import "../Styles/header.scss"; // Importa tus estilos personalizados
-import * as constantes from '../Models/Constantes'
+import "../../Styles/header.scss"; // Importa tus estilos personalizados
+import * as constantes from '../../Models/Constantes'
 const Cabecera = () => {
   return (
 

@@ -38,11 +38,18 @@ module.exports.deletePostulation = (request, response) =>{
 }
 
 module.exports.getUserPostulations = (request, response) => {
-    Postulation.find({ idUsuario: request.params.id }).populate('idEmpleo')
+    Postulation.find({ idUsuario: request.params.id })
+        .populate({
+            path: 'idEmpleo',
+            populate: {
+                path: 'idEmpresa',
+                model: 'Company', // Asegúrate de que 'Company' sea el nombre correcto de tu modelo de empresas
+                select: 'nombreEmpresa' // Selecciona solo el campo nombreEmpresa
+            }
+        })
         .then(postulaciones => response.json(postulaciones))
         .catch(err => response.json(err));
 };
-
 
 module.exports.getJobPostulations = (request,response) =>{
     Postulation.find({idEmpleo: request.params.id}).populate('idUsuario')

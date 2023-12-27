@@ -5,15 +5,14 @@ import { Button, Image, InputGroup, FormControl, Row, Col, Container, Card, List
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
 
-import * as constantes from '../Models/Constantes';
+import * as constantes from '../../Models/Constantes';
 import { Modal, Form } from 'react-bootstrap';
-import EditarEmpresa from '../Views/EditarEmpresa';
-import "../Styles/detalle.scss"
-import Cabecera from './Cabecera';
-import CabeceraRegistrar from './CabeceraRegistrar';
-import PublicarEmpleo from '../Views/PublicarEmpleo';
-import EditarEmpleoComp from './Empresa/EditarEmpleoComp';
-import VerPostulaciones from './VerPostulaciones';
+import EditarEmpresa from '../../Components/Empresa/EditarEmpresaComp';
+import "../../Styles/detalle.scss"
+import CabeceraRegistrar from '../../Components/CabeceraRegistrar';
+import PublicarEmpleo from '../../Components/Empresa/PublicarEmpleoComp';
+import EditarEmpleoComp from '../../Components/Empresa/EditarEmpleoComp';
+import VerPostulaciones from '../../Components/Empresa/VerPostulacionesComp';
 
 function DetalleEmpresa(props) {
   const { id } = useParams();

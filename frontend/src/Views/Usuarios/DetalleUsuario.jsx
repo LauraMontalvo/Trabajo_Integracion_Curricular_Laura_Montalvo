@@ -8,13 +8,13 @@ import {
   Container
 } from 'react-bootstrap';
 
-import EditarUsuario from '../EditarUsuario.jsx';
+import EditarUsuario from '../../Components/Usuario/EditarUsuarioComp.jsx';
 import "../../Styles/loginstyle.css"
 import "../../Styles/detalle.scss"
-import ExperieciaLaboral from '../../Components/ExperienciaLaboral.jsx';
-import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicio.jsx';
+import ExperieciaLaboral from '../../Components/Usuario/ExperienciaLaboralComp.jsx';
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp.jsx';
 import Select from 'react-select/creatable';
-import EditarExperienciaLaboral from '../../Components/EditarExperienciaLaboralComp.jsx';
+import EditarExperienciaLaboral from '../../Components/Usuario/EditarExperienciaLaboralComp.jsx';
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {

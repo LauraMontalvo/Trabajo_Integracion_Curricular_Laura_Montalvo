@@ -4,7 +4,7 @@ import { Card, ListGroup, Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
-import CabeceraUsuarioInicio from '../Components/Usuario/CabeceraUsuarioInicio';
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 
 const ListaEmpleos = () => {
     const [empleos, setEmpleos] = useState([]);

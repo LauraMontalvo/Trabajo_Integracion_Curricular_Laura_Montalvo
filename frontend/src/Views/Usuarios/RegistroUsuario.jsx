@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../Styles/loginstyle.css';
+import '../../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import Cabecera from '../Components/Cabecera';
-import * as constantes from '../Models/Constantes'
+import Cabecera from '../../Components/General/Cabecera';
+import * as constantes from '../../Models/Constantes'
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {

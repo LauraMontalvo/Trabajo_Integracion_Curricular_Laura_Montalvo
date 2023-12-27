@@ -3,8 +3,8 @@ import axios from "axios";
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { FaTrash } from "react-icons/fa"; // Importa el icono de Font Awesome
 import 'bootstrap/dist/css/bootstrap.css';
-import Cabecera from "../Cabecera";
-import TabsAdministracionComp from "../Administracion/TabsAdministracionComp";
+import Cabecera from "../../Components/General/Cabecera";
+import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as constantes from '../../Models/Constantes'

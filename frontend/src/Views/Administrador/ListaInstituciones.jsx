@@ -8,9 +8,9 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import TabsAdministracionComp from "../Components/Administracion/TabsAdministracionComp";
-import "../Styles/Lista.css"
-import EditarInstitucionComp from "../Components/EditarInstitucionComp";
+import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
+import "../../Styles/Lista.css"
+import EditarInstitucionComp from "../../Components/Administracion/EditarInstitucionComp";
 
 
 const ListaInstituciones = () => {

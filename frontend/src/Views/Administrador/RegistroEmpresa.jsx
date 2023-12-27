@@ -1,15 +1,15 @@
 import { useState, useParams } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../Styles/loginstyle.css'
+import '../../Styles/loginstyle.css'
 import { useNavigate } from 'react-router-dom';
-import Cabecera from '../Components/Cabecera';
-import TabsAdministracionComp from '../Components/Administracion/TabsAdministracionComp';
+import Cabecera from '../../Components/General/Cabecera';
+import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
 import { Form, Button, Modal, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faInfoCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import "../Styles/detalle.scss"
-import * as constantes from '../Models/Constantes'
+import "../../Styles/detalle.scss"
+import * as constantes from '../../Models/Constantes'
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const CampoEstado = ({ valido, mensajeError }) => {

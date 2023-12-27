@@ -1,27 +1,24 @@
 // Importa las librerías necesarias
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import RegistroUsuario from './Views/RegistroUsuario';
-import LoginForm from './Components/Usuario/LoginUsuario';
-import LoginFormEmpresa from './Components/LoginEmpresa';
-import RegistroEmpresa from './Views/RegistroEmpresa';
+import RegistroUsuario from './Views/Usuarios/RegistroUsuario';
+import LoginForm from './Views/Usuarios/LoginUsuario';
+import LoginFormEmpresa from './Views/Empresa/LoginEmpresa';
+import RegistroEmpresa from './Views/Administrador/RegistroEmpresa';
 import DetalleUsuario from './Views/Usuarios/DetalleUsuario';
-import LoginAdminForm from './Components/LoginAdmin';
-import AdminConsola from './Views/AdminConsola';
-import Main from './Views/Main';
-import EditarUsuario from './Views/EditarUsuario';
+import LoginAdminForm from './Views/Administrador/LoginAdmin';
+import AdminConsola from './Views/Administrador/AdminConsola';
+import Main from './Views/General/Main';
+import EditarUsuario from './Components/Usuario/EditarUsuarioComp';
 import * as constantes from './Models/Constantes';
-import ListaUsuarios from './Components/Usuario/ListaUsuarios';
-import DetalleEmpresa from './Components/DetalleEmpresa';
-import EditarEmpresa from './Views/EditarEmpresa';
-import LoadingModal from './Components/LoadingModal';
-import PublicarEmpleo from './Views/PublicarEmpleo';
-import ExperienciaLaboral from './Components/ExperienciaLaboral';
-import ListaInstituciones from './Views/ListaInstituciones';
-import RegistroInstitucionesComp from './Views/RegistroInstitucionesView';
-import RegistroInstituciones from './Views/RegistroInstitucionesView';
-import ListaEmpresas from './Views/ListaEmpresas';
-import ListaEmpleos from './Views/ListaEmpleos';
+import ListaUsuarios from './Views/Administrador/ListaUsuarios';
+import DetalleEmpresa from './Views/Empresa/DetalleEmpresa';
+import EditarEmpresa from './Components/Empresa/EditarEmpresaComp';
+import LoadingModal from './Views/General/LoadingModal';
+import ListaInstituciones from './Views/Administrador/ListaInstituciones';
+import RegistroInstituciones from './Views/Administrador/RegistroInstitucionesView';
+import ListaEmpresas from './Views/Administrador/ListaEmpresas';
+import ListaEmpleos from './Views/Usuarios/ListaEmpleos';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,16 +42,14 @@ function App() {
         ) : (
           <Routes>
             <Route path={constantes.URL_PAGINA_PRINCIPAL} element={<Main />} />
-
             <Route path="/detalleUsuario/:id" element={<DetalleUsuario />} />
             <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
-            <Route path='/publicarEmpleo/:id' element={<PublicarEmpleo />} />
             <Route path="/loginusuario" element={<LoginForm />} />
             <Route path="/empresa" element={<LoginFormEmpresa />} />
             <Route path="/registrarUsuario" element={<RegistroUsuario />} />
             <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
             <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
-            <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
+            <Route path="/registrarEmpresa" element={<RegistroEmpresa/>} />
             <Route path="/listaEmpresas" element={<ListaEmpresas/>} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
             <Route path="/buscarEmpleos/:id" element={<ListaEmpleos/>} />

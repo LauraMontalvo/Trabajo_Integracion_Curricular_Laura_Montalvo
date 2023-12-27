@@ -2,16 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from 'react-router-dom';
-
-import "../Styles/Lista.css"
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-
 import 'bootstrap/dist/css/bootstrap.css';
-import TabsAdministracionComp from "../Components/Administracion/TabsAdministracionComp";
+import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import "../Styles/Lista.css"
-import EditarEmpresa from "./EditarEmpresa";
+import "../../Styles/Lista.css"
+import EditarEmpresa from "../../Components/Empresa/EditarEmpresaComp";
 
 const ListaEmpresas = () => {
   const [empresas, setEmpresas] = useState([]);
@@ -35,10 +32,10 @@ const ListaEmpresas = () => {
     axios.get('http://localhost:8000/api/companies')
       .then(res => {
         setEmpresas(res.data.sort((a, b) => a.nombreEmpresa.localeCompare(b.nombreEmpresa)))
-    
+
       })
       .catch(err => console.error("Error al obtener empresas:", err));
-      axios.get(`http://localhost:8000/api/company/${id}`)
+    axios.get(`http://localhost:8000/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
       })
@@ -110,9 +107,9 @@ const ListaEmpresas = () => {
                   <td style={{ textAlign: 'center' }}>
 
 
-                  <span className="icon-button" >
-  <FontAwesomeIcon className="text-primary mr-2" onClick={() => handleShowEditUserModal(empresa)} icon={faEdit} />
-</span>
+                    <span className="icon-button" >
+                      <FontAwesomeIcon className="text-primary mr-2" onClick={() => handleShowEditUserModal(empresa)} icon={faEdit} />
+                    </span>
                     <span className="icon-button" >
                       <FontAwesomeIcon className="text-danger" onClick={() => prepareDelete(empresa)} icon={faTrash} />
                     </span>

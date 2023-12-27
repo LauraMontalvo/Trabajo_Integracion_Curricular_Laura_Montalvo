@@ -1,18 +1,18 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import Cabecera from "../Components/Cabecera";
+import Cabecera from "../../Components/General/Cabecera";
 import { useNavigate } from "react-router";
 
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
-import ListaUsuarios from "../Components/Usuario/ListaUsuarios";
+import ListaUsuarios from "./ListaUsuarios";
 import { FaBuilding, FaUser } from "react-icons/fa"; // Importa iconos de Font Awesome
-import "../Styles/header.css"
-import * as constantes from "../Models/Constantes";
+import "../../Styles/header.css"
+import * as constantes from "../../Models/Constantes";
 import axios from "axios";
-import TabsAdministracionComp from "../Components/Administracion/TabsAdministracionComp";
+import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 import ListaInstituciones from "./ListaInstituciones";
-import ListaEmpresas from "../Views/ListaEmpresas";
+import ListaEmpresas from "./ListaEmpresas";
 
 const Main = () => {
     const { id } = useParams();

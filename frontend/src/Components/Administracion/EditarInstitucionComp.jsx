@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faSchool, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import * as constantes from '../Models/Constantes';
+import * as constantes from '../../Models/Constantes';
 
 const CampoEstado = ({ mensajeError }) => {
     if (mensajeError) {
