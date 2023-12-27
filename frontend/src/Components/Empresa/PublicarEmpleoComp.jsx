@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faTools, faClipboardList, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import "../../Styles/camps.scss"; // Importa tus estilos personalizados
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -114,7 +115,6 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
       setAptitudesError('');
     }
 
-    // Validar número de vacantes
     if (!numeroVacantes) {
       setNumeroVacantesError('El número de vacantes es obligatorio');
       formularioEsValido = false;
@@ -124,19 +124,14 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
     } else {
       setNumeroVacantesError('');
     }
-
     return formularioEsValido;
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validar formulario antes de enviar
     if (!validarFormularioAntesDeEnviar()) {
       return;
     }
-
     axios
       .post('http://localhost:8000/api/job/new', {
         idEmpresa,
@@ -169,25 +164,25 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
   return (
     <Form onSubmit={handleSubmit} className="mi-formulario">
       <Row>
-        <Col md={6}>
+      
           <Form.Group>
             <Form.Label>Descripción del empleo</Form.Label>
             <div className="input-icon-wrapper">
               <FontAwesomeIcon icon={faFileAlt} className="input-icon" />
               <Form.Control
-                type="text"
+                as="textarea"
+                rows={5}
+                className="textarea-elegante" // Aplicar la clase aquí
                 placeholder="Ingrese la descripción del empleo"
                 value={descripcion}
                 onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError, validateDescripcion)}
               />
               <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
-
-
             </div>
             {descripcionError && <p className="text-danger">{descripcionError}</p>}
           </Form.Group>
-        </Col>
-        <Col md={6}>
+        
+        
           <Form.Group>
             <Form.Label>Conocimientos requeridos</Form.Label>
             <div className="input-icon-wrapper">
@@ -202,8 +197,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
             </div>
             {conocimientosError && <p className="text-danger">{conocimientosError}</p>}
           </Form.Group>
-        </Col>
-        <Col md={6}>
+      
           <Form.Group>
             <Form.Label>Aptitudes requeridas</Form.Label>
             <div className="input-icon-wrapper">
@@ -219,7 +213,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
             </div>
             {aptitudesError && <p className="text-danger">{aptitudesError}</p>}
           </Form.Group>
-        </Col>
+      
         <Col md={6}>
           <Form.Group>
             <Form.Label>Número de vacantes</Form.Label>

@@ -16,10 +16,6 @@ const ListaEmpleos = () => {
     useEffect(() => {
         const obtenerEmpleosYPostulaciones = async () => {
             try {
-                // Obtener las postulaciones almacenadas en el almacenamiento local
-                const postulacionesGuardadas = localStorage.getItem('postulacionesUsuario');
-                const postulacionesGuardadasArray = postulacionesGuardadas ? JSON.parse(postulacionesGuardadas) : [];
-
                 const respuestaEmpleos = await axios.get('http://localhost:8000/api/jobs');
                 const empleosConEmpresa = await Promise.all(respuestaEmpleos.data.map(async (empleo) => {
                     const resEmpresa = await axios.get(`http://localhost:8000/api/company/${empleo.idEmpresa}`);
@@ -27,19 +23,19 @@ const ListaEmpleos = () => {
                 }));
                 setEmpleos(empleosConEmpresa);
 
-                // Inicializar el estado con las postulaciones guardadas
-                setPostulacionesUsuario(postulacionesGuardadasArray);
+                // Obtener postulaciones del usuario desde el servidor
+                const respuestaPostulaciones = await axios.get(`http://localhost:8000/api/postulations/user/${idUsuario}`);
+                setPostulacionesUsuario(respuestaPostulaciones.data);
             } catch (error) {
                 console.error('Error al obtener empleos o postulaciones:', error);
             }
         };
 
         obtenerEmpleosYPostulaciones();
-    }, []);
-
+    }, [idUsuario]);
 
     const yaPostulado = (idEmpleo) => {
-        return postulacionesUsuario.some(postulacion => postulacion.idEmpleo === idEmpleo);
+        return postulacionesUsuario.some(postulacion => postulacion.idEmpleo._id === idEmpleo);
     };
 
     const handlePostularseClick = (idEmpleo) => {
@@ -54,17 +50,19 @@ const ListaEmpleos = () => {
                 idEmpleo: selectedJobId,
                 estado: 'En Espera'
             });
-            const nuevasPostulaciones = [...postulacionesUsuario, response.data.insertedPostulation];
-            setPostulacionesUsuario(nuevasPostulaciones);
 
-            // Guardar las postulaciones en el almacenamiento local
-            localStorage.setItem('postulacionesUsuario', JSON.stringify(nuevasPostulaciones));
+            // Actualizar el estado de postulaciones del usuario
+            setPostulacionesUsuario(prevPostulaciones => [
+                ...prevPostulaciones, 
+                { ...response.data.insertedPostulation, idEmpleo: { _id: selectedJobId } }
+            ]);
 
             setShowModal(false);
         } catch (error) {
             console.error('Error al realizar la postulación:', error);
         }
     };
+
     return (
         <div className='App'>
             <CabeceraUsuarioInicio />
@@ -74,7 +72,7 @@ const ListaEmpleos = () => {
                     <ListGroup.Item key={empleo._id}>
                         <Card>
                             <Card.Body>
-                                <Card.Title>Empleo en {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}</Card.Title>
+                                <Card.Title>Empleo en {empleo.nombreEmpresa || "Empresa no especificada"}</Card.Title>
                                 <Card.Text><strong>Descripción:</strong> {empleo.descripcion}</Card.Text>
                                 <Card.Text><strong>Conocimientos Requeridos:</strong> {empleo.conocimientos}</Card.Text>
                                 <Card.Text><strong>Aptitudes Necesarias:</strong> {empleo.aptitudes}</Card.Text>
@@ -90,7 +88,6 @@ const ListaEmpleos = () => {
                                         />
                                         <span> Postularse</span>
                                     </div>
-
                                 )}
                             </Card.Body>
                         </Card>
