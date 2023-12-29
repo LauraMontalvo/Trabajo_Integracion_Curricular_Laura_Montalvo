@@ -6,9 +6,17 @@ const JobSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
+    puesto: {
+        type: String,
+        required: [true, 'El puesto es obligatoria']
+    },
     descripcion: {
         type: String,
         required: [true, 'La descripcion es obligatoria']
+    },
+    formacionAcademica: {
+        type: String,
+        required: [true, 'La formacion Academica es obligatoria']
     },
     conocimientos: {
         type: String,
@@ -18,9 +26,13 @@ const JobSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Las aptitudes requeridos son obligatorias']
     },
-    numeroVacantes: {
+    experienciarequerida: {
         type: String,
-        required: [true, 'El numero de vacantes es obligatorio']
+        required: [true, 'La expriencia es son obligatorias']
+    },
+    modalidad: {
+        type: String,
+        required: [true, 'La modalidad es obligatorio']
     },
 });
 

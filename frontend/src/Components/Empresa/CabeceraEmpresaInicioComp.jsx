@@ -7,17 +7,17 @@ import "../../Styles/header.scss";
 import axios from 'axios';
 import * as constantes from '../../Models/Constantes';
 
-const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
+const CabeceraEmpresaInicioComp = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
 
   // Determina la página actual basándose en la URL
-  const enPerfilUsuario = location.pathname.includes(`/detalleUsuario/${id}`);
-  const enPerfilEmpresa= location.pathname.includes(`/perfil-empresa/${id}`);
+  const enPerfilUsuario = location.pathname.includes(`/detalleEmpresa/${id}`);
+  const enPerfilEmpresa= location.pathname.includes(`/perfilUsuario/${id}`);
   const handleInicioClick = () => {
     if (isAuthenticated && id) {
-      navigate(`/detalleUsuario/${id}/resumen`);
+      navigate(`/resumen/detalleEmpresa/${id}`);
     } else {
       navigate(`/resumen/${id}`);
     }
@@ -25,7 +25,7 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:8000/api/user/${id}`)
+      axios.get(`http://localhost:8000/api/company/${id}`)
         .then((res) => {
           // Manejar respuesta
         })
@@ -43,13 +43,12 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
         <Nav className="mr-auto">
           <Nav.Link onClick={handleInicioClick}>Inicio</Nav.Link>
           {enPerfilUsuario ? (
-            <Nav.Link as={Link} to={`/buscarEmpleos/${id}`}>
-              <FontAwesomeIcon icon={faSearch} /> Buscar Empleo
+            <Nav.Link >
+              
             </Nav.Link>
           ) : (
-            <Nav.Link as={Link} to={`/detalleUsuario/${id}`}>
-              
-              Mi Perfil Usuario
+            <Nav.Link as={Link} to={`/detalleEmpresa/${id}`}>
+              Mi Perfil Empresa
             </Nav.Link>
           )}
     
@@ -59,4 +58,4 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
   );
 };
 
-export default CabeceraUsuarioInicio;
+export default CabeceraEmpresaInicioComp;

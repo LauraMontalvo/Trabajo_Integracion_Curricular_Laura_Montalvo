@@ -1,0 +1,43 @@
+.custom-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.custom-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.custom-card.expanded {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.custom-card .card-body {
+  text-align: center;
+}
+.custom-card .card-icon {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+.custom-card .card-icon img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+}
+.custom-card .custom-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-footer {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+.card-footer.in {
+  max-height: 100px;
+  opacity: 1;
+}/*# sourceMappingURL=InicioResumen.css.map */

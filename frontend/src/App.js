@@ -19,9 +19,16 @@ import ListaInstituciones from './Views/Administrador/ListaInstituciones';
 import RegistroInstituciones from './Views/Administrador/RegistroInstitucionesView';
 import ListaEmpresas from './Views/Administrador/ListaEmpresas';
 import ListaEmpleos from './Views/Usuarios/ListaEmpleos';
+import PerfilEmpresa from './Views/Usuarios/Perfilempresa';
+import PerfilUsuario from './Views/Empresa/PerfilUsuario';
+import InicioResumen from './Views/General/InicioResumen';
+import ListaUsuariosResumen from './Views/Usuarios/ListaUsuariosResumen';
+import ListaEmpresasResumen from './Views/Usuarios/ListaEmpresasResumen';
+import ListaEmpleosResumen from './Views/Usuarios/ListaEmpleosResumen';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const isAuthenticated = true; // O define el valor adecuado según tu lógica de autenticación
 
   useEffect(() => {
     // Lógica de simulación de carga
@@ -49,14 +56,20 @@ function App() {
             <Route path="/registrarUsuario" element={<RegistroUsuario />} />
             <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
             <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
-            <Route path="/registrarEmpresa" element={<RegistroEmpresa/>} />
-            <Route path="/listaEmpresas" element={<ListaEmpresas/>} />
+            <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
+            <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
-            <Route path="/buscarEmpleos/:id" element={<ListaEmpleos/>} />
-            <Route path="/registrarInstitucion" element={<RegistroInstituciones/>} />
+            <Route path="/buscarEmpleos/:id" element={<ListaEmpleos />} />
+            <Route path="/registrarInstitucion" element={<RegistroInstituciones />} />
             <Route path="/listaInstituciones" element={<ListaInstituciones />} />
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />
+            <Route path="/perfil-empresa/:id" element={<PerfilEmpresa />} />
+            <Route path="/perfilUsuario/:id" element={<PerfilUsuario />} />
+            <Route path="/resumen/:id" element={<InicioResumen isAuthenticated={isAuthenticated} />} />
+            <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen  />} />
+            <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen />} />
+            <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen />} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}
             <Route path="/*" element={<Navigate to={constantes.URL_PAGINA_PRINCIPAL} />} />
           </Routes>

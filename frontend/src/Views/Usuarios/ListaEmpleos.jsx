@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, ListGroup, Modal, Button } from 'react-bootstrap';
+import { Card, ListGroup, Accordion, Button, Modal, Container } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
+import { Link } from 'react-router-dom';
+
 
 const ListaEmpleos = () => {
     const [empleos, setEmpleos] = useState([]);
     const [postulacionesUsuario, setPostulacionesUsuario] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedJobId, setSelectedJobId] = useState(null);
+
     const { id: idUsuario } = useParams();
 
     useEffect(() => {
         const obtenerEmpleosYPostulaciones = async () => {
             try {
                 const respuestaEmpleos = await axios.get('http://localhost:8000/api/jobs');
-                const empleosConEmpresa = await Promise.all(respuestaEmpleos.data.map(async (empleo) => {
-                    const resEmpresa = await axios.get(`http://localhost:8000/api/company/${empleo.idEmpresa}`);
-                    return { ...empleo, nombreEmpresa: resEmpresa.data.nombreEmpresa };
-                }));
+                const empleosConEmpresa = await Promise.all(
+                    respuestaEmpleos.data.map(async (empleo) => {
+                        const resEmpresa = await axios.get(`http://localhost:8000/api/company/${empleo.idEmpresa}`);
+                        return { ...empleo, nombreEmpresa: resEmpresa.data.nombreEmpresa };
+                    })
+                );
                 setEmpleos(empleosConEmpresa);
 
                 // Obtener postulaciones del usuario desde el servidor
@@ -35,8 +41,9 @@ const ListaEmpleos = () => {
     }, [idUsuario]);
 
     const yaPostulado = (idEmpleo) => {
-        return postulacionesUsuario.some(postulacion => postulacion.idEmpleo._id === idEmpleo);
+        return postulacionesUsuario.some((postulacion) => postulacion.idEmpleo && postulacion.idEmpleo._id === idEmpleo);
     };
+
 
     const handlePostularseClick = (idEmpleo) => {
         setSelectedJobId(idEmpleo);
@@ -48,13 +55,13 @@ const ListaEmpleos = () => {
             const response = await axios.post('http://localhost:8000/api/postulation/new', {
                 idUsuario,
                 idEmpleo: selectedJobId,
-                estado: 'En Espera'
+                estado: 'En Espera',
             });
 
             // Actualizar el estado de postulaciones del usuario
-            setPostulacionesUsuario(prevPostulaciones => [
-                ...prevPostulaciones, 
-                { ...response.data.insertedPostulation, idEmpleo: { _id: selectedJobId } }
+            setPostulacionesUsuario((prevPostulaciones) => [
+                ...prevPostulaciones,
+                { ...response.data.insertedPostulation, idEmpleo: { _id: selectedJobId } },
             ]);
 
             setShowModal(false);
@@ -64,52 +71,78 @@ const ListaEmpleos = () => {
     };
 
     return (
-        <div className='App'>
+        <div className="App">
             <CabeceraUsuarioInicio />
-            <h2>Empleos Disponibles</h2>
-            <ListGroup>
-                {empleos.map(empleo => (
-                    <ListGroup.Item key={empleo._id}>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title>Empleo en {empleo.nombreEmpresa || "Empresa no especificada"}</Card.Title>
-                                <Card.Text><strong>Descripción:</strong> {empleo.descripcion}</Card.Text>
-                                <Card.Text><strong>Conocimientos Requeridos:</strong> {empleo.conocimientos}</Card.Text>
-                                <Card.Text><strong>Aptitudes Necesarias:</strong> {empleo.aptitudes}</Card.Text>
-                                <Card.Text><strong>Número de Vacantes:</strong> {empleo.numeroVacantes}</Card.Text>
-                                {yaPostulado(empleo._id) ? (
-                                    <Button disabled>Ya Postulado</Button>
-                                ) : (
-                                    <div>
-                                        <FontAwesomeIcon
-                                            icon={faPaperPlane}
-                                            onClick={() => handlePostularseClick(empleo._id)}
-                                            style={{ cursor: 'pointer' }}
-                                        />
-                                        <span> Postularse</span>
-                                    </div>
-                                )}
-                            </Card.Body>
-                        </Card>
-                    </ListGroup.Item>
-                ))}
-            </ListGroup>
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirmar Postulación</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    ¿Estás seguro de que quieres postularte a este empleo?
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Cancelar
-                    </Button>
-                    <Button variant="primary" onClick={confirmarPostulacion}>
-                        Confirmar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <Container className="my-4">
+                <h2>Empleos Disponibles</h2>
+                <Accordion defaultActiveKey="0" flush>
+                    {empleos.map((empleo, index) => {
+                        if (!empleo || !empleo._id) {
+                            return null; // O manejar de otra manera cuando el empleo es inválido
+                        }
+
+                        return (
+                            <Accordion.Item eventKey={index.toString()} key={empleo._id}>
+                                <Card>
+
+                                    <Accordion.Header>
+                                        <div>
+                                            {yaPostulado(empleo._id) ? (
+                                                <Button variant="secondary" disabled>Ya Postulado</Button>
+                                            ) : (
+                                                <Button variant="primary" onClick={() => handlePostularseClick(empleo._id)}>
+                                                    <FontAwesomeIcon icon={faPaperPlane} className="me-2" />
+                                                    Postularse
+                                                </Button>
+                                            )}
+                                        </div>
+                                        <div>
+                                            Empleo en  <Link to={`/perfil-empresa/${empleo.idEmpresa._id}`} className="empresa-link">
+                                                {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}
+                                            </Link>
+                                        </div>
+
+                                    </Accordion.Header>
+
+                                    <Accordion.Body>
+                                    <strong >Puesto:</strong>
+                                        <p>{empleo.puesto}</p>
+                                        <strong >Descripción:</strong>
+                                        <p>{empleo.descripcion}</p>
+                                        <strong >Foramcion Académica:</strong>
+                                        <p>{empleo.formacionAcademica}</p> 
+                                        <strong>Conocimientos Requeridos:</strong>
+                                        <p>{empleo.conocimientos}</p>
+                                        <strong>Experiencia Requerida:</strong>
+                                        <p>{empleo.experienciarequerida}</p>
+                                        <strong>Aptitudes Necesarias:</strong>
+                                        <p>{empleo.aptitudes}</p>
+                                        <strong>Modalidad:</strong> <p>{empleo.modalidad}</p>
+
+                                    </Accordion.Body>
+                                </Card>
+                            </Accordion.Item>
+                        );
+                    })}
+                </Accordion>
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirmar Postulación</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        ¿Estás seguro de que quieres postularte al empleo que ofrece {
+                            (empleos.find(e => e && e._id === selectedJobId) || {}).idEmpresa?.nombreEmpresa || "Empresa no especificada"
+                        }?
+                    </Modal.Body>                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant="primary" onClick={confirmarPostulacion}>
+                            Confirmar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </Container>
         </div>
     );
 };

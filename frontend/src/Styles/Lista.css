@@ -28,4 +28,114 @@
 .table-responsive-Institucion table tbody tr td .icon-button {
   font-size: 1.2rem;
   margin: 0 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Estilos para la barra lateral */
+.container-fluid {
+  padding: 2rem;
+}
+
+.user-card {
+  position: relative;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.user-card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+.user-card .close-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+  color: #6c757d;
+}
+.user-card .close-icon:hover {
+  color: #dc3545;
+}
+.user-card .profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #007bff;
+  margin-bottom: 1rem;
+}
+.user-card h5 {
+  color: #495057;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.user-card .text-muted {
+  color: #6c757d;
+}
+.user-card .btn-outline-primary {
+  border-color: #007bff;
+  color: #007bff;
+  background-color: #f8f9fa;
+  margin-top: 1rem;
+}
+.user-card .btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.job-card {
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.job-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.job-image {
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.empresa-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.empresa-card .card-body {
+  padding: 1rem;
+}
+.empresa-card .card-body .row {
+  align-items: center;
+}
+.empresa-card .card-body .ratings {
+  display: flex;
+  align-items: center;
+}
+.empresa-card .card-body .ratings .fa-star {
+  margin-right: 0.25rem;
+}
+.empresa-card .card-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+.empresa-card .card-text {
+  margin-bottom: 0.25rem;
+}
+.empresa-card .card-text svg {
+  margin-right: 0.5rem;
+}
+.empresa-card .badge {
+  font-size: 0.85rem;
+  padding: 0.5em 0.75em;
+  margin-bottom: 0.5rem;
 }/*# sourceMappingURL=Lista.css.map */

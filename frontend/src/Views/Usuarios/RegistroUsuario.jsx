@@ -17,7 +17,7 @@ const CampoEstado = ({ valido, mensajeError }) => {
   } else if (valido) {
     return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />;
   } else {
-    return null; 
+    return null;
   }
 };
 const RegistroUsuario = (props) => {
@@ -66,7 +66,7 @@ const RegistroUsuario = (props) => {
 
   const validarFormularioAntesDeEnviar = () => {
     let formularioEsValido = true;
-  
+
     // Validar nombre
     if (!nombre) {
       setNombreError(constantes.TEXTO_NOMBRE_USUARIO_OBLIGATORIO);
@@ -74,7 +74,7 @@ const RegistroUsuario = (props) => {
     } else {
       setNombreError('');
     }
-  
+
     // Validar apellido
     if (!apellido) {
       setApellidoError(constantes.TEXTO_APELLIDO_USUARIO_OBLIGATORIO);
@@ -82,15 +82,13 @@ const RegistroUsuario = (props) => {
     } else {
       setApellidoError('');
     }
-  
-    // Validar sexo
+
     if (!sexo || sexo === ' ') {
-      setSexoError(constantes.TEXTO_SELECCIONAR_GENERO);
+      setSexoError("Seleccionar género es obligatorio");
       formularioEsValido = false;
     } else {
       setSexoError('');
     }
-  
     // Validar fecha de nacimiento
     if (!fechaNacimiento) {
       setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
@@ -98,7 +96,7 @@ const RegistroUsuario = (props) => {
     } else {
       setFechaNacimientoError('');
     }
-  
+
     // Validar teléfono
     if (!telefono || telefono.length !== 10) { // Asumiendo que el teléfono debe tener 10 dígitos
       setTelefonoError(constantes.TEXTO_NUMERO_TELEFONOOBLIGATORIO);
@@ -106,7 +104,7 @@ const RegistroUsuario = (props) => {
     } else {
       setTelefonoError('');
     }
-  
+
     // Validar usuario
     if (!usuario) {
       setUsuarioError(constantes.TEXTO_USUARIO_OBLIGATORIO);
@@ -114,7 +112,7 @@ const RegistroUsuario = (props) => {
     } else {
       setUsuarioError('');
     }
-  
+
     // Validar contraseña
     if (!password) {
       setPasswordError(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
@@ -122,7 +120,7 @@ const RegistroUsuario = (props) => {
     } else {
       setPasswordError('');
     }
-  
+
     // Validar confirmación de contraseña
     if (!confirmPassword || confirmPassword !== password) {
       setConfirmPasswordError(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
@@ -130,10 +128,10 @@ const RegistroUsuario = (props) => {
     } else {
       setConfirmPasswordError('');
     }
-  
+
     return formularioEsValido;
   };
-  
+
 
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
@@ -146,10 +144,11 @@ const RegistroUsuario = (props) => {
         errorSetter('');
       }
     }
+
     // ... Lógica para otros campos ...
     setterFunction(value);
     // Validación de la Contraseña
-   if (name === 'password') {
+    if (name === 'password') {
       const regexMayuscula = /[A-Z]/;
       const regexCaracterEspecial = /[^A-Za-z0-9]/;
       if (!value) {
@@ -201,20 +200,13 @@ const RegistroUsuario = (props) => {
     }
   };
 
-
-
-  //edad
-
-
-
-
   const onsubmitHandler = (e) => {
     e.preventDefault();
-     // Validar formulario
-  if (!validarFormularioAntesDeEnviar()) {
-    // Si el formulario no es válido, termina la función aquí
-    return;
-  }
+    // Validar formulario
+    if (!validarFormularioAntesDeEnviar()) {
+      // Si el formulario no es válido, termina la función aquí
+      return;
+    }
     axios
       .post(constantes.URL_USUARIO_NUEVO, {
         nombre,
@@ -304,24 +296,27 @@ const RegistroUsuario = (props) => {
           </Col>
 
           <Col md={6}>
-  <Form.Group>
-    <Form.Label>Género</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
-      <Form.Control as="select"
-        onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
-        value={sexo || ' '}
-        name="sexo"
-        className="input-with-icon">
-        <option value=' '> --Seleccione el género--</option>
-        <option value="Masculino">Masculino</option>
-        <option value="Femenino">Femenino</option>
-      </Form.Control>
-      <CampoEstado valido={sexo !== ' ' && sexoError === ''} mensajeError={sexoError} />
-    </div>
-    {sexoError && <p className="text-danger">{sexoError}</p>}
-  </Form.Group>
-</Col>
+            <Form.Group>
+              <Form.Label>Género</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faVenusMars} className="input-icon" />
+                <Form.Control
+                  as="select"
+                  onChange={(e) => handleInputChange(e, setSexo, setSexoError)}
+                  value={sexo || ''}
+                  name="sexo"
+                  className="input-with-icon"
+                >
+                  <option value="" disabled>Seleccionar Género</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Femenino">Femenino</option>
+                </Form.Control>
+                {sexo && <CampoEstado valido={esCampoValido(sexo, sexoError)} mensajeError={sexoError} />}
+              </div>
+              {sexoError && <p className="text-danger">{sexoError}</p>}
+            </Form.Group>
+          </Col>
+
 
           <Col md={6}>
             <Form.Group>
@@ -390,7 +385,7 @@ const RegistroUsuario = (props) => {
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
-<CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
+                <CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
 
               </div>
               {passwordError && <p className="text-danger">{passwordError}</p>}
@@ -405,25 +400,25 @@ const RegistroUsuario = (props) => {
                 <FontAwesomeIcon icon={faLock} className="field-icon" />
                 <Form.Control
                   type={showPassword ? "text" : "password"}
-             
+
                   value={confirmPassword}
                   name="confirmPassword"
-  placeholder="Confirme su contraseña"
-  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError, password)}
+                  placeholder="Confirme su contraseña"
+                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError, password)}
 
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
-<div>
-<CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
+                <div>
+                  <CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
 
 
-</div>
+                </div>
 
               </div>
-              
+
               {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
             </Form.Group>
           </Col>

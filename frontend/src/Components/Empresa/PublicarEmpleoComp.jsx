@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt, faTools, faClipboardList, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt, faTools,faGraduationCap,faCalendarAlt, faClipboardList, faBriefcase,faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/camps.scss"; // Importa tus estilos personalizados
 
-const CampoEstado = ({ valido, mensajeError }) => {
+const CampoEstado = ({ valido, mensajeError}) => {
   if (mensajeError) {
     return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />;
   } else if (valido) {
@@ -14,19 +14,33 @@ const CampoEstado = ({ valido, mensajeError }) => {
     return null;
   }
 };
-const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
+const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado  ,closeEditModal}) => {
   const [descripcion, setDescripcion] = useState('');
   const [conocimientos, setConocimientos] = useState('');
   const [aptitudes, setAptitudes] = useState('');
-  const [numeroVacantes, setNumeroVacantes] = useState('');
 
   const [descripcionError, setDescripcionError] = useState('');
   const [conocimientosError, setConocimientosError] = useState('');
   const [aptitudesError, setAptitudesError] = useState('');
-  const [numeroVacantesError, setNumeroVacantesError] = useState('');
   const [showErrorModal, setShowErrorModal] = useState(false);
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // Nuevos estados para los campos adicionales
+  const [puesto, setPuesto] = useState('');
+  const [formacionAcademica, setFormacionAcademica] = useState('');
+  const [experienciarequerida, setExperienciarequerida] = useState('');
+  const [modalidad, setModalidad] = useState({
+    virtual: false,
+    presencial: false,
+    hibrida: false
+  });
+  // Nuevos estados para errores de validación
+  const [puestoError, setPuestoError] = useState('');
+  const [formacionAcademicaError, setFormacionAcademicaError] = useState('');
+  const [experienciarequeridaError, setExperienciarequeridaError] = useState('');
+  const [modalidadError, setModalidadError] = useState('');
+
 
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
@@ -34,10 +48,13 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
 
 
   const handleSuccessModalClose = () => {
+    // Configura la variable de estado showSuccessModal en false para ocultar el modal
     setShowSuccessModal(false);
-    // Puedes redirigir al usuario a la página de inicio o a donde necesites después de cerrar el modal
-  };
 
+    if (closeEditModal) {
+      closeEditModal();
+    }
+  };
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
@@ -77,16 +94,39 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
       setError('');
     }
   };
-  const validateNumeroVacantes = (value, setError) => {
+  
+  // Nuevas funciones de validación
+  const validatePuesto = (value, setError) => {
     if (!value.trim()) {
-      setError('El número de vacantes es obligatorio');
-    } else if (isNaN(value) || parseInt(value) <= 0) {
-      setError('Debe ingresar un número válido de vacantes');
+      setError('El puesto es obligatorio');
     } else {
       setError('');
     }
   };
 
+  const validateFormacionAcademica = (value, setError) => {
+    if (!value.trim()) {
+      setError('La formación académica es obligatoria');
+    } else {
+      setError('');
+    }
+  };
+
+  const validateExperienciarequerida = (value, setError) => {
+    if (!value.trim()) {
+      setError('La experiencia requerida es obligatoria');
+    } else {
+      setError('');
+    }
+  };
+
+  const validateModalidad = (value, setError) => {
+    if (!value.trim()) {
+      setError('La modalidad es obligatoria');
+    } else {
+      setError('');
+    }
+  };
 
   const validarFormularioAntesDeEnviar = () => {
     let formularioEsValido = true;
@@ -115,16 +155,39 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
       setAptitudesError('');
     }
 
-    if (!numeroVacantes) {
-      setNumeroVacantesError('El número de vacantes es obligatorio');
-      formularioEsValido = false;
-    } else if (isNaN(numeroVacantes) || numeroVacantes <= 0) {
-      setNumeroVacantesError('Debe ingresar un número válido de vacantes');
-      formularioEsValido = false;
-    } else {
-      setNumeroVacantesError('');
-    }
-    return formularioEsValido;
+   // Validar puesto
+  if (!puesto) {
+    setPuestoError('El puesto es obligatorio');
+    formularioEsValido = false;
+  } else {
+    setPuestoError('');
+  }
+
+  // Validar formación académica
+  if (!formacionAcademica) {
+    setFormacionAcademicaError('La formación académica es obligatoria');
+    formularioEsValido = false;
+  } else {
+    setFormacionAcademicaError('');
+  }
+
+  // Validar experiencia requerida
+  if (!experienciarequerida) {
+    setExperienciarequeridaError('La experiencia requerida es obligatoria');
+    formularioEsValido = false;
+  } else {
+    setExperienciarequeridaError('');
+  }
+
+  // Validar modalidad
+  if (!modalidad) {
+    setModalidadError('La modalidad es obligatoria');
+    formularioEsValido = false;
+  } else {
+    setModalidadError('');
+  }
+
+  return formularioEsValido;
   };
 
   const handleSubmit = (e) => {
@@ -135,10 +198,14 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
     axios
       .post('http://localhost:8000/api/job/new', {
         idEmpresa,
+        puesto,
         descripcion,
+        formacionAcademica,
         conocimientos,
         aptitudes,
-        numeroVacantes,
+        experienciarequerida,
+        modalidad,
+     
       })
       .then((res) => {
         console.log(res);
@@ -147,24 +214,45 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
         setDescripcion('');
         setConocimientos('');
         setAptitudes('');
-        setNumeroVacantes('');
+        setFormacionAcademica('');
+        setExperienciarequerida('');
+        setModalidad('');
+        setPuesto('');
+        
         setDescripcionError('');
+        setExperienciarequeridaError('');
+        setFormacionAcademicaError('');
+        setPuestoError('');
         setConocimientosError('');
         setAptitudesError('');
-        setNumeroVacantesError('');
+        setModalidadError('');
         onEmpleoPublicado(res.data.insertedJob);
       })
       .catch((err) => {
         console.error(err);
-
-
+        handleErrorModalShow();
       });
   };
 
   return (
     <Form onSubmit={handleSubmit} className="mi-formulario">
       <Row>
-      
+      <Form.Group>
+  <Form.Label>Puesto</Form.Label>
+  <div className="input-icon-wrapper">
+    {/* Elige un ícono adecuado para el puesto */}
+    <FontAwesomeIcon icon={faBriefcase} className="input-icon" /> 
+    <Form.Control
+      type="text"
+      className="input-elegante" // Aplica la clase de estilo aquí si es necesario
+      placeholder="Ingrese el puesto"
+      value={puesto}
+      onChange={(e) => handleInputChange(e, setPuesto, setPuestoError, validatePuesto)}
+    />
+    <CampoEstado valido={esCampoValido(puesto, puestoError)} mensajeError={puestoError} />
+  </div>
+  {puestoError && <p className="text-danger">{puestoError}</p>}
+</Form.Group>
           <Form.Group>
             <Form.Label>Descripción del empleo</Form.Label>
             <div className="input-icon-wrapper">
@@ -182,13 +270,30 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
             {descripcionError && <p className="text-danger">{descripcionError}</p>}
           </Form.Group>
         
-        
+          <Form.Group>
+  <Form.Label>Formación Académica</Form.Label>
+  <div className="input-icon-wrapper">
+    {/* Elige un ícono adecuado para la formación académica */}
+    <FontAwesomeIcon icon={faGraduationCap} className="input-icon" />
+    <Form.Control
+      as="textarea"
+      rows={5}
+      className="textarea-elegante" // Aplica la clase de estilo aquí si es necesario
+      placeholder="Ingrese la formación académica"
+      value={formacionAcademica}
+      onChange={(e) => handleInputChange(e, setFormacionAcademica, setFormacionAcademicaError, validateFormacionAcademica)}
+    />
+    <CampoEstado valido={esCampoValido(formacionAcademica, formacionAcademicaError)} mensajeError={formacionAcademicaError} />
+  </div>
+  {formacionAcademicaError && <p className="text-danger">{formacionAcademicaError}</p>}
+</Form.Group>
           <Form.Group>
             <Form.Label>Conocimientos requeridos</Form.Label>
             <div className="input-icon-wrapper">
               <FontAwesomeIcon icon={faTools} className="input-icon" />
               <Form.Control
-                type="text"
+                  as="textarea"
+                  rows={5}
                 placeholder="Ingrese los conocimientos requeridos"
                 value={conocimientos}
                 onChange={(e) => handleInputChange(e, setConocimientos, setConocimientosError, validateConocimientos)}
@@ -197,13 +302,31 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
             </div>
             {conocimientosError && <p className="text-danger">{conocimientosError}</p>}
           </Form.Group>
-      
+          <Form.Group>
+  <Form.Label>Experiencia Requerida</Form.Label>
+  <div className="input-icon-wrapper">
+    {/* Elige un ícono adecuado para la experiencia requerida */}
+    <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+    <Form.Control
+      as="textarea"
+      rows={5}
+      className="textarea-elegante"
+      placeholder="Ingrese los detalles de la experiencia requerida"
+      value={experienciarequerida}
+      onChange={(e) => handleInputChange(e, setExperienciarequerida, setExperienciarequeridaError, validateExperienciarequerida)}
+    />
+    <CampoEstado valido={esCampoValido(experienciarequerida, experienciarequeridaError)} mensajeError={experienciarequeridaError} />
+  </div>
+  {experienciarequeridaError && <p className="text-danger">{experienciarequeridaError}</p>}
+</Form.Group>
+
           <Form.Group>
             <Form.Label>Aptitudes requeridas</Form.Label>
             <div className="input-icon-wrapper">
               <FontAwesomeIcon icon={faClipboardList} className="input-icon" />
               <Form.Control
-                type="text"
+               as="textarea"
+               rows={5}
                 placeholder="Ingrese las aptitudes requeridas"
                 value={aptitudes}
                 onChange={(e) => handleInputChange(e, setAptitudes, setAptitudesError, validateAptitudes)}
@@ -213,24 +336,38 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado }) => {
             </div>
             {aptitudesError && <p className="text-danger">{aptitudesError}</p>}
           </Form.Group>
-      
-        <Col md={6}>
+         
+          
           <Form.Group>
-            <Form.Label>Número de vacantes</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faUserCircle} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el número de vacantes"
-                value={numeroVacantes}
-                onChange={(e) => handleInputChange(e, setNumeroVacantes, setNumeroVacantesError, validateNumeroVacantes)}
-              />
-              <CampoEstado valido={esCampoValido(numeroVacantes, numeroVacantesError)} mensajeError={numeroVacantesError} />
-
-            </div>
-            {numeroVacantesError && <p className="text-danger">{numeroVacantesError}</p>}
-          </Form.Group>
-        </Col>
+  <Form.Label>Modalidad</Form.Label>
+  <div className="radio-buttons-group">
+    <Form.Check 
+      type="radio"
+      label="Virtual"
+      name="modalidad"
+      value="Virtual"
+      checked={modalidad === "Virtual"}
+      onChange={(e) => setModalidad(e.target.value)}
+    />
+    <Form.Check 
+      type="radio"
+      label="Presencial"
+      name="modalidad"
+      value="Presencial"
+      checked={modalidad === "Presencial"}
+      onChange={(e) => setModalidad(e.target.value)}
+    />
+    <Form.Check 
+      type="radio"
+      label="Híbrida"
+      name="modalidad"
+      value="Híbrida"
+      checked={modalidad === "Híbrida"}
+      onChange={(e) => setModalidad(e.target.value)}
+    />
+  </div>
+</Form.Group>
+        
       </Row>
       <div className="botones-centrados">
         <Button type="submit" className="btn-primary">

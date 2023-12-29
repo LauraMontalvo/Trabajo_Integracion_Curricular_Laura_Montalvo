@@ -13,7 +13,7 @@ const Main = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://www.magisnet.com/wp-content/uploads/2020/02/empleos-del-futuro.jpg"
+          src="https://www.quitoinforma.gob.ec/wp-content/uploads/2022/08/Municipio-en-tu-barrio-visitara-Chavezpamba-800x445.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
@@ -24,7 +24,7 @@ const Main = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://via.placeholder.com/800x400?text=Second slide"
+          src="https://ec.viajandox.com/uploads/attractive_2151.jpg"
           alt="Second slide"
         />
         <Carousel.Caption>
@@ -35,7 +35,7 @@ const Main = () => {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://via.placeholder.com/800x400?text=Third slide"
+          src="https://ec.viajandox.com/uploads/attractive_2152.jpg"
           alt="Third slide"
         />
         <Carousel.Caption>

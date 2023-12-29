@@ -47,9 +47,7 @@ const LoginForm = (props) => {
         });
     }
   }
-  const RegresarPaginaPrincipal = () => {
-    navigate("/");
-  }
+
   const RegresarRegistrarComo = () => navigate("/registrarseComo");
 
 
@@ -109,19 +107,11 @@ const LoginForm = (props) => {
           <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
         </div>
 
-
-
         <p style={{ color: 'red' }}>{loginStatus}</p>
-  <h6>¿Aún no estás registrado?</h6>
-  <Link to="/registrarUsuario">Regístrate ahora!</Link>
+        <h6>¿Aún no estás registrado?</h6>
+        <Link to="/registrarUsuario">Regístrate ahora!</Link>
       </Form>
     </div>
-
-
-
-
-
-
 
   )
 }

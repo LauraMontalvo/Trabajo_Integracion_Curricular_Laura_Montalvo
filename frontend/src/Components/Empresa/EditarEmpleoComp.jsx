@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form, Button, Row, Col, Alert ,Modal} from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt, faTools, faClipboardList, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt, faTools, faClipboardList, faGraduationCap,faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faBriefcase, faBuilding, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
-// ... Importaciones adicionales si son necesarias ...
 const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
   // Estados para los datos del formulario
   const [descripcion, setDescripcion] = useState('');
   const [conocimientos, setConocimientos] = useState('');
   const [aptitudes, setAptitudes] = useState('');
-  const [numeroVacantes, setNumeroVacantes] = useState('');
   const [error, setError] = useState('');
-//modal de confimracion
+  const [puesto, setPuesto] = useState('');
+const [formacionAcademica, setFormacionAcademica] = useState('');
+const [experienciarequerida, setExperienciarequerida] = useState('');
+const [modalidad, setModalidad] = useState('');
+  //modal de confimracion
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
     if (closeEditModal) {
-        closeEditModal();
+      closeEditModal();
     }
-};
+  };
+
+
   useEffect(() => {
     axios.get(`http://localhost:8000/api/job/${idEmpleo}`)
       .then(response => {
@@ -29,7 +33,10 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
         setDescripcion(response.data.descripcion);
         setConocimientos(response.data.conocimientos);
         setAptitudes(response.data.aptitudes);
-        setNumeroVacantes(response.data.numeroVacantes);
+        setPuesto(response.data.puesto);
+        setFormacionAcademica(response.data.formacionAcademica);
+        setExperienciarequerida(response.data.experienciarequerida);
+        setModalidad(response.data.modalidad);
       })
       .catch(error => {
         console.error('Error al cargar la experiencia', error);
@@ -43,111 +50,190 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
 
     axios.put(`http://localhost:8000/api/job/${idEmpleo}`, {
       descripcion,
-      conocimientos,
-      aptitudes,
-      numeroVacantes
+  conocimientos,
+  aptitudes,
+  puesto,
+  formacionAcademica,
+  experienciarequerida,
+  modalidad
     })
       .then(response => {
         // Llamar a la función callback después de una actualización exitosa
-        onEmpleoEditado(response.data); 
-        setShowSuccessModal(true); })
-        
+        onEmpleoEditado(response.data);
+        setShowSuccessModal(true);
+      })
+
       .catch(error => {
         console.error('Error al actualizar empleo', error);
         setError('Error al actualizar empleo');
       });
   };
+
+
+  const autoExpandField = (e) => {
+    e.target.style.height = 'inherit'; // Restablece la altura
+    const alturaDeseada = Math.max(e.target.scrollHeight);
+    e.target.style.height = `${alturaDeseada}px`;
+  };
+
+  const handleChange = (setter) => (e) => {
+    setter(e.target.value);
+    autoExpandField(e);
+  };
+
+
+
   return (
     <Form onSubmit={handleSubmit} className="mi-formulario">
       {error && <Alert variant="danger">{error}</Alert>}
       <Row>
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Descripción del empleo</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faFileAlt} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese la descripción del empleo"
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
-              />
-              {/* Aquí puedes agregar validación de estado como en el formulario original */}
-            </div>
-          </Form.Group>
-        </Col>
-        {/* ... Campos adicionales ... */}
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Conocimientos requeridos</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faTools} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese los conocimientos requeridos"
-                value={conocimientos}
-                onChange={(e) => setConocimientos(e.target.value)}
-              />
-              {/* Validación de estado */}
-            </div>
-          </Form.Group>
-        </Col>
+      <Form.Group>
+  <Form.Label>Puesto</Form.Label>
+  <div className="input-icon-wrapper">
+    <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+    <Form.Control
+      type="text"
+      placeholder="Ingrese el puesto"
+      value={puesto}
+      onChange={(e) => setPuesto(e.target.value)}
+    />
+  </div>
+</Form.Group>
+        <Form.Group>
+          <Form.Label>Descripción del empleo</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faFileAlt} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              onChange={handleChange(setDescripcion)}
+              rows={4}
 
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Aptitudes requeridas</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faClipboardList} className="input-icon" />
-              <Form.Control
-                type="text"
-                placeholder="Ingrese las aptitudes requeridas"
-                value={aptitudes}
-                onChange={(e) => setAptitudes(e.target.value)}
-              />
-              {/* Validación de estado */}
-            </div>
-          </Form.Group>
-        </Col>
+              placeholder="Ingrese la descripción del empleo"
+              value={descripcion}
+
+
+            />
+            {/* Aquí puedes agregar validación de estado como en el formulario original */}
+          </div>
+        </Form.Group>
+        <Form.Group>
+  <Form.Label>Formación Académica</Form.Label>
+  <div className="input-icon-wrapper">
+    <FontAwesomeIcon icon={faGraduationCap} className="input-icon" />
+    <Form.Control
+      as="textarea"
+      rows={4}
+      placeholder="Ingrese la formación académica requerida"
+      value={formacionAcademica}
+      onChange={(e) => setFormacionAcademica(e.target.value)}
+    />
+  </div>
+</Form.Group>
+        {/* ... Campos adicionales ... */}
+
+        <Form.Group>
+          <Form.Label>Conocimientos requeridos</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faTools} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              onChange={handleChange(setConocimientos)}
+              rows={4}
+
+              placeholder="Ingrese los conocimientos requeridos"
+              value={conocimientos}
+
+            />
+            {/* Validación de estado */}
+          </div>
+        </Form.Group>
+        <Form.Group>
+  <Form.Label>Experiencia Requerida</Form.Label>
+  <div className="input-icon-wrapper">
+    <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+    <Form.Control
+      as="textarea"
+      rows={4}
+      placeholder="Ingrese la experiencia requerida para el empleo"
+      value={experienciarequerida}
+      onChange={(e) => setExperienciarequerida(e.target.value)}
+    />
+  </div>
+</Form.Group>
+
+        <Form.Group>
+          <Form.Label>Aptitudes requeridas</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faClipboardList} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              onChange={handleChange(setAptitudes)}
+
+              placeholder="Ingrese las aptitudes requeridas"
+              value={aptitudes}
+
+            />
+            {/* Validación de estado */}
+          </div>
+        </Form.Group>
+
 
         {/* Número de vacantes */}
-        <Col md={6}>
-          <Form.Group>
-            <Form.Label>Número de vacantes</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faUserCircle} className="input-icon" />
-              <Form.Control
-               type="text"
-                placeholder="Ingrese el número de vacantes"
-                value={numeroVacantes}
-                onChange={(e) => setNumeroVacantes(e.target.value)}
-              />
-              {/* Validación de estado */}
-            </div>
-          </Form.Group>
-        </Col>
+
+        <Form.Group>
+  <Form.Label>Modalidad</Form.Label>
+  <div className="radio-buttons-group">
+    <Form.Check 
+      type="radio"
+      label="Virtual"
+      name="modalidad"
+      value="Virtual"
+      checked={modalidad === "Virtual"}
+      onChange={(e) => setModalidad(e.target.value)}
+    />
+    <Form.Check 
+      type="radio"
+      label="Presencial"
+      name="modalidad"
+      value="Presencial"
+      checked={modalidad === "Presencial"}
+      onChange={(e) => setModalidad(e.target.value)}
+    />
+    <Form.Check 
+      type="radio"
+      label="Híbrida"
+      name="modalidad"
+      value="Híbrida"
+      checked={modalidad === "Híbrida"}
+      onChange={(e) => setModalidad(e.target.value)}
+    />
+  </div>
+</Form.Group>
+
       </Row>
       <div className="botones-centrados">
         <Button type="submit" className='btn-primary'>Guardar Cambios</Button>
       </div>
       <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-      <Modal.Header closeButton>
-        <Modal.Title className='tituloModal'>
-          <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
-          Empleo actualizado con éxito
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body className='tituloModalBody'  >
-        <p >El empleo ha sido actualizado correctamente en el sistema.</p>
-        <p>Puedes revisar los detalles del empleo en la lista de empleos publicados.</p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="success" onClick={handleSuccessModalClose}>
-          Cerrar
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        <Modal.Header closeButton>
+          <Modal.Title className='tituloModal'>
+            <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+            Empleo actualizado con éxito
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='tituloModalBody'  >
+          <p >El empleo ha sido actualizado correctamente en el sistema.</p>
+          <p>Puedes revisar los detalles del empleo en la lista de empleos publicados.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleSuccessModalClose}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Form>
-    
+
   );
 };
 

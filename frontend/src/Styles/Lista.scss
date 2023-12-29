@@ -39,4 +39,139 @@
       }
     }
   }
-  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+//listausuriosresumen
+/* Estilos para la barra lateral */
+$primary-color: #007bff; // o cualquier color que coincida con tu paleta
+$background-color: #f8f9fa; // color de fondo para el botón "Ver perfil"
+$text-color: #495057; // color del texto principal
+$subtitle-color: #6c757d; // color del texto secundario
+$border-color: #ced4da; // color del borde de las tarjetas
+$shadow-color: rgba(0, 0, 0, 0.1); // color de la sombra para las tarjetas
+
+.container-fluid {
+  padding: 2rem;
+}
+
+.user-card {
+  position: relative;
+  border: 1px solid $border-color;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px $shadow-color;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 6px 10px $shadow-color;
+  }
+
+  .close-icon {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    cursor: pointer;
+    color: $subtitle-color;
+    &:hover {
+      color: #dc3545; // rojo para el botón de cierre al pasar el ratón
+    }
+  }
+
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid $primary-color;
+    margin-bottom: 1rem;
+  }
+
+  h5 {
+    color: $text-color;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .text-muted {
+    color: $subtitle-color;
+  }
+
+  .btn-outline-primary {
+    border-color: $primary-color;
+    color: $primary-color;
+    background-color: $background-color;
+    margin-top: 1rem;
+    &:hover {
+      background-color: $primary-color;
+      color: #fff;
+    }
+  }
+}
+
+// Estilos para la barra lateral si es necesario
+.sidebar {
+  // tus estilos aquí
+}
+
+
+// Estilos para la barra lateral si es necesario
+.sidebar {
+  // tus estilos aquí
+}
+
+// Añade más estilos según necesites.
+
+
+// Añade más estilos según necesites.
+
+//empleos
+.job-card {
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+.job-image {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.empresa-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .card-body {
+    padding: 1rem;
+    .row {
+      align-items: center;
+    }
+    .ratings {
+      display: flex;
+      align-items: center;
+      .fa-star {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+  .card-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+  .card-text {
+    margin-bottom: 0.25rem;
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+  .badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.75em;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -234,7 +234,22 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
   }
 
+//
+.input-icon-wrapper {
+  // tus estilos existentes...
 
+  .react-select-container {
+    width: 100%; // Asegúrate de que el select ocupe todo el ancho disponible
+    .react-select__control {
+      border-radius: 5px;
+      border: 1px solid $color-border;
+      font-size: $tamaño-letra-Formularios;
+    }
+    .react-select__value-container {
+      padding-left: 30px; // Espacio para el icono
+    }
+  }
+}
   ///CONTRASEÑAS
 .password-field {
   position: relative;
@@ -302,3 +317,65 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 //Institucion 
 
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+
+  .img-fluid {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: block;
+  }
+  
+  .camera-icon {
+    position: absolute;
+    bottom: -10px; // Ajusta este valor para controlar la superposición del ícono sobre la imagen
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+}
+
+// Asegúrate de que el título tenga un margen superior suficiente para no solaparse con la imagen y el ícono
+.card-title {
+  margin-top: 140px; // Ajusta este valor para que el título esté debajo de la imagen y el ícono de la cámara
+  font-size: 1.25rem; // O el tamaño que prefieras
+}
+
+.card-title {
+  margin-top: 1rem; // Ajusta este valor según la cantidad de espacio que necesites
+}
+.datos-personales-card {
+  // Estilos para el card
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa; // O el color de fondo que prefieras
+    position: relative;
+  }
+
+  .edit-icon {
+    cursor: pointer;
+    // Ajusta el tamaño y color como prefieras
+    font-size: 1rem;
+    color: #6c757d;
+  }
+  
+  // Estilos para los elementos de la lista
+  .list-group-item {
+    border: none;
+    padding-left: 20px; // Añade un poco más de padding a la izquierda
+  }
+
+  // Añade estilos adicionales si es necesario
+}

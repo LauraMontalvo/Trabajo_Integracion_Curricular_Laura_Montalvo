@@ -1,17 +1,20 @@
 $estilo-letra: 'Century Gothic', sans-serif;
 $tamaño-letra: 15px;
-$tamaño-letra-modal: 50px;
-$tamaño-letra-modalbody: 18px;
+$tamaño-letra-modal: 60px;
+$tamaño-letra-modalbody: 16px;
+$color-titulo-modal: #495057;
+
 .tituloModal {
   font-family: $estilo-letra;
+  color: $color-titulo-modal;
   font-size: $tamaño-letra-modal;
-
+  font-weight: bold; // Esto hará que el texto esté en negrita
 }
 
 .tituloModalBody {
   font-family: $estilo-letra;
   font-size: $tamaño-letra-modalbody;
-
+  padding: 1rem;
 }
 
 .container {
@@ -136,19 +139,22 @@ $tamaño-letra-modalbody: 18px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .empleo-detalle {
-      margin-bottom: 10px;
-
-      span {
-        font-size: 0.9rem;
-        color: #6c757d;
-
-        strong {
-          color: #343a40;
-          margin-right: 5px;
-        }
+      margin-bottom: 10px; // Espacio debajo del contenedor de detalle del empleo
+    
+      h6 {
+        color: #343a40; // Color de texto para el título
+        margin-bottom: 5px; // Espacio debajo del título
+        font-size: 1.2rem; // Tamaño del título
+        font-weight: bold; // Texto en negrita para el título
+      }
+    
+      p {
+        font-size: 0.9rem; // Tamaño del texto para la descripción
+        color: #6c757d; // Color de texto para la descripción
+        margin-bottom: 10px; // Espacio debajo de la descripción
+        text-align: justify; // Alineación justificada del texto de la descripción
       }
     }
-
     .iconos-acciones {
       position: absolute;
       top: 10px;
@@ -188,4 +194,66 @@ $tamaño-letra-modalbody: 18px;
 
 .icono-estado {
   animation: girar 2s linear infinite;
+}
+
+/////detalle de empleo al que postulo
+/// 
+/// 
+.detalleEmpleoModal {
+  .detalleEmpleoCard {
+    background: #f8f9fa;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+
+    .card-header {
+      background-color: #e9ecef;
+      font-weight: bold;
+    }
+
+    .card-body {
+      padding: 1rem;
+      p {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .verMasButton {
+      padding: 0;
+      border: none;
+      background: none;
+      color: #007bff;
+      text-decoration: underline;
+      font-size: 0.9em;
+      margin-left: 0.5rem;
+    }
+  }
+
+ 
+
+  .modalFooter {
+    border-top: 1px solid #dee2e6;
+    padding: 0.5rem;
+  }
+}
+// Definiendo colores para los estados
+// Clases para los iconos de estado
+.icono-en-espera {
+  color: #f0ad4e;  // Amarillo para 'En Espera'
+}
+
+.icono-aceptada {
+  color: #5cb85c;  // Verde para 'Aceptada'
+}
+
+.icono-negada {
+  color: #d9534f;  // Rojo para 'Negada'
+}
+.accordion-header-bold {
+  font-weight: bold;
+}
+.descripcion-empresa {
+  max-height: 100px; /* Establece la altura máxima que desees */
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
 }

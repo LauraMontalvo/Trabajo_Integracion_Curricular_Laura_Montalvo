@@ -156,6 +156,18 @@
     background-color: #ec5012;
   }
 }
+.input-icon-wrapper .react-select-container {
+  width: 100%;
+}
+.input-icon-wrapper .react-select-container .react-select__control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  font-size: 15px;
+}
+.input-icon-wrapper .react-select-container .react-select__value-container {
+  padding-left: 30px;
+}
+
 .password-field {
   position: relative;
   display: flex;
@@ -204,4 +216,56 @@
 .password-field .campo-formulario .input-con-icono {
   width: 100%;
   padding-left: 30px;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+.image-container .img-fluid {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+.image-container .camera-icon {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.card-title {
+  margin-top: 140px;
+  font-size: 1.25rem;
+}
+
+.card-title {
+  margin-top: 1rem;
+}
+
+.datos-personales-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  position: relative;
+}
+.datos-personales-card .edit-icon {
+  cursor: pointer;
+  font-size: 1rem;
+  color: #6c757d;
+}
+.datos-personales-card .list-group-item {
+  border: none;
+  padding-left: 20px;
 }/*# sourceMappingURL=loginstyle.css.map */

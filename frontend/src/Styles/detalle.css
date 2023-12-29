@@ -1,12 +1,15 @@
 @charset "UTF-8";
 .tituloModal {
   font-family: "Century Gothic", sans-serif;
-  font-size: 50px;
+  color: #495057;
+  font-size: 60px;
+  font-weight: bold;
 }
 
 .tituloModalBody {
   font-family: "Century Gothic", sans-serif;
-  font-size: 18px;
+  font-size: 16px;
+  padding: 1rem;
 }
 
 .container {
@@ -108,13 +111,17 @@
 .empleos-lista .list-group-item .empleo-detalle {
   margin-bottom: 10px;
 }
-.empleos-lista .list-group-item .empleo-detalle span {
+.empleos-lista .list-group-item .empleo-detalle h6 {
+  color: #343a40;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.empleos-lista .list-group-item .empleo-detalle p {
   font-size: 0.9rem;
   color: #6c757d;
-}
-.empleos-lista .list-group-item .empleo-detalle span strong {
-  color: #343a40;
-  margin-right: 5px;
+  margin-bottom: 10px;
+  text-align: justify;
 }
 .empleos-lista .list-group-item .iconos-acciones {
   position: absolute;
@@ -155,4 +162,56 @@
 }
 .icono-estado {
   animation: girar 2s linear infinite;
+}
+
+.detalleEmpleoModal .detalleEmpleoCard {
+  background: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+}
+.detalleEmpleoModal .detalleEmpleoCard .card-header {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+.detalleEmpleoModal .detalleEmpleoCard .card-body {
+  padding: 1rem;
+}
+.detalleEmpleoModal .detalleEmpleoCard .card-body p {
+  margin-bottom: 0.5rem;
+}
+.detalleEmpleoModal .detalleEmpleoCard .verMasButton {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #007bff;
+  text-decoration: underline;
+  font-size: 0.9em;
+  margin-left: 0.5rem;
+}
+.detalleEmpleoModal .modalFooter {
+  border-top: 1px solid #dee2e6;
+  padding: 0.5rem;
+}
+
+.icono-en-espera {
+  color: #f0ad4e;
+}
+
+.icono-aceptada {
+  color: #5cb85c;
+}
+
+.icono-negada {
+  color: #d9534f;
+}
+
+.accordion-header-bold {
+  font-weight: bold;
+}
+
+.descripcion-empresa {
+  max-height: 100px; /* Establece la altura máxima que desees */
+  overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
 }/*# sourceMappingURL=detalle.css.map */

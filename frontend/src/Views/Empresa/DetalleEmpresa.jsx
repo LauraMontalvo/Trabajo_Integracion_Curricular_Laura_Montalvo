@@ -1,18 +1,20 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Image, InputGroup, FormControl, Row, Col, Container, Card, ListGroup, Tab, Tabs } from 'react-bootstrap';
+import { Accordion, Button, Image, InputGroup, FormControl, Row, Col, Container, Card, ListGroup, Tab, Tabs } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faUsers, faBriefcase, faCode, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 import * as constantes from '../../Models/Constantes';
 import { Modal, Form } from 'react-bootstrap';
 import EditarEmpresa from '../../Components/Empresa/EditarEmpresaComp';
 import "../../Styles/detalle.scss"
-import CabeceraRegistrar from '../../Components/CabeceraRegistrar';
+import CabeceraRegistrar from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 import PublicarEmpleo from '../../Components/Empresa/PublicarEmpleoComp';
 import EditarEmpleoComp from '../../Components/Empresa/EditarEmpleoComp';
 import VerPostulaciones from '../../Components/Empresa/VerPostulacionesComp';
+import EmpleosPublicados from '../../Components/Empresa/EmpleosPublicadosComp';
+import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 
 function DetalleEmpresa(props) {
   const { id } = useParams();
@@ -26,6 +28,7 @@ function DetalleEmpresa(props) {
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const handleShowEditUserModal = () => setShowEditUserModal(true);
   const handleCloseEditUserModal = () => setShowEditUserModal(false);
+  
   const [showPublicarEmpleoModal, setShowPublicarEmpleoModal] = useState(false);
   const [empleos, setEmpleos] = useState([]);
   ///PUBLICAR  , ELIMINAR Y EDITAR EMPLEO:
@@ -151,10 +154,19 @@ function DetalleEmpresa(props) {
     });
     setEmpleos(empleosActualizados);
   };
-
+  const getJobIcon = (tipoEmpleo) => {
+    switch (tipoEmpleo) {
+      case 'Tecnología':
+        return <FontAwesomeIcon icon={faCode} />;
+      case 'Administrativo':
+        return <FontAwesomeIcon icon={faUserTie} />;
+      default:
+        return <FontAwesomeIcon icon={faBriefcase} />;
+    }
+  };
   return (
     <div className="App">
-      <CabeceraRegistrar></CabeceraRegistrar>
+      <CabeceraEmpresaInicioComp ></CabeceraEmpresaInicioComp>
       <Container className="mt-4">
         <Row>
           <Col md={4}>
@@ -226,59 +238,15 @@ function DetalleEmpresa(props) {
               <Tab eventKey="publicarEmpleo" title="Publicar Empleo">
                 <Card>
                   <Card.Body>
-                    {empleos.length > 0 ? (
-                      <ListGroup className="empleos-lista">
-                        <h3>Empleos publicados</h3>
-                        {empleos.map((empleo) => (
-                          <ListGroup.Item key={empleo._id} className="mt-4 border p-3 position-relative">
-                            <div className="empleo-detalle">
-                              <span><strong>Descripción del Empleo:</strong> {empleo.descripcion}</span>
-                            </div>
-                            <div className="empleo-detalle">
-                              <span><strong>Conocimientos Requeridos:</strong> {empleo.conocimientos}</span>
-                            </div>
-                            <div className="empleo-detalle">
-                              <span><strong>Aptitudes Necesarias:</strong> {empleo.aptitudes}</span>
-                            </div>
-                            <div className="empleo-detalle">
-                              <span><strong>Número de Vacantes:</strong> {empleo.numeroVacantes}</span>
-                            </div>
-                            <FontAwesomeIcon icon={faUsers} onClick={() => mostrarPostulantes(empleo._id)} />
-
-
-                            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-                              <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
-                                onClick={() => handleEditEmpleoClick(empleo._id)}
-                              /> <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleShowModalEliminar(empleo._id)} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }} />
-                            </div>
-                            <Modal show={showModalEliminar} onHide={() => setShowModalEliminar(false)}>
-                              <Modal.Header closeButton>
-                                <Modal.Title>Confirmar Eliminación</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                ¿Estás seguro de que deseas eliminar este empleo?
-                              </Modal.Body>
-                              <Modal.Footer>
-                                <Button >
-                                  Cancelar
-                                </Button>
-                                <Button variant="danger" onClick={eliminarEmpleo}>
-                                  Eliminar
-                                </Button>
-                              </Modal.Footer>
-                            </Modal>
-                          </ListGroup.Item>
-                        ))}
-                      </ListGroup>
-                    ) : (
-                      <p>No hay empleos publicados actualmente.</p>
-                    )}
-
-                    <div className='botones-centrados'>
-                      <Button variant="primary" onClick={() => setShowPublicarEmpleoModal(true)}>
-                        Publicar Empleo
-                      </Button>
-                    </div>
+                    <EmpleosPublicados
+                      empleos={empleos}
+                      mostrarPostulantes={mostrarPostulantes}
+                      handleEditEmpleoClick={handleEditEmpleoClick}
+                      handleShowModalEliminar={handleShowModalEliminar}
+                      showModalEliminar={showModalEliminar}
+                      setShowModalEliminar={setShowModalEliminar}
+                      eliminarEmpleo={eliminarEmpleo}
+                    />
                     {/* Modal para mostrar postulantes */}
                     <Modal show={showModal} onHide={() => setShowModal(false)}>
                       <Modal.Header closeButton>
@@ -294,17 +262,23 @@ function DetalleEmpresa(props) {
                         </Button>
                       </Modal.Footer>
                     </Modal>
+
+                    {/* BOTAON PARA PUBLICAR EMPLEO */}
+                    <div className='botones-centrados'>
+                      <Button variant="primary" onClick={() => setShowPublicarEmpleoModal(true)}>
+                        Publicar Empleo
+                      </Button>
+                    </div>
                     {/* Modal para Publicar Empleo */}
                     <Modal show={showPublicarEmpleoModal} onHide={() => setShowPublicarEmpleoModal(false)} size="lg">
                       <Modal.Header closeButton>
                         <Modal.Title className='tituloModal'>Publicar Empleo</Modal.Title>
                       </Modal.Header>
                       <Modal.Body>
-                        <PublicarEmpleo idEmpresa={id} onEmpleoPublicado={actualizarListaEmpleos} />
+                        <PublicarEmpleo closeEditModal={() => setShowPublicarEmpleoModal(false)} idEmpresa={id} onEmpleoPublicado={actualizarListaEmpleos} />
                       </Modal.Body>
                     </Modal>
                     {/* Modal para Editar Empleo */}
-
                     <Modal show={showEditEmpleoModal} onHide={() => setShowEditEmpleoModal(false)} size="lg">
                       <Modal.Header closeButton>
                         <Modal.Title>Editar Empleo</Modal.Title>
@@ -319,13 +293,6 @@ function DetalleEmpresa(props) {
                   </Card.Body>
                 </Card>
               </Tab>
-
-
-
-
-
-
-
             </Tabs>
           </Col>
         </Row>
