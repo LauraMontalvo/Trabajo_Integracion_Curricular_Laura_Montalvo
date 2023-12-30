@@ -6,7 +6,9 @@ import {
   faEdit, faGraduationCap, faTrashAlt, faInfoCircle, faCalendarAlt,
   faCircleNotch, faHourglassHalf, faExclamationCircle, faCheckCircle,
   faDownload,faCamera,faPencilAlt
-} from '@fortawesome/free-solid-svg-icons';
+} from  '@fortawesome/free-solid-svg-icons';
+
+
 import {
   Button, Image, InputGroup, FormControl, Row, Col, Modal, Form, Tab, Tabs, ListGroup, Card,
   Container
@@ -320,7 +322,7 @@ function DetalleUsuario(props) {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setNewImageUrl('');
+    setNewImageUrl(user.foto);
   };
 
   const handleShowAcadTrainingModal = (acadTrainingId = null) => {
@@ -478,14 +480,14 @@ function DetalleUsuario(props) {
       )}
       
     </div>
-    <div className="text-center"> <Card.Title >{user.nombre} {user.apellido}</Card.Title></div>
+    <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
  
                 <ListGroup variant="flush">
                   {/* ... Listado de datos personales del usuario ... */}
                   <Card.Header>
         <div className="header-content">
           <h5> Datos Personales</h5>
-          <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
+           <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
         </div>
       </Card.Header>
       

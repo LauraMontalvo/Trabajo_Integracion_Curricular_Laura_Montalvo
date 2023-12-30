@@ -3,18 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Accordion, Button, Image, InputGroup, FormControl, Row, Col, Container, Card, ListGroup, Tab, Tabs } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt, faUsers, faBriefcase, faCode, faUserTie } from '@fortawesome/free-solid-svg-icons';
-
+import { faEdit, faTrashAlt, faCamera, faUsers, faBriefcase, faCode, faUserTie, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes';
 import { Modal, Form } from 'react-bootstrap';
 import EditarEmpresa from '../../Components/Empresa/EditarEmpresaComp';
-import "../../Styles/detalle.scss"
 import CabeceraRegistrar from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 import PublicarEmpleo from '../../Components/Empresa/PublicarEmpleoComp';
 import EditarEmpleoComp from '../../Components/Empresa/EditarEmpleoComp';
 import VerPostulaciones from '../../Components/Empresa/VerPostulacionesComp';
 import EmpleosPublicados from '../../Components/Empresa/EmpleosPublicadosComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
+import "../../Styles/detalle.scss"
 
 function DetalleEmpresa(props) {
   const { id } = useParams();
@@ -28,7 +27,7 @@ function DetalleEmpresa(props) {
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const handleShowEditUserModal = () => setShowEditUserModal(true);
   const handleCloseEditUserModal = () => setShowEditUserModal(false);
-  
+
   const [showPublicarEmpleoModal, setShowPublicarEmpleoModal] = useState(false);
   const [empleos, setEmpleos] = useState([]);
   ///PUBLICAR  , ELIMINAR Y EDITAR EMPLEO:
@@ -127,7 +126,7 @@ function DetalleEmpresa(props) {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setNewImageUrl('');
+    setNewImageUrl(empresa.foto); // Restablece la imagen al valor original
   };
   const cargarEmpleos = () => {
     axios.get(`http://localhost:8000/api/jobs/company/${id}`)
@@ -170,7 +169,7 @@ function DetalleEmpresa(props) {
       <Container className="mt-4">
         <Row>
           <Col md={4}>
-            <Card>
+            <Card className="datos-personales-card">
               <Card.Body>
                 <div className="image-container text-center mb-3">
                   {isEditing ? (
@@ -180,38 +179,39 @@ function DetalleEmpresa(props) {
                         value={newImageUrl}
                         onChange={(e) => setNewImageUrl(e.target.value)}
                       />
-                    </InputGroup>
-                  ) : (
-                    <div className="image-container ">
-                      <Image src={empresa.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
-                    </div>)}
-
-                  {isEditing ? (
-                    <div>
-                      <Button variant="success" onClick={handleSaveClick} className="me-2">
-                        Guardar
-                      </Button>
-                      <Button variant="secondary" onCly ick={handleCancelClick}>
+                      <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
+                      <Button variant="secondary" onClick={handleCancelClick}>
                         Cancelar
-                      </Button>
-                    </div>
+                      </Button> </InputGroup>
                   ) : (
-                    <Button variant="outline-info" onClick={handleEditClick}>
-                      <i className="fas fa-pencil-alt"></i> Editar Foto
-                    </Button>
-                  )} </div>
+                    <>
+                      <Image src={empresa.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                      <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick} />
+                    </>
 
-                <hr className="d-md-none" /> {/* Esta línea solo se muestra en pantallas pequeñas */}
+                  )}
 
+
+
+
+
+                </div>
+
+                <div className="text-center">
+                  <Card.Title><strong>{empresa.nombreEmpresa}</strong></Card.Title>
+                </div>
                 <ListGroup variant="flush">
-                  <h3 className="bienvenido-titulo">Datos Personales</h3>
-                  <p>Nombre: {empresa.nombreEmpresa} </p>
-                  <p>Correo: {empresa.correo}</p>
-                  <p>Dirección: {empresa.direccion}</p>
-                  <p>Teléfono: {empresa.telefono}</p>
-                  <p>Descripción: {empresa.descripcion}</p>
+                  <Card.Header>
+                    <div className="header-content">
+                      <h5> Datos Personales</h5>
+                      <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
+                    </div>
+                  </Card.Header>
+                  <ListGroup.Item >Correo: {empresa.correo}</ListGroup.Item >
+                  <ListGroup.Item >Dirección: {empresa.direccion}</ListGroup.Item >
+                  <ListGroup.Item >Teléfono: {empresa.telefono}</ListGroup.Item >
+                  <ListGroup.Item >Descripción: {empresa.descripcion}</ListGroup.Item >
 
-                  <FontAwesomeIcon icon={faEdit} className="edit-icon" onClick={handleShowEditUserModal} style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '1.5em', cursor: 'pointer' }} />
 
                   <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
                     <Modal.Header closeButton>
@@ -248,7 +248,7 @@ function DetalleEmpresa(props) {
                       eliminarEmpleo={eliminarEmpleo}
                     />
                     {/* Modal para mostrar postulantes */}
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                    <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
                       <Modal.Header closeButton>
                         <Modal.Title>Postulantes</Modal.Title>
                       </Modal.Header>

@@ -26,6 +26,13 @@ const ListaEmpleos = (props) => {
   <div className='App'>
 {esUsuario ? <CabeceraUsuarioInicio isAuthenticated={isAuthenticated} /> : <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} />}
     <Container className="my-4">
+      {/* Número Total de Empleos */}
+      <Col md={12} className="mb-3">
+            <div className="total-empresas">
+              <h4>Total de Empleos</h4>
+              <div className="numero">{empleos.length}</div>
+            </div>
+          </Col>
       <Row>
         {empleos.map((empleo, index) => (
           <Col key={index} md={12} className="mb-3">
@@ -43,7 +50,8 @@ const ListaEmpleos = (props) => {
                   </Col>
                   <Col sm={4} className="text-muted">
                     <div className="location">
-                      <FontAwesomeIcon icon={faMapMarkerAlt} /> {empleo.idEmpresa.direccion}
+                    <FontAwesomeIcon icon={faMapMarkerAlt} /> {empleo.idEmpresa.direccion}
+
                     </div>
                     <div className="job-type">
                       <FontAwesomeIcon icon={faBriefcase} /> {empleo.modalidad}

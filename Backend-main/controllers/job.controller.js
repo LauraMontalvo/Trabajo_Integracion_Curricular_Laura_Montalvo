@@ -13,7 +13,7 @@ idEmpresa, puesto,descripcion, formacionAcademica,conocimientos,aptitudes, exper
 
 module.exports.getAllJobs = (_, response) => {
     Job.find({})
-        .populate('idEmpresa', 'nombreEmpresa')
+        .populate('idEmpresa', 'nombreEmpresa direccion')
         .then(retrievedJobs => {
             console.log(retrievedJobs); // Imprime para diagnóstico
             response.json(retrievedJobs);

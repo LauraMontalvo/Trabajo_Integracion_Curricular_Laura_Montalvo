@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .custom-card {
   transition: all 0.3s ease;
   border-radius: 10px;
@@ -40,4 +41,24 @@
 .card-footer.in {
   max-height: 100px;
   opacity: 1;
+}
+
+.total-empresas {
+  background-color: #f2f2f2; /* Fondo gris claro */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+.total-empresas h2 {
+  font-size: 24px;
+  color: #333; /* Color de texto oscuro */
+  margin-bottom: 10px;
+}
+
+.numero {
+  font-size: 36px;
+  color: #007bff; /* Color de texto azul (puedes cambiarlo según tus preferencias) */
+  font-weight: bold;
 }/*# sourceMappingURL=InicioResumen.css.map */

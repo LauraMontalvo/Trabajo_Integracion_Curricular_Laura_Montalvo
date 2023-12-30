@@ -25,6 +25,7 @@ import InicioResumen from './Views/General/InicioResumen';
 import ListaUsuariosResumen from './Views/Usuarios/ListaUsuariosResumen';
 import ListaEmpresasResumen from './Views/Usuarios/ListaEmpresasResumen';
 import ListaEmpleosResumen from './Views/Usuarios/ListaEmpleosResumen';
+import ModuloReportes from './Views/Administrador/ModuloReportes/ModuloReportes';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +71,7 @@ function App() {
             <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen  />} />
             <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen />} />
             <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen />} />
+            <Route path="/moduloReportes" element={<ModuloReportes/>} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}
             <Route path="/*" element={<Navigate to={constantes.URL_PAGINA_PRINCIPAL} />} />
           </Routes>

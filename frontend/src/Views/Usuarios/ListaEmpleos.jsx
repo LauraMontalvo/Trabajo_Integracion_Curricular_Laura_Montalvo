@@ -7,7 +7,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import { Link } from 'react-router-dom';
-
+import "../../Styles/Lista.scss";
 
 const ListaEmpleos = () => {
     const [empleos, setEmpleos] = useState([]);

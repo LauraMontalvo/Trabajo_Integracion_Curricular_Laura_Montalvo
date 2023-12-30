@@ -111,18 +111,40 @@ $shadow-color: rgba(0, 0, 0, 0.1); // color de la sombra para las tarjetas
   }
 }
 
-// Estilos para la barra lateral si es necesario
-.sidebar {
-  // tus estilos aquí
-}
 
-
-// Estilos para la barra lateral si es necesario
-.sidebar {
-  // tus estilos aquí
-}
 
 // Añade más estilos según necesites.
+//Lista empleos disponibes desde el usaurio : 
+/* Estilos CSS personalizados */
+.my-4 {
+  margin-top: 1.5rem !important;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.card {
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none !important;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+/* Agrega más estilos según tus preferencias */
 
 
 // Añade más estilos según necesites.
@@ -173,5 +195,11 @@ $shadow-color: rgba(0, 0, 0, 0.1); // color de la sombra para las tarjetas
     font-size: 0.85rem;
     padding: 0.5em 0.75em;
     margin-bottom: 0.5rem;
+  }
+}
+@media (max-width: 767px) {
+  .ver-postulaciones-button {
+      width: 100%; /* Hace que los botones ocupen todo el ancho disponible */
+      margin-bottom: 10px; /* Añade un poco de espacio entre los botones */
   }
 }

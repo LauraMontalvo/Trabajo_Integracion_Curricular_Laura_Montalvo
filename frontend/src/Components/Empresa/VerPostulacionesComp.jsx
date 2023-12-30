@@ -4,7 +4,7 @@ import { ListGroup, Button, Badge, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglass, faCheckCircle, faTimesCircle, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-
+import "../../Styles/Lista.scss"
 // Estilo personalizado para los botones
 const buttonStyle = {
     margin: '0 5px',
@@ -48,41 +48,44 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
     };
     return (
         <ListGroup>
-            {postulantesList.map(postulacion => (
-                <ListGroup.Item key={postulacion._id} className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center">
-                        <FontAwesomeIcon icon={faUser} className="me-2" />
-                        <Link to={`/perfilUsuario/${postulacion.idUsuario?._id}`}>
-                            {postulacion.idUsuario?.nombre} {postulacion.idUsuario?.apellido}
-                        </Link>
-                    </div>
-                    <Row className="align-items-center">
-                        <Col className="text-center">
-                            {renderEstado(postulacion.estado)}
-                        </Col>
-                    </Row>
-                    
-                    <div>
-                        <Button
-                            variant="success"
-                            onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Aceptada')}
-                            disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
-                            style={buttonStyle}
-                        >
-                            Aceptar
-                        </Button>
-                        <Button
-                            variant="danger"
-                            onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Negada')}
-                            disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
-                            style={buttonStyle}
-                        >
-                            Negar
-                        </Button>
-                    </div>
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
+        {postulantesList.map(postulacion => (
+            <ListGroup.Item key={postulacion._id} className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div className="mb-2 mb-md-0 d-flex align-items-center">
+                    <FontAwesomeIcon icon={faUser} className="me-2" />
+                    <Link to={`/perfilUsuario/${postulacion.idUsuario?._id}`}>
+                        {postulacion.idUsuario?.nombre} {postulacion.idUsuario?.apellido}
+                    </Link>
+                </div>
+                <div className="mb-2 mb-md-0 text-center">
+                    {renderEstado(postulacion.estado)}
+                </div>
+                <div>
+                    <Button
+                        variant="success"
+                       
+
+                        onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Aceptada')}
+                        disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
+                        style={buttonStyle}
+                        className="ver-postulaciones-button"
+
+                    >
+                        Aceptar
+                    </Button>
+                    <Button
+                        variant="danger"
+                        className="ver-postulaciones-button"
+
+                        onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Negada')}
+                        disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
+                        style={buttonStyle}
+                    >
+                        Negar
+                    </Button>
+                </div>
+            </ListGroup.Item>
+        ))}
+    </ListGroup>
     );
 };
 
