@@ -14,8 +14,10 @@ const ListaUsuariosResumen = () => {
   useEffect(() => {
     axios.get('http://localhost:8000/api/users')
       .then(response => {
-        setUsers(response.data);
-        setFilteredUsers(response.data); // Inicialmente, mostrar todos los usuarios
+        // Ordenar los usuarios por nombre antes de almacenarlos en el estado
+        const sortedUsers = response.data.sort((a, b) => (a.nombre + ' ' + a.apellido).localeCompare(b.nombre + ' ' + b.apellido));
+        setUsers(sortedUsers);
+        setFilteredUsers(sortedUsers); // Inicialmente, mostrar todos los usuarios ordenados
       })
       .catch(error => console.error(error));
   }, []);
@@ -31,11 +33,11 @@ const ListaUsuariosResumen = () => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
 
-    // Filtrar la lista de usuarios basada en la consulta de búsqueda
+    // Filtrar y ordenar la lista de usuarios basada en la consulta de búsqueda
     const filtered = users.filter(user =>
       user.nombre.toLowerCase().includes(query) ||
       user.apellido.toLowerCase().includes(query)
-    );
+    ).sort((a, b) => (a.nombre + ' ' + a.apellido).localeCompare(b.nombre + ' ' + b.apellido));
     setFilteredUsers(filtered);
   };
 
@@ -61,7 +63,7 @@ const ListaUsuariosResumen = () => {
         <Col md={9}>
         <Col md={12} className="mb-3">
             <div className="total-empresas">
-              <h4>Total de Empresas</h4>
+              <h4>Total de Usuarios</h4>
               <div className="numero">{users.length}</div>
             </div>
           </Col>
