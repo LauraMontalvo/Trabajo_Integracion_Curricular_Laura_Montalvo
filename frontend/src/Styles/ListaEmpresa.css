@@ -1,0 +1,59 @@
+@charset "UTF-8";
+.card-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Asegúrate de que los botones no tengan bordes y sean solo íconos si prefieres un estilo minimalista */
+.icono-edit-eliminar {
+  font-size: 1.5rem; /* Aumenta el tamaño de los iconos */
+  position: absolute;
+  top: 10px;
+  right: -100px;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.icon-primary {
+  font-size: 24px; /* Tamaño grande para el ícono principal (Editar) */
+  color: #007bff; /* Color azul */
+  margin-right: 10px; /* Espacio entre íconos */
+}
+
+.icon-danger {
+  font-size: 24px; /* Tamaño grande para el ícono de eliminación */
+  color: #dc3545; /* Color rojo */
+}
+
+/* Estilo para los íconos */
+.icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.icon-primary {
+  font-size: 24px; /* Tamaño grande para el ícono principal (Editar) */
+  color: #007bff; /* Color azul */
+  margin-right: 10px; /* Espacio entre íconos */
+}
+
+.icon-danger {
+  font-size: 24px; /* Tamaño grande para el ícono de eliminación */
+  color: #dc3545; /* Color rojo */
+}/*# sourceMappingURL=ListaEmpresa.css.map */

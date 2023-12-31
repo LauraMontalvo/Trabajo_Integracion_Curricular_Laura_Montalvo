@@ -9,6 +9,8 @@ import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInici
 import { Link } from 'react-router-dom';
 import "../../Styles/Lista.scss";
 
+import moment from 'moment';
+import 'moment/locale/es'; // Importar el locale español
 const ListaEmpleos = () => {
     const [empleos, setEmpleos] = useState([]);
     const [postulacionesUsuario, setPostulacionesUsuario] = useState([]);
@@ -69,7 +71,12 @@ const ListaEmpleos = () => {
             console.error('Error al realizar la postulación:', error);
         }
     };
+    const moment = require('moment');
+    moment.locale('es'); // Configura el idioma a español
 
+    function formatRelativeDate(date) {
+        return moment(date).fromNow();
+    }
     return (
         <div className="App">
             <CabeceraUsuarioInicio />
@@ -82,10 +89,37 @@ const ListaEmpleos = () => {
                         }
 
                         return (
-                            <Accordion.Item eventKey={index.toString()} key={empleo._id}>
-                                <Card>
 
-                                    <Accordion.Header>
+                            <Accordion.Item eventKey={index.toString()} key={empleo._id}>
+
+                                <Card className="card-custom">
+
+
+                                    <Accordion.Header >
+
+                                        <div>
+                                            <p className="publication-date">Publicado {formatRelativeDate(empleo.fechaPublicacion)}</p>
+                                            Empleo en  <Link to={`/perfil-empresa/${empleo.idEmpresa._id}`} className="empresa-link">
+                                                {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}
+                                            </Link>
+                                        </div>
+
+                                    </Accordion.Header>
+
+                                    <Accordion.Body>
+                                        <strong >Puesto:</strong>
+                                        <p>{empleo.puesto}</p>
+                                        <strong >Descripción:</strong>
+                                        <p>{empleo.descripcion}</p>
+                                        <strong >Foramcion Académica:</strong>
+                                        <p>{empleo.formacionAcademica}</p>
+                                        <strong>Conocimientos Requeridos:</strong>
+                                        <p>{empleo.conocimientos}</p>
+                                        <strong>Experiencia Requerida:</strong>
+                                        <p>{empleo.experienciarequerida}</p>
+                                        <strong>Aptitudes Necesarias:</strong>
+                                        <p>{empleo.aptitudes}</p>
+                                        <strong>Modalidad:</strong> <p>{empleo.modalidad}</p>
                                         <div>
                                             {yaPostulado(empleo._id) ? (
                                                 <Button variant="secondary" disabled>Ya Postulado</Button>
@@ -96,29 +130,6 @@ const ListaEmpleos = () => {
                                                 </Button>
                                             )}
                                         </div>
-                                        <div>
-                                            Empleo en  <Link to={`/perfil-empresa/${empleo.idEmpresa._id}`} className="empresa-link">
-                                                {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}
-                                            </Link>
-                                        </div>
-
-                                    </Accordion.Header>
-
-                                    <Accordion.Body>
-                                    <strong >Puesto:</strong>
-                                        <p>{empleo.puesto}</p>
-                                        <strong >Descripción:</strong>
-                                        <p>{empleo.descripcion}</p>
-                                        <strong >Foramcion Académica:</strong>
-                                        <p>{empleo.formacionAcademica}</p> 
-                                        <strong>Conocimientos Requeridos:</strong>
-                                        <p>{empleo.conocimientos}</p>
-                                        <strong>Experiencia Requerida:</strong>
-                                        <p>{empleo.experienciarequerida}</p>
-                                        <strong>Aptitudes Necesarias:</strong>
-                                        <p>{empleo.aptitudes}</p>
-                                        <strong>Modalidad:</strong> <p>{empleo.modalidad}</p>
-
                                     </Accordion.Body>
                                 </Card>
                             </Accordion.Item>

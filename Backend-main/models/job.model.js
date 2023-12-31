@@ -6,6 +6,10 @@ const JobSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
     },
+    fechaPublicacion: {
+        type: Date,
+        default: Date.now
+      },
     puesto: {
         type: String,
         required: [true, 'El puesto es obligatoria']

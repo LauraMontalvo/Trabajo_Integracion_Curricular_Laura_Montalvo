@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { FaTrash } from "react-icons/fa"; // Importa el icono de Font Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { faTrash, faEdit, faUser } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
 import Cabecera from "../../Components/General/Cabecera";
 import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as constantes from '../../Models/Constantes'
+import * as constantes from '../../Models/Constantes';
+import "../../Styles/Lista.scss";
+import "../../Styles/ListaEmpresa.scss"; // Importa los mismos estilos de ListaEmpresas
 
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [usuarioToDelete, setUsuarioToDelete] = useState(null);
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
+  const [searchQuery, setSearchQuery] = useState("");
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('es-ES', options);
+  };
 
   useEffect(() => {
     axios.get(constantes.URL_OBTENER_USUARIOS)
@@ -22,6 +28,10 @@ const ListaUsuarios = () => {
       })
       .catch(err => console.error("Error al obtener usuarios:", err));
   }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const prepareDelete = (usuario) => {
     setUsuarioToDelete(usuario);
@@ -46,66 +56,62 @@ const ListaUsuarios = () => {
 
   return (
     <div className="App">
-
       <TabsAdministracionComp />
+      <Container fluid className="mt-4">
+        <Row>
+          <Col md={3} className="widget">
+            <h4>Filtrar Usuarios</h4>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="Buscar por nombre o apellido"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </Form.Group>
+            {/* Agrega otros controles de filtro aquí si es necesario */}
+          </Col>
 
-      <div className="container">
-
-        <h1 className="mt-4 mb-4">Usuarios Existentes</h1>
-
-        <div className="table-responsive">
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                {/*<th>Foto</th>*/}
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Rol</th>
-                <th>Género</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Telefono</th>
-                <th>Usuario</th>
-                <th style={{ textAlign: 'center' }} >Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuarios.map((usuario, ind) => (
-                <tr key={ind}>
-                  {/* Datos de la empresa */}
-                  {/*<td>{usuario.foto}</td>*/}
-                  <td>{usuario.nombre}</td>
-                  <td>{usuario.apellido}</td>
-                  <td>{usuario.rol}</td>
-                  <td>{usuario.sexo}</td>
-                  <td>{usuario.fechaNacimiento}</td>
-                  <td>{usuario.telefono}</td>
-                  <td>{usuario.usuario}</td>
-                  <td style={{ textAlign: 'center' }}>
-
-                    <span className="icon-button" onClick={() => prepareDelete(usuario)}>
-                      <FontAwesomeIcon className="text-danger" icon={faTrash} />
-                    </span>
-                  </td>
-                </tr>
+          <Col md={9}>
+            <Row>
+              {usuarios.map((usuario) => (
+                <Col md={6} key={usuario._id} className="mb-3">
+                  <Card className="empresa-card">
+                    <Card.Body>
+                      <Row className="align-items-center">
+                        <Col md={8}>
+                          <Card.Title><FontAwesomeIcon icon={faUser} className="me-2" />{usuario.nombre} {usuario.apellido}</Card.Title>
+                          <Card.Text><strong>Género:</strong> {usuario.sexo}</Card.Text>
+                          <Card.Text><strong>Fecha de Nacimiento:</strong> {formatDate(usuario.fechaNacimiento)}</Card.Text>
+                          <Card.Text><strong>Teléfono:</strong> {usuario.telefono}</Card.Text>
+                        </Col>
+                        <Col md={4} className="text-right">
+                          <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} onClick={() => {/* función para editar */ }} />
+                          <FontAwesomeIcon className="icon-danger" icon={faTrash} onClick={() => prepareDelete(usuario)} />
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Col>
               ))}
-            </tbody>
-          </Table>
-        </div>
+            </Row>
+          </Col>
+        </Row>
+      </Container>
 
-        {/* Modal de eliminación */}
-        <Modal isOpen={deleteModal} toggle={toggleDeleteModal} className="modal-danger" >
-          <ModalHeader toggle={toggleDeleteModal} className="bg-danger text-white">Confirmar Eliminación</ModalHeader>
-          <ModalBody>
-            ¿Estás seguro de que deseas eliminar el usuario: {usuarioToDelete && `${usuarioToDelete.nombre} ${usuarioToDelete.apellido}`}?
-          </ModalBody>
-          <ModalFooter>
-            <Button color="danger" onClick={deleteUsuario}>Eliminar</Button>{' '}
-            <Button color="secondary" onClick={toggleDeleteModal}>Cancelar</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
+      <Modal show={deleteModal} onHide={() => setDeleteModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro de que deseas eliminar el usuario: {usuarioToDelete && `${usuarioToDelete.nombre} ${usuarioToDelete.apellido}`}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={deleteUsuario}>Eliminar</Button>
+          <Button variant="secondary" onClick={toggleDeleteModal}>Cancelar</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
-
 export default ListaUsuarios;

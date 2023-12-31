@@ -1,23 +1,19 @@
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import Cabecera from "../../Components/General/Cabecera";
-import { useNavigate } from "react-router";
-
-import { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import ListaUsuarios from "./ListaUsuarios";
-import { FaBuilding, FaUser } from "react-icons/fa"; // Importa iconos de Font Awesome
-import "../../Styles/header.css"
-import * as constantes from "../../Models/Constantes";
-import axios from "axios";
-import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
-import ListaInstituciones from "./ListaInstituciones";
-import ListaEmpresas from "./ListaEmpresas";
-
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Card, Button, Modal } from 'react-bootstrap';
+import { FaBuilding, FaUsers, FaUniversity, FaChartBar } from 'react-icons/fa'; // Importar iconos
+import axios from 'axios';
+import * as constantes from '../../Models/Constantes';
+import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
+import ListaEmpresas from './ListaEmpresas';
+import ListaUsuarios from './ListaUsuarios';
+import ListaInstituciones from './ListaInstituciones';
+import '../../Styles/Administrador.scss';
+import "../../Styles/header.scss";
 const Main = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [admin, setAdmin] = useState({});
+  
     const [modalEmpresas, setModalEmpresas] = useState(false);
     const [modalUsuarios, setModalUsuarios] = useState(false);
     const [modalInstituciones, setModalInstituciones] = useState(false);
@@ -25,65 +21,115 @@ const Main = () => {
     const toggleUsuarios = () => setModalUsuarios(!modalUsuarios);
     const toggleInstituciones = () => setModalUsuarios(!modalInstituciones);
 
-
-    useEffect(() => {
-        axios.post(`${constantes.URL_CONSULTAR_DATOS_USUARIO}${id}`).then(res => {
-            setAdmin({ ...res.data });
-            console.log(admin);
-        }).catch(err => console.log(err))
-    });
-
-    const VerListaEmpresas = () => {
-        toggleEmpresas();
+    const handleVerEmpresas = () => navigate('/listaEmpresas');
+    const handleVerUsuarios = () => navigate('/listaUsuarios');
+    const handleVerInstituciones = () => navigate('/listaInstituciones');
+    const handleVerReportes = () => {
+        navigate('/moduloReportes');
     };
 
-    const VerListaUsuarios = () => {
-        toggleUsuarios();
-    };
-
+   
     return (
         <div className="App">
    
             <TabsAdministracionComp/>
-
             
-            <Modal isOpen={modalEmpresas} toggle={toggleEmpresas} size="xl">
-                <ModalHeader toggle={toggleEmpresas}>Lista de Empresas</ModalHeader>
-                <ModalBody>
-                    {/* Contenido del modal, por ejemplo: */}
-                    <ListaEmpresas/>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={toggleEmpresas}>
+            <div className="main-content">
+                
+            <div className="cards-container">
+                {/* Tarjeta para Empresas con Icono */}
+                <Card style={{ width: '18rem' }} onClick={handleVerEmpresas}>
+                    <Card.Body>
+                        <FaBuilding size={50} className="icono-empresa" />
+                        <Card.Title>Empresas</Card.Title>
+                        <Card.Text>
+                            Gestionar empresas.
+                        </Card.Text>
+                        <Button variant="primary" >Ver Empresas</Button>
+                        
+                    </Card.Body>
+                </Card>
+
+                {/* Tarjeta para Usuarios con Icono */}
+                <Card style={{ width: '18rem' }} onClick={handleVerUsuarios}>
+                    <Card.Body>
+                        <FaUsers size={50} className="icono-usuarios" />
+                        <Card.Title>Usuarios</Card.Title>
+                        <Card.Text>
+                            Gestionar usuarios.
+                        </Card.Text>
+                        <Button variant="primary" >Ver Usuarios</Button>
+                    </Card.Body>
+                </Card>
+
+                {/* Tarjeta para Instituciones con Icono */}
+                <Card style={{ width: '18rem' }} onClick={handleVerInstituciones}>
+                    <Card.Body>
+                        <FaUniversity size={50} className="icono-instituciones" />
+                        <Card.Title>Instituciones</Card.Title>
+                        <Card.Text>
+                            Gestionar instituciones.
+                        </Card.Text>
+                        <Button variant="primary" >Ver Instituciones</Button>
+                    </Card.Body>
+                </Card>
+{/* Tarjeta para el Módulo de Reportes */}
+<Card style={{ width: '18rem' }} onClick={handleVerReportes}>
+                        <Card.Body>
+                            <FaChartBar size={50} className="icono-reportes" />
+                            <Card.Title>Módulo de Reportes</Card.Title>
+                            <Card.Text>
+                                Ver los reportes y estadísticas.
+                            </Card.Text>
+                            <Button variant="primary">Ver Reportes</Button>
+                        </Card.Body>
+                    </Card>
+                
+                  </div>
+            </div>
+            
+            <Modal show={modalEmpresas} onHide={toggleEmpresas} size="xl">
+                <Modal.Header closeButton>
+                    <Modal.Title>Lista de Empresas</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ListaEmpresas />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={toggleEmpresas}>
                         Cerrar
                     </Button>
-                </ModalFooter>
+                </Modal.Footer>
             </Modal>
 
-            {/* Modal para Usuarios (si es necesario) */}
-            <Modal isOpen={modalUsuarios} toggle={toggleUsuarios} size="xl">
-                <ModalHeader toggle={toggleUsuarios}>Lista de Usuarios</ModalHeader>
-                <ModalBody>
-                    {/* Contenido del modal, por ejemplo: */}
+            {/* Modal para Usuarios */}
+            <Modal show={modalUsuarios} onHide={toggleUsuarios} size="xl">
+                <Modal.Header closeButton>
+                    <Modal.Title>Lista de Usuarios</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <ListaUsuarios />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={toggleUsuarios}>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={toggleUsuarios}>
                         Cerrar
                     </Button>
-                </ModalFooter>
+                </Modal.Footer>
             </Modal>
-            <Modal isOpen={modalInstituciones} toggle={toggleInstituciones} size="xl">
-                <ModalHeader toggle={toggleInstituciones}>Lista de Empresas</ModalHeader>
-                <ModalBody>
-                    {/* Contenido del modal, por ejemplo: */}
-                    <ListaInstituciones/>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={toggleInstituciones}>
+
+            {/* Modal para Instituciones */}
+            <Modal show={modalInstituciones} onHide={toggleInstituciones} size="xl">
+                <Modal.Header closeButton>
+                    <Modal.Title>Lista de Instituciones</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ListaInstituciones />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={toggleInstituciones}>
                         Cerrar
                     </Button>
-                </ModalFooter>
+                </Modal.Footer>
             </Modal>
 
 

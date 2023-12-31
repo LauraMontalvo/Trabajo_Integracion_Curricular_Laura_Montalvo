@@ -87,11 +87,10 @@ const EditarEmpresa = ({ id, onEmpresaUpdated,closeEditModal  }) => {
                 // Limpia el mensaje de error en caso de que hubiera uno previamente
                 setUpdateError('');
                 if (onEmpresaUpdated) {
-                    onEmpresaUpdated(); // Llama a la función callback
+                  onEmpresaUpdated(dataToUpdate); // Llama a la función callback y pasa los datos actualizados
                 }
                 setShowSuccessModal(true);  // Muestra el modal de éxito
-
-            })
+              })
             .catch((err) => {
                 setUpdateError(err.response?.data?.msg || 'Error desconocido');
                 console.log(err);

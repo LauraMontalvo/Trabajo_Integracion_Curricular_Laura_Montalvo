@@ -203,3 +203,51 @@ h2 {
       margin-bottom: 10px; /* Añade un poco de espacio entre los botones */
   }
 }
+
+.publication-date {
+  color: #6c757d; /* Color gris para un aspecto suave */
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-top: -10px; /* Ajustar el margen según sea necesario */
+}
+/* Lista.scss */
+.card-custom {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-custom:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header-custom {
+  background-color: #f8f9fa; /* Un color de fondo suave */
+  color: #333; /* Color de texto oscuro para contraste */
+  font-weight: bold;
+}
+
+.card-body-custom {
+  padding: 15px;
+}
+
+/* Estilos para el botón de postulación */
+/* Lista.scss */
+.postulation-button {
+  background-color: #007bff; /* Color primario para el botón */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+      background-color: #0056b3; /* Un tono más oscuro para el hover */
+  }
+}
+

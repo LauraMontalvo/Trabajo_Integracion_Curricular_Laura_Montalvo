@@ -1,16 +1,15 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from 'react-router-dom';
-import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import 'bootstrap/dist/css/bootstrap.css';
-import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import "../../Styles/Lista.css"
+import { faEnvelope, faEdit, faTrash, faIndustry, faPhone, faGlobe, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import "../../Styles/Lista.scss";
+import "../../Styles/ListaEmpresa.scss";
 import EditarEmpresa from "../../Components/Empresa/EditarEmpresaComp";
+import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 
-const ListaEmpresas = () => {
+const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [empresaToDelete, setEmpresaToDelete] = useState(null);
@@ -18,21 +17,24 @@ const ListaEmpresas = () => {
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
 
   const { id } = useParams();
-  const [showEditUserModal, setShowEditUserModal] = useState(false);
-  const handleCloseEditUserModal = () => setShowEditUserModal(false);
   const [empresa, setEmpresa] = useState({});
 
+  const [editModal, setEditModal] = useState(false);
+  const [empresaToEdit, setEmpresaToEdit] = useState(null);
+  const [empresaActualizada, setEmpresaActualizada] = useState(false);
 
+  // Estado para el filtro de nombre
+  const [filtroNombre, setFiltroNombre] = useState("");
 
-  const handleShowEditUserModal = (empresaId) => {
-    setEmpresa(empresaId); // Establece el ID de la empresa a editar
-    setShowEditUserModal(true);
+  const handleShowEditUserModal = (empresa) => {
+    setEmpresaToEdit(empresa);
+    setEditModal(true);
   };
+
   useEffect(() => {
     axios.get('http://localhost:8000/api/companies')
       .then(res => {
         setEmpresas(res.data.sort((a, b) => a.nombreEmpresa.localeCompare(b.nombreEmpresa)))
-
       })
       .catch(err => console.error("Error al obtener empresas:", err));
     axios.get(`http://localhost:8000/api/company/${id}`)
@@ -40,14 +42,23 @@ const ListaEmpresas = () => {
         setEmpresa({ ...res.data });
       })
       .catch((err) => console.log(err));
+    cargarInformacionEmpresa();
+  }, [id, empresaActualizada]);
 
-  }, [id]);
+  const handleCloseEditUserModal = () => {
+    setEditModal(false);
+    if (empresaActualizada) {
+      cargarInformacionEmpresa();
+      setEmpresaActualizada(false);
+    }
+  };
 
   const prepareDelete = (empresa) => {
     setEmpresaToDelete(empresa);
     toggleDeleteModal();
   }
-  const recargarInformacionEmpresa = () => {
+
+  const cargarInformacionEmpresa = () => {
     axios.get(`http://localhost:8000/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
@@ -71,77 +82,102 @@ const ListaEmpresas = () => {
     setEmpresas(empresas.filter(empresa => empresa._id !== empresaId));
   }
 
+  const updateEmpresaInfo = (updatedEmpresaInfo) => {
+    setEmpresa({ ...updatedEmpresaInfo });
+    setEmpresaActualizada(true);
+  };
 
+  // Función para filtrar empresas por nombre
+  const filtrarEmpresasPorNombre = (nombre) => {
+    return empresas.filter((empresa) =>
+      empresa.nombreEmpresa.toLowerCase().includes(nombre.toLowerCase())
+    );
+  };
+
+  // Función para manejar cambios en el filtro de nombre
+  const handleFiltroNombreChange = (event) => {
+    setFiltroNombre(event.target.value);
+  };
 
   return (
-
     <div className="App">
-
       <TabsAdministracionComp />
-      <h1 className="mt-4 mb-4">Empresas Existentes</h1>
-      <div className="container">
-        <div className="table-responsive">
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Descripción</th>
-                <th>Rol</th>
-                <th>Usuario</th>
-                <th >Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {empresas.map((empresa, ind) => (
-                <tr key={ind}>
-                  <td>{empresa.nombreEmpresa}</td>
-                  <td>{empresa.correo}</td>
-                  <td>{empresa.direccion}</td>
-                  <td>{empresa.telefono}</td>
-                  <td>{empresa.descripcion}</td>
-                  <td>{empresa.rol}</td>
-                  <td >{empresa.usuario}</td>
-                  <td style={{ textAlign: 'center' }}>
-
-
-                    <span className="icon-button" >
-                      <FontAwesomeIcon className="text-primary mr-2" onClick={() => handleShowEditUserModal(empresa)} icon={faEdit} />
-                    </span>
-                    <span className="icon-button" >
-                      <FontAwesomeIcon className="text-danger" onClick={() => prepareDelete(empresa)} icon={faTrash} />
-                    </span>
-                  </td>
-                </tr>
+      <Container fluid className="mt-4">
+        <Row>
+          <Col md={3} className="widget">
+            <h4>Filtrar Empresas</h4>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="Buscar por nombre de empresa"
+                value={filtroNombre}
+                onChange={handleFiltroNombreChange}
+              />
+            </Form.Group>
+            {/* Agrega otros controles de filtro aquí si es necesario */}
+          </Col>
+          <Col md={9}>
+            <Row>
+              {filtrarEmpresasPorNombre(filtroNombre).map((empresa) => (
+                <Col md={6} key={empresa._id} className="mb-3">
+                  <Card className="empresa-card">
+                    <Card.Body>
+                      <Row nogutters={true} className="align-items-center">
+                        <Col xs={12} sm={6} md={8}>
+                          <Card.Title>{empresa.nombreEmpresa}</Card.Title>
+                          <Card.Text>
+                            <FontAwesomeIcon icon={faEnvelope} /> {empresa.correo}
+                          </Card.Text>
+                          <Card.Text>
+                            <FontAwesomeIcon icon={faMapMarkerAlt} /> {empresa.direccion}
+                          </Card.Text>
+                          <Card.Text>
+                            <FontAwesomeIcon icon={faPhone} /> {empresa.telefono}
+                          </Card.Text>
+                        </Col>
+                        {/* Iconos en la parte derecha */}
+                        <Col xs={12} sm={6} md={4} className="text-right">
+                          <div className="icon-container">
+                            <FontAwesomeIcon className="icon-primary" onClick={() => handleShowEditUserModal(empresa)} icon={faEdit} />
+                            <FontAwesomeIcon className="icon-danger" onClick={() => prepareDelete(empresa)} icon={faTrash} />
+                          </div>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Col>
               ))}
-            </tbody>
-          </Table>
-
-
-        </div>
-      </div>
-
-      <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+      {/* Modal de edición */}
+      <Modal show={editModal} onHide={handleCloseEditUserModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title className='tituloModal'>Editar Empresa</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditarEmpresa id={empresa} onEmpresaUpdated={() => { /* ... */ }} closeEditModal={handleCloseEditUserModal} />
+          {empresaToEdit && (
+            <EditarEmpresa
+              id={empresaToEdit?._id}
+              onEmpresaUpdated={updateEmpresaInfo}
+              closeEditModal={handleCloseEditUserModal}
+            />
+          )}
         </Modal.Body>
       </Modal>
-
       {/* Modal de eliminación */}
-      <Modal isOpen={deleteModal} toggle={toggleDeleteModal} className="modal-danger">
-        <ModalHeader toggle={toggleDeleteModal} className="bg-danger text-white">Confirmar Eliminación</ModalHeader>
-        <ModalBody>
-          ¿Estás seguro de que deseas eliminar la empresa {empresaToDelete && empresaToDelete.nombreEmpresa}?
-        </ModalBody>
-        <ModalFooter>
-          <Button color="danger" onClick={deleteEmpresa}>Eliminar</Button>{' '}
-          <Button color="secondary" onClick={toggleDeleteModal}>Cancelar</Button>
-        </ModalFooter>
+      <Modal show={deleteModal} onHide={() => setDeleteModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Eliminación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro de que deseas eliminar la empresa {empresaToDelete?.nombreEmpresa}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={deleteEmpresa}>Eliminar</Button>
+          <Button variant="secondary" onClick={() => setDeleteModal(false)}>Cancelar</Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );

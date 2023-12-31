@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEdit, faGraduationCap, faTrashAlt, faInfoCircle, faCalendarAlt,
   faCircleNotch, faHourglassHalf, faExclamationCircle, faCheckCircle,
-  faDownload,faCamera,faPencilAlt
-} from  '@fortawesome/free-solid-svg-icons';
+  faDownload, faCamera, faPencilAlt
+} from '@fortawesome/free-solid-svg-icons';
 
 
 import {
@@ -74,7 +74,7 @@ function DetalleUsuario(props) {
   const [deleteExperienceId, setDeleteExperienceId] = useState(null);
 
   const [deleteMessage, setDeleteMessage] = useState('');
-  
+
   const handleShowDeleteExperienceModal = (experience) => {
     setDeleteExperienceId(experience._id);
     setDeleteMessage(`¿Estás seguro de que deseas eliminar la experiencia laboral en ${experience.empresa}?`);
@@ -265,7 +265,7 @@ function DetalleUsuario(props) {
   };
 
   useEffect(() => {
-    
+
     const cargarPostulaciones = async () => {
       try {
         console.log("POSTULACIONES")
@@ -329,30 +329,30 @@ function DetalleUsuario(props) {
     setShowAcadTrainingModal(true);
 
     if (acadTrainingId) {
-        const selectedAcadTraining = acadTraining.find((item) => item._id === acadTrainingId);
-        if (selectedAcadTraining) {
-            setTituloObtenido(selectedAcadTraining.tituloObtenido);
-            setFechaInicio(toShortDateFormat(selectedAcadTraining.fechaInicio));
-            setFechaFin(toShortDateFormat(selectedAcadTraining.fechaFin));
-            setEditingAcadTrainingId(acadTrainingId);
-            
-            if (selectedAcadTraining.idInstitucion) {
-                setInstitucion({
-                    label: selectedAcadTraining.idInstitucion.nombreInstitucion,
-                    value: selectedAcadTraining.idInstitucion._id
-                });
-            } else {
-                setInstitucion(null);
-            }
+      const selectedAcadTraining = acadTraining.find((item) => item._id === acadTrainingId);
+      if (selectedAcadTraining) {
+        setTituloObtenido(selectedAcadTraining.tituloObtenido);
+        setFechaInicio(toShortDateFormat(selectedAcadTraining.fechaInicio));
+        setFechaFin(toShortDateFormat(selectedAcadTraining.fechaFin));
+        setEditingAcadTrainingId(acadTrainingId);
+
+        if (selectedAcadTraining.idInstitucion) {
+          setInstitucion({
+            label: selectedAcadTraining.idInstitucion.nombreInstitucion,
+            value: selectedAcadTraining.idInstitucion._id
+          });
+        } else {
+          setInstitucion(null);
         }
+      }
     } else {
-        setTituloObtenido('');
-        setFechaInicio('');
-        setFechaFin('');
-        setEditingAcadTrainingId(null);
-        setInstitucion(null);
+      setTituloObtenido('');
+      setFechaInicio('');
+      setFechaFin('');
+      setEditingAcadTrainingId(null);
+      setInstitucion(null);
     }
-};
+  };
 
 
 
@@ -425,7 +425,7 @@ function DetalleUsuario(props) {
     } catch (error) {
       console.error('Error al agregar/editar datos académicos:', error);
     }
-};
+  };
 
 
   const formatDate = (dateString) => {
@@ -459,46 +459,46 @@ function DetalleUsuario(props) {
           <Col md={4}>
             {/* Información del usuario */}
             <Card className="datos-personales-card">
-            <Card.Body >
-            <div className="image-container text-center mb-3">
-      {isEditing ? (
-        <InputGroup className="mb-1">
-          <FormControl
-            placeholder="Ingrese la URL de la foto de perfil"
-            value={newImageUrl}
-            onChange={(e) => setNewImageUrl(e.target.value)}
-          />
-          <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
-          <Button variant="secondary" onClick={handleCancelClick}>Cancelar</Button>
-        </InputGroup>
-      ) : (
-        <>
-          <Image src={user.foto} alt="Foto de perfil" roundedCircle className="img-fluid"  />
-          <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick}/>
-        </>
-        
-      )}
-      
-    </div>
-    <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
- 
+              <Card.Body >
+                <div className="image-container text-center mb-3">
+                  {isEditing ? (
+                    <InputGroup className="mb-1">
+                      <FormControl
+                        placeholder="Ingrese la URL de la foto de perfil"
+                        value={newImageUrl}
+                        onChange={(e) => setNewImageUrl(e.target.value)}
+                      />
+                      <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
+                      <Button variant="secondary" onClick={handleCancelClick}>Cancelar</Button>
+                    </InputGroup>
+                  ) : (
+                    <>
+                      <Image src={user.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                      <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick} />
+                    </>
+
+                  )}
+
+                </div>
+                <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
+
                 <ListGroup variant="flush">
                   {/* ... Listado de datos personales del usuario ... */}
                   <Card.Header>
-        <div className="header-content">
-          <h5> Datos Personales</h5>
-           <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
-        </div>
-      </Card.Header>
-      
-           <ListGroup.Item >Género: {user.sexo}</ListGroup.Item>
+                    <div className="header-content">
+                      <h5> Datos Personales</h5>
+                      <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
+                    </div>
+                  </Card.Header>
+
+                  <ListGroup.Item >Género: {user.sexo}</ListGroup.Item>
                   <ListGroup.Item>Fecha de Nacimiento: {formatDate(user.fechaNacimiento)}</ListGroup.Item>
                   <ListGroup.Item>Teléfono: {user.telefono}</ListGroup.Item>
                   <ListGroup.Item>Edad: {edad !== null ? `${edad} años` : ''}</ListGroup.Item>
 
-                 
-                
-             
+
+
+
                   <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
                     <Modal.Header closeButton>
                       <Modal.Title className='tituloModal'>Editar Usuario</Modal.Title>
@@ -526,29 +526,29 @@ function DetalleUsuario(props) {
                 <Card>
                   <Card.Body>
 
-                  <ListaInformacionAcademica
+                    <ListaInformacionAcademica
                       acadTraining={acadTraining}
                       handleShowAcadTrainingModal={handleShowAcadTrainingModal}
                       handleShowDeleteModal={handleShowDeleteModal}
                     />
 
-                          <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
-                            <Modal.Header closeButton>
-                              <Modal.Title>Confirmar Eliminación</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                              ¿Estás seguro de que deseas eliminar esta formación académica?
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <Button variant="secondary" onClick={handleCloseDeleteModal}>
-                                Cancelar
-                              </Button>
-                              <Button variant="danger" onClick={confirmDelete}>
-                                Eliminar
-                              </Button>
-                            </Modal.Footer>
-                          </Modal>
-                      
+                    <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Confirmar Eliminación</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        ¿Estás seguro de que deseas eliminar esta formación académica?
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                          Cancelar
+                        </Button>
+                        <Button variant="danger" onClick={confirmDelete}>
+                          Eliminar
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+
                     <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
                       Agregar
                     </Button>
