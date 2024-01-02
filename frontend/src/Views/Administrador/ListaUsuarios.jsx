@@ -85,9 +85,11 @@ const ListaUsuarios = () => {
                           <Card.Text><strong>Fecha de Nacimiento:</strong> {formatDate(usuario.fechaNacimiento)}</Card.Text>
                           <Card.Text><strong>Teléfono:</strong> {usuario.telefono}</Card.Text>
                         </Col>
-                        <Col md={4} className="text-right">
+                        <Col xs={12} sm={6} md={4} className="text-right">
+                          <div className="icon-container">
                           <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} onClick={() => {/* función para editar */ }} />
                           <FontAwesomeIcon className="icon-danger" icon={faTrash} onClick={() => prepareDelete(usuario)} />
+                          </div>
                         </Col>
                       </Row>
                     </Card.Body>

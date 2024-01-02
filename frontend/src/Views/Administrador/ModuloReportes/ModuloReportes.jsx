@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Row, Col, Card, Carousel, ListGroup } from 'react-bootstrap';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { FaUsers, FaBuilding, FaHandshake, FaTimesCircle, FaHourglassHalf } from 'react-icons/fa';
+import 'moment/locale/es'; // Importar el locale español
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -183,11 +184,18 @@ const userNotifications = recentUsers.map(user => ({
 }));
 
 // Simula la obtención de actividades de empresas que publicaron nuevas ofertas de empleo
+const moment = require('moment');
+  moment.locale('es'); // Configura el idioma a español
 
+  function formatRelativeDate(date) {
+    return moment(date).fromNow();
+}
 
 const companyActivities = recentJobs.map(job => ({
-    text: `La empresa ${job.idEmpresa.nombreEmpresa} ha publicado una nueva oferta de empleo para ${job.puesto}.`,
+  
+    text: `La empresa ${job.idEmpresa.nombreEmpresa} ha publicado una nueva oferta de empleo para ${job.puesto}.   Publicado ${formatRelativeDate(job.fechaPublicacion)}`,
     id: job._id
+    
 }));
   
 return (

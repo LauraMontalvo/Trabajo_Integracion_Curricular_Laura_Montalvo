@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSchool, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import Cabecera from '../../Components/General/Cabecera';
-import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
+import Cabecera from '../General/Cabecera';
+import TabsAdministracionComp from './TabsAdministracionComp';
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -20,7 +20,7 @@ const CampoEstado = ({ valido, mensajeError }) => {
     return null; // No muestra nada si el campo aún no ha sido validado
   }
 };
-const RegistroInstituciones = (props) => {
+const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }) => {
   const [nombreInstitucion, setNombreInstitucion] = useState('');
 
 
@@ -32,11 +32,13 @@ const RegistroInstituciones = (props) => {
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
   };
-
   const handleCloseModal = () => {
     setShowModal(false);
-    // Agregar cualquier acción adicional necesaria al cerrar el modal
+    if (onCloseRegisterModal) {
+      onCloseRegisterModal(); // Esto cerrará el modal de registro también
+    }
   };
+  
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
@@ -63,15 +65,6 @@ const RegistroInstituciones = (props) => {
   };
 
 
-
-
-
-
-  //edad
-
-
-
-
   const onsubmitHandler = (e) => {
     e.preventDefault();
 
@@ -84,7 +77,9 @@ const RegistroInstituciones = (props) => {
       .then((res) => {
         console.log(res);
         setShowModal(true); // Mostrar modal al registrar con éxito
-
+        if (onInstitucionRegistered) {
+          onInstitucionRegistered(res.data); // Asegúrate de que res.data es la institución
+        }
         handleSuccessModalShow();
         setNombreInstitucion('');
         setNombreInstitucionError('');
@@ -102,28 +97,28 @@ const RegistroInstituciones = (props) => {
   return (
 
     <div className='App'>
-      <TabsAdministracionComp />
+
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
-        
-      
-            <Form.Group>
-            <Form.Label>Nombre de la Institución</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faSchool} className="input-icon" />
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese institucion"
-                  value={nombreInstitucion}
-                  onChange={(e) => handleInputChange(e, setNombreInstitucion, setNombreInstitucionError)} />
-                <CampoEstado valido={esCampoValido(nombreInstitucion, nombreInstitucionError)} mensajeError={nombreInstitucionError} />
 
-              </div>
-              {nombreInstitucionError && <p className="text-danger">{nombreInstitucionError}</p>}
 
-            </Form.Group>
+        <Form.Group>
+          <Form.Label>Nombre de la Institución</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faSchool} className="input-icon" />
+            <Form.Control
+              type="text"
+              placeholder="Ingrese institucion"
+              value={nombreInstitucion}
+              onChange={(e) => handleInputChange(e, setNombreInstitucion, setNombreInstitucionError)} />
+            <CampoEstado valido={esCampoValido(nombreInstitucion, nombreInstitucionError)} mensajeError={nombreInstitucionError} />
 
-          
-       
+          </div>
+          {nombreInstitucionError && <p className="text-danger">{nombreInstitucionError}</p>}
+
+        </Form.Group>
+
+
+
         <div className="botones-centrados">
           <Button type="submit" className='btn-primary'>Crear Institucion</Button>
 
@@ -133,12 +128,12 @@ const RegistroInstituciones = (props) => {
 
       </Form>
       <Modal show={showModal} onHide={handleCloseModal}>
-      <Modal.Header closeButton>
-        <Modal.Title className='tituloModal'>
-          <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
-          Institución Registrada
-        </Modal.Title>
-      </Modal.Header>
+        <Modal.Header closeButton>
+          <Modal.Title className='tituloModal'>
+            <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+            Institución Registrada
+          </Modal.Title>
+        </Modal.Header>
         <Modal.Body className='tituloModalBody'>La institución ha sido registrada con éxito.</Modal.Body>
         <Modal.Footer>
           <Button variant="success" onClick={handleCloseModal}>

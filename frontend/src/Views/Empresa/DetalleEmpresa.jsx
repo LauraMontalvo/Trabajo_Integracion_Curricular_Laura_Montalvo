@@ -166,9 +166,9 @@ function DetalleEmpresa(props) {
   return (
     <div className="App">
       <CabeceraEmpresaInicioComp ></CabeceraEmpresaInicioComp>
-      <Container className="mt-4">
+      <Container fluid className="mt-4">
         <Row>
-          <Col md={4}>
+          <Col md={4}  >
             <Card className="datos-personales-card">
               <Card.Body>
                 <div className="image-container text-center mb-3">
@@ -190,11 +190,6 @@ function DetalleEmpresa(props) {
                     </>
 
                   )}
-
-
-
-
-
                 </div>
 
                 <div className="text-center">
@@ -204,8 +199,9 @@ function DetalleEmpresa(props) {
                   <Card.Header>
                     <div className="header-content">
                       <h5> Datos Personales</h5>
-                      <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
+
                     </div>
+                    <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
                   </Card.Header>
                   <ListGroup.Item >Correo: {empresa.correo}</ListGroup.Item >
                   <ListGroup.Item >Dirección: {empresa.direccion}</ListGroup.Item >
@@ -232,7 +228,7 @@ function DetalleEmpresa(props) {
 
             </div>
           </Col>
-          <Col md={8}>
+          <Col xs={12} md={6} lg={8}>
             {/* Pestañas para información académica y laboral */}
             <Tabs defaultActiveKey="publicarEmpleo" id="info-tab" className="mb-3">
               <Tab eventKey="publicarEmpleo" title="Publicar Empleo">

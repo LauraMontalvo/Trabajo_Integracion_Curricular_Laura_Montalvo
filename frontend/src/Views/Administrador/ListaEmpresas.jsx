@@ -15,6 +15,7 @@ const ListaEmpresas = (props) => {
   const [empresaToDelete, setEmpresaToDelete] = useState(null);
   const navigate = useNavigate();
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
+  const [recargar, setRecargar] = useState(false);
 
   const { id } = useParams();
   const [empresa, setEmpresa] = useState({});
@@ -25,7 +26,6 @@ const ListaEmpresas = (props) => {
 
   // Estado para el filtro de nombre
   const [filtroNombre, setFiltroNombre] = useState("");
-
   const handleShowEditUserModal = (empresa) => {
     setEmpresaToEdit(empresa);
     setEditModal(true);
@@ -43,7 +43,7 @@ const ListaEmpresas = (props) => {
       })
       .catch((err) => console.log(err));
     cargarInformacionEmpresa();
-  }, [id, empresaActualizada]);
+  }, [id, empresaActualizada,recargar]);
 
   const handleCloseEditUserModal = () => {
     setEditModal(false);
@@ -90,20 +90,29 @@ const ListaEmpresas = (props) => {
   // Función para filtrar empresas por nombre
   const filtrarEmpresasPorNombre = (nombre) => {
     return empresas.filter((empresa) =>
-      empresa.nombreEmpresa.toLowerCase().includes(nombre.toLowerCase())
+      empresa.nombreEmpresa?.toLowerCase().includes(nombre?.toLowerCase() ?? "")
     );
   };
+
 
   // Función para manejar cambios en el filtro de nombre
   const handleFiltroNombreChange = (event) => {
     setFiltroNombre(event.target.value);
   };
+ 
 
+  const addEmpresaToList = (newEmpresa) => {
+    setEmpresas( [...empresas, newEmpresa]);
+    setRecargar(!recargar); 
+    // Cambiar `recargar` para forzar una actualización si es necesario
+  };
+
+  
   return (
     <div className="App">
-      <TabsAdministracionComp />
+      <TabsAdministracionComp onAddEmpresa={addEmpresaToList} />
       <Container fluid className="mt-4">
-        <Row>
+        <Row >
           <Col md={3} className="widget">
             <h4>Filtrar Empresas</h4>
             <Form.Group>
@@ -122,7 +131,7 @@ const ListaEmpresas = (props) => {
                 <Col md={6} key={empresa._id} className="mb-3">
                   <Card className="empresa-card">
                     <Card.Body>
-                      <Row nogutters={true} className="align-items-center">
+                      <Row  className="align-items-center">
                         <Col xs={12} sm={6} md={8}>
                           <Card.Title>{empresa.nombreEmpresa}</Card.Title>
                           <Card.Text>

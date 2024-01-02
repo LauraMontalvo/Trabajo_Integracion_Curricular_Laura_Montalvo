@@ -6,10 +6,13 @@ import { faMapMarkerAlt, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/loginstyle.css";
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
-
+import 'moment/locale/es'; // Importar el locale español
 const ListaEmpleos = (props) => {
   const [empleos, setEmpleos] = useState([]);
+  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
 
+  
+  const isAuthenticated = props.isAuthenticated;
   useEffect(() => {
     axios.get('http://localhost:8000/api/jobs')
       .then(response => {
@@ -18,14 +21,18 @@ const ListaEmpleos = (props) => {
       .catch(error => console.error(error));
   }, []);
 
-  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
 
-  
-  const isAuthenticated = props.isAuthenticated;
+
+  const moment = require('moment');
+  moment.locale('es'); // Configura el idioma a español
+
+  function formatRelativeDate(date) {
+      return moment(date).fromNow();
+  }
   return (
   <div className='App'>
 {esUsuario ? <CabeceraUsuarioInicio isAuthenticated={isAuthenticated} /> : <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} />}
-    <Container className="my-4">
+    <Container fluid className="mt-4">
       {/* Número Total de Empleos */}
       <Col md={12} className="mb-3">
             <div className="total-empresas">
@@ -39,6 +46,7 @@ const ListaEmpleos = (props) => {
             <Card className="job-card">
               <Card.Body>
                 <Row>
+                <p className="publication-date">Publicado {formatRelativeDate(empleo.fechaPublicacion)}</p>
                   <Col sm={8}>
                     <Card.Title>{empleo.puesto}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">

@@ -80,7 +80,7 @@ const ListaEmpleos = () => {
     return (
         <div className="App">
             <CabeceraUsuarioInicio />
-            <Container className="my-4">
+            <Container fluid className="mt-4">
                 <h2>Empleos Disponibles</h2>
                 <Accordion defaultActiveKey="0" flush>
                     {empleos.map((empleo, index) => {

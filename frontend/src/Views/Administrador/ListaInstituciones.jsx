@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card, Container, Row, Col, Button, Modal,Form } from 'react-bootstrap';
-import { faTrash, faEdit ,faSchool} from '@fortawesome/free-solid-svg-icons';
+import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { faTrash, faEdit, faSchool } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
 import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 import "../../Styles/Lista.scss";
@@ -20,7 +20,9 @@ const ListaInstituciones = () => {
   const navigate = useNavigate();
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
   const toggleEditarModal = () => setEditarModal(!EditarModal);
+  const [showRegisterInstitutionModal, setShowRegisterInstitutionModal] = useState(false);
 
+  const [recargar, setRecargar] = useState(false);
   const [EditarModal, setEditarModal] = useState(false);
   const [institucionToEdit, setInstitucionToEdit] = useState(null);
   const [filtroNombre, setFiltroNombre] = useState("");
@@ -30,16 +32,17 @@ const ListaInstituciones = () => {
   };
 
   const institucionesFiltradas = instituciones.filter((institucion) =>
-    institucion.nombreInstitucion.toLowerCase().includes(filtroNombre.toLowerCase())
+    institucion.nombreInstitucion?.toLowerCase().includes(filtroNombre?.toLowerCase() ?? "")
   );
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/schools')
       .then(res => {
-        setInstituciones(res.data.sort((a, b) => a.nombreInstitucion.localeCompare(b.nombreInstitucion)))
+        setInstituciones(res.data);
       })
       .catch(err => console.error("Error al obtener instituciones:", err));
-  }, []);
+  }, [recargar]); // Dependencia del efecto: recargar
+
 
   const prepareDelete = (institucion) => {
     setInstitucionToDelete(institucion); // Corregido
@@ -76,10 +79,18 @@ const ListaInstituciones = () => {
       inst._id === institucionActualizada._id ? institucionActualizada : inst
     ));
   };
+
+  const addInstitucionToList = (newInstitucion) => {
+    // Actualiza la lista y fuerza la recarga
+    setInstituciones([...instituciones, newInstitucion]);
+    setRecargar(!recargar); // Cambia el estado para forzar la recarga
+  };
+
   return (
 
     <div className="App">
-      <TabsAdministracionComp />
+      <TabsAdministracionComp onAddInstitucion={addInstitucionToList} />
+
       <Container fluid className="mt-4">
         <Row>
           <Col md={3} className="widget">
@@ -94,7 +105,7 @@ const ListaInstituciones = () => {
             </Form.Group>
           </Col>
           <Col md={9}>
-          <Row>
+            <Row>
               {institucionesFiltradas.map((institucion) => (
                 <Col md={6} key={institucion._id} className="mb-3">
                   <Card className="empresa-card">
@@ -106,9 +117,11 @@ const ListaInstituciones = () => {
                             {institucion.nombreInstitucion}
                           </Card.Title>
                         </Col>
-                        <Col md={4} className="text-right">
-                          <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} onClick={() => handleEditClick(institucion)} />
-                          <FontAwesomeIcon className="icon-danger" icon={faTrash} onClick={() => prepareDelete(institucion)} />
+                        <Col xs={12} sm={6} md={4} className="text-right">
+                          <div className="icon-container">
+                            <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} onClick={() => handleEditClick(institucion)} />
+                            <FontAwesomeIcon className="icon-danger" icon={faTrash} onClick={() => prepareDelete(institucion)} />
+                          </div>
                         </Col>
                       </Row>
                     </Card.Body>

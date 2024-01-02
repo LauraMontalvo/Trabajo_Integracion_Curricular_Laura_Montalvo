@@ -3,8 +3,8 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Styles/loginstyle.css'
 import { useNavigate } from 'react-router-dom';
-import Cabecera from '../../Components/General/Cabecera';
-import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
+import Cabecera from '../General/Cabecera';
+import TabsAdministracionComp from './TabsAdministracionComp';
 import { Form, Button, Modal, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faInfoCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -21,19 +21,14 @@ const CampoEstado = ({ valido, mensajeError }) => {
     return null; // No muestra nada si el campo aún no ha sido validado
   }
 };
-const RegistroEmpresa = (props) => {
+const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
   const [nombreEmpresa, setNombreEmpresa] = useState("");
   const [correo, setCorreo] = useState("");
   ///
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const handleErrorModalShow = () => setShowErrorModal(true);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
 
-    // Redirigir al usuario a la pantalla de inicio de sesión después de cerrar el modal
-    navigate('/empresa');
-  };
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
@@ -213,6 +208,9 @@ const validarFormularioAntesDeEnviar = () => {
     })
       .then((res) => {
         console.log(res);
+        if (onEmpresaRegistered) {
+          onEmpresaRegistered(res.data);
+        }
         handleSuccessModalShow();
         setNombreEmpresa('');
         setCorreo('');
@@ -236,6 +234,7 @@ const validarFormularioAntesDeEnviar = () => {
         setusuarioError('');
         setPasswordError('');
         setConfirmPasswordError('');
+        
       })
       .catch((err) => {
         console.log(err)
@@ -250,12 +249,22 @@ const validarFormularioAntesDeEnviar = () => {
 
       });
   }
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    if (onCloseRegisterModal) {
+      onCloseRegisterModal(); // Cierra el modal de registro
+    }
+   
+  };
+
+
   return (
     <div className='App'>
 
-      <TabsAdministracionComp />
+      
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
-        <Row>
+        <Row >
         <Col md={6}>
         <Form.Group>
           <Form.Label>Nombre de la Empresa</Form.Label>

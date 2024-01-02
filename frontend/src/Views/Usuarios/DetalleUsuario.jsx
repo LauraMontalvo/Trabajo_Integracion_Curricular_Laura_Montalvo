@@ -454,9 +454,9 @@ function DetalleUsuario(props) {
   return (
     <div className='App'>
       <CabeceraUsuarioInicio />
-      <Container className="mt-4">
+      <Container fluid className="mt-4">
         <Row>
-          <Col md={4}>
+          <Col xs={12} md={6} lg={4}  >
             {/* Información del usuario */}
             <Card className="datos-personales-card">
               <Card.Body >
@@ -487,8 +487,9 @@ function DetalleUsuario(props) {
                   <Card.Header>
                     <div className="header-content">
                       <h5> Datos Personales</h5>
-                      <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
+
                     </div>
+                    <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
                   </Card.Header>
 
                   <ListGroup.Item >Género: {user.sexo}</ListGroup.Item>
@@ -521,7 +522,7 @@ function DetalleUsuario(props) {
           </Col>
           <Col md={8}>
             {/* Pestañas para información académica y laboral */}
-            <Tabs defaultActiveKey="academic" id="info-tab" className="mb-3">
+            <Tabs defaultActiveKey="academic" id="info-tab" >
               <Tab eventKey="academic" title="Información Académica">
                 <Card>
                   <Card.Body>

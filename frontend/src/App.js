@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import RegistroUsuario from './Views/Usuarios/RegistroUsuario';
 import LoginForm from './Views/Usuarios/LoginUsuario';
 import LoginFormEmpresa from './Views/Empresa/LoginEmpresa';
-import RegistroEmpresa from './Views/Administrador/RegistroEmpresa';
+
 import DetalleUsuario from './Views/Usuarios/DetalleUsuario';
 import LoginAdminForm from './Views/Administrador/LoginAdmin';
 import AdminConsola from './Views/Administrador/AdminConsola';
@@ -16,7 +16,6 @@ import DetalleEmpresa from './Views/Empresa/DetalleEmpresa';
 import EditarEmpresa from './Components/Empresa/EditarEmpresaComp';
 import LoadingModal from './Views/General/LoadingModal';
 import ListaInstituciones from './Views/Administrador/ListaInstituciones';
-import RegistroInstituciones from './Views/Administrador/RegistroInstitucionesView';
 import ListaEmpresas from './Views/Administrador/ListaEmpresas';
 import ListaEmpleos from './Views/Usuarios/ListaEmpleos';
 import PerfilEmpresa from './Views/Usuarios/Perfilempresa';
@@ -57,11 +56,11 @@ function App() {
             <Route path="/registrarUsuario" element={<RegistroUsuario />} />
             <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
             <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
-            <Route path="/registrarEmpresa" element={<RegistroEmpresa />} />
+        
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
             <Route path="/buscarEmpleos/:id" element={<ListaEmpleos />} />
-            <Route path="/registrarInstitucion" element={<RegistroInstituciones />} />
+      
             <Route path="/listaInstituciones" element={<ListaInstituciones />} />
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />

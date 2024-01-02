@@ -46,8 +46,8 @@ const InicioResumen = (props) => {
     <div className='App'>
 {esUsuario ? <CabeceraUsuarioInicio isAuthenticated={isAuthenticated} /> : <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} />}
     {/* Renderiza la cabecera de usuario o empresa según corresponda */}
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <Row>
+    <Container fluid className="d-flex justify-content-center align-items-center vh-100">
+      <Row> 
         {cardsData.map((card, index) => (
           <Col md={4} key={index} className="mb-4">
             <Link to={card.link} className="card-link">
