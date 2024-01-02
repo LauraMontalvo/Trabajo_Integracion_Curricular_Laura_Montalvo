@@ -32,42 +32,42 @@ const PerfilEmpresa = () => {
 
   if (!empresa) {
     return null;
-}
-// Función para alternar la visualización de la descripción
-const toggleDescripcion = () => {
+  }
+  // Función para alternar la visualización de la descripción
+  const toggleDescripcion = () => {
     setVerDescripcionCompleta(!verDescripcionCompleta);
-};
+  };
 
   const mensajeEmpleos = `Hay ${empleos.length} empleo${empleos.length !== 1 ? 's' : ''} en ${empresa.nombreEmpresa}`;
 
   return (
     <div className='App'>
-<CabeceraUsuarioInicio></CabeceraUsuarioInicio>
-    <Container className="perfil-empresa mt-4">
-    <Row>
-      <Col md={4}>
-        <Card className="card-empresa">
-          <Card.Img variant="top" src={empresa.foto} className="imagen-empresa" />
-          <Card.Body>
-            <Card.Title className="titulo-empresa">{empresa.nombreEmpresa}</Card.Title>
-            <ListGroup variant="flush">
-              <ListGroup.Item>Correo: {empresa.correo}</ListGroup.Item>
-              <ListGroup.Item>Dirección: {empresa.direccion}</ListGroup.Item>
-              <ListGroup.Item>Teléfono: {empresa.telefono}</ListGroup.Item>
+      <CabeceraUsuarioInicio></CabeceraUsuarioInicio>
+      <Container className="perfil-empresa mt-4">
+        <Row>
+          <Col md={4}>
+            <Card className="card-empresa">
+              <Card.Img variant="top" src={empresa.foto} className="imagen-empresa" />
+              <Card.Body>
+                <Card.Title className="titulo-empresa">{empresa.nombreEmpresa}</Card.Title>
+                <ListGroup variant="flush">
+                  <ListGroup.Item>Correo: {empresa.correo}</ListGroup.Item>
+                  <ListGroup.Item>Dirección: {empresa.direccion}</ListGroup.Item>
+                  <ListGroup.Item>Teléfono: {empresa.telefono}</ListGroup.Item>
 
-              <ListGroup.Item>
-                            Descripción: {verDescripcionCompleta 
-                                ? empresa.descripcion 
-                                : `${empresa.descripcion.substring(0, 100)}...`}
-                            <Button variant="link" onClick={toggleDescripcion}>
-                                {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
-                            </Button>
-                        </ListGroup.Item>
-            </ListGroup>
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={8}>
+                  <ListGroup.Item>
+                    Descripción: {verDescripcionCompleta
+                      ? empresa.descripcion
+                      : `${empresa.descripcion.substring(0, 100)}...`}
+                    <Button variant="link" onClick={toggleDescripcion}>
+                      {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
+                    </Button>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={8}>
             <Card className="card-empleos">
               <Card.Body>
                 <h3 className="titulo-empleos-publicados">{mensajeEmpleos}</h3>
@@ -79,10 +79,10 @@ const toggleDescripcion = () => {
               </Card.Body>
             </Card>
           </Col>
-    </Row>
-  </Container>
+        </Row>
+      </Container>
     </div>
-   
+
   );
 };
 

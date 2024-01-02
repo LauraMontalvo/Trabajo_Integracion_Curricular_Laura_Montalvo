@@ -53,7 +53,7 @@ const ListaEmpresas = (props) => {
             <Col md={6} key={empresa._id} className="mb-3">
               <Card className="empresa-card">
                 <Card.Body>
-                <Row nogutters={true} className="align-items-center">
+                  <Row nogutters={true} className="align-items-center">
                     <Col xs={12} sm={6} md={8}>
                       <Card.Title>{empresa.nombreEmpresa}</Card.Title>
                       <Card.Text>

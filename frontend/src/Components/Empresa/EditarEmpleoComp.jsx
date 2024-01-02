@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Row, Col, Alert, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt, faTools, faClipboardList, faGraduationCap,faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faFileAlt, faTools, faClipboardList, faGraduationCap, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faBriefcase, faBuilding, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
@@ -12,9 +12,9 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
   const [aptitudes, setAptitudes] = useState('');
   const [error, setError] = useState('');
   const [puesto, setPuesto] = useState('');
-const [formacionAcademica, setFormacionAcademica] = useState('');
-const [experienciarequerida, setExperienciarequerida] = useState('');
-const [modalidad, setModalidad] = useState('');
+  const [formacionAcademica, setFormacionAcademica] = useState('');
+  const [experienciarequerida, setExperienciarequerida] = useState('');
+  const [modalidad, setModalidad] = useState('');
   //modal de confimracion
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -50,12 +50,12 @@ const [modalidad, setModalidad] = useState('');
 
     axios.put(`http://localhost:8000/api/job/${idEmpleo}`, {
       descripcion,
-  conocimientos,
-  aptitudes,
-  puesto,
-  formacionAcademica,
-  experienciarequerida,
-  modalidad
+      conocimientos,
+      aptitudes,
+      puesto,
+      formacionAcademica,
+      experienciarequerida,
+      modalidad
     })
       .then(response => {
         // Llamar a la función callback después de una actualización exitosa
@@ -87,18 +87,18 @@ const [modalidad, setModalidad] = useState('');
     <Form onSubmit={handleSubmit} className="mi-formulario">
       {error && <Alert variant="danger">{error}</Alert>}
       <Row>
-      <Form.Group>
-  <Form.Label>Puesto</Form.Label>
-  <div className="input-icon-wrapper">
-    <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
-    <Form.Control
-      type="text"
-      placeholder="Ingrese el puesto"
-      value={puesto}
-      onChange={(e) => setPuesto(e.target.value)}
-    />
-  </div>
-</Form.Group>
+        <Form.Group>
+          <Form.Label>Puesto</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+            <Form.Control
+              type="text"
+              placeholder="Ingrese el puesto"
+              value={puesto}
+              onChange={(e) => setPuesto(e.target.value)}
+            />
+          </div>
+        </Form.Group>
         <Form.Group>
           <Form.Label>Descripción del empleo</Form.Label>
           <div className="input-icon-wrapper">
@@ -117,18 +117,18 @@ const [modalidad, setModalidad] = useState('');
           </div>
         </Form.Group>
         <Form.Group>
-  <Form.Label>Formación Académica</Form.Label>
-  <div className="input-icon-wrapper">
-    <FontAwesomeIcon icon={faGraduationCap} className="input-icon" />
-    <Form.Control
-      as="textarea"
-      rows={4}
-      placeholder="Ingrese la formación académica requerida"
-      value={formacionAcademica}
-      onChange={(e) => setFormacionAcademica(e.target.value)}
-    />
-  </div>
-</Form.Group>
+          <Form.Label>Formación Académica</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faGraduationCap} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Ingrese la formación académica requerida"
+              value={formacionAcademica}
+              onChange={(e) => setFormacionAcademica(e.target.value)}
+            />
+          </div>
+        </Form.Group>
         {/* ... Campos adicionales ... */}
 
         <Form.Group>
@@ -148,18 +148,18 @@ const [modalidad, setModalidad] = useState('');
           </div>
         </Form.Group>
         <Form.Group>
-  <Form.Label>Experiencia Requerida</Form.Label>
-  <div className="input-icon-wrapper">
-    <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
-    <Form.Control
-      as="textarea"
-      rows={4}
-      placeholder="Ingrese la experiencia requerida para el empleo"
-      value={experienciarequerida}
-      onChange={(e) => setExperienciarequerida(e.target.value)}
-    />
-  </div>
-</Form.Group>
+          <Form.Label>Experiencia Requerida</Form.Label>
+          <div className="input-icon-wrapper">
+            <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Ingrese la experiencia requerida para el empleo"
+              value={experienciarequerida}
+              onChange={(e) => setExperienciarequerida(e.target.value)}
+            />
+          </div>
+        </Form.Group>
 
         <Form.Group>
           <Form.Label>Aptitudes requeridas</Form.Label>
@@ -182,34 +182,34 @@ const [modalidad, setModalidad] = useState('');
         {/* Número de vacantes */}
 
         <Form.Group>
-  <Form.Label>Modalidad</Form.Label>
-  <div className="radio-buttons-group">
-    <Form.Check 
-      type="radio"
-      label="Virtual"
-      name="modalidad"
-      value="Virtual"
-      checked={modalidad === "Virtual"}
-      onChange={(e) => setModalidad(e.target.value)}
-    />
-    <Form.Check 
-      type="radio"
-      label="Presencial"
-      name="modalidad"
-      value="Presencial"
-      checked={modalidad === "Presencial"}
-      onChange={(e) => setModalidad(e.target.value)}
-    />
-    <Form.Check 
-      type="radio"
-      label="Híbrida"
-      name="modalidad"
-      value="Híbrida"
-      checked={modalidad === "Híbrida"}
-      onChange={(e) => setModalidad(e.target.value)}
-    />
-  </div>
-</Form.Group>
+          <Form.Label>Modalidad</Form.Label>
+          <div className="radio-buttons-group">
+            <Form.Check
+              type="radio"
+              label="Virtual"
+              name="modalidad"
+              value="Virtual"
+              checked={modalidad === "Virtual"}
+              onChange={(e) => setModalidad(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              label="Presencial"
+              name="modalidad"
+              value="Presencial"
+              checked={modalidad === "Presencial"}
+              onChange={(e) => setModalidad(e.target.value)}
+            />
+            <Form.Check
+              type="radio"
+              label="Híbrida"
+              name="modalidad"
+              value="Híbrida"
+              checked={modalidad === "Híbrida"}
+              onChange={(e) => setModalidad(e.target.value)}
+            />
+          </div>
+        </Form.Group>
 
       </Row>
       <div className="botones-centrados">

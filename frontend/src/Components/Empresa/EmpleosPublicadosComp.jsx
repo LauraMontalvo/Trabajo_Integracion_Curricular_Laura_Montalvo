@@ -20,23 +20,23 @@ const EmpleosPublicados = ({ empleos, mostrarPostulantes, handleEditEmpleoClick,
                 <h3>Empleos publicados</h3>
                 {empleos.map((empleo) => (
                     <ListGroup.Item key={empleo._id} className="mt-4 border p-3">
-                        
+
                         <Row className="empleo-detalle">
-                            
+
                             <Col xs={12}>
-                           
-                                                <h6>Puesto:</h6>
-                                                <p>{empleo.puesto}</p>
-                                         
-                                          
-                                                <h6>Formación Académica Requerida:</h6>
-                                                <p>{empleo.formacionAcademica}</p>
-                                      
+
+                                <h6>Puesto:</h6>
+                                <p>{empleo.puesto}</p>
+
+
+                                <h6>Formación Académica Requerida:</h6>
+                                <p>{empleo.formacionAcademica}</p>
+
                                 <h6>Descripción del Empleo:</h6>
                                 <p>{acordeonesAbiertos[empleo._id] ? empleo.descripcion : `${empleo.descripcion.substring(0, 100)}...`}</p>
-                                
-                                           
-                                        
+
+
+
                                 <Button variant="link" onClick={() => toggleAcordeon(empleo._id)}>
                                     {acordeonesAbiertos[empleo._id] ? 'Ver menos' : 'Ver más'}
                                 </Button>
@@ -70,7 +70,7 @@ const EmpleosPublicados = ({ empleos, mostrarPostulantes, handleEditEmpleoClick,
                                                 <p>{empleo.modalidad}</p>
                                             </Col>
                                         </Row>
-                                      
+
                                         <Button variant="info" className="mt-2" onClick={() => mostrarPostulantes(empleo._id)}>
                                             <FontAwesomeIcon icon={faUsers} /> Ver Postulantes
                                         </Button>

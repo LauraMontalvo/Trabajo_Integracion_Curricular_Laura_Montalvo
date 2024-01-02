@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faSchool, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faSchool, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes';
 
 const CampoEstado = ({ mensajeError }) => {
@@ -22,11 +22,11 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     const { id } = useParams();
     const esCampoValido = (valor, error) => {
         return valor !== '' && error === '';
-      };
-      const handleInputChange = (e) => {
+    };
+    const handleInputChange = (e) => {
         const { value } = e.target;
         setNombreInstitucion(value);
-    
+
         // Validar el campo cada vez que cambia
         validarNombreInstitucion(value, setNombreInstitucionError);
     };
@@ -39,7 +39,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
                 .catch(err => console.log(err));
         }
     }, [idInstitucion]);
-   
+
     const validarNombreInstitucion = (value, setError) => {
         if (!value.trim()) {
             setError(constantes.TEXTO_NOMBRE_INSTITUCION_OBLIGATORIO);
@@ -79,13 +79,13 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
                 <Form.Group>
                     <Form.Label>Nombre Institucion:</Form.Label>
                     <div className="input-icon-wrapper">
-                    <FontAwesomeIcon icon={faSchool} className="input-icon" />
+                        <FontAwesomeIcon icon={faSchool} className="input-icon" />
                         <Form.Control
                             type="text"
                             placeholder="Ingrese el nombre de la institución"
-                            onChange={(e) => handleInputChange(e, setNombreInstitucion, setNombreInstitucionError)} 
+                            onChange={(e) => handleInputChange(e, setNombreInstitucion, setNombreInstitucionError)}
                             value={nombreInstitucion} />
-                                            <CampoEstado valido={esCampoValido(nombreInstitucion, nombreInstitucionError)} mensajeError={nombreInstitucionError} />
+                        <CampoEstado valido={esCampoValido(nombreInstitucion, nombreInstitucionError)} mensajeError={nombreInstitucionError} />
 
                     </div>
                     {nombreInstitucionError && <p className="text-danger">{nombreInstitucionError}</p>}

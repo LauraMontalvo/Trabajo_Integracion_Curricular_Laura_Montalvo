@@ -58,7 +58,7 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
     return valor !== '' && error === '';
   };
 
- 
+
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
@@ -66,135 +66,135 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
 
     // Validación del Correo Electrónico
     if (name === 'correo') {
-        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value) {
-            errorSetter(constantes.TEXTO_CORREO_OBLIGATORIO);
-        } else if (!regexCorreo.test(value)) {
-            errorSetter(constantes.TEXTO_INGRESE_CORREO_VALIDO);
-        } else {
-            errorSetter('');
-        }
+      const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value) {
+        errorSetter(constantes.TEXTO_CORREO_OBLIGATORIO);
+      } else if (!regexCorreo.test(value)) {
+        errorSetter(constantes.TEXTO_INGRESE_CORREO_VALIDO);
+      } else {
+        errorSetter('');
+      }
     }
     // Validación de la Contraseña
     else if (name === 'password') {
-        const regexMayuscula = /[A-Z]/;
-        const regexCaracterEspecial = /[^A-Za-z0-9]/;
-        if (!value) {
-            errorSetter(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
-        } else if (value.length < 8) {
-            errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_8_CARACTERES);
-        } else if (!regexMayuscula.test(value)) {
-            errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UNA_LETRA_MAYUS);
-        } else if (!regexCaracterEspecial.test(value)) {
-            errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UN_CARACTER_ESPECIAL);
-        } else {
-            errorSetter('');
-        }
+      const regexMayuscula = /[A-Z]/;
+      const regexCaracterEspecial = /[^A-Za-z0-9]/;
+      if (!value) {
+        errorSetter(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
+      } else if (value.length < 8) {
+        errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_8_CARACTERES);
+      } else if (!regexMayuscula.test(value)) {
+        errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UNA_LETRA_MAYUS);
+      } else if (!regexCaracterEspecial.test(value)) {
+        errorSetter(constantes.TEXTO_CONTRASEÑA_AL_MENOS_UN_CARACTER_ESPECIAL);
+      } else {
+        errorSetter('');
+      }
     }
     // Validación de la Confirmación de la Contraseña
     else if (name === 'confirmPassword') {
-        if (value !== otherValue) {
-            errorSetter(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
-        } else {
-            errorSetter('');
-        }
+      if (value !== otherValue) {
+        errorSetter(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
+      } else {
+        errorSetter('');
+      }
     }
     // Validación para otros campos
     else {
-        if (!value) {
-            errorSetter(constantes.TEXTO_ESTE_CAMPO_ES_OBLIGATORIO);
-        } else {
-            errorSetter('');
-        }
+      if (!value) {
+        errorSetter(constantes.TEXTO_ESTE_CAMPO_ES_OBLIGATORIO);
+      } else {
+        errorSetter('');
+      }
     }
-};
+  };
 
-const handleTelefonoChange = (e) => {
-  let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+  const handleTelefonoChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
 
-  if (value.length > 10) {
+    if (value.length > 10) {
       value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
-  }
+    }
 
-  setTelefono(value);
+    setTelefono(value);
 
-  if (value.length !== 10) {
+    if (value.length !== 10) {
       settelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
-  } else {
+    } else {
       settelefonoError('');
-  }
-};
+    }
+  };
 
-const validarFormularioAntesDeEnviar = () => {
-  let formularioEsValido = true;
+  const validarFormularioAntesDeEnviar = () => {
+    let formularioEsValido = true;
 
-  // Validar nombre de la empresa
-  if (!nombreEmpresa) {
-    setNombreEmpresaError(constantes.TEXTO_NOMBRE_EMPRESA_OBLIGATORIO);
-    formularioEsValido = false;
-  } else {
-    setNombreEmpresaError('');
-  }
+    // Validar nombre de la empresa
+    if (!nombreEmpresa) {
+      setNombreEmpresaError(constantes.TEXTO_NOMBRE_EMPRESA_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setNombreEmpresaError('');
+    }
 
-  // Validar correo
-  const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!correo || !regexCorreo.test(correo)) {
-    setCorreoError(constantes.TEXTO_INGRESE_CORREO_VALIDO);
-    formularioEsValido = false;
-  } else {
-    setCorreoError('');
-  }
+    // Validar correo
+    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!correo || !regexCorreo.test(correo)) {
+      setCorreoError(constantes.TEXTO_INGRESE_CORREO_VALIDO);
+      formularioEsValido = false;
+    } else {
+      setCorreoError('');
+    }
 
-  // Validar dirección
-  if (!direccion) {
-    setDireccionError(constantes.TEXTO_DIRECCION_EMPRESA_OBLIGATORIO);
-    formularioEsValido = false;
-  } else {
-    setDireccionError('');
-  }
+    // Validar dirección
+    if (!direccion) {
+      setDireccionError(constantes.TEXTO_DIRECCION_EMPRESA_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setDireccionError('');
+    }
 
-  // Validar teléfono
-  if (!telefono || telefono.length !== 10) {
-    settelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
-    formularioEsValido = false;
-  } else {
-    settelefonoError('');
-  }
+    // Validar teléfono
+    if (!telefono || telefono.length !== 10) {
+      settelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
+      formularioEsValido = false;
+    } else {
+      settelefonoError('');
+    }
 
-  // Validar descripción
-  if (!descripcion) {
-    setDescripcionError(constantes.TEXTO_DESCRIPCION_EMPRESA_OBLIGATORIO);
-    formularioEsValido = false;
-  } else {
-    setDescripcionError('');
-  }
+    // Validar descripción
+    if (!descripcion) {
+      setDescripcionError(constantes.TEXTO_DESCRIPCION_EMPRESA_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setDescripcionError('');
+    }
 
-  // Validar usuario
-  if (!usuario) {
-    setusuarioError(constantes.TEXTO_USUARIO_OBLIGATORIO);
-    formularioEsValido = false;
-  } else {
-    setusuarioError('');
-  }
+    // Validar usuario
+    if (!usuario) {
+      setusuarioError(constantes.TEXTO_USUARIO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setusuarioError('');
+    }
 
-  // Validar contraseña
-  if (!password) {
-    setPasswordError(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
-    formularioEsValido = false;
-  } else {
-    setPasswordError('');
-  }
+    // Validar contraseña
+    if (!password) {
+      setPasswordError(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setPasswordError('');
+    }
 
-  // Validar confirmación de contraseña
-  if (!confirmPassword || confirmPassword !== password) {
-    setConfirmPasswordError(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
-    formularioEsValido = false;
-  } else {
-    setConfirmPasswordError('');
-  }
+    // Validar confirmación de contraseña
+    if (!confirmPassword || confirmPassword !== password) {
+      setConfirmPasswordError(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
+      formularioEsValido = false;
+    } else {
+      setConfirmPasswordError('');
+    }
 
-  return formularioEsValido;
-};
+    return formularioEsValido;
+  };
 
 
   const onsubmitHandler = (e) => {
@@ -234,7 +234,7 @@ const validarFormularioAntesDeEnviar = () => {
         setusuarioError('');
         setPasswordError('');
         setConfirmPasswordError('');
-        
+
       })
       .catch((err) => {
         console.log(err)
@@ -255,117 +255,117 @@ const validarFormularioAntesDeEnviar = () => {
     if (onCloseRegisterModal) {
       onCloseRegisterModal(); // Cierra el modal de registro
     }
-   
+
   };
 
 
   return (
     <div className='App'>
 
-      
+
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
         <Row >
-        <Col md={6}>
-        <Form.Group>
-          <Form.Label>Nombre de la Empresa</Form.Label>
-          <div className="input-icon-wrapper">
-            <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" />
-            <Form.Control
-              type="text"
-              placeholder="Ingrese Nombre de la Empresa"
-              onChange={(e) => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)}
-              value={nombreEmpresa}
-            />
-            <CampoEstado valido={esCampoValido(nombreEmpresa, nombreEmpresaError)} mensajeError={nombreEmpresaError} />
-          </div>
-          {nombreEmpresaError && <p className="text-danger">{nombreEmpresaError}</p>}
-        </Form.Group>
-      </Col>
-      <Col md={6}>
-        <Form.Group>
-          <Form.Label>Correo Electrónico</Form.Label>
-          <div className="input-icon-wrapper">
-            <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" />
-            <Form.Control
-              type="email"
-              name="correo"
-              placeholder="Ingrese el correo electrónico"
-              onChange={(e) => handleInputChange(e, setCorreo, setCorreoError)}
-              value={correo}
-            />
-<CampoEstado valido={esCampoValido(correo, correoError)} mensajeError={correoError} />
-
-
-          </div>
-          {correoError && <p className="text-danger">{correoError}</p>}
-        </Form.Group>
-      </Col>
-      <Col md={6}>
-  <Form.Group>
-    <Form.Label>Dirección</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" />
-      <Form.Control
-        type="text"
-        placeholder="Ingrese la dirección"
-        className="large-input"
-        onChange={(e) => handleInputChange(e, setDireccion, setDireccionError)}
-        value={direccion}
-      />
-      <CampoEstado valido={esCampoValido(direccion, direccionError)} mensajeError={direccionError} />
-    </div>
-    <p className="text-danger">{direccionError}</p>
-  </Form.Group>
-</Col>
           <Col md={6}>
-        <Form.Group>
-          <Form.Label>Teléfono</Form.Label>
-          <div className="input-icon-wrapper">
-            <FontAwesomeIcon icon={faPhone} className="input-icon" />
-            <Form.Control
-              type="text"
-              placeholder="Ingrese su teléfono"
-              value={telefono}
-              onChange={handleTelefonoChange}
-            />
-            <CampoEstado valido={esCampoValido(telefono, telefonoError)} mensajeError={telefonoError} />
-          </div>
-          {telefonoError && <p className="text-danger">{telefonoError}</p>}
-        </Form.Group>
-      </Col>
-         <Col md={6}>
-  <Form.Group>
-    <Form.Label>Usuario</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
-      <Form.Control
-        type="text"
-        placeholder="Ingrese el usuario"
-        onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
-        value={usuario}
-      />
-      <CampoEstado valido={esCampoValido(usuario, usuarioError)} mensajeError={usuarioError} />
-    </div>
-    <p className="text-danger">{usuarioError}</p>
-  </Form.Group>
-</Col>
-<Col md={6}>
-  <Form.Group>
-    <Form.Label>Descripción</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faInfoCircle} className="input-icon fa-lg" />
-      <Form.Control
-        as="textarea"
-        rows={4}
-        placeholder="Ingrese la descripción de la empresa"
-        onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
-        value={descripcion}
-      />
-      <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
-    </div>
-    <p className="text-danger">{descripcionError}</p>
-  </Form.Group>
-</Col>
+            <Form.Group>
+              <Form.Label>Nombre de la Empresa</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faBuilding} className="input-icon fa-lg" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese Nombre de la Empresa"
+                  onChange={(e) => handleInputChange(e, setNombreEmpresa, setNombreEmpresaError)}
+                  value={nombreEmpresa}
+                />
+                <CampoEstado valido={esCampoValido(nombreEmpresa, nombreEmpresaError)} mensajeError={nombreEmpresaError} />
+              </div>
+              {nombreEmpresaError && <p className="text-danger">{nombreEmpresaError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Correo Electrónico</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" />
+                <Form.Control
+                  type="email"
+                  name="correo"
+                  placeholder="Ingrese el correo electrónico"
+                  onChange={(e) => handleInputChange(e, setCorreo, setCorreoError)}
+                  value={correo}
+                />
+                <CampoEstado valido={esCampoValido(correo, correoError)} mensajeError={correoError} />
+
+
+              </div>
+              {correoError && <p className="text-danger">{correoError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Dirección</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese la dirección"
+                  className="large-input"
+                  onChange={(e) => handleInputChange(e, setDireccion, setDireccionError)}
+                  value={direccion}
+                />
+                <CampoEstado valido={esCampoValido(direccion, direccionError)} mensajeError={direccionError} />
+              </div>
+              <p className="text-danger">{direccionError}</p>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Teléfono</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faPhone} className="input-icon" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese su teléfono"
+                  value={telefono}
+                  onChange={handleTelefonoChange}
+                />
+                <CampoEstado valido={esCampoValido(telefono, telefonoError)} mensajeError={telefonoError} />
+              </div>
+              {telefonoError && <p className="text-danger">{telefonoError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Usuario</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
+                <Form.Control
+                  type="text"
+                  placeholder="Ingrese el usuario"
+                  onChange={(e) => handleInputChange(e, setUsuario, setusuarioError)}
+                  value={usuario}
+                />
+                <CampoEstado valido={esCampoValido(usuario, usuarioError)} mensajeError={usuarioError} />
+              </div>
+              <p className="text-danger">{usuarioError}</p>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Descripción</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faInfoCircle} className="input-icon fa-lg" />
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder="Ingrese la descripción de la empresa"
+                  onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
+                  value={descripcion}
+                />
+                <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
+              </div>
+              <p className="text-danger">{descripcionError}</p>
+            </Form.Group>
+          </Col>
 
           <Col md={6}>
             <Form.Group>
@@ -383,7 +383,7 @@ const validarFormularioAntesDeEnviar = () => {
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
-<CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
+                <CampoEstado valido={esCampoValido(password, passwordError)} mensajeError={passwordError} />
 
               </div>
               {passwordError && <p className="text-danger">{passwordError}</p>}
@@ -398,25 +398,25 @@ const validarFormularioAntesDeEnviar = () => {
                 <FontAwesomeIcon icon={faLock} className="field-icon" />
                 <Form.Control
                   type={showPassword ? "text" : "password"}
-             
+
                   value={confirmPassword}
                   name="confirmPassword"
-  placeholder="Confirme su contraseña"
-  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError, password)}
+                  placeholder="Confirme su contraseña"
+                  onChange={(e) => handleInputChange(e, setConfirmPassword, setConfirmPasswordError, password)}
 
                   className="password-input" />
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
-<div>
-<CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
+                <div>
+                  <CampoEstado valido={esCampoValido(confirmPassword, confirmPasswordError)} mensajeError={confirmPasswordError} />
 
 
-</div>
+                </div>
 
               </div>
-              
+
               {confirmPasswordError && <p className="text-danger">{confirmPasswordError}</p>}
             </Form.Group>
           </Col>

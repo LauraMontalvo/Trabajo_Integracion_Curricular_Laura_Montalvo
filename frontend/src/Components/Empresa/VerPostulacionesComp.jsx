@@ -31,7 +31,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
         }
     };
 
-  const renderEstado = (estado) => {
+    const renderEstado = (estado) => {
         const estados = {
             'En Espera': { icon: faHourglass, color: 'warning' },
             'Aceptada': { icon: faCheckCircle, color: 'success' },
@@ -48,44 +48,44 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
     };
     return (
         <ListGroup>
-        {postulantesList.map(postulacion => (
-            <ListGroup.Item key={postulacion._id} className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <div className="mb-2 mb-md-0 d-flex align-items-center">
-                    <FontAwesomeIcon icon={faUser} className="me-2" />
-                    <Link to={`/perfilUsuario/${postulacion.idUsuario?._id}`}>
-                        {postulacion.idUsuario?.nombre} {postulacion.idUsuario?.apellido}
-                    </Link>
-                </div>
-                <div className="mb-2 mb-md-0 text-center">
-                    {renderEstado(postulacion.estado)}
-                </div>
-                <div>
-                    <Button
-                        variant="success"
-                       
+            {postulantesList.map(postulacion => (
+                <ListGroup.Item key={postulacion._id} className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <div className="mb-2 mb-md-0 d-flex align-items-center">
+                        <FontAwesomeIcon icon={faUser} className="me-2" />
+                        <Link to={`/perfilUsuario/${postulacion.idUsuario?._id}`}>
+                            {postulacion.idUsuario?.nombre} {postulacion.idUsuario?.apellido}
+                        </Link>
+                    </div>
+                    <div className="mb-2 mb-md-0 text-center">
+                        {renderEstado(postulacion.estado)}
+                    </div>
+                    <div>
+                        <Button
+                            variant="success"
 
-                        onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Aceptada')}
-                        disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
-                        style={buttonStyle}
-                        className="ver-postulaciones-button"
 
-                    >
-                        Aceptar
-                    </Button>
-                    <Button
-                        variant="danger"
-                        className="ver-postulaciones-button"
+                            onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Aceptada')}
+                            disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
+                            style={buttonStyle}
+                            className="ver-postulaciones-button"
 
-                        onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Negada')}
-                        disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
-                        style={buttonStyle}
-                    >
-                        Negar
-                    </Button>
-                </div>
-            </ListGroup.Item>
-        ))}
-    </ListGroup>
+                        >
+                            Aceptar
+                        </Button>
+                        <Button
+                            variant="danger"
+                            className="ver-postulaciones-button"
+
+                            onClick={() => actualizarEstadoPostulacion(postulacion._id, 'Negada')}
+                            disabled={postulacion.estado === 'Aceptada' || postulacion.estado === 'Negada'}
+                            style={buttonStyle}
+                        >
+                            Negar
+                        </Button>
+                    </div>
+                </ListGroup.Item>
+            ))}
+        </ListGroup>
     );
 };
 

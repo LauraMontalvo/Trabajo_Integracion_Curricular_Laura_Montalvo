@@ -87,8 +87,8 @@ const ListaUsuarios = () => {
                         </Col>
                         <Col xs={12} sm={6} md={4} className="text-right">
                           <div className="icon-container">
-                          <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} onClick={() => {/* función para editar */ }} />
-                          <FontAwesomeIcon className="icon-danger" icon={faTrash} onClick={() => prepareDelete(usuario)} />
+                            <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} onClick={() => {/* función para editar */ }} />
+                            <FontAwesomeIcon className="icon-danger" icon={faTrash} onClick={() => prepareDelete(usuario)} />
                           </div>
                         </Col>
                       </Row>

@@ -36,22 +36,22 @@ const Main = () => {
             <TabsAdministracionComp />
             <Container fluid className="main-content">
 
-            <Row className="justify-content-center">
-          {/* Asegúrate de que las clases de columnas se ajusten a la cantidad deseada */}
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {/* Card para Empresas */}
-            <Card onClick={handleVerEmpresas} className="text-center p-4">
-                                <Card.Body>
+                <Row className="justify-content-center">
+                    {/* Asegúrate de que las clases de columnas se ajusten a la cantidad deseada */}
+                    <Col xs={12} sm={6} md={4} lg={3}>
+                        {/* Card para Empresas */}
+                        <Card onClick={handleVerEmpresas} className="text-center p-4">
+                            <Card.Body>
                                 <FaBuilding size={70} className="icono-empresa" />
-                                    <Card.Title>Empresas</Card.Title>
-                                    <Card.Text>Gestionar empresas.</Card.Text>
-                                    <Button variant="primary">Ver Empresas</Button>
-                                </Card.Body>
-                            </Card>
-          </Col>
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {/* Card para Usuarios */}
-            <Card className="text-center p-4" onClick={handleVerUsuarios}>
+                                <Card.Title>Empresas</Card.Title>
+                                <Card.Text>Gestionar empresas.</Card.Text>
+                                <Button variant="primary">Ver Empresas</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col xs={12} sm={6} md={4} lg={3}>
+                        {/* Card para Usuarios */}
+                        <Card className="text-center p-4" onClick={handleVerUsuarios}>
                             <Card.Body>
                                 <FaUsers size={70} className="icono-usuarios" />
                                 <Card.Title>Usuarios</Card.Title>
@@ -61,14 +61,14 @@ const Main = () => {
                                 <Button variant="primary" >Ver Usuarios</Button>
                             </Card.Body>
                         </Card>
-          </Col>
-          {/* Repite para las demás tarjetas */}
-        </Row>
-              
+                    </Col>
+                    {/* Repite para las demás tarjetas */}
+                </Row>
+
                 <Row className="justify-content-center">
-          {/* Asegúrate de que las clases de columnas se ajusten a la cantidad deseada */}
-          <Col xs={12} sm={6} md={4} lg={3}>
-          <Card className="text-center p-4" onClick={handleVerInstituciones}>
+                    {/* Asegúrate de que las clases de columnas se ajusten a la cantidad deseada */}
+                    <Col xs={12} sm={6} md={4} lg={3}>
+                        <Card className="text-center p-4" onClick={handleVerInstituciones}>
                             <Card.Body>
                                 <FaUniversity size={70} className="icono-instituciones" />
                                 <Card.Title>Instituciones</Card.Title>
@@ -78,10 +78,10 @@ const Main = () => {
                                 <Button variant="primary" >Ver Instituciones</Button>
                             </Card.Body>
                         </Card>
-          </Col>
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {/* Card para Usuarios */}
-            <Card className="text-center p-4" onClick={handleVerReportes}>
+                    </Col>
+                    <Col xs={12} sm={6} md={4} lg={3}>
+                        {/* Card para Usuarios */}
+                        <Card className="text-center p-4" onClick={handleVerReportes}>
                             <Card.Body>
                                 <FaChartBar size={70} className="icono-reportes" />
                                 <Card.Title>Módulo de Reportes</Card.Title>
@@ -91,10 +91,10 @@ const Main = () => {
                                 <Button variant="primary">Ver Reportes</Button>
                             </Card.Body>
                         </Card>
-          </Col>
+                    </Col>
 
-        </Row>
-               
+                </Row>
+
             </Container>
             <Modal show={modalEmpresas} onHide={toggleEmpresas} size="xl">
                 <Modal.Header closeButton>

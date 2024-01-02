@@ -13,19 +13,19 @@ const Cabecera = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" /> {/* Este es el botón del menú colapsable */}
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav.Link as={Link} to="/">Inicio</Nav.Link>
-          <Nav className="mr-auto" variant="tabs">
-      <NavDropdown title="Iniciar Sesión" id="nav-dropdown">
+        <Nav className="mr-auto" variant="tabs">
+          <NavDropdown title="Iniciar Sesión" id="nav-dropdown">
             <NavDropdown.Item as={Link} to="/loginusuario">Como Usuario</NavDropdown.Item>
             <NavDropdown.Item as={Link} to="/empresa">Como Empresa</NavDropdown.Item>
           </NavDropdown>
-        
-      </Nav>
 
-        
+        </Nav>
+
+
       </Navbar.Collapse>
     </Navbar>
 
-    
+
 
 
 

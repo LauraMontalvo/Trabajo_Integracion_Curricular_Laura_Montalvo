@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { faUser, faLock, faCheckCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const EditarEmpresa = ({ id, onEmpresaUpdated,closeEditModal  }) => {
+const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const [nombreEmpresa, setNombreEmpresa] = useState("");
     const [correo, setCorreo] = useState("");
     const [direccion, setDireccion] = useState("");
@@ -19,17 +19,17 @@ const EditarEmpresa = ({ id, onEmpresaUpdated,closeEditModal  }) => {
     const navigate = useNavigate();
     const [updateSuccess, setUpdateSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-///
+    ///
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     //modal de conrfirmacion
-   
+
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
         if (closeEditModal) {
             closeEditModal();
         }
     };
-    
+
 
     const handlePasswrod = (e) => {
         setPassword(e.target.value);
@@ -87,10 +87,10 @@ const EditarEmpresa = ({ id, onEmpresaUpdated,closeEditModal  }) => {
                 // Limpia el mensaje de error en caso de que hubiera uno previamente
                 setUpdateError('');
                 if (onEmpresaUpdated) {
-                  onEmpresaUpdated(dataToUpdate); // Llama a la función callback y pasa los datos actualizados
+                    onEmpresaUpdated(dataToUpdate); // Llama a la función callback y pasa los datos actualizados
                 }
                 setShowSuccessModal(true);  // Muestra el modal de éxito
-              })
+            })
             .catch((err) => {
                 setUpdateError(err.response?.data?.msg || 'Error desconocido');
                 console.log(err);
@@ -234,19 +234,19 @@ const EditarEmpresa = ({ id, onEmpresaUpdated,closeEditModal  }) => {
 
                 <div className="botones-centrados">
                     <Button variant='primary' type="submit" className='btn'>Guardar</Button>
-                 
+
                 </div>
                 <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-    <Modal.Header closeButton>
-        <Modal.Title>Empresa actualizada con éxito</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>La información de la empresa ha sido actualizada correctamente.</Modal.Body>
-    <Modal.Footer>
-        <Button variant="success" onClick={handleSuccessModalClose}>
-            Cerrar
-        </Button>
-    </Modal.Footer>
-</Modal>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Empresa actualizada con éxito</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>La información de la empresa ha sido actualizada correctamente.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleSuccessModalClose}>
+                            Cerrar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
             </Form>
         </div>

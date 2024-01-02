@@ -166,7 +166,7 @@ const RegistroUsuario = (props) => {
     // Validación de la Confirmación de la Contraseña
     else if (name === 'confirmPassword') {
       if (value !== otherValue) {
-  
+
         errorSetter(constantes.TEXTO_CONTRASEÑAS_NO_COINCIDEN);
       } else {
         errorSetter('');

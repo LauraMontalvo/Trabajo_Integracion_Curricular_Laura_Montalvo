@@ -1,14 +1,12 @@
 
-import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION,ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO , URL_ADMIN_CONSOLA } from "../../Models/Constantes"
+import { TEXTO_INGRESE_DATOS, URL_VALIDAR_AUTENTICACION, ROL_ADMINISTRADOR, MENSAJE_LOGIN_EXITO, TEXTO_IR_PAGINA_PRINCIPAL, TEXTO_INICIO_SESION, TEXTO_INICIAR_SESION, MENSAJE_LOGIN_FALLIDO, URL_REGISTRAR_COMO, URL_ADMIN_CONSOLA } from "../../Models/Constantes"
 
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button } from 'reactstrap';
-
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
 import "../../Styles/loginstyle.css"
-
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
@@ -51,20 +49,20 @@ const LoginAdminForm = (props) => {
 
         });
     }
-    
+
   }
 
   return (
 
-      <Form onSubmit={handlerLogin} className="mi-formulario" >
-        
-              <h2>{constantes.TEXTO_TITULO}</h2>
-           
-              <div className='imgs'>
+    <Form onSubmit={handlerLogin} className="mi-formulario" >
+
+      <h2>{constantes.TEXTO_TITULO}</h2>
+
+      <div className='imgs'>
         <img src={logofondo} className="tamañoImagenChavezPamba" />
       </div>
-            <h2>{TEXTO_INICIO_SESION}</h2>
-            <Row>
+      <h2>{TEXTO_INICIO_SESION}</h2>
+      <Row>
         <Col md={6}>
           <Form.Group>
             <Form.Label>Usuario</Form.Label>
@@ -99,15 +97,15 @@ const LoginAdminForm = (props) => {
           </Form.Group>
         </Col>
       </Row>
-            <div className="botones-centrados">
-              <Button type="submit">{TEXTO_INICIAR_SESION}</Button>
-              <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>{TEXTO_IR_PAGINA_PRINCIPAL}</Button>
-            </div>
-            <p style={{ color: 'red' }}>{loginStatus}</p>
-           
-        
-      </Form>
-    
+      <div className="botones-centrados">
+        <Button type="submit">{TEXTO_INICIAR_SESION}</Button>
+        <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>{TEXTO_IR_PAGINA_PRINCIPAL}</Button>
+      </div>
+      <p style={{ color: 'red' }}>{loginStatus}</p>
+
+
+    </Form>
+
   )
 }
 

@@ -43,7 +43,7 @@ const ListaEmpresas = (props) => {
       })
       .catch((err) => console.log(err));
     cargarInformacionEmpresa();
-  }, [id, empresaActualizada,recargar]);
+  }, [id, empresaActualizada, recargar]);
 
   const handleCloseEditUserModal = () => {
     setEditModal(false);
@@ -99,15 +99,15 @@ const ListaEmpresas = (props) => {
   const handleFiltroNombreChange = (event) => {
     setFiltroNombre(event.target.value);
   };
- 
+
 
   const addEmpresaToList = (newEmpresa) => {
-    setEmpresas( [...empresas, newEmpresa]);
-    setRecargar(!recargar); 
+    setEmpresas([...empresas, newEmpresa]);
+    setRecargar(!recargar);
     // Cambiar `recargar` para forzar una actualización si es necesario
   };
 
-  
+
   return (
     <div className="App">
       <TabsAdministracionComp onAddEmpresa={addEmpresaToList} />
@@ -131,7 +131,7 @@ const ListaEmpresas = (props) => {
                 <Col md={6} key={empresa._id} className="mb-3">
                   <Card className="empresa-card">
                     <Card.Body>
-                      <Row  className="align-items-center">
+                      <Row className="align-items-center">
                         <Col xs={12} sm={6} md={8}>
                           <Card.Title>{empresa.nombreEmpresa}</Card.Title>
                           <Card.Text>

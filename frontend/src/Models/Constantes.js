@@ -52,6 +52,7 @@ export const URL_CONSULTAR_DATOS_USUARIO = "http://localhost:8000/api/user/";
 export const URL_OBTENER_USUARIOS ='http://localhost:8000/api/users'
 export const URL_USUARIO_NUEVO='http://localhost:8000/api/user/new'
 export const URL_EMPRESA_NUEVA= 'http://localhost:8000/api/company/new'
+export const URL_EMPRESAS= 'http://localhost:8000/api/companies'
 export const URL_EXPERIENCIA_LABORAL_NUEVA= 'http://localhost:8000/api/workExperience/new';
 
 //URLS FrontEnd

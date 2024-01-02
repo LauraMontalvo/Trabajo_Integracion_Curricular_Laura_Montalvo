@@ -14,7 +14,7 @@ const CabeceraEmpresaInicioComp = ({ isAuthenticated }) => {
 
   // Determina la página actual basándose en la URL
   const enPerfilUsuario = location.pathname.includes(`/detalleEmpresa/${id}`);
-  const enPerfilEmpresa= location.pathname.includes(`/perfilUsuario/${id}`);
+  const enPerfilEmpresa = location.pathname.includes(`/perfilUsuario/${id}`);
   const handleInicioClick = () => {
     if (isAuthenticated && id) {
       navigate(`/resumen/detalleEmpresa/${id}`);
@@ -44,14 +44,14 @@ const CabeceraEmpresaInicioComp = ({ isAuthenticated }) => {
           <Nav.Link onClick={handleInicioClick}>Inicio</Nav.Link>
           {enPerfilUsuario ? (
             <Nav.Link >
-              
+
             </Nav.Link>
           ) : (
             <Nav.Link as={Link} to={`/detalleEmpresa/${id}`}>
               Mi Perfil Empresa
             </Nav.Link>
           )}
-    
+
         </Nav>
       </Navbar.Collapse>
     </Navbar>

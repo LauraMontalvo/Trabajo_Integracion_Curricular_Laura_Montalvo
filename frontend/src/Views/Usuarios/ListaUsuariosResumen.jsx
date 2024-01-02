@@ -44,7 +44,7 @@ const ListaUsuariosResumen = () => {
   return (
     <Container fluid className="mt-4">
       <Row>
-    
+
         {/* Widget de Filtro a la Derecha */}
         <Col md={3} className="widget">
           <h4>Filtrar Usuarios</h4>
@@ -61,7 +61,7 @@ const ListaUsuariosResumen = () => {
 
         {/* Lista Principal de Usuarios */}
         <Col md={9}>
-        <Col md={12} className="mb-3">
+          <Col md={12} className="mb-3">
             <div className="total-empresas">
               <h4>Total de Usuarios</h4>
               <div className="numero">{users.length}</div>
@@ -77,7 +77,7 @@ const ListaUsuariosResumen = () => {
                     <Card.Title>{user.nombre} {user.apellido}</Card.Title>
                     <Card.Text className="text-muted">{user.cargo}</Card.Text>
                     {/* Agregar un resumen de habilidades o intereses aquí */}
-                    
+
                     <Button variant="primary" as={Link} to={`/perfilUsuario/${user._id}`}>Ver perfil</Button>
                   </Card.Body>
                 </Card>

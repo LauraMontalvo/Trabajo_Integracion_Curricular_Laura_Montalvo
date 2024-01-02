@@ -28,87 +28,87 @@ ChartJS.register(
 );
 
 function ModuloReportes() {
-    const [totalUsuarios, setTotalUsuarios] = useState(0);
-    const [usuariosAceptados, setUsuariosAceptados] = useState(0);
-    const [usuariosRechazados, setUsuariosRechazados] = useState(0);
-    const [usuariosEspera, setUsuariosEspera] = useState(0);
-    const [totalEmpresas, setTotalEmpresas] = useState(0);
-    const [datosPorEmpresa, setDatosPorEmpresa] = useState([]);
-    const [datosDisponibles, setDatosDisponibles] = useState(false);
-    const [barData, setBarData] = useState({ datasets: [] });
-    const [recentUsers, setRecentUsers] = useState([]);
-    const [recentCompanies, setRecentCompanies] = useState([]);
-    const [recentJobs, setRecentJobs] = useState([]);
+  const [totalUsuarios, setTotalUsuarios] = useState(0);
+  const [usuariosAceptados, setUsuariosAceptados] = useState(0);
+  const [usuariosRechazados, setUsuariosRechazados] = useState(0);
+  const [usuariosEspera, setUsuariosEspera] = useState(0);
+  const [totalEmpresas, setTotalEmpresas] = useState(0);
+  const [datosPorEmpresa, setDatosPorEmpresa] = useState([]);
+  const [datosDisponibles, setDatosDisponibles] = useState(false);
+  const [barData, setBarData] = useState({ datasets: [] });
+  const [recentUsers, setRecentUsers] = useState([]);
+  const [recentCompanies, setRecentCompanies] = useState([]);
+  const [recentJobs, setRecentJobs] = useState([]);
 
-    useEffect(() => {
-        axios.get('http://localhost:8000/api/jobs')
-          .then(response => {
-              // Supongamos que response.data contiene las ofertas de empleo
-              const jobs = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
-              setRecentJobs(jobs);
-          })
-          .catch(error => console.error('Error al obtener trabajos:', error));
-      // Obtener usuarios
-      axios.get('http://localhost:8000/api/users')
-        .then(response => {
-          const usuarios = response.data;
-          setTotalUsuarios(usuarios.length);
-          // Aquí puedes calcular y actualizar los usuarios aceptados, rechazados, etc.
-        })
-        .catch(error => console.error('Error al obtener usuarios:', error));
-  
-      // Obtener empresas
-      axios.get('http://localhost:8000/api/users')
-    .then(response => {
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/jobs')
+      .then(response => {
+        // Supongamos que response.data contiene las ofertas de empleo
+        const jobs = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+        setRecentJobs(jobs);
+      })
+      .catch(error => console.error('Error al obtener trabajos:', error));
+    // Obtener usuarios
+    axios.get('http://localhost:8000/api/users')
+      .then(response => {
+        const usuarios = response.data;
+        setTotalUsuarios(usuarios.length);
+        // Aquí puedes calcular y actualizar los usuarios aceptados, rechazados, etc.
+      })
+      .catch(error => console.error('Error al obtener usuarios:', error));
+
+    // Obtener empresas
+    axios.get('http://localhost:8000/api/users')
+      .then(response => {
         const latestUsers = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
         setRecentUsers(latestUsers);
-      const usuarios = response.data;
-      setTotalUsuarios(usuarios.length);
-    })
-    .catch(error => console.error('Error al obtener usuarios:', error));
+        const usuarios = response.data;
+        setTotalUsuarios(usuarios.length);
+      })
+      .catch(error => console.error('Error al obtener usuarios:', error));
 
-  // Obtener empresas
-  axios.get('http://localhost:8000/api/companies')
-    .then(response => {
+    // Obtener empresas
+    axios.get('http://localhost:8000/api/companies')
+      .then(response => {
         const latestCompanies = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
-            setRecentCompanies(latestCompanies);
-      setTotalEmpresas(response.data.length);
-    })
-    .catch(error => console.error('Error al obtener empresas:', error));
+        setRecentCompanies(latestCompanies);
+        setTotalEmpresas(response.data.length);
+      })
+      .catch(error => console.error('Error al obtener empresas:', error));
 
-  // Obtener postulaciones
-  axios.get('http://localhost:8000/api/postulations')
-  .then(response => {
-    const postulaciones = response.data;
+    // Obtener postulaciones
+    axios.get('http://localhost:8000/api/postulations')
+      .then(response => {
+        const postulaciones = response.data;
 
-    // Crear Sets para almacenar IDs de usuarios únicos
-    const idsUsuariosAceptados = new Set();
-    const idsUsuariosRechazados = new Set();
-    const idsUsuariosEnEspera = new Set();
+        // Crear Sets para almacenar IDs de usuarios únicos
+        const idsUsuariosAceptados = new Set();
+        const idsUsuariosRechazados = new Set();
+        const idsUsuariosEnEspera = new Set();
 
-    postulaciones.forEach(postulacion => {
-      if (postulacion.estado === 'Aceptada') {
-        idsUsuariosAceptados.add(postulacion.idUsuario);
-      } else if (postulacion.estado === 'Negada') {
-        idsUsuariosRechazados.add(postulacion.idUsuario);
-      } else if (postulacion.estado === 'En Espera') {
-        idsUsuariosEnEspera.add(postulacion.idUsuario);
-      }
-    });
+        postulaciones.forEach(postulacion => {
+          if (postulacion.estado === 'Aceptada') {
+            idsUsuariosAceptados.add(postulacion.idUsuario);
+          } else if (postulacion.estado === 'Negada') {
+            idsUsuariosRechazados.add(postulacion.idUsuario);
+          } else if (postulacion.estado === 'En Espera') {
+            idsUsuariosEnEspera.add(postulacion.idUsuario);
+          }
+        });
 
-    // Actualizar los estados con la cantidad de usuarios únicos
-    setUsuariosAceptados(idsUsuariosAceptados.size);
-    setUsuariosRechazados(idsUsuariosRechazados.size);
-    setUsuariosEspera(idsUsuariosEnEspera.size);
-  })
-  .catch(error => {
-    console.error('Error al obtener postulaciones:', error);
-    setDatosDisponibles(false);
-  });
+        // Actualizar los estados con la cantidad de usuarios únicos
+        setUsuariosAceptados(idsUsuariosAceptados.size);
+        setUsuariosRechazados(idsUsuariosRechazados.size);
+        setUsuariosEspera(idsUsuariosEnEspera.size);
+      })
+      .catch(error => {
+        console.error('Error al obtener postulaciones:', error);
+        setDatosDisponibles(false);
+      });
 
-// ... aquí irían otras llamadas a API o lógicas adicionales si las tienes
+    // ... aquí irían otras llamadas a API o lógicas adicionales si las tienes
 
-}, [datosPorEmpresa]); // Dependencias de useEffect
+  }, [datosPorEmpresa]); // Dependencias de useEffect
 
   // Preparar los datos para la gráfica de dona
   const doughnutData = {
@@ -122,10 +122,10 @@ function ModuloReportes() {
       },
     ],
   };
-  
-  
+
+
   // Datos para la gráfica de barras (Puedes personalizar esta parte)
-  
+
 
   // Datos para el carrusel
   const data = [
@@ -151,7 +151,7 @@ function ModuloReportes() {
     }
   };
 
-  
+
 
   const SummaryCard = ({ title, value, Icon }) => (
     <Card className="text-center mb-3">
@@ -162,8 +162,8 @@ function ModuloReportes() {
       </Card.Body>
     </Card>
   );
-  
- 
+
+
   const ListGroupSection = ({ title, items }) => (
     <div className="list-group-section">
       <h4 className="list-group-title">{title}</h4>
@@ -175,30 +175,30 @@ function ModuloReportes() {
         ))}
       </ListGroup>
     </div>
-  
+
   );
   // Simula la obtención de las notificaciones de usuarios que actualizaron su perfil
-const userNotifications = recentUsers.map(user => ({
-  text: `${user.nombre} se a registrado recientemente.`,
-  id: user._id
-}));
+  const userNotifications = recentUsers.map(user => ({
+    text: `${user.nombre} se a registrado recientemente.`,
+    id: user._id
+  }));
 
-// Simula la obtención de actividades de empresas que publicaron nuevas ofertas de empleo
-const moment = require('moment');
+  // Simula la obtención de actividades de empresas que publicaron nuevas ofertas de empleo
+  const moment = require('moment');
   moment.locale('es'); // Configura el idioma a español
 
   function formatRelativeDate(date) {
     return moment(date).fromNow();
-}
+  }
 
-const companyActivities = recentJobs.map(job => ({
-  
+  const companyActivities = recentJobs.map(job => ({
+
     text: `La empresa ${job.idEmpresa.nombreEmpresa} ha publicado una nueva oferta de empleo para ${job.puesto}.   Publicado ${formatRelativeDate(job.fechaPublicacion)}`,
     id: job._id
-    
-}));
-  
-return (
+
+  }));
+
+  return (
     <Container fluid className="dashboard-container">
       {/* Carrusel con tarjetas */}
       <Row className="justify-content-center mb-4">
@@ -220,7 +220,7 @@ return (
           </Carousel>
         </Col>
       </Row>
-  
+
       {/* Secciones */}
       <Row className="justify-content-center mb-4">
         <Col md={12} className="section-title">
@@ -239,7 +239,7 @@ return (
           <SummaryCard title="Usuarios en Espera" value={usuariosEspera} Icon={FaHourglassHalf} />
         </Col>
       </Row>
-  
+
       {/* Gráficos */}
       <Row className="justify-content-center mb-4">
         <Col xs={12} md={6}>
@@ -251,7 +251,7 @@ return (
         </Col>
         {/* Otros gráficos si es necesario */}
       </Row>
-  
+
       {/* Notificaciones */}
       <Row className="justify-content-center mb-4">
         <Col md={6}>

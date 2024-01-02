@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form, Button, Row, Col, Alert,Modal } from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBriefcase, faBuilding, faCalendarAlt,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faBuilding, faCalendarAlt, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 // ... Importaciones adicionales si son necesarias ...
-const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited,closeEditModal }) => {
+const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEditModal }) => {
     // Estados para los datos del formulario
     const [descripcionResponsabilidades, setDescripcionResponsabilidades] = useState('');
     const [ambitoLaboral, setAmbitoLaboral] = useState('');
@@ -15,7 +15,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited,closeEdit
     const [error, setError] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     //modal de conrfirmacion
-   
+
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
         if (closeEditModal) {
@@ -49,9 +49,9 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited,closeEdit
             fechaInicio,
             fechaFin
         })
-          .then(response => {
+            .then(response => {
                 // Llamar a la función callback después de una actualización exitosa
-         
+
                 if (onExperienciaEdited) {
                     onExperienciaEdited(); // Llama a la función callback
                 }
@@ -149,17 +149,17 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited,closeEdit
                 <Button type="submit" className='btn-primary'>Guardar Cambios</Button>
             </div>
             <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-    <Modal.Header closeButton>
-        <Modal.Title className='tituloModal'>
-        <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />Usuario actualizado con éxito</Modal.Title>
-    </Modal.Header>
-    <Modal.Body className='tituloModalBody' >La información ha sido actualizada correctamente.</Modal.Body>
-    <Modal.Footer>
-        <Button variant="success" onClick={handleSuccessModalClose}>
-            Cerrar
-        </Button>
-    </Modal.Footer>
-</Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title className='tituloModal'>
+                        <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />Usuario actualizado con éxito</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='tituloModalBody' >La información ha sido actualizada correctamente.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={handleSuccessModalClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Form>
     );
 };

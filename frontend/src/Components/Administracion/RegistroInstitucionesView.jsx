@@ -38,7 +38,7 @@ const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }
       onCloseRegisterModal(); // Esto cerrará el modal de registro también
     }
   };
-  
+
   const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
