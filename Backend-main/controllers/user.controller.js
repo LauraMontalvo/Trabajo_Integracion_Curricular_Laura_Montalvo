@@ -15,7 +15,6 @@ module.exports.createUser = (request, response) => {
             }
         })
         .catch(err => response.json(err))
-
 }
 
 module.exports.getAllUsers = (_, response) => {
@@ -47,17 +46,19 @@ module.exports.deleteUser = (request, response) => {
 }
 
 module.exports.addPhoto = (request, response) => {
-    const { foto } = request.body;
+    const nuevaFoto = new Foto({
+        foto: request.file.filename,
+        ruta: 'imagenes/' + request.file.filename,  
+        idUsuario: request.params.id
+    });
 
     UserPhoto.findOne({idUsuario: request.params.id})
         .then(fotoUsuario => {
             if (!fotoUsuario) {
-                // No se encontró un UserPhoto, buscamos un usuario
                 return User.findById(request.params.id);
             }
-
             // Se encontró un UserPhoto, actualizamos la foto
-            fotoUsuario.foto = foto;
+            fotoUsuario = nuevaFoto;
             return fotoUsuario.save();
         })
         .then(userOrFoto => {
@@ -65,12 +66,10 @@ module.exports.addPhoto = (request, response) => {
             if (!userOrFoto) {
                 return Promise.reject({ status: 404, message: 'Usuario no encontrado' });
             }
-
             // Si userOrFoto es un usuario, creamos un nuevo UserPhoto
             if (userOrFoto instanceof User) {
-                return UserPhoto.create({ idUsuario: request.params.id, foto: foto });
+                return UserPhoto.create(nuevaFoto);
             }
-
             // Si userOrFoto es un UserPhoto actualizado, no hacemos nada más
             return userOrFoto;
         })

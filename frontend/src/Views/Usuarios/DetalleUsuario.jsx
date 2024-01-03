@@ -25,6 +25,7 @@ import DetalleEmpleoModal from '../../Components/Usuario/DetalleEmpleoPostuladoM
 import ListaExperienciaLaboral from '../../Components/Usuario/ListaExperienciaLaboral.jsx';
 import ListaPostulaciones from '../../Components/Usuario/ListaPostulaciones.jsx';
 import ListaInformacionAcademica from '../../Components/Usuario/ListaInformacionAcademica.jsx';
+import ImagenPerfil from '../../Components/General/ImagenPerfil.jsx';
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -305,25 +306,7 @@ function DetalleUsuario(props) {
     axios.get('http://localhost:8000/api/schools').then(res => setInstituciones(res.data)).catch(err => console.log(err));
   }
 
-  const handleEditClick = () => {
-    setNewImageUrl(user.foto);
-    setIsEditing(true);
-  };
 
-  const handleSaveClick = async () => {
-    try {
-      await axios.put(`http://localhost:8000/api/user/${id}`, { foto: newImageUrl });
-      setUser({ ...user, foto: newImageUrl });
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Error al guardar la nueva URL:', error.response.data.error);
-    }
-  };
-
-  const handleCancelClick = () => {
-    setIsEditing(false);
-    setNewImageUrl(user.foto);
-  };
 
   const handleShowAcadTrainingModal = (acadTrainingId = null) => {
     setShowAcadTrainingModal(true);
@@ -460,26 +443,7 @@ function DetalleUsuario(props) {
             {/* Información del usuario */}
             <Card className="datos-personales-card">
               <Card.Body >
-                <div className="image-container text-center mb-3">
-                  {isEditing ? (
-                    <InputGroup className="mb-1">
-                      <FormControl
-                        placeholder="Ingrese la URL de la foto de perfil"
-                        value={newImageUrl}
-                        onChange={(e) => setNewImageUrl(e.target.value)}
-                      />
-                      <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
-                      <Button variant="secondary" onClick={handleCancelClick}>Cancelar</Button>
-                    </InputGroup>
-                  ) : (
-                    <>
-                      <Image src={user.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
-                      <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick} />
-                    </>
-
-                  )}
-
-                </div>
+              <ImagenPerfil id ={id} userParam={user} isEditingParam={isEditing}/>
                 <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
 
                 <ListGroup variant="flush">
