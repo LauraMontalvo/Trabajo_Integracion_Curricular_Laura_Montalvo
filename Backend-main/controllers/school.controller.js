@@ -2,10 +2,10 @@ const School = require('../models/school.model');
 
 module.exports.createSchool = (request, response) =>{
     
-    const {nombreInstitucion,ubicacion} = request.body;
+    const {nombreInstitucion} = request.body;
     console.log(request.body)
     School.create({
-        nombreInstitucion,ubicacion
+        nombreInstitucion
     })
         .then(School => response.json({insertedSchool: School, msg: 'Succesful creation'}))
         .catch(err => response.status(400).json(err));

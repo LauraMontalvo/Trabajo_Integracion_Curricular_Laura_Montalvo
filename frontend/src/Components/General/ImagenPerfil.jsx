@@ -1,65 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Button, Image, InputGroup, FormControl } from 'react-bootstrap';
-
-    import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEdit, faGraduationCap, faTrashAlt, faInfoCircle, faCalendarAlt,
-  faCircleNotch, faHourglassHalf, faExclamationCircle, faCheckCircle,
-  faDownload, faCamera, faPencilAlt
-} from '@fortawesome/free-solid-svg-icons';
+import { Button, Image, InputGroup, FormControl, Alert } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-
-const ImagenPerfil = (id, userParam, isEditingParam) => {
-    const [newImageUrl, setNewImageUrl] = useState('');
+const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
     const [imagen, setImagen] = useState(null);
+    const [imagenPreview, setImagenPreview] = useState(null);
     const [isEditing, setIsEditing] = useState(isEditingParam);
     const [user, setUser] = useState(userParam);
+    const [error, setError] = useState('');
 
     const handleEditClick = () => {
-        setNewImageUrl(user.foto);
         setIsEditing(true);
-      };
-    
-      const handleSaveClick = async () => {
-        try {
-          await axios.put(`http://localhost:8000/api/user/${id}`, { foto: newImageUrl });
-          setUser({ ...user, foto: newImageUrl });
-          setIsEditing(false);
-        } catch (error) {
-          console.error('Error al guardar la nueva URL:', error.response.data.error);
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && (file.type === "image/jpeg" || file.type === "image/png") && file.size <= 4096000) {
+            setImagen(file);
+            setImagenPreview(URL.createObjectURL(file));
+            setError('');
+        } else {
+            setError('Por favor, selecciona una imagen (JPG o PNG) que sea menor a 4MB.');
         }
-      };
-    
-      const handleCancelClick = () => {
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('foto', imagen);
+
+            const response = await axios.put(`http://localhost:8000/api/user/foto/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            setUser({ foto: response.data.foto });
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Error al subir la imagen:', error.response.data.error);
+        }
+    };
+
+    const handleCancelClick = () => {
         setIsEditing(false);
-        setNewImageUrl(user.foto);
-      };
+        setImagen(null);
+        setImagenPreview(null);
+        setError('');
+    };
 
     useEffect(() => {
-        // Lógica para obtener la información de la imagen desde el backend
-        // Actualiza el estado 'imagen' con la información recibida
-    }, []);
+        const fetchProfileImage = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/user/foto/${id}`);
+                console.log(response.data)
+                if (response.data && response.data.foto) {
+                    
+                    setUser(prevUser => ({ ...prevUser, foto: response.data.foto }));
+                }
+            } catch (error) {
+                console.error('Error al obtener la imagen del perfil:', error);
+            }
+        };
+
+        fetchProfileImage();
+    }, [id]);
 
     return (
         <div className="image-container text-center mb-3">
             {isEditing ? (
-                <InputGroup className="mb-1">
-                    <FormControl
-                        placeholder="Ingrese la URL de la foto de perfil"
-                        value={newImageUrl}
-                        onChange={(e) => setNewImageUrl(e.target.value)}
-                    />
+                <div>
+                    <input type="file" accept=".jpg, .jpeg, .png" onChange={handleFileChange} />
+                    {imagenPreview && <Image src={imagenPreview} alt="Vista previa de la imagen" roundedCircle className="img-fluid mb-3" />}
                     <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
                     <Button variant="secondary" onClick={handleCancelClick}>Cancelar</Button>
-                </InputGroup>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                </div>
             ) : (
                 <>
-                    <Image src={user.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                    <Image src={user.foto || imagenPreview} alt="Foto de perfil" roundedCircle className="img-fluid" />
                     <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick} />
                 </>
-
             )}
         </div>
     );

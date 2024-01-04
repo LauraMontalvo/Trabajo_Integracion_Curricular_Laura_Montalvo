@@ -46,19 +46,27 @@ module.exports.deleteUser = (request, response) => {
 }
 
 module.exports.addPhoto = (request, response) => {
-    const nuevaFoto = new Foto({
+    if (!request.file) {
+        return response.status(400).json({ error: 'No se ha enviado ningún archivo.' });
+    }
+
+    const filePath = 'Imagenes/' + request.file.filename; // La ruta donde se guardó el archivo
+    const nuevaFoto = {
         foto: request.file.filename,
-        ruta: 'imagenes/' + request.file.filename,  
-        idUsuario: request.params.id
-    });
+        ruta: filePath,
+        idUsuario : request.params.id
+    };
+
+    console.log(nuevaFoto)
 
     UserPhoto.findOne({idUsuario: request.params.id})
         .then(fotoUsuario => {
             if (!fotoUsuario) {
                 return User.findById(request.params.id);
             }
-            // Se encontró un UserPhoto, actualizamos la foto
-            fotoUsuario = nuevaFoto;
+            // Si ya existe, actualiza la información de la foto
+            fotoUsuario.foto = nuevaFoto.foto;
+            fotoUsuario.ruta = nuevaFoto.ruta;
             return fotoUsuario.save();
         })
         .then(userOrFoto => {
@@ -83,5 +91,21 @@ module.exports.addPhoto = (request, response) => {
             } else {
                 return response.status(500).json({ error: 'Error interno del servidor' });
             }
+        });
+};
+
+module.exports.getUserPhoto = (request, response) => {
+    UserPhoto.findOne({idUsuario: request.params.id})
+        .then(user => {
+            if (!user) {
+                return response.status(404).json({ error: 'Usuario no encontrado.' });
+            }
+            // Asegúrate de que la ruta de la imagen sea accesible para el cliente
+            const imageUrl = user.foto ? `http://localhost:8000/Imagenes/${user.foto}` : null;
+            response.json({ foto: imageUrl });
+        })
+        .catch(error => {
+            console.error('Error al obtener la foto del usuario:', error);
+            response.status(500).json({ error: 'Error interno del servidor' });
         });
 };

@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');  
 const app = express();
 const port = 8000;
@@ -9,6 +10,7 @@ moment.locale('es'); // Establecer español como idioma por defecto
 
 require('./config/mongoose.config.js');
 
+app.use('/Imagenes', express.static(path.join(__dirname, 'Imagenes')));
 app.use(cors());
 
 app.use(express.json());

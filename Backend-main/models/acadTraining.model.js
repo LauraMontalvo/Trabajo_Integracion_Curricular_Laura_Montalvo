@@ -22,6 +22,10 @@ const AcadTrainingSchema = new mongoose.Schema({
     fechaFin:{
         type: Date,
         required: [true, 'La fecha de Fin es obligatoria'],
+    },
+    esActivo: {
+        type: Boolean,
+        defautl: true
     }
 });
 
