@@ -30,9 +30,9 @@ const JobSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Las aptitudes requeridos son obligatorias']
     },
-    experienciarequerida: {
+    experiencia: {
         type: String,
-        required: [true, 'La expriencia es son obligatorias']
+        required: [true, 'La expriencia es obligatorias']
     },
     modalidad: {
         type: String,

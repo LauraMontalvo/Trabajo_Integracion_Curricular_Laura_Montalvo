@@ -34,6 +34,7 @@ export const TEXTO_AMBITO_LABORAL_OBLIGATORIO='El Ámbito Laboral es obligatorio
 export const TEXTO_RAZON_SOCIAL_OBLIGATORIO='La Razón social es obligatoria';
 export const TEXTO_FECHA_INICIO='La Fecha de Inicio es obligatoria';
 export const TEXTO_FECHA_FIN='La Fecha de Fin es obligatoria';
+export const TEXTO_PUESTO_OBLIGATORIO='El puesto en que trabajó es obligatoria';
 //INTITUCION
 export const TEXTO_NOMBRE_INSTITUCION_OBLIGATORIO='El nombre de la institución es obligatorio'
 

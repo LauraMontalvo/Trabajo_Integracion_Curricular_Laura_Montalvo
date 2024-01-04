@@ -24,11 +24,13 @@ const ExperieciaLaboral = (props) => {
   const [empresa, setEmpresa] = useState('');
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
+  const [puesto, setPuesto] = useState('');
   const [descripcionResponsabilidadesError, setDescripciaonResponsabilidadesError] = useState('');
   const [ambitoLaboralError, setAmbitoLaboralError] = useState('');
   const [empresaError, setEmpresaError] = useState('');
   const [fechaInicioError, setFechaInicioError] = useState('');
   const [fechaFinError, setFechaFinError] = useState('');
+  const [puestoError, setPuestoError] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -69,6 +71,13 @@ const ExperieciaLaboral = (props) => {
       setError('');
     }
   };
+  const validatePuesto = (value, setError) => {
+    if (!value.trim()) {
+      setError(constantes.TEXTO_PUESTO_OBLIGATORIO);
+    } else {
+      setError('');
+    }
+  };
   const validateFechaFin = (value, setError) => {
     if (!value.trim()) {
       setError(constantes.TEXTO_FECHA_FIN);
@@ -85,7 +94,7 @@ const ExperieciaLaboral = (props) => {
     e.preventDefault();
 
     axios.post(constantes.URL_EXPERIENCIA_LABORAL_NUEVA, {
-
+      puesto,
       descripcionResponsabilidades,
       ambitoLaboral,
       empresa,
@@ -101,6 +110,7 @@ const ExperieciaLaboral = (props) => {
         setEmpresa('');
         setFechaInicio('');
         setFechaFin('');
+        setPuesto('');
         props.onExperienciaAdded();
 
       })
@@ -114,6 +124,22 @@ const ExperieciaLaboral = (props) => {
     <Form onSubmit={handleSubmit} className="mi-formulario">
       {error && <Alert variant="danger">{error}</Alert>}
       <Row>
+      <Col md={12}>
+  <Form.Group>
+    <Form.Label>Puesto</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+      <Form.Control
+        type="text"
+        placeholder="Ingrese su puesto"
+        value={puesto}
+        onChange={(e) => handleInputChange(e, setPuesto, setPuestoError, validatePuesto)}
+      />
+      <CampoEstado valido={esCampoValido(puesto, puestoError)} mensajeError={puestoError} />
+    </div>
+    {puestoError && <p className="text-danger">{puestoError}</p>}
+  </Form.Group>
+</Col>
         <Col md={12}>
           <Form.Group>
             <Form.Label>Descripción de Responsabilidades</Form.Label>
@@ -150,6 +176,7 @@ const ExperieciaLaboral = (props) => {
 
           </Form.Group>
         </Col>
+      
         <Col md={12}>
           <Form.Group>
             <Form.Label>Empresa/Razón Social</Form.Label>

@@ -1,14 +1,14 @@
 const User = require('../models/user.model');
 const UserPhoto = require('../models/userPhoto.model');
 module.exports.createUser = (request, response) => {
-    const { nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword } = request.body;
+    const { nombre, apellido, rol, sexo, fechaNacimiento, telefono,descripcionPersonal, usuario, password, confirmPassword } = request.body;
     User.findOne({ usuario: usuario })
         .then(user => {
             if (user) {
                 response.status(400).json({ msg: "Usuario existe" });
             } else {
                 User.create({
-                    nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword
+                    nombre, apellido, rol, sexo, fechaNacimiento, telefono,descripcionPersonal, usuario, password, confirmPassword
                 })
                     .then(User => response.json({ insertedUser: User, msg: 'Succesful creation' }))
                     .catch(err => response.status(400).json(err));

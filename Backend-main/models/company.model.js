@@ -29,6 +29,10 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         required: [true, 'La descripción es obligatoria'],
     },
+    valores:{
+        type: String,
+        required: [true, 'Los valores son obligatorios'],
+    },
     rol:{
         type: String,
         required: [true, 'El rol es obligatorio'],
