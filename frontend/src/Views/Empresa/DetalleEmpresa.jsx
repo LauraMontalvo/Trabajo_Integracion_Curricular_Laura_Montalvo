@@ -14,6 +14,8 @@ import VerPostulaciones from '../../Components/Empresa/VerPostulacionesComp';
 import EmpleosPublicados from '../../Components/Empresa/EmpleosPublicadosComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 import "../../Styles/detalle.scss"
+import ImagenPerfil from '../../Components/General/ImagenPerfil';
+import ImagenEmpresa from '../../Components/General/ImagenPerfilEmpresa';
 
 function DetalleEmpresa(props) {
   const { id } = useParams();
@@ -171,26 +173,12 @@ function DetalleEmpresa(props) {
           <Col md={4}  >
             <Card className="datos-personales-card">
               <Card.Body>
-                <div className="image-container text-center mb-3">
-                  {isEditing ? (
-                    <InputGroup className="mb-1">
-                      <FormControl
-                        placeholder="Ingrese la URL de la foto de perfil"
-                        value={newImageUrl}
-                        onChange={(e) => setNewImageUrl(e.target.value)}
-                      />
-                      <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
-                      <Button variant="secondary" onClick={handleCancelClick}>
-                        Cancelar
-                      </Button> </InputGroup>
-                  ) : (
-                    <>
-                      <Image src={empresa.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
-                      <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick} />
-                    </>
-
-                  )}
-                </div>
+              <ImagenEmpresa 
+                id={id} 
+                empresaParam={empresa} 
+                isEditingParam={isEditing}
+                updateEmpresa={setEmpresa}
+            />
 
                 <div className="text-center">
                   <Card.Title><strong>{empresa.nombreEmpresa}</strong></Card.Title>

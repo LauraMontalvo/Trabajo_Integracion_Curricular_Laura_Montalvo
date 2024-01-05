@@ -29,7 +29,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
   // Nuevos estados para los campos adicionales
   const [puesto, setPuesto] = useState('');
   const [formacionAcademica, setFormacionAcademica] = useState('');
-  const [experienciarequerida, setExperienciarequerida] = useState('');
+  const [experiencia, setExperienciarequerida] = useState('');
   const [modalidad, setModalidad] = useState({
     virtual: false,
     presencial: false,
@@ -172,7 +172,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
     }
 
     // Validar experiencia requerida
-    if (!experienciarequerida) {
+    if (!experiencia) {
       setExperienciarequeridaError('La experiencia requerida es obligatoria');
       formularioEsValido = false;
     } else {
@@ -203,8 +203,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
         formacionAcademica,
         conocimientos,
         aptitudes,
-        experienciarequerida,
-        modalidad,
+        experiencia,        modalidad,
 
       })
       .then((res) => {
@@ -312,10 +311,10 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
               rows={5}
               className="textarea-elegante"
               placeholder="Ingrese los detalles de la experiencia requerida"
-              value={experienciarequerida}
+              value={experiencia}
               onChange={(e) => handleInputChange(e, setExperienciarequerida, setExperienciarequeridaError, validateExperienciarequerida)}
             />
-            <CampoEstado valido={esCampoValido(experienciarequerida, experienciarequeridaError)} mensajeError={experienciarequeridaError} />
+            <CampoEstado valido={esCampoValido(experiencia, experienciarequeridaError)} mensajeError={experienciarequeridaError} />
           </div>
           {experienciarequeridaError && <p className="text-danger">{experienciarequeridaError}</p>}
         </Form.Group>

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Row, Col, Card, ListGroup, Accordion, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, ListGroup, Image, Button } from 'react-bootstrap';
 import "../../Styles/Perfil.scss"
 import "../../Styles/detalle.scss"
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import ListaEmpleosPerfilEmpresa from '../../Components/Usuario/ListaEmpleosPerfilEmpresa';
+import defaultImage from '../../img/imagenUsuarioDefecto.png';
+
 const PerfilEmpresa = () => {
   const { id } = useParams(); // Obtener el ID de la empresa desde la URL
   const [empresa, setEmpresa] = useState(null);
   const [empleos, setEmpleos] = useState([]);
   const [verDescripcionCompleta, setVerDescripcionCompleta] = useState(false);
+  const [imagenPreview, setImagenPreview] = useState(null);
 
   useEffect(() => {
     const cargarDatosEmpresa = async () => {
@@ -18,17 +21,23 @@ const PerfilEmpresa = () => {
         // Obtener información de la empresa
         const resEmpresa = await axios.get(`http://localhost:8000/api/company/${id}`);
         setEmpresa(resEmpresa.data);
-
+  
         // Obtener empleos publicados por la empresa
         const resEmpleos = await axios.get(`http://localhost:8000/api/jobs/company/${id}`);
         setEmpleos(resEmpleos.data);
-      } catch (error) {
-        console.error('Error al cargar datos de la empresa', error);
-      }
+  
+        const fotoResponse = await axios.get(`http://localhost:8000/api/company/foto/${id}`);
+            if (fotoResponse.data && fotoResponse.data.foto) {
+                setImagenPreview(fotoResponse.data.foto);
+            }
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+            }
     };
-
+  
     cargarDatosEmpresa();
   }, [id]);
+  
 
   if (!empresa) {
     return null;
@@ -47,8 +56,11 @@ const PerfilEmpresa = () => {
         <Row>
           <Col md={4}>
             <Card className="card-empresa">
-              <Card.Img variant="top" src={empresa.foto} className="imagen-empresa" />
+            
               <Card.Body>
+              <div className="image-container text-center mb-3">
+                                <Image src={empresa.foto || imagenPreview || defaultImage} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                                </div>
                 <Card.Title className="titulo-empresa">{empresa.nombreEmpresa}</Card.Title>
                 <ListGroup variant="flush">
                   <ListGroup.Item>Correo: {empresa.correo}</ListGroup.Item>

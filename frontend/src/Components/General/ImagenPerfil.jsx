@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Image, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera,faUpload  } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import defaultImage from '../../img/imagenUsuarioDefecto.png';
+
 
 const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
     const [imagen, setImagen] = useState(null);
@@ -36,9 +38,10 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
             setUser({ foto: response.data.foto });
+            setImagenPreview(response.data.foto); // Establece la nueva imagen como vista previa
             setIsEditing(false);
+
         } catch (error) {
             console.error('Error al subir la imagen:', error.response.data.error);
         }
@@ -53,11 +56,14 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
 
     useEffect(() => {
         const fetchProfileImage = async () => {
+            if (user.foto) {
+                setImagenPreview(user.foto);
+            }
             try {
                 const response = await axios.get(`http://localhost:8000/api/user/foto/${id}`);
                 console.log(response.data)
                 if (response.data && response.data.foto) {
-                    
+
                     setUser(prevUser => ({ ...prevUser, foto: response.data.foto }));
                 }
             } catch (error) {
@@ -66,21 +72,38 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
         };
 
         fetchProfileImage();
-    }, [id]);
+    }, [id,user.foto]);
 
     return (
         <div className="image-container text-center mb-3">
             {isEditing ? (
-                <div>
-                    <input type="file" accept=".jpg, .jpeg, .png" onChange={handleFileChange} />
-                    {imagenPreview && <Image src={imagenPreview} alt="Vista previa de la imagen" roundedCircle className="img-fluid mb-3" />}
+               <div>
+                <InputGroup className="mb-3">
+                        <FormControl
+                            type="file"
+                            accept=".jpg, .jpeg, .png"
+                            onChange={handleFileChange}
+                            aria-label="Upload"
+                            aria-describedby="upload-button"
+                        />
+                        <Button variant="outline-secondary" id="upload-button" onClick={handleSaveClick}>
+                            <FontAwesomeIcon icon={faUpload} />
+                        </Button>
+                    </InputGroup>
+                    {imagenPreview && (
+                                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                         <Image src={imagenPreview} alt="Vista previa de la imagen" roundedCircle className="img-fluid mb-3" />
+                    
+                 </div>
+                    )}
                     <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
                     <Button variant="secondary" onClick={handleCancelClick}>Cancelar</Button>
                     {error && <Alert variant="danger">{error}</Alert>}
                 </div>
             ) : (
                 <>
-                    <Image src={user.foto || imagenPreview} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                    <Image src={user.foto || imagenPreview || defaultImage} alt="Foto de perfil" roundedCircle className="img-fluid" />
                     <FontAwesomeIcon icon={faCamera} className="camera-icon" onClick={handleEditClick} />
                 </>
             )}

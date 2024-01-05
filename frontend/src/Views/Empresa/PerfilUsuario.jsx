@@ -3,12 +3,16 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Card, ListGroup, Image, Container, Row, Col, Tab, Tabs } from 'react-bootstrap';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
+import ImagenPerfil from '../../Components/General/ImagenPerfil';
+import defaultImage from '../../img/imagenUsuarioDefecto.png';
 
 function PerfilUsuario() {
     const { id } = useParams();
     const [user, setUser] = useState(null);
     const [acadTraining, setAcadTraining] = useState([]);
     const [experienciaLaboral, setExperienciaLaboral] = useState([]);
+    const [imagenPreview, setImagenPreview] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -21,6 +25,12 @@ function PerfilUsuario() {
 
                 const expResponse = await axios.get(`http://localhost:8000/api/workExperiences/user/${id}`);
                 setExperienciaLaboral(expResponse.data);
+
+                 // Obtener la foto del usuario
+            const fotoResponse = await axios.get(`http://localhost:8000/api/user/foto/${id}`);
+            if (fotoResponse.data && fotoResponse.data.foto) {
+                setImagenPreview(fotoResponse.data.foto);
+            }
             } catch (error) {
                 console.error('Error al cargar los datos:', error);
             }
@@ -50,6 +60,7 @@ function PerfilUsuario() {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(dateString).toLocaleDateString('es-ES', options);
     };
+    
     return (
         <div className='App'><CabeceraEmpresaInicioComp />
 
@@ -59,7 +70,7 @@ function PerfilUsuario() {
                         <Card>
                             <Card.Body>
                                 <div className="image-container text-center mb-3">
-                                    <Image src={user.foto} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                                <Image src={user.foto || imagenPreview || defaultImage} alt="Foto de perfil" roundedCircle className="img-fluid" />
                                 </div>
                                 <ListGroup variant="flush">
                                     <ListGroup.Item>Nombre: {user.nombre} {user.apellido}</ListGroup.Item>
@@ -67,9 +78,7 @@ function PerfilUsuario() {
                                     <ListGroup.Item>Fecha de Nacimiento: {formatDate(user.fechaNacimiento)}</ListGroup.Item>
                                     <ListGroup.Item>Teléfono: {user.telefono}</ListGroup.Item>
                                     <ListGroup.Item>Edad: {calcularEdad(user.fechaNacimiento)} años</ListGroup.Item>
-
-
-                                    {/* Más información del usuario */}
+                           
                                 </ListGroup>
                             </Card.Body>
                         </Card>

@@ -1,14 +1,14 @@
 const User = require('../models/user.model');
 const UserPhoto = require('../models/userPhoto.model');
 module.exports.createUser = (request, response) => {
-    const { nombre, apellido, rol, sexo, fechaNacimiento, telefono,descripcionPersonal, usuario, password, confirmPassword } = request.body;
+    const { nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword } = request.body;
     User.findOne({ usuario: usuario })
         .then(user => {
             if (user) {
                 response.status(400).json({ msg: "Usuario existe" });
             } else {
                 User.create({
-                    nombre, apellido, rol, sexo, fechaNacimiento, telefono,descripcionPersonal, usuario, password, confirmPassword
+                    nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword
                 })
                     .then(User => response.json({ insertedUser: User, msg: 'Succesful creation' }))
                     .catch(err => response.status(400).json(err));
@@ -19,8 +19,16 @@ module.exports.createUser = (request, response) => {
 
 module.exports.getAllUsers = (_, response) => {
     User.find({})
-        .then(retrievedUsers => response.json(retrievedUsers))
-        .catch(err => response.json(err))
+        .then(async retrievedUsers => {
+            // Buscar y adjuntar la URL de la foto a cada usuario
+            const usersWithPhotos = await Promise.all(retrievedUsers.map(async user => {
+                const userPhoto = await UserPhoto.findOne({ idUsuario: user._id });
+                const photoUrl = userPhoto ? `http://localhost:8000/Imagenes/${userPhoto.foto}` : null;
+                return { ...user.toObject(), foto: photoUrl };
+            }));
+            response.json(usersWithPhotos);
+        })
+        .catch(err => response.json(err));
 }
 module.exports.getUser = (request, response) => {
     User.findOne({ _id: request.params.id })
