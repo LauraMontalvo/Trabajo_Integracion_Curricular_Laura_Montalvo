@@ -93,6 +93,7 @@ const ListaEmpresas = (props) => {
       empresa.nombreEmpresa?.toLowerCase().includes(nombre?.toLowerCase() ?? "")
     );
   };
+  const empresasFiltradas = filtrarEmpresasPorNombre(filtroNombre);
 
 
   // Función para manejar cambios en el filtro de nombre
@@ -113,6 +114,7 @@ const ListaEmpresas = (props) => {
       <TabsAdministracionComp onAddEmpresa={addEmpresaToList} />
       <Container fluid className="mt-4">
         <Row >
+
           <Col md={3} className="widget">
             <h4>Filtrar Empresas</h4>
             <Form.Group>
@@ -126,6 +128,9 @@ const ListaEmpresas = (props) => {
             {/* Agrega otros controles de filtro aquí si es necesario */}
           </Col>
           <Col md={9}>
+            <Col md={12} className="mb-3">
+              <strong>Total de Empresas:</strong> {empresasFiltradas.length}
+            </Col>
             <Row>
               {filtrarEmpresasPorNombre(filtroNombre).map((empresa) => (
                 <Col md={6} key={empresa._id} className="mb-3">

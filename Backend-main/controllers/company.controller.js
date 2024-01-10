@@ -18,15 +18,20 @@ module.exports.createCompany = (request, response) =>{
     }
 
     )
-   
-        
-       
-}
 
-module.exports.getAllCompanies = (_,response) =>{
+}
+module.exports.getAllCompanies = (_, response) => {
     Company.find({})
-    .then(retrievedCompanies => response.json(retrievedCompanies))
-    .catch(err => response.json(err))
+        .then(async retrievedCompanies => {
+            // Buscar y adjuntar la URL de la foto a cada empresa
+            const companiesWithPhotos = await Promise.all(retrievedCompanies.map(async company => {
+                const companyPhoto = await CompanyPhoto.findOne({ idEmpresa: company._id });
+                const photoUrl = companyPhoto ? `http://localhost:8000/Imagenes/${companyPhoto.foto}` : null;
+                return { ...company.toObject(), foto: photoUrl };
+            }));
+            response.json(companiesWithPhotos);
+        })
+        .catch(err => response.json(err));
 }
 
 module.exports.getCompany = (request, response) =>{

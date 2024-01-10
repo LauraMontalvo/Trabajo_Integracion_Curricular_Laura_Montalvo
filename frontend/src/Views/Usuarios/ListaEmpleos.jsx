@@ -98,7 +98,7 @@ const ListaEmpleos = () => {
                                     <Accordion.Header >
 
                                         <div>
-                                            <p className="publication-date">Publicado {formatRelativeDate(empleo.fechaPublicacion)}</p>
+                                        <p className="publication-date">Publicado {formatRelativeDate(empleo.fechaPublicacion)}</p>
                                             Empleo en  <Link to={`/perfil-empresa/${empleo.idEmpresa._id}`} className="empresa-link">
                                                 {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}
                                             </Link>
@@ -116,7 +116,7 @@ const ListaEmpleos = () => {
                                         <strong>Conocimientos Requeridos:</strong>
                                         <p>{empleo.conocimientos}</p>
                                         <strong>Experiencia Requerida:</strong>
-                                        <p>{empleo.experienciarequerida}</p>
+                                        <p>{empleo.experiencia}</p>
                                         <strong>Aptitudes Necesarias:</strong>
                                         <p>{empleo.aptitudes}</p>
                                         <strong>Modalidad:</strong> <p>{empleo.modalidad}</p>

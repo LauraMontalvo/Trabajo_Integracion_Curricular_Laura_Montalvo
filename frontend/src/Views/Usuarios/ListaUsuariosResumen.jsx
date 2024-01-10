@@ -6,11 +6,14 @@ import { faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/Lista.scss";
 import { Link } from 'react-router-dom';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
+
+
 const ListaUsuariosResumen = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [imagenPreview, setImagenPreview] = useState(null);
+  
   useEffect(() => {
     axios.get('http://localhost:8000/api/users')
       .then(response => {
@@ -73,7 +76,7 @@ const ListaUsuariosResumen = () => {
                 <Card className="user-card text-center">
                   <Card.Body>
                     <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={() => handleHideUser(user._id)} />
-                    <Image src={user.foto || imagenPreview || defaultImage} alt="Foto de perfil" roundedCircle className="profile-picture mb-2" />
+                    <Image src={user.foto ||  defaultImage} alt="Foto de perfil" roundedCircle className="profile-picture mb-2" />
                     <Card.Title>{user.nombre} {user.apellido}</Card.Title>
                     <Card.Text className="text-muted">{user.cargo}</Card.Text>
                     {/* Agregar un resumen de habilidades o intereses aquí */}

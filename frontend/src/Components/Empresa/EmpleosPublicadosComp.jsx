@@ -63,7 +63,7 @@ const EmpleosPublicados = ({ empleos, mostrarPostulantes, handleEditEmpleoClick,
                                         <Row className="empleo-detalle">
                                             <Col xs={12} md={6}>
                                                 <h6>Experiencia Requerida:</h6>
-                                                <p>{empleo.experienciarequerida}</p>
+                                                <p>{empleo.experiencia}</p>
                                             </Col>
                                             <Col xs={12} md={6}>
                                                 <h6>Modalidad:</h6>

@@ -36,16 +36,22 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto" variant="tabs">
+          <Nav.Link as={Link} to="/admin/consola/:id">Inicio</Nav.Link>
+
             <NavDropdown title="Empresas" id="nav-dropdown">
               <NavDropdown.Item as={Link} to="/listaEmpresas">Ver Empresas</NavDropdown.Item>
               <NavDropdown.Item onClick={handleShowRegisterCompanyModal}>Registrar Empresa</NavDropdown.Item>
             </NavDropdown>
+
             <Nav.Link as={Link} to="/listaUsuarios">Lista de Usuarios</Nav.Link>
             <NavDropdown title="Instituciones" id="nav-dropdown">
-              <NavDropdown.Item as={Link} to="/listaInstituciones" >Ver Institucion</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/listaInstituciones" >Lista Instituciones</NavDropdown.Item>
               <NavDropdown.Item onClick={handleShowRegisterInstitutionModal}>
                 Registrar Institucion</NavDropdown.Item>
             </NavDropdown>
+            <Nav.Link as={Link} to="/listaPostulacionesAdmin">Lista Postulaciones</Nav.Link>
+            
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>

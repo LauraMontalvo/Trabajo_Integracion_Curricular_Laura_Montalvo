@@ -7,7 +7,7 @@ import '../../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSchool, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faSchool, faExclamationCircle, faCheckCircle,faMapMarkerAlt  } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../General/Cabecera';
 import TabsAdministracionComp from './TabsAdministracionComp';
 
@@ -22,8 +22,8 @@ const CampoEstado = ({ valido, mensajeError }) => {
 };
 const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }) => {
   const [nombreInstitucion, setNombreInstitucion] = useState('');
-
-
+  const [ubicacion, setUbicacion] = useState('');
+  const [ubicacionError, setUbicacionError] = useState('');
   const [nombreInstitucionError, setNombreInstitucionError] = useState('');
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -73,7 +73,7 @@ const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }
       return; // Evita enviar la solicitud si hay errores de validación
     }
 
-    axios.post('http://localhost:8000/api/school/new', { nombreInstitucion })
+    axios.post('http://localhost:8000/api/school/new', { nombreInstitucion,ubicacion })
       .then((res) => {
         console.log(res);
         setShowModal(true); // Mostrar modal al registrar con éxito
@@ -83,6 +83,8 @@ const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }
         handleSuccessModalShow();
         setNombreInstitucion('');
         setNombreInstitucionError('');
+        setUbicacion('');
+        setUbicacionError('');
       })
       .catch((err) => {
         console.log(err);
@@ -116,7 +118,23 @@ const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }
           {nombreInstitucionError && <p className="text-danger">{nombreInstitucionError}</p>}
 
         </Form.Group>
+        <Form.Group>
+          
+  <Form.Label>Ubicación de la Institución</Form.Label>
+  <div  className="input-icon-wrapper">
+  <FontAwesomeIcon icon={faMapMarkerAlt} className="input-icon" />
 
+<Form.Control
+  type="text"
+  placeholder="Ingrese la ubicación de la institución"
+  value={ubicacion}
+  onChange={(e) => handleInputChange(e, setUbicacion, setUbicacionError)}
+/>
+<CampoEstado valido={esCampoValido(ubicacion, ubicacionError)} mensajeError={ubicacionError} />
+  </div>
+  
+  {ubicacionError && <p className="text-danger">{ubicacionError}</p>}
+</Form.Group>
 
 
         <div className="botones-centrados">

@@ -25,6 +25,8 @@ import ListaUsuariosResumen from './Views/Usuarios/ListaUsuariosResumen';
 import ListaEmpresasResumen from './Views/Usuarios/ListaEmpresasResumen';
 import ListaEmpleosResumen from './Views/Usuarios/ListaEmpleosResumen';
 import ModuloReportes from './Views/Administrador/ModuloReportes/ModuloReportes';
+import RegistroEmpresa from './Components/Administracion/RegistroEmpresa';
+import ListaPostulacionesAdmin from './Views/Administrador/ListaPostulacionesAdmin';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,6 +56,8 @@ function App() {
             <Route path="/loginusuario" element={<LoginForm />} />
             <Route path="/empresa" element={<LoginFormEmpresa />} />
             <Route path="/registrarUsuario" element={<RegistroUsuario />} />
+          
+
             <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
             <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
         
@@ -70,6 +74,7 @@ function App() {
             <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen  />} />
             <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen />} />
             <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen />} />
+            <Route path="/listaPostulacionesAdmin" element={<ListaPostulacionesAdmin/>} />
             <Route path="/moduloReportes" element={<ModuloReportes/>} />
             {/* Asegúrate de tener una ruta de redirección al componente principal */}
             <Route path="/*" element={<Navigate to={constantes.URL_PAGINA_PRINCIPAL} />} />

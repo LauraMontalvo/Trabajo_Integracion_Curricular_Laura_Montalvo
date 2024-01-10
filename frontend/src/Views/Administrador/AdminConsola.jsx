@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Button, Modal, Container, Row, Col } from 'react-bootstrap';
 
-import { FaBuilding, FaUsers, FaUniversity, FaChartBar } from 'react-icons/fa'; // Importar iconos
+import { FaBuilding, FaUsers, FaUniversity, FaChartBar, FaPaperPlane, FaUserPlus } from 'react-icons/fa'; // Importar iconos
 import axios from 'axios';
 import * as constantes from '../../Models/Constantes';
 import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
@@ -27,6 +27,9 @@ const Main = () => {
     const handleVerInstituciones = () => navigate('/listaInstituciones');
     const handleVerReportes = () => {
         navigate('/moduloReportes');
+    };
+    const handleVerPostulaciones = () => {
+        navigate('/listaPostulacionesAdmin');
     };
 
 
@@ -63,6 +66,19 @@ const Main = () => {
                         </Card>
                     </Col>
                     {/* Repite para las demás tarjetas */}
+                    <Col xs={12} sm={6} md={4} lg={3}>
+                        {/* Card para Usuarios */}
+                        <Card className="text-center p-4" onClick={handleVerPostulaciones}>
+                            <Card.Body>
+                                <FaPaperPlane size={70} className="icono-reportes" />
+                                <Card.Title>Empleos y Postulaciones </Card.Title>
+                                <Card.Text>
+                                    Ver Empleos
+                                </Card.Text>
+                                <Button variant="primary">Ver Postulaciones</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                 </Row>
 
                 <Row className="justify-content-center">
@@ -92,6 +108,7 @@ const Main = () => {
                             </Card.Body>
                         </Card>
                     </Col>
+
 
                 </Row>
 

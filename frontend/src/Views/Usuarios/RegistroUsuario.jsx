@@ -64,6 +64,19 @@ const RegistroUsuario = (props) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+
+  const validarEdad = (fechaNacimiento) => {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
+  
+    if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+  
+    return edad >= 18;
+  };
   const validarFormularioAntesDeEnviar = () => {
     let formularioEsValido = true;
 
@@ -89,14 +102,16 @@ const RegistroUsuario = (props) => {
     } else {
       setSexoError('');
     }
-    // Validar fecha de nacimiento
-    if (!fechaNacimiento) {
-      setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
-      formularioEsValido = false;
-    } else {
-      setFechaNacimientoError('');
-    }
-
+   // Validar fecha de nacimiento
+   if (!fechaNacimiento) {
+    setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
+    formularioEsValido = false;
+  } else if (!validarEdad(fechaNacimiento)) {
+    setFechaNacimientoError("Debes tener al menos 18 años.");
+    formularioEsValido = false;
+  } else {
+    setFechaNacimientoError('');
+  }
     // Validar teléfono
     if (!telefono || telefono.length !== 10) { // Asumiendo que el teléfono debe tener 10 dígitos
       setTelefonoError(constantes.TEXTO_NUMERO_TELEFONOOBLIGATORIO);
@@ -207,18 +222,21 @@ const RegistroUsuario = (props) => {
       // Si el formulario no es válido, termina la función aquí
       return;
     }
-    axios
-      .post(constantes.URL_USUARIO_NUEVO, {
-        nombre,
-        apellido,
-        rol: 'Usuario',
-        sexo,
-        fechaNacimiento,
-        telefono,
-        usuario,
-        password,
-        confirmPassword,
-      })
+    const fecha = new Date(fechaNacimiento);
+  // Ajustar la fecha al huso horario de Ecuador (UTC-5)
+  const fechaAjustada = new Date(fecha.getTime() - (5 * 60 * 60 * 1000));
+
+  axios.post(constantes.URL_USUARIO_NUEVO, {
+    nombre,
+    apellido,
+    rol: 'Usuario',
+    sexo,
+    fechaNacimiento: fechaAjustada.toISOString(),
+    telefono,
+    usuario,
+    password,
+    confirmPassword,
+  })
       .then((res) => {
         console.log(res);
         // Extraer la edad de la respuesta del servidor y establecerla en el estado
@@ -254,7 +272,11 @@ const RegistroUsuario = (props) => {
 
       });
   };
-
+  const calcularAnioMaximo = () => {
+    const fechaActual = new Date();
+    return fechaActual.getFullYear() - 18;
+  };
+  
   return (
 
     <div className='App'>
@@ -324,10 +346,12 @@ const RegistroUsuario = (props) => {
               <div className="input-icon-wrapper">
                 <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
                 <Form.Control
-                  type="date"
-                  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
-                  value={fechaNacimiento}
-                  className="input-with-icon" />
+  type="date"
+  max={`${calcularAnioMaximo()}-12-31`}
+  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
+  value={fechaNacimiento}
+  className="input-with-icon" />
+
                 <CampoEstado valido={esCampoValido(fechaNacimiento, fechaNacimientoError)} mensajeError={fechaNacimientoError} />
 
               </div>

@@ -15,6 +15,9 @@ const ListaInformacionAcademica = ({ acadTraining, handleShowAcadTrainingModal, 
           <div className="empleo-detalle">
             <span><strong>Institución:</strong> {item.idInstitucion?.nombreInstitucion || 'No disponible'}</span>
           </div>
+         <div className="empleo-detalle">
+            <span><strong>Ubicación de la Institución:</strong> {item.idInstitucion?.ubicacion || 'No disponible'}</span>
+          </div>
           <div className="empleo-detalle">
             <span><strong>Fecha de inicio:</strong> {new Date(item.fechaInicio).toLocaleDateString()}</span>
           </div>

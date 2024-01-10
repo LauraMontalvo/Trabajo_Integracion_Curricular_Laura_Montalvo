@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Styles/loginstyle.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import * as constantes from '../../Models/Constantes'
 
 
 import md5 from 'md5';
@@ -25,6 +26,144 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     //modal de conrfirmacion
+    const [fechaNacimientoError, setFechaNacimientoError] = useState('');
+    const [telefonoError, setTelefonoError] = useState('');
+    const [nombreError, setNombreError] = useState('');
+    const [apellidoError, setApellidoError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
+    const [usuarioError, setUsuarioError] = useState('');
+
+    const calcularAnioMaximo = () => {
+        const fechaActual = new Date();
+        return fechaActual.getFullYear() - 18;
+    };
+    const validarEdad = (fechaNacimiento) => {
+        const hoy = new Date();
+        const fechaNac = new Date(fechaNacimiento);
+        let edad = hoy.getFullYear() - fechaNac.getFullYear();
+        const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
+
+        if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
+            edad--;
+        }
+
+        return edad >= 18;
+    };
+    const handleFechaNacimientoChange = (e) => {
+        const nuevaFechaNacimiento = e.target.value;
+        setFechaNacimiento(nuevaFechaNacimiento);
+
+        // Valida la edad y actualiza el mensaje de error
+        if (!validarEdad(nuevaFechaNacimiento)) {
+            setFechaNacimientoError("Debes tener al menos 18 años.");
+        } else {
+            setFechaNacimientoError('');
+        }
+    };
+    const validarNombre = () => {
+        if (!nombre) {
+            setNombreError('El nombre es obligatorio');
+            return false;
+        }
+        // Agregar más lógica de validación si es necesario
+        setNombreError('');
+        return true;
+    };
+
+    const validarApellido = () => {
+        if (!apellido) {
+            setApellidoError('El apellido es obligatorio');
+            return false;
+        }
+        // Agregar más lógica de validación si es necesario
+        setApellidoError('');
+        return true;
+    };
+    const validarTelefono = () => {
+        if (!telefono) {
+            setTelefonoError('El número de teléfono es obligatorio');
+            return false;
+        } else if (telefono.length !== 10) { // Asumiendo que esperas 10 dígitos
+            setTelefonoError('El número de teléfono debe tener 10 dígitos');
+            return false;
+        }
+        setTelefonoError('');
+        return true;
+    };
+
+    const validarUsuario = () => {
+        if (!usuario) {
+            setUsuarioError('El usuario es obligatorio');
+            return false;
+        }
+
+        setUsuarioError('');
+        return true;
+    };
+    const validarPassword = () => {
+        if (password) {
+            if (password.length < 8) {
+                setPasswordError('La contraseña debe tener al menos 8 caracteres');
+                return false;
+            }
+            if (!/[A-Z]/.test(password)) {
+                setPasswordError('La contraseña debe contener al menos una letra mayúscula');
+                return false;
+            }
+            if (!/[^A-Za-z0-9]/.test(password)) {
+                setPasswordError('La contraseña debe contener al menos un carácter especial');
+                return false;
+            }
+            setPasswordError('');
+            return true;
+        }
+        return true; // Si no se intenta cambiar la contraseña, considerarla válida
+    };
+    const validarConfirmPassword = () => {
+        if (password && confirmPassword !== password) {
+            setConfirmPasswordError('Las contraseñas no coinciden');
+            return false;
+        }
+        setConfirmPasswordError('');
+        return true;
+    };
+    const handleNombreChange = (e) => {
+        const nuevoNombre = e.target.value;
+        setNombre(nuevoNombre);
+
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevoNombre.trim()) {
+            setNombreError('El nombre es obligatorio');
+        } else {
+            setNombreError('');
+        }
+    };
+
+    // Actualizar la función de manejo de cambio para el apellido
+    const handleApellidoChange = (e) => {
+        const nuevoApellido = e.target.value;
+        setApellido(nuevoApellido);
+
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevoApellido.trim()) {
+            setApellidoError('El apellido es obligatorio');
+        } else {
+            setApellidoError('');
+        }
+    };
+
+    const handleUsuarioChange = (e) => {
+        const nuevoUsuario = e.target.value;
+        setUsuario(nuevoUsuario);
+
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevoUsuario.trim()) {
+            setUsuarioError('El nombre de usuario es obligatorio');
+        } else {
+            setUsuarioError('');
+        }
+    };
 
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
@@ -42,8 +181,19 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const rol = "Usuario";
 
     const handleTelefonoChange = (e) => {
-        const value = e.target.value.replace(/[^0-9]/g, '');
+        let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+
+        if (value.length > 10) {
+            value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
+        }
+
         setTelefono(value);
+
+        if (value.length !== 10) {
+            setTelefonoError(constantes.TEXTO_NUMERO_TELEFONO_DEBE_TENER_10_DIGITOS);
+        } else {
+            setTelefonoError('');
+        }
     };
 
     useEffect(() => {
@@ -73,6 +223,32 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     };
     const handlerUpdateUsuario = (e) => {
         e.preventDefault();
+        let esPasswordValido = true;
+        let esConfirmPasswordValido = true;
+
+        // Solo validar si el usuario ha intentado cambiar la contraseña
+        if (password) {
+            esPasswordValido = validarPassword();
+            esConfirmPasswordValido = validarConfirmPassword();
+        }
+
+        if (!esPasswordValido || !esConfirmPasswordValido) {
+            return; // Detiene la función si hay errores
+        }
+        const esNombreValido = validarNombre();
+        const esApellidoValido = validarApellido();
+        const esTelefonoValido = validarTelefono();
+        const esUsuarioValido = validarUsuario();
+        // ... (Validar otros campos)
+
+        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido) {
+            return; // Detener si hay errores
+        }
+        // Verificar si la fecha de nacimiento es válida antes de actualizar
+        if (fechaNacimientoError) {
+            return; // Detiene la función si hay errores
+        }
+
         if (password !== confirmPassword) {
             setUpdateError("Las contraseñas no coinciden");
             return;
@@ -113,6 +289,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const date = new Date(dateString);
         return date.toISOString().split('T')[0];
     }
+
     return (
         <div className="container mt-4">
 
@@ -126,11 +303,17 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingrese su Nombre"
-                                    onChange={(e) => setNombre(e.target.value)} value={nombre} />
-                            </div>
-                        </Form.Group>
+                                    onChange={handleNombreChange}
+                                    value={nombre}
+                                    isInvalid={!!nombreError}
+                                />
 
+                            </div>
+                            <div className="text-danger">{nombreError}</div>
+                        </Form.Group>
                     </Col>
+
+                    {/* Campo de Apellido */}
                     <Col md={6}>
                         <Form.Group>
                             <Form.Label>Apellido:</Form.Label>
@@ -139,11 +322,12 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingrese su Apellido"
-                                    onChange={(e) => setApellido(e.target.value)}
+                                    onChange={handleApellidoChange}
                                     value={apellido}
-                                    className="input-with-icon"
+                                    isInvalid={!!apellidoError}
                                 />
                             </div>
+                            <div className="text-danger">{apellidoError}</div>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -156,7 +340,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                     value={sexo}
                                     className="input-with-icon"
                                 >
-                                    <option value=" "> --Seleccione el género--</option>
+                                    <option value="" disabled> Seleccione el género</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Femenino">Femenino</option>
                                 </Form.Control>
@@ -168,33 +352,45 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
 
                     <Col md={6}>
-                        <Form.Group >
-                            <Form.Label>Fecha de Nacimiento:</Form.Label>
+                        <Form.Group>
+                            <Form.Label>Fecha de Nacimiento</Form.Label>
                             <div className="input-icon-wrapper">
                                 <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
                                 <Form.Control
                                     type="date"
-                                    onChange={(e) => setFechaNacimiento(e.target.value)}
+                                    max={`${calcularAnioMaximo()}-12-31`}
+                                    onChange={handleFechaNacimientoChange}
                                     value={fechaNacimiento}
-                                    className="input-with-icon"
+                                    isInvalid={!!fechaNacimientoError}
                                 />
                             </div>
+                            <div>
+                                <p className="text-danger" type="invalid">
+                                    {fechaNacimientoError}
+                                </p>
+                            </div>
+
                         </Form.Group>
                     </Col>
 
 
                     <Col md={6}>
-                        <Form.Group >
-                            <Form.Label>Teléfono:</Form.Label>
+                        <Form.Group>
+                            <Form.Label>Teléfono</Form.Label>
                             <div className="input-icon-wrapper">
                                 <FontAwesomeIcon icon={faPhone} className="input-icon" />
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingrese su teléfono"
-                                    onChange={handleTelefonoChange}
                                     value={telefono}
+                                    onChange={handleTelefonoChange}
+                                    isInvalid={!!telefonoError}
                                 />
+
                             </div>
+                            <p className="text-danger" type="invalid">
+                                {telefonoError}
+                            </p>
                         </Form.Group>
                     </Col>
 
@@ -203,14 +399,15 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                             <Form.Label>Usuario:</Form.Label>
                             <div className="input-icon-wrapper">
                                 <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Ingrese Usuario"
-                                    onChange={(e) => setUsuario(e.target.value)}
+                                <Form.Control type="text"
+                                    placeholder="Ingrese su Usuario"
+                                    onChange={handleUsuarioChange}
                                     value={usuario}
-                                    className="input-with-icon"
-                                />
+                                    isInvalid={!!usuarioError} />
+
                             </div>
+                            <div className="text-danger">{usuarioError}</div>
+
                         </Form.Group>
                     </Col>
 
@@ -226,6 +423,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                     onChange={handlePasswrod}
                                     value={password}
                                     className="password-input"
+
                                 />
                                 <FontAwesomeIcon
                                     icon={showPassword ? faEyeSlash : faEye}
@@ -233,10 +431,11 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                     onClick={() => setShowPassword(!showPassword)}
                                 />
                             </div>
-
+                            {passwordError && <div className="text-danger">{passwordError}</div>}
                         </Form.Group>
                     </Col>
 
+                    {/* Campo de Confirmación de Contraseña */}
                     <Col md={6}>
                         <Form.Group controlId="formConfirmPassword">
                             <Form.Label>Confirmar Contraseña:</Form.Label>
@@ -248,6 +447,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                     onChange={handleConfPasswrod}
                                     value={confirmPassword}
                                     className="password-input"
+
                                 />
                                 <FontAwesomeIcon
                                     icon={showPassword ? faEyeSlash : faEye}
@@ -255,10 +455,9 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                                     onClick={() => setShowPassword(!showPassword)}
                                 />
                             </div>
-
+                            {confirmPasswordError && <div className="text-danger">{confirmPasswordError}</div>}
                         </Form.Group>
                     </Col>
-
                 </Row>
 
                 <div>

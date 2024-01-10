@@ -16,6 +16,8 @@ const ListaUsuarios = () => {
   const [usuarioToDelete, setUsuarioToDelete] = useState(null);
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
   const [searchQuery, setSearchQuery] = useState("");
+  const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
@@ -24,18 +26,28 @@ const ListaUsuarios = () => {
   useEffect(() => {
     axios.get(constantes.URL_OBTENER_USUARIOS)
       .then(res => {
-        setUsuarios(res.data.sort((a, b) => a.nombre.localeCompare(b.nombre)))
+        const usuariosOrdenados = res.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        setUsuarios(usuariosOrdenados);
+        setUsuariosFiltrados(usuariosOrdenados); // Inicializa con todos los usuarios
       })
       .catch(err => console.error("Error al obtener usuarios:", err));
   }, []);
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
 
+    // Filtrar los usuarios basados en el query de búsqueda
+    const filtrados = usuarios.filter(usuario =>
+      usuario.nombre.toLowerCase().includes(query) ||
+      usuario.apellido.toLowerCase().includes(query)
+    );
+    setUsuariosFiltrados(filtrados); // Actualiza la lista filtrada
+  };
   const prepareDelete = (usuario) => {
     setUsuarioToDelete(usuario);
     toggleDeleteModal();
+
   }
 
   const deleteUsuario = () => {
@@ -49,9 +61,10 @@ const ListaUsuarios = () => {
         console.error("Error al eliminar usuario:", err);
       });
   }
-
+  
   const removeFromDom = (usuarioId) => {
-    setUsuarios(usuarios.filter(usuario => usuario._id !== usuarioId));
+    setUsuarios(prevUsuarios => prevUsuarios.filter(usuario => usuario._id !== usuarioId));
+    setUsuariosFiltrados(prevUsuariosFiltrados => prevUsuariosFiltrados.filter(usuario => usuario._id !== usuarioId));
   }
 
   return (
@@ -59,7 +72,7 @@ const ListaUsuarios = () => {
       <TabsAdministracionComp />
       <Container fluid className="mt-4">
         <Row>
-          <Col md={3} className="widget">
+        <Col md={3} className="widget">
             <h4>Filtrar Usuarios</h4>
             <Form.Group>
               <Form.Control
@@ -69,12 +82,14 @@ const ListaUsuarios = () => {
                 onChange={handleSearchChange}
               />
             </Form.Group>
-            {/* Agrega otros controles de filtro aquí si es necesario */}
           </Col>
 
           <Col md={9}>
+          <Col md={12} className="mb-3">
+          <strong>Total de Usuarios:</strong> {usuariosFiltrados.length}
+            </Col>
             <Row>
-              {usuarios.map((usuario) => (
+            {usuariosFiltrados.map((usuario) => (
                 <Col md={6} key={usuario._id} className="mb-3">
                   <Card className="empresa-card">
                     <Card.Body>

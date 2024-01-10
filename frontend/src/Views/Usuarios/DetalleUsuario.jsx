@@ -57,6 +57,10 @@ function DetalleUsuario(props) {
   const [showExperienceModal, setShowExperienceModal] = useState(false);
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [instituciones, setInstituciones] = useState([]);
+  const [ubicacion, setUbicacion] = useState('');
+
+  const [errorUbicacion, setErrorUbicacion] = useState('');
+
   const [experienciaLaboral, setexperienciaLaboral] = useState([]);
   const [institucionSeleccionada, setInstitucionSeleccionada] = useState(null);
   ///
@@ -69,6 +73,20 @@ function DetalleUsuario(props) {
   const [editingExperienceId, setEditingExperienceId] = useState(null);
 
   ///
+  const handleUbicacionChange = (e) => {
+    setUbicacion(e.target.value);
+    console.log("Ubicación editada:", e.target.value);
+    validarUbicacion(e.target.value);
+  };
+  const validarUbicacion = (valor) => {
+    if (!valor) {
+      setErrorUbicacion('La ubicación es obligatoria.');
+      return false;
+    }
+    // Aquí puedes añadir más validaciones si lo necesitas
+    setErrorUbicacion('');
+    return true;
+  };
 
   //Eliminar exoe laboral
   const [showDeleteExperienceModal, setShowDeleteExperienceModal] = useState(false);
@@ -310,34 +328,39 @@ function DetalleUsuario(props) {
 
   const handleShowAcadTrainingModal = (acadTrainingId = null) => {
     setShowAcadTrainingModal(true);
-
+  
     if (acadTrainingId) {
       const selectedAcadTraining = acadTraining.find((item) => item._id === acadTrainingId);
       if (selectedAcadTraining) {
         setTituloObtenido(selectedAcadTraining.tituloObtenido);
         setFechaInicio(toShortDateFormat(selectedAcadTraining.fechaInicio));
         setFechaFin(toShortDateFormat(selectedAcadTraining.fechaFin));
-        setEditingAcadTrainingId(acadTrainingId);
+                    setUbicacion(selectedAcadTraining.ubicacion || ''); // Asegúrate de cargar la ubicación aquí
 
+        setEditingAcadTrainingId(acadTrainingId);
+  
         if (selectedAcadTraining.idInstitucion) {
           setInstitucion({
             label: selectedAcadTraining.idInstitucion.nombreInstitucion,
             value: selectedAcadTraining.idInstitucion._id
           });
+          // Asegúrate de establecer la ubicación aquí
+          setUbicacion(selectedAcadTraining.idInstitucion.ubicacion || '');
         } else {
           setInstitucion(null);
+          setUbicacion('');
         }
       }
     } else {
+      // Restablecer los valores para una nueva entrada
       setTituloObtenido('');
       setFechaInicio('');
       setFechaFin('');
+      setUbicacion('');
       setEditingAcadTrainingId(null);
       setInstitucion(null);
     }
   };
-
-
 
   const handleCloseAcadTrainingModal = () => {
     setShowAcadTrainingModal(false);
@@ -345,21 +368,28 @@ function DetalleUsuario(props) {
     setTituloObtenido('');
     setFechaInicio('');
     setFechaFin('');
+    setUbicacion('');
     setInstitucion('')
   };
-
   const handleInstitucion = (institucionCarga) => {
-    console.log(institucion)
     setInstitucion(institucionCarga);
-    setInstitucionSeleccionada(null);
-    console.log(institucion)
-  }
-
+  
+    const institucionEncontrada = instituciones.find(inst => inst._id === institucionCarga.value);
+    if (institucionEncontrada) {
+      console.log("Institución encontrada con ubicación: ", institucionEncontrada.ubicacion);
+      setUbicacion(institucionEncontrada.ubicacion);
+    } else {
+      console.log("Nueva institución, configurando ubicación vacía");
+      setUbicacion('');
+    }
+  };
+  
   const cargaInstitucion = (institucionCarga) => {
     setInstitucion(institucionCarga);
   }
 
   const handleAddAcadTraining = async () => {
+
     const esTituloValido = validarTituloObtenido();
     const sonFechasValidas = validarFechas();
     const esInstitucionValida = validarInstitucion();
@@ -371,25 +401,31 @@ function DetalleUsuario(props) {
 
     try {
       let idInstitucion = null;
+    let ubicacionInstitucion = null;
 
-      // Verificar si la institución es nueva o existente
-      if (institucion) {
-        // Si la institución no se encuentra en la lista de instituciones existentes, es nueva
-        if (!instituciones.find(inst => inst.nombreInstitucion === institucion.label)) {
-          const response = await axios.post('http://localhost:8000/api/school/new', { nombreInstitucion: institucion.label });
-          idInstitucion = response.data.insertedSchool._id;  // Usar el ID de la nueva institución
-          cargarInstituciones();  // Recargar las instituciones para incluir la nueva
-        } else {
-          idInstitucion = institucion.value;  // Usar el ID de la institución existente
-        }
+    if (institucion) {
+      if (!instituciones.find(inst => inst.nombreInstitucion === institucion.label)) {
+        const response = await axios.post('http://localhost:8000/api/school/new', {
+          nombreInstitucion: institucion.label,
+          ubicacion: ubicacion // Incluye la ubicación aquí
+        });
+        idInstitucion = response.data.insertedSchool._id;
+        cargarInstituciones(); // Recarga las instituciones para incluir la nueva
+      } else {
+        // Aquí debes encontrar la ubicación de la institución existente
+        const institucionExistente = instituciones.find(inst => inst._id === institucion.value);
+        idInstitucion = institucion.value;
+        ubicacionInstitucion = institucionExistente.ubicacion;
       }
+    }
 
-      const dataToSend = {
-        tituloObtenido,
-        idInstitucion,
-        fechaInicio,
-        fechaFin,
-      };
+    const dataToSend = {
+      tituloObtenido,
+      idInstitucion,
+      fechaInicio,
+      fechaFin,
+      ubicacion: ubicacionInstitucion // Asegúrate de enviar la ubicación
+    };
 
       if (editingAcadTrainingId) {
         // Si estamos editando, usar método PUT
@@ -443,7 +479,7 @@ function DetalleUsuario(props) {
             {/* Información del usuario */}
             <Card className="datos-personales-card">
               <Card.Body >
-              <ImagenPerfil id ={id} userParam={user} isEditingParam={isEditing}/>
+                <ImagenPerfil id={id} userParam={user} isEditingParam={isEditing} />
                 <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
 
                 <ListGroup variant="flush">
@@ -561,8 +597,22 @@ function DetalleUsuario(props) {
                               />
                             </div>
                             {institucionError && <p className="text-danger">{institucionError}</p>}
-                          </Form.Group>
 
+                            
+                          </Form.Group>
+                          <Form.Group controlId="formUbicacion">
+                              <Form.Label>Ubicación</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Ingrese la ubicación"
+                                value={ubicacion}
+                                onChange={handleUbicacionChange}
+                                isInvalid={!!errorUbicacion}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errorUbicacion}
+                              </Form.Control.Feedback>
+                            </Form.Group>
                           <Row>
                             <Col md={6}>
                               <Form.Group>

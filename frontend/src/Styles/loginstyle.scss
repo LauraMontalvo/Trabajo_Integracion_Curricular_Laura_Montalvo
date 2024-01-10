@@ -16,17 +16,6 @@ $ColorFondo-Caja:#FDFEFE;
 $Tamaño-botonesancho:150px;
 $Tamaño-botoneslargo:50px;
 
-
-
-
- 
-
-
-
-
-
-
-
 $tamaño-letra-Formularios:15px;
 $color-primary:  #1287ec;
 $color-secondary: #1287ec;
@@ -36,10 +25,11 @@ $color-border: #ced4da;
 $color-focus: #80bdff;
 $shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+$primary-color: #007bff; // o cualquier color que coincida con tu paleta
 
 .mi-formulario {
   font-family: $estilo-letra;
-  max-width: 590px;
+  max-width: 700px;
   margin: auto;
   padding: 20px;
   background-color: rgb(248, 247, 247);
@@ -51,10 +41,6 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     justify-content: center;
     gap: 20px; // Espacio entre botones
     margin-top: 20px; // Espacio entre los botones y los campos del formulario
-    
-
-
-
   
   }
   h2{
@@ -329,8 +315,9 @@ $focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     width: 120px;
     height: 120px;
     display: block;
+    border: 3px solid $primary-color;
   }
-  
+ 
   .camera-icon {
     position: absolute;
     bottom: -10px; // Ajusta este valor para controlar la superposición del ícono sobre la imagen

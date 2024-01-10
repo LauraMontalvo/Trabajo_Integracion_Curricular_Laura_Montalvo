@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSchool, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faSchool, faExclamationCircle, faCheckCircle,faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes';
 
 const CampoEstado = ({ mensajeError }) => {
@@ -15,6 +15,10 @@ const CampoEstado = ({ mensajeError }) => {
 };
 const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     const [nombreInstitucion, setNombreInstitucion] = useState('');
+    const [ubicacion, setUbicacion] = useState('');
+    const [ubicacionError, setUbicacionError] = useState(''); // Corregido
+
+
     const [nombreInstitucionError, setNombreInstitucionError] = useState('');
     const [updateError, setUpdateError] = useState('');
     const [updateSuccess, setUpdateSuccess] = useState('');
@@ -23,6 +27,13 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     const esCampoValido = (valor, error) => {
         return valor !== '' && error === '';
     };
+  
+
+    const handleUbicacionChange = (e) => {
+        setUbicacion(e.target.value);
+        validarUbicacion(e.target.value, setUbicacionError);
+    };
+
     const handleInputChange = (e) => {
         const { value } = e.target;
         setNombreInstitucion(value);
@@ -35,10 +46,12 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             axios.get(`http://localhost:8000/api/school/${idInstitucion}`)
                 .then(res => {
                     setNombreInstitucion(res.data.nombreInstitucion);
+                    setUbicacion(res.data.ubicacion || ''); // Agregado para manejar la ubicación
                 })
                 .catch(err => console.log(err));
         }
     }, [idInstitucion]);
+
 
     const validarNombreInstitucion = (value, setError) => {
         if (!value.trim()) {
@@ -47,21 +60,24 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             setError(''); // Limpia el mensaje de error
         }
     };
-
+    const validarUbicacion= (value, setError) => {
+        if (!value.trim()) {
+            setError(constantes.TEXTO_NOMBRE_INSTITUCION_OBLIGATORIO);
+        } else {
+            setError(''); // Limpia el mensaje de error
+        }
+    };
     const handlerUpdateInstitucion = (e) => {
         e.preventDefault();
-
-        // Comprobar si hay errores antes de enviar
-        if (nombreInstitucionError) {
+        if (nombreInstitucionError || ubicacionError) {
             return; // Detiene la ejecución si hay errores
         }
 
-        axios.put(`http://localhost:8000/api/school/${idInstitucion}`, { nombreInstitucion })
+        axios.put(`http://localhost:8000/api/school/${idInstitucion}`, { nombreInstitucion, ubicacion })
             .then((res) => {
                 setUpdateSuccess("Institución actualizada correctamente");
                 setUpdateError('');
 
-                // Llamar a la función callback después de una actualización exitosa
                 if (onInstitucionActualizada) {
                     onInstitucionActualizada(res.data);
                 }
@@ -89,6 +105,20 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
 
                     </div>
                     {nombreInstitucionError && <p className="text-danger">{nombreInstitucionError}</p>}
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Ubicación:</Form.Label>
+                    <div className="input-icon-wrapper">
+                        <FontAwesomeIcon icon={faMapMarkerAlt} className="input-icon" />
+                        <Form.Control
+                            type="text"
+                            placeholder="Ingrese la ubicación"
+                            value={ubicacion}
+                            onChange={handleUbicacionChange}
+                        />
+                    </div>
+                    {ubicacionError && <p className="text-danger">{ubicacionError}</p>}
                 </Form.Group>
                 <div>
                     <p style={{ color: 'green' }}>{updateSuccess}</p>

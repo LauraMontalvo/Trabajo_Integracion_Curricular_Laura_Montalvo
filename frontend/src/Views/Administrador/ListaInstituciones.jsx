@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
-import { faTrash, faEdit, faSchool } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faSchool,faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
 import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 import "../../Styles/Lista.scss";
@@ -26,24 +26,29 @@ const ListaInstituciones = () => {
   const [EditarModal, setEditarModal] = useState(false);
   const [institucionToEdit, setInstitucionToEdit] = useState(null);
   const [filtroNombre, setFiltroNombre] = useState("");
+  const [institucionesFiltradas, setInstitucionesFiltradas] = useState([]);
 
-  const handleFiltroNombreChange = (event) => {
-    setFiltroNombre(event.target.value);
-  };
-
-  const institucionesFiltradas = instituciones.filter((institucion) =>
-    institucion.nombreInstitucion?.toLowerCase().includes(filtroNombre?.toLowerCase() ?? "")
-  );
-
+  
+  
   useEffect(() => {
     axios.get('http://localhost:8000/api/schools')
       .then(res => {
-        setInstituciones(res.data);
+        const institucionesOrdenadas = res.data.sort((a, b) => a.nombreInstitucion.localeCompare(b.nombreInstitucion));
+        setInstituciones(institucionesOrdenadas);
+        setInstitucionesFiltradas(institucionesOrdenadas); // Inicializa con todas las instituciones
       })
       .catch(err => console.error("Error al obtener instituciones:", err));
   }, [recargar]); // Dependencia del efecto: recargar
+  const handleFiltroNombreChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setFiltroNombre(query);
 
-
+    // Filtrar las instituciones basado en el query de búsqueda
+    const filtrados = instituciones.filter(institucion =>
+      institucion.nombreInstitucion.toLowerCase().includes(query)
+    );
+    setInstitucionesFiltradas(filtrados); // Actualiza la lista filtrada
+  };
   const prepareDelete = (institucion) => {
     setInstitucionToDelete(institucion); // Corregido
     toggleDeleteModal();
@@ -59,9 +64,10 @@ const ListaInstituciones = () => {
         console.error("Error al eliminar institucion:", err);
       });
   }
-
+  
   const removeFromDom = (institucionId) => {
-    setInstituciones(instituciones.filter(institucion => institucion._id !== institucionId));
+    setInstituciones(prevInstituciones => prevInstituciones.filter(institucion => institucion._id !== institucionId));
+    setInstitucionesFiltradas(prevFiltradas => prevFiltradas.filter(institucion => institucion._id !== institucionId));
   }
 
   const editarInstitucion = (id) => {
@@ -75,11 +81,12 @@ const ListaInstituciones = () => {
 
   const handleInstitucionActualizada = (institucionActualizada) => {
     // Actualizar la lista de instituciones
-    setInstituciones(instituciones.map(inst =>
+    const institucionesActualizadas = instituciones.map(inst =>
       inst._id === institucionActualizada._id ? institucionActualizada : inst
-    ));
+    );
+    setInstituciones(institucionesActualizadas);
+    setInstitucionesFiltradas(institucionesActualizadas); // Actualiza también las instituciones filtradas
   };
-
   const addInstitucionToList = (newInstitucion) => {
     // Actualiza la lista y fuerza la recarga
     setInstituciones([...instituciones, newInstitucion]);
@@ -93,7 +100,7 @@ const ListaInstituciones = () => {
 
       <Container fluid className="mt-4">
         <Row>
-          <Col md={3} className="widget">
+        <Col md={3} className="widget">
             <h4>Filtrar Instituciones</h4>
             <Form.Group>
               <Form.Control
@@ -105,17 +112,24 @@ const ListaInstituciones = () => {
             </Form.Group>
           </Col>
           <Col md={9}>
+          <Col md={12} className="mb-3">
+          <strong>Total de Instituciones:</strong> {institucionesFiltradas.length}
+            </Col>
             <Row>
-              {institucionesFiltradas.map((institucion) => (
+            {institucionesFiltradas.map((institucion) => (
                 <Col md={6} key={institucion._id} className="mb-3">
                   <Card className="empresa-card">
                     <Card.Body>
                       <Row className="align-items-center">
-                        <Col md={8}>
-                          <Card.Title>
+                        <Col xs={12} sm={6} md={8}>
+                          <Card.Text>
                             <FontAwesomeIcon icon={faSchool} className="me-2 " />
                             {institucion.nombreInstitucion}
-                          </Card.Title>
+                          </Card.Text>
+                          <Card.Text>
+                            <FontAwesomeIcon icon={faMapMarkerAlt} /> 
+                            {institucion.ubicacion}
+                          </Card.Text>
                         </Col>
                         <Col xs={12} sm={6} md={4} className="text-right">
                           <div className="icon-container">

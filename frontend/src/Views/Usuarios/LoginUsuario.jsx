@@ -6,7 +6,6 @@ import { Form } from 'react-bootstrap';
 import md5 from 'md5';
 import "../../Styles/loginstyle.css"
 import { Link, useNavigate } from 'react-router-dom';
-
 import logofondo from "../../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
 import * as constantes from '../../Models/Constantes'

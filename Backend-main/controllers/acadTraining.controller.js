@@ -13,7 +13,7 @@ module.exports.createAcadTraining = (request, response) => {
 }
 
 module.exports.getAllAcadTrainings = (_, response) => {
-    AcadTraining.find({esActivo: true})
+    AcadTraining.find()
         .then(retrievedAcadTrainings => response.json(retrievedAcadTrainings))
         .catch(err => response.json(err))
 }
@@ -31,14 +31,15 @@ module.exports.updateAcadTraining = (request, response) => {
 }
 
 module.exports.deleteAcadTraining = (request, response) => {
-    AcadTraining.findOneAndUpdate({ _id: request.params.id },{ esActivo: false }, 
-    { new: true })
+    AcadTraining.deleteOne({ _id: request.params.id })
+   
         .then(AcadTrainingDeleted => response.json(AcadTrainingDeleted))
         .catch(err => response.json(err))
 }
 
 module.exports.getUserAcadTraining = (request, response) => {
-    AcadTraining.find({ idUsuario: request.params.id, esActivo:true }).populate('idInstitucion')  // Debes pasar el nombre del campo a poblar como un string
+    
+    AcadTraining.find({ idUsuario: request.params.id }).populate('idInstitucion')  // Debes pasar el nombre del campo a poblar como un string
     .then(retrievedCertifications => {
         response.json(retrievedCertifications);
     })
