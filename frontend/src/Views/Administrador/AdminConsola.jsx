@@ -75,7 +75,7 @@ const Main = () => {
                                 <Card.Text>
                                     Ver Empleos
                                 </Card.Text>
-                                <Button variant="primary">Ver Postulaciones</Button>
+                                <Button variant="primary">Ver Empleos</Button>
                             </Card.Body>
                         </Card>
                     </Col>

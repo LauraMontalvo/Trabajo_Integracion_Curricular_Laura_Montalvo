@@ -10,11 +10,20 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
     const [descripcionResponsabilidades, setDescripcionResponsabilidades] = useState('');
     const [ambitoLaboral, setAmbitoLaboral] = useState('');
     const [empresa, setEmpresa] = useState('');
+    const [puesto, setPuesto] = useState('');
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFin, setFechaFin] = useState('');
+    // Estados para los mensajes de error de validación
+    const [descripcionResponsabilidadesError, setDescripcionResponsabilidadesError] = useState('');
+    const [ambitoLaboralError, setAmbitoLaboralError] = useState('');
+    const [empresaError, setEmpresaError] = useState('');
+    const [puestoError, setPuestoError] = useState('');
+    const [fechaInicioError, setFechaInicioError] = useState('');
+    const [fechaFinError, setFechaFinError] = useState('');
+
     const [error, setError] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    //modal de conrfirmacion
+
 
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
@@ -29,6 +38,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
                 setDescripcionResponsabilidades(response.data.descripcionResponsabilidades);
                 setAmbitoLaboral(response.data.ambitoLaboral);
                 setEmpresa(response.data.empresa);
+                setPuesto(response.data.puesto);
                 setFechaInicio(toShortDateFormat(response.data.fechaInicio));
                 setFechaFin(toShortDateFormat(response.data.fechaFin));
             })
@@ -45,6 +55,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
         axios.put(`http://localhost:8000/api/workExperience/${idExperiencia}`, {
             descripcionResponsabilidades,
             ambitoLaboral,
+            puesto,
             empresa,
             fechaInicio,
             fechaFin
@@ -72,6 +83,22 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
         <Form onSubmit={handleSubmit} className="mi-formulario">
             {error && <Alert variant="danger">{error}</Alert>}
             <Row>
+            <Col md={12}>
+                    <Form.Group>
+                        <Form.Label>Puesto</Form.Label>
+                        <div className="input-icon-wrapper">
+                            <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+                            <Form.Control
+                                as="textarea"
+                                rows={4}
+                                placeholder="Ingrese la descripción de sus responsabilidades"
+                                value={puesto}
+                                onChange={e => setPuesto(e.target.value)}
+                            />
+                        </div>
+
+                    </Form.Group>
+                </Col>
                 <Col md={12}>
                     <Form.Group>
                         <Form.Label>Descripción de Responsabilidades</Form.Label>

@@ -23,15 +23,18 @@ const ListaExperienciaLaboral = ({ experienciaLaboral, onEdit, onDelete, formatD
                     <h3>Experiencia Laboral</h3>
                     {experienciaLaboral.map((experiencia, index) => (
                         <ListGroup.Item key={index} className="mt-4 border p-3 position-relative">
-                            <div className="empleo-detalle">
-                                <span><strong>Descripción de Responsabilidades:</strong> {experiencia.descripcionResponsabilidades}</span>
-                            </div>
-                            <div className="empleo-detalle">
-                                <span><strong>Ámbito Laboral/Departamento:</strong> {experiencia.ambitoLaboral}</span>
-                            </div>
-                            <div className="empleo-detalle">
-                                <span><strong>Empresa en la que trabajó:</strong> {experiencia.empresa}</span>
-                            </div>
+                            <strong >Puesto:</strong>
+                            <p>{experiencia.puesto}</p>
+                            <strong >Descripción de Responsabilidades:</strong>
+                            <p>{experiencia.descripcionResponsabilidades}</p>
+                            <strong >Ámbito Laboral/Departamento:</strong>
+                            <p>{experiencia.ambitoLaboral}</p>
+                            <strong >Empresa en la que trabajó:</strong>
+                            <p> {experiencia.empresa}</p>
+
+
+                           
+                           
                             <div className="empleo-detalle">
                                 <span><strong>Fecha de inicio:</strong> {formatDate(experiencia.fechaInicio)}</span>
                             </div>

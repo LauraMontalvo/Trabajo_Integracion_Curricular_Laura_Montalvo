@@ -49,7 +49,7 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa }) => {
               <NavDropdown.Item onClick={handleShowRegisterInstitutionModal}>
                 Registrar Institucion</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link as={Link} to="/listaPostulacionesAdmin">Lista Postulaciones</Nav.Link>
+            <Nav.Link as={Link} to="/listaPostulacionesAdmin">Lista Empleos</Nav.Link>
             
 
           </Nav>

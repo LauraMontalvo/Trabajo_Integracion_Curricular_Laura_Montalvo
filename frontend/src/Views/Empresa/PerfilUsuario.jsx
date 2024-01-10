@@ -93,9 +93,11 @@ function PerfilUsuario() {
                                                 <div key={item._id} className="mb-4 p-3 border rounded">
                                                     <h5 className="mb-2">{item.tituloObtenido}</h5>
                                                     <p className="mb-1"><strong>Institución:</strong> {item.idInstitucion?.nombreInstitucion || 'No disponible'}</p>
+                                                    <p className="mb-1"><strong>Ubicación de la Institución: </strong>  {item.idInstitucion?.ubicacion || 'No disponible'}</p>
                                                     <p className="mb-1"><strong>Fecha de Inicio:</strong> {formatDate(item.fechaInicio)}</p>
                                                     <p><strong>Fecha de Fin:</strong> {formatDate(item.fechaFin)}</p>
                                                 </div>
+
                                             ))
                                         ) : (
                                             <p>No se ha registrado formación académica.</p>

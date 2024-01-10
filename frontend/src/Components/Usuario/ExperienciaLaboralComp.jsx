@@ -65,8 +65,10 @@ const ExperieciaLaboral = (props) => {
     }
   };
   const validateFechaInicio = (value, setError) => {
-    if (!value.trim()) {
-      setError(constantes.TEXTO_FECHA_INICIO);
+    if (!value) {
+      setError("La fecha de inicio es obligatoria.");
+    } else if (new Date(value) > new Date()) {
+      setError("La fecha de inicio no puede ser una fecha futura.");
     } else {
       setError('');
     }
@@ -78,9 +80,13 @@ const ExperieciaLaboral = (props) => {
       setError('');
     }
   };
-  const validateFechaFin = (value, setError) => {
-    if (!value.trim()) {
-      setError(constantes.TEXTO_FECHA_FIN);
+  const validateFechaFin = (value, setError, fechaInicio) => {
+    if (!value) {
+      setError("La fecha de fin es obligatoria.");
+    } else if (new Date(value) < new Date(fechaInicio)) {
+      setError("La fecha de fin debe ser posterior a la fecha de inicio.");
+    } else if (new Date(value) > new Date()) {
+      setError("La fecha de fin no puede ser una fecha futura.");
     } else {
       setError('');
     }
@@ -93,6 +99,22 @@ const ExperieciaLaboral = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+     // Valida todos los campos
+  validateDescripcionResp(descripcionResponsabilidades, setDescripciaonResponsabilidadesError);
+  validateAmbito(ambitoLaboral, setAmbitoLaboralError);
+  validateRazonSocial(empresa, setEmpresaError);
+  validateFechaInicio(fechaInicio, setFechaInicioError);
+  validateFechaFin(fechaFin, setFechaFinError, fechaInicio);
+  validatePuesto(puesto, setPuestoError);
+
+  // Comprobar si todos los campos son válidos antes de enviar el formulario
+  if (esCampoValido(descripcionResponsabilidades, descripcionResponsabilidadesError) &&
+  esCampoValido(ambitoLaboral, ambitoLaboralError) &&
+  esCampoValido(empresa, empresaError) &&
+  esCampoValido(fechaInicio, fechaInicioError) &&
+  esCampoValido(fechaFin, fechaFinError) &&
+  esCampoValido(puesto, puestoError)) {
+    // Todos los campos son válidos, proceder con el envío del formulario
     axios.post(constantes.URL_EXPERIENCIA_LABORAL_NUEVA, {
       puesto,
       descripcionResponsabilidades,
@@ -116,8 +138,9 @@ const ExperieciaLaboral = (props) => {
       })
       .catch((error) => {
         console.error(error.response);
-
+        // Manejo de error
       });
+    }
   };
 
   return (
