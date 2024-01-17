@@ -7,7 +7,7 @@ import Cabecera from '../General/Cabecera';
 import TabsAdministracionComp from './TabsAdministracionComp';
 import { Form, Button, Modal, Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faInfoCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faInfoCircle, faBalanceScale, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/detalle.scss"
 import * as constantes from '../../Models/Constantes'
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
@@ -39,6 +39,8 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [valores, setValores] = useState("");
+  const [valoresError, setValoresError] = useState("");
   const [nombreEmpresaError, setNombreEmpresaError] = useState("");
   const [correoError, setCorreoError] = useState("");
   const [direccionError, setDireccionError] = useState("");
@@ -58,7 +60,15 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
     return valor !== '' && error === '';
   };
 
-
+  const validateValores = () => {
+    if (!valores.trim()) {
+      setValoresError("Los valores de la empresa son obligatorios");
+      return false;
+    } else {
+      setValoresError("");
+      return true;
+    }
+  };
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
@@ -125,9 +135,13 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
     }
   };
 
+
   const validarFormularioAntesDeEnviar = () => {
     let formularioEsValido = true;
 
+    if (!validateValores()) {
+      formularioEsValido = false;
+    }
     // Validar nombre de la empresa
     if (!nombreEmpresa) {
       setNombreEmpresaError(constantes.TEXTO_NOMBRE_EMPRESA_OBLIGATORIO);
@@ -204,7 +218,7 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
       return;
     }
     axios.post(constantes.URL_EMPRESA_NUEVA, {
-      nombreEmpresa, correo, rol, direccion, telefono, descripcion, usuario, password, confirmPassword
+      nombreEmpresa, correo, rol, direccion, telefono, descripcion, usuario, valores, password, confirmPassword
     })
       .then((res) => {
         console.log(res);
@@ -264,6 +278,7 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
 
 
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
+
         <Row >
           <Col md={6}>
             <Form.Group>
@@ -294,29 +309,63 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
                   value={correo}
                 />
                 <CampoEstado valido={esCampoValido(correo, correoError)} mensajeError={correoError} />
-
-
               </div>
               {correoError && <p className="text-danger">{correoError}</p>}
             </Form.Group>
           </Col>
-          <Col md={6}>
+
+          <Form.Group>
+            <Form.Label>Dirección</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" />
+              <Form.Control
+                type="text"
+                placeholder="Ingrese la dirección"
+                onChange={(e) => handleInputChange(e, setDireccion, setDireccionError)}
+                value={direccion}
+              />
+              <CampoEstado valido={esCampoValido(direccion, direccionError)} mensajeError={direccionError} />
+            </div>
+            <p className="text-danger">{direccionError}</p>
+          </Form.Group>
+
+        
+
             <Form.Group>
-              <Form.Label>Dirección</Form.Label>
+              <Form.Label>Valores</Form.Label>
               <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" />
+                <FontAwesomeIcon icon={faBalanceScale} className="input-icon" />
                 <Form.Control
-                  type="text"
-                  placeholder="Ingrese la dirección"
-                  className="large-input"
-                  onChange={(e) => handleInputChange(e, setDireccion, setDireccionError)}
-                  value={direccion}
+                  as="textarea"
+                  rows={4}
+                  placeholder="Ingrese los valores de la empresa"
+                  value={valores}
+                  onChange={(e) => handleInputChange(e, setValores, setValoresError)}
                 />
-                <CampoEstado valido={esCampoValido(direccion, direccionError)} mensajeError={direccionError} />
+                <CampoEstado valido={esCampoValido(valores, valoresError)} mensajeError={valoresError} />
+
               </div>
-              <p className="text-danger">{direccionError}</p>
+              {valoresError && <p className="text-danger">{valoresError}</p>}
             </Form.Group>
-          </Col>
+
+     
+       
+            <Form.Group>
+              <Form.Label>Descripción</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faInfoCircle} className="input-icon fa-lg" />
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder="Ingrese la descripción de la empresa"
+                  onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
+                  value={descripcion}
+                />
+                <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
+              </div>
+              <p className="text-danger">{descripcionError}</p>
+            </Form.Group>
+      
           <Col md={6}>
             <Form.Group>
               <Form.Label>Teléfono</Form.Label>
@@ -349,23 +398,7 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
               <p className="text-danger">{usuarioError}</p>
             </Form.Group>
           </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Descripción</Form.Label>
-              <div className="input-icon-wrapper">
-                <FontAwesomeIcon icon={faInfoCircle} className="input-icon fa-lg" />
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  placeholder="Ingrese la descripción de la empresa"
-                  onChange={(e) => handleInputChange(e, setDescripcion, setDescripcionError)}
-                  value={descripcion}
-                />
-                <CampoEstado valido={esCampoValido(descripcion, descripcionError)} mensajeError={descripcionError} />
-              </div>
-              <p className="text-danger">{descripcionError}</p>
-            </Form.Group>
-          </Col>
+
 
           <Col md={6}>
             <Form.Group>

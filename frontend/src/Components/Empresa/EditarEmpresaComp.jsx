@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { faUser, faLock, faCheckCircle, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCheckCircle,faBalanceScale, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as constantes from '../../Models/Constantes'
@@ -17,6 +17,8 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const [usuario, setUsuario] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [valores, setValores] = useState("");
+ 
     const [updateError, setUpdateError] = useState('');
     const navigate = useNavigate();
     const [updateSuccess, setUpdateSuccess] = useState('');
@@ -32,7 +34,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const [correoError, setCorreoError] = useState('');
     const [telefonoError, setTelefonoError] = useState('');
     const [usuarioError, setUsuarioError] = useState('');
-
+    const [valoresError, setValoresError] = useState("");
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
@@ -45,6 +47,18 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
         setNombreEmpresaError('');
         return true;
     };
+
+    const validarValores = () => {
+        if (!valores || !valores.trim()) {
+            setValoresError("Los valores de la empresa son obligatorios");
+            return false;
+        } else {
+            setValoresError("");
+            return true;
+        }
+    };
+    
+
     const validarDireccion = () => {
         if (!direccion) {
             setdireccionError('La direccion es obligatorio');
@@ -169,6 +183,17 @@ const handleDireccion = (e) => {
         setdireccionError('');
     }
 };
+const handleValor= (e) => {
+    const nuevoValor = e.target.value;
+    setValores(nuevoValor);
+
+    // Establece o elimina el mensaje de error según el contenido del campo
+    if (!nuevoValor.trim()) {
+        setValoresError('Los valores de la empresa son obligatorios');
+    } else {
+        setValoresError('');
+    }
+};
 const handleDescripcion = (e) => {
     const nuevaDescripcion = e.target.value;
     setDescripcion(nuevaDescripcion);
@@ -218,7 +243,7 @@ const handleUsuarioChange = (e) => {
                 setDireccion(res.data.direccion);
                 setTelefono(res.data.telefono);
                 setDescripcion(res.data.descripcion);
-
+                setValores(res.data.valores);
                 setUsuario(res.data.usuario);
                 // No necesitas setear las contraseñas aquí
             })
@@ -245,9 +270,11 @@ const handleUsuarioChange = (e) => {
         const esDireccionValida = validarDireccion();
         const esDescripcionValida = validarDescripcion();
         const esUsuarioValido= validarUsuario();
+        const esvalorValido= validarValores();
+
         // ... (Validar otros campos)
 
-        if (!esNombreEmpresaValido || !esCorreoValido || !esTelefonoValido || !esDireccionValida || !esDescripcionValida || !esUsuarioValido) {
+        if (!esNombreEmpresaValido || !esCorreoValido || !esTelefonoValido || !esDireccionValida || !esDescripcionValida || !esUsuarioValido ||!esvalorValido) {
             return; // Detener si hay errores
         }
         if (password !== confirmPassword) {
@@ -258,6 +285,7 @@ const handleUsuarioChange = (e) => {
             nombreEmpresa,
             rol,
             correo,
+            valores,
             descripcion,
             direccion,
             telefono,
@@ -322,9 +350,7 @@ const handleUsuarioChange = (e) => {
                         </Form.Group>
                     </Col>
                 </Row>
-
                 <Row>
-                    <Col md={6}>
                         <Form.Group controlId="formNombre">
                             <Form.Label> Dirección </Form.Label>
                             <div className="input-icon-wrapper">
@@ -340,7 +366,36 @@ const handleUsuarioChange = (e) => {
                             <div className="text-danger">{direccionError}</div>
 
                         </Form.Group>
-                    </Col>
+                    </Row>
+                    <Form.Group >
+                            <Form.Label>Valores</Form.Label>
+                            <div className="input-icon-wrapper">
+                            <FontAwesomeIcon icon={faBalanceScale} className="input-icon" />
+                                <Form.Control as="textarea"
+                                    rows={4}
+                                    placeholder="Ingrese la descripción de la empresa"
+                                    onChange={handleValor}
+                                    value={valores}
+                                    isInvalid={!!valoresError} />
+                            </div>
+                            <div className="text-danger">{valoresError}</div>
+
+                        </Form.Group>
+                    <Form.Group >
+                            <Form.Label>Descripción</Form.Label>
+                            <div className="input-icon-wrapper">
+                                <Form.Control as="textarea"
+                                    rows={4}
+                                    placeholder="Ingrese la descripción de la empresa"
+                                    onChange={handleDescripcion}
+                                    value={descripcion}
+                                    isInvalid={!!descripcionError} />
+                            </div>
+                            <div className="text-danger">{descripcionError}</div>
+
+                        </Form.Group>
+                <Row>
+                   
                     <Col md={6}>
                         <Form.Group controlId="formTelefono">
                             <Form.Label>Teléfono:</Form.Label>
@@ -376,23 +431,9 @@ const handleUsuarioChange = (e) => {
                            
                         </Form.Group>
                     </Col>
-                    <Col md={6}>
-                        <Form.Group >
-                            <Form.Label>Descripción</Form.Label>
-                            <div className="input-icon-wrapper">
-                                <Form.Control as="textarea"
-                                    rows={4}
-                                    placeholder="Ingrese la descripción de la empresa"
-                                    onChange={handleDescripcion}
-                                    value={descripcion}
-                                    isInvalid={!!descripcionError} />
-                            </div>
-                            <div className="text-danger">{descripcionError}</div>
-
-                        </Form.Group>
-                    </Col>
+                    
                 </Row>
-
+                
                 <Row>
 
 

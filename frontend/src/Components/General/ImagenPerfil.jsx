@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Image, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera,faUpload  } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faUpload } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
 
@@ -72,13 +72,13 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
         };
 
         fetchProfileImage();
-    }, [id,user.foto]);
+    }, [id, user.foto]);
 
     return (
         <div className="image-container text-center mb-3">
             {isEditing ? (
-               <div>
-                <InputGroup className="mb-3">
+                <div>
+                    <InputGroup className="mb-3">
                         <FormControl
                             type="file"
                             accept=".jpg, .jpeg, .png"
@@ -91,11 +91,11 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
                         </Button>
                     </InputGroup>
                     {imagenPreview && (
-                                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
-                         <Image src={imagenPreview} alt="Vista previa de la imagen" roundedCircle className="img-fluid mb-3" />
-                    
-                 </div>
+                            <Image src={imagenPreview} alt="Vista previa de la imagen" roundedCircle className="img-fluid mb-3" />
+
+                        </div>
                     )}
                     <Button variant="success" onClick={handleSaveClick} className="me-2">Guardar</Button>
                     <Button variant="secondary" onClick={handleCancelClick}>Cancelar</Button>

@@ -23,7 +23,7 @@ function DetalleEmpresa(props) {
   const [newImageUrl, setNewImageUrl] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
-
+  const [verDescripcionCompleta, setVerDescripcionCompleta] = useState(false);
   // Estados y manejadores para el modal de editar usuario
   // Estados y manejadores para el modal de editar usuario
   const [showEditUserModal, setShowEditUserModal] = useState(false);
@@ -155,16 +155,11 @@ function DetalleEmpresa(props) {
     });
     setEmpleos(empleosActualizados);
   };
-  const getJobIcon = (tipoEmpleo) => {
-    switch (tipoEmpleo) {
-      case 'Tecnología':
-        return <FontAwesomeIcon icon={faCode} />;
-      case 'Administrativo':
-        return <FontAwesomeIcon icon={faUserTie} />;
-      default:
-        return <FontAwesomeIcon icon={faBriefcase} />;
-    }
+  // Función para alternar la visualización de la descripción
+  const toggleDescripcion = () => {
+    setVerDescripcionCompleta(!verDescripcionCompleta);
   };
+
   return (
     <div className="App">
       <CabeceraEmpresaInicioComp ></CabeceraEmpresaInicioComp>
@@ -173,12 +168,12 @@ function DetalleEmpresa(props) {
           <Col md={4}  >
             <Card className="datos-personales-card">
               <Card.Body>
-              <ImagenEmpresa 
-                id={id} 
-                empresaParam={empresa} 
-                isEditingParam={isEditing}
-                updateEmpresa={setEmpresa}
-            />
+                <ImagenEmpresa
+                  id={id}
+                  empresaParam={empresa}
+                  isEditingParam={isEditing}
+                  updateEmpresa={setEmpresa}
+                />
 
                 <div className="text-center">
                   <Card.Title><strong>{empresa.nombreEmpresa}</strong></Card.Title>
@@ -194,8 +189,26 @@ function DetalleEmpresa(props) {
                   <ListGroup.Item >Correo: {empresa.correo}</ListGroup.Item >
                   <ListGroup.Item >Dirección: {empresa.direccion}</ListGroup.Item >
                   <ListGroup.Item >Teléfono: {empresa.telefono}</ListGroup.Item >
-                  <ListGroup.Item >Descripción: {empresa.descripcion}</ListGroup.Item >
-
+                  <ListGroup.Item>
+                    Descripción: {empresa && empresa.descripcion
+                      ? (verDescripcionCompleta ? empresa.descripcion : `${empresa.descripcion.substring(0, 100)}...`)
+                      : 'Cargando descripción...'}
+                    {empresa && empresa.descripcion && (
+                      <Button variant="link" onClick={toggleDescripcion}>
+                        {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
+                      </Button>
+                    )}
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    Valores: {empresa && empresa.valores
+                      ? (verDescripcionCompleta ? empresa.valores : `${empresa.valores.substring(0, 100)}...`)
+                      : 'Cargando descripción...'}
+                    {empresa && empresa.valores && (
+                      <Button variant="link" onClick={toggleDescripcion}>
+                        {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
+                      </Button>
+                    )}
+                  </ListGroup.Item>
 
                   <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
                     <Modal.Header closeButton>

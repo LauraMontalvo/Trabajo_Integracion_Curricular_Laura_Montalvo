@@ -4,10 +4,7 @@ const md5 = require('md5');
 
 const UserSchema = new mongoose.Schema({   
 
-    foto:{
-        type: String,
-        default: ''
-    },
+   
     nombre:{
         type: String,
         required: [true, 'El nombre es obligatorio'],
