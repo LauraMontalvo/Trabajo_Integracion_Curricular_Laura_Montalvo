@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const UserPhoto = require('../models/userPhoto.model');
+const fs = require('fs').promises; // Asegúrate de importar la versión de promesas de fs
 module.exports.createUser = (request, response) => {
     const { nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword } = request.body;
     User.findOne({ usuario: usuario })
@@ -53,55 +54,47 @@ module.exports.deleteUser = (request, response) => {
         .catch(err => response.json(err))
 }
 
-module.exports.addPhoto = (request, response) => {
+module.exports.addPhoto = async (request, response) => {
     if (!request.file) {
         return response.status(400).json({ error: 'No se ha enviado ningún archivo.' });
     }
 
-    const filePath = 'Imagenes/' + request.file.filename; // La ruta donde se guardó el archivo
-    const imageUrl = `http://localhost:8000/${filePath}`; // La URL de la imagen accesible desde el cliente
-
     const nuevaFoto = {
         foto: request.file.filename,
-        ruta: filePath,
-        idUsuario : request.params.id
+        ruta: 'Imagenes/' + request.file.filename,
+        idUsuario: request.params.id
     };
 
-    console.log(nuevaFoto)
+    try {
+        const fotoUsuario = await UserPhoto.findOne({ idUsuario: request.params.id });
 
-    UserPhoto.findOne({idUsuario: request.params.id})
-        .then(fotoUsuario => {
-            if (!fotoUsuario) {
-                return User.findById(request.params.id);
+        if (fotoUsuario) {
+            // Elimina la foto anterior si existe
+            const oldFilePath = fotoUsuario.ruta;
+            try {
+                await fs.unlink(oldFilePath);
+            } catch (error) {
+                console.warn("Error al eliminar la imagen anterior:", error.message);
             }
-            // Si ya existe, actualiza la información de la foto
+
             fotoUsuario.foto = nuevaFoto.foto;
             fotoUsuario.ruta = nuevaFoto.ruta;
-            return fotoUsuario.save();
-        })
-        .then(userOrFoto => {
-            // userOrFoto puede ser un usuario o un UserPhoto actualizado
-            if (!userOrFoto) {
-                return Promise.reject({ status: 404, message: 'Usuario no encontrado' });
-            }
-            // Si userOrFoto es un usuario, creamos un nuevo UserPhoto
-            if (userOrFoto instanceof User) {
-                return UserPhoto.create(nuevaFoto);
-            }
-            // Si userOrFoto es un UserPhoto actualizado, no hacemos nada más
-            return userOrFoto;
-        })
-        .then(() => {
-            response.json({ mensaje: 'Foto agregada exitosamente', foto: imageUrl });
-        })
-        .catch(error => {
-            console.error('Error al agregar la foto:', error);
-            if (error.status) {
-                return response.status(error.status).json({ error: error.message });
-            } else {
-                return response.status(500).json({ error: 'Error interno del servidor' });
-            }
-        });
+            await fotoUsuario.save();
+        } else {
+            await UserPhoto.create(nuevaFoto);
+        }
+
+        const imageUrl = `http://localhost:8000/${nuevaFoto.ruta}`; // Construye la URL de la imagen
+
+        return response.json({ mensaje: 'Foto agregada exitosamente', foto: imageUrl });
+    } catch (error) {
+        console.error('Error al agregar la foto:', error);
+        if (error.status) {
+            return response.status(error.status).json({ error: error.message });
+        } else {
+            return response.status(500).json({ error: 'Error interno del servidor' });
+        }
+    }
 };
 
 module.exports.getUserPhoto = (request, response) => {
