@@ -26,6 +26,7 @@ import ListaExperienciaLaboral from '../../Components/Usuario/ListaExperienciaLa
 import ListaPostulaciones from '../../Components/Usuario/ListaPostulaciones.jsx';
 import ListaInformacionAcademica from '../../Components/Usuario/ListaInformacionAcademica.jsx';
 import ImagenPerfil from '../../Components/General/ImagenPerfil.jsx';
+import ListaCertificaciones from '../../Components/Usuario/ListaCertificaciones.jsx';
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -328,17 +329,17 @@ function DetalleUsuario(props) {
 
   const handleShowAcadTrainingModal = (acadTrainingId = null) => {
     setShowAcadTrainingModal(true);
-  
+
     if (acadTrainingId) {
       const selectedAcadTraining = acadTraining.find((item) => item._id === acadTrainingId);
       if (selectedAcadTraining) {
         setTituloObtenido(selectedAcadTraining.tituloObtenido);
         setFechaInicio(toShortDateFormat(selectedAcadTraining.fechaInicio));
         setFechaFin(toShortDateFormat(selectedAcadTraining.fechaFin));
-                    setUbicacion(selectedAcadTraining.ubicacion || ''); // Asegúrate de cargar la ubicación aquí
+        setUbicacion(selectedAcadTraining.ubicacion || ''); // Asegúrate de cargar la ubicación aquí
 
         setEditingAcadTrainingId(acadTrainingId);
-  
+
         if (selectedAcadTraining.idInstitucion) {
           setInstitucion({
             label: selectedAcadTraining.idInstitucion.nombreInstitucion,
@@ -373,7 +374,7 @@ function DetalleUsuario(props) {
   };
   const handleInstitucion = (institucionCarga) => {
     setInstitucion(institucionCarga);
-  
+
     const institucionEncontrada = instituciones.find(inst => inst._id === institucionCarga.value);
     if (institucionEncontrada) {
       console.log("Institución encontrada con ubicación: ", institucionEncontrada.ubicacion);
@@ -383,7 +384,7 @@ function DetalleUsuario(props) {
       setUbicacion('');
     }
   };
-  
+
   const cargaInstitucion = (institucionCarga) => {
     setInstitucion(institucionCarga);
   }
@@ -401,31 +402,31 @@ function DetalleUsuario(props) {
 
     try {
       let idInstitucion = null;
-    let ubicacionInstitucion = null;
+      let ubicacionInstitucion = null;
 
-    if (institucion) {
-      if (!instituciones.find(inst => inst.nombreInstitucion === institucion.label)) {
-        const response = await axios.post('http://localhost:8000/api/school/new', {
-          nombreInstitucion: institucion.label,
-          ubicacion: ubicacion // Incluye la ubicación aquí
-        });
-        idInstitucion = response.data.insertedSchool._id;
-        cargarInstituciones(); // Recarga las instituciones para incluir la nueva
-      } else {
-        // Aquí debes encontrar la ubicación de la institución existente
-        const institucionExistente = instituciones.find(inst => inst._id === institucion.value);
-        idInstitucion = institucion.value;
-        ubicacionInstitucion = institucionExistente.ubicacion;
+      if (institucion) {
+        if (!instituciones.find(inst => inst.nombreInstitucion === institucion.label)) {
+          const response = await axios.post('http://localhost:8000/api/school/new', {
+            nombreInstitucion: institucion.label,
+            ubicacion: ubicacion // Incluye la ubicación aquí
+          });
+          idInstitucion = response.data.insertedSchool._id;
+          cargarInstituciones(); // Recarga las instituciones para incluir la nueva
+        } else {
+          // Aquí debes encontrar la ubicación de la institución existente
+          const institucionExistente = instituciones.find(inst => inst._id === institucion.value);
+          idInstitucion = institucion.value;
+          ubicacionInstitucion = institucionExistente.ubicacion;
+        }
       }
-    }
 
-    const dataToSend = {
-      tituloObtenido,
-      idInstitucion,
-      fechaInicio,
-      fechaFin,
-      ubicacion: ubicacionInstitucion // Asegúrate de enviar la ubicación
-    };
+      const dataToSend = {
+        tituloObtenido,
+        idInstitucion,
+        fechaInicio,
+        fechaFin,
+        ubicacion: ubicacionInstitucion // Asegúrate de enviar la ubicación
+      };
 
       if (editingAcadTrainingId) {
         // Si estamos editando, usar método PUT
@@ -470,6 +471,9 @@ function DetalleUsuario(props) {
       console.error('Error al eliminar experiencia laboral', error);
     }
   };
+  const onUserPhotoUpdated = (newPhotoUrl) => {
+    setUser((prevUser) => ({ ...prevUser, foto: newPhotoUrl }));
+  };
   return (
     <div className='App'>
       <CabeceraUsuarioInicio />
@@ -479,8 +483,12 @@ function DetalleUsuario(props) {
             {/* Información del usuario */}
             <Card className="datos-personales-card">
               <Card.Body >
-                <ImagenPerfil id={id} userParam={user} isEditingParam={isEditing} />
-                <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
+                <ImagenPerfil
+                  id={id}
+                  userParam={user}
+                  isEditingParam={isEditing}
+                  onPhotoUpdated={onUserPhotoUpdated} // Asegúrate de pasar esta función como prop
+                />                <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
 
                 <ListGroup variant="flush">
                   {/* ... Listado de datos personales del usuario ... */}
@@ -598,21 +606,21 @@ function DetalleUsuario(props) {
                             </div>
                             {institucionError && <p className="text-danger">{institucionError}</p>}
 
-                            
+
                           </Form.Group>
                           <Form.Group controlId="formUbicacion">
-                              <Form.Label>Ubicación</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Ingrese la ubicación"
-                                value={ubicacion}
-                                onChange={handleUbicacionChange}
-                                isInvalid={!!errorUbicacion}
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {errorUbicacion}
-                              </Form.Control.Feedback>
-                            </Form.Group>
+                            <Form.Label>Ubicación</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Ingrese la ubicación"
+                              value={ubicacion}
+                              onChange={handleUbicacionChange}
+                              isInvalid={!!errorUbicacion}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              {errorUbicacion}
+                            </Form.Control.Feedback>
+                          </Form.Group>
                           <Row>
                             <Col md={6}>
                               <Form.Group>
@@ -682,6 +690,13 @@ function DetalleUsuario(props) {
                   </Card.Body>
                 </Card>
               </Tab>
+              <Tab eventKey="certificaciones" title="Certificaciones">
+    <Card>
+        <Card.Body>
+            <ListaCertificaciones userId={id} />
+        </Card.Body>
+    </Card>
+</Tab>
               <Tab eventKey="laboral" title="Experiencia Laboral">
                 <Card>
                   <Card.Body>
@@ -739,7 +754,7 @@ function DetalleUsuario(props) {
 
 
               </Tab>
-
+              
             </Tabs>
 
           </Col>

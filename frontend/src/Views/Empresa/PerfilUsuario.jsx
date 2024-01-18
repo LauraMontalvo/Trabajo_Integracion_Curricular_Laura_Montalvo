@@ -12,6 +12,8 @@ function PerfilUsuario() {
     const [acadTraining, setAcadTraining] = useState([]);
     const [experienciaLaboral, setExperienciaLaboral] = useState([]);
     const [imagenPreview, setImagenPreview] = useState(null);
+    const [certificaciones, setCertificaciones] = useState([]);
+
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
@@ -26,6 +28,8 @@ function PerfilUsuario() {
                 const expResponse = await axios.get(`http://localhost:8000/api/workExperiences/user/${id}`);
                 setExperienciaLaboral(expResponse.data);
 
+                const certiResponse = await axios.get(`http://localhost:8000/api/certification/user/${id}`);
+                setCertificaciones(certiResponse.data);
                  // Obtener la foto del usuario
             const fotoResponse = await axios.get(`http://localhost:8000/api/user/foto/${id}`);
             if (fotoResponse.data && fotoResponse.data.foto) {
@@ -104,7 +108,28 @@ function PerfilUsuario() {
                                         )}
                                     </Card.Body>
                                 </Card>
+                             
                             </Tab>
+                            <Tab eventKey="certificaciones" title="Certificaciones">
+                            <Card>
+                                    <Card.Body>
+                                        {certificaciones.length > 0 ? (
+                                            certificaciones.map((cert) => (
+                                                <div key={cert._id} className="mb-4 p-3 border rounded">
+                                                    <h5 className="mb-2">{cert.tituloObtenido}</h5>
+                                                    <p className="mb-1"><strong>Titulo Obtenido en la Certifiación:</strong> {cert.titulo}</p>
+                                                    <p className="mb-1"><strong>Ubicación de la Institución: </strong>  {cert.url}</p>
+                                                    <p className="mb-1"><strong>Fecha de Expedión:</strong> {formatDate(cert.fechaExpedicion)}</p>
+                                                    
+                                                </div>
+
+                                            ))
+                                        ) : (
+                                            <p>No se ha registrado certificaciones obtenidas</p>
+                                        )}
+                                    </Card.Body>
+                                </Card>
+                                    </Tab>
                             <Tab eventKey="laboral" title="Experiencia Laboral">
                                 <Card>
                                     <Card.Body>

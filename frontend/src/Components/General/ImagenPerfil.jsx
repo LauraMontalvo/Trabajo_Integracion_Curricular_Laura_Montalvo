@@ -6,7 +6,7 @@ import axios from 'axios';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
 
 
-const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
+const ImagenPerfil = ({ id, userParam, isEditingParam, onPhotoUpdated }) => {
     const [imagen, setImagen] = useState(null);
     const [imagenPreview, setImagenPreview] = useState(null);
     const [isEditing, setIsEditing] = useState(isEditingParam);
@@ -30,6 +30,7 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
 
     const handleSaveClick = async () => {
         try {
+            
             const formData = new FormData();
             formData.append('foto', imagen);
 
@@ -38,6 +39,17 @@ const ImagenPerfil = ({ id, userParam, isEditingParam }) => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log(response.data);  // Imprime la respuesta completa
+
+            if (response && response.data && response.data.mensaje) {
+                console.log("Foto guardada exitosamente, pero no se proporcionó URL para actualizar.");
+                // Aquí necesitas manejar la actualización del estado o recargar la imagen de alguna manera.
+                setIsEditing(false);
+                // Puedes recargar la información del usuario para obtener la nueva imagen
+                onPhotoUpdated(); // Asumiendo que tienes una función para recargar el usuario
+            } else {
+                console.error('Respuesta inesperada del servidor');
+            }
             setUser({ foto: response.data.foto });
             setImagenPreview(response.data.foto); // Establece la nueva imagen como vista previa
             setIsEditing(false);

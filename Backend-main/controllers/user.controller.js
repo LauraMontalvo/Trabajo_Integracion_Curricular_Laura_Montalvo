@@ -59,6 +59,8 @@ module.exports.addPhoto = (request, response) => {
     }
 
     const filePath = 'Imagenes/' + request.file.filename; // La ruta donde se guardó el archivo
+    const imageUrl = `http://localhost:8000/${filePath}`; // La URL de la imagen accesible desde el cliente
+
     const nuevaFoto = {
         foto: request.file.filename,
         ruta: filePath,
@@ -90,7 +92,7 @@ module.exports.addPhoto = (request, response) => {
             return userOrFoto;
         })
         .then(() => {
-            return response.json({ mensaje: 'Foto agregada exitosamente' });
+            response.json({ mensaje: 'Foto agregada exitosamente', foto: imageUrl });
         })
         .catch(error => {
             console.error('Error al agregar la foto:', error);
