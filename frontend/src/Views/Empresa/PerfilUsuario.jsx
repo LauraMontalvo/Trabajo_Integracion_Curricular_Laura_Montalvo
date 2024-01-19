@@ -5,7 +5,8 @@ import { Card, ListGroup, Image, Container, Row, Col, Tab, Tabs } from 'react-bo
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 import ImagenPerfil from '../../Components/General/ImagenPerfil';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 function PerfilUsuario() {
     const { id } = useParams();
     const [user, setUser] = useState(null);
@@ -64,7 +65,10 @@ function PerfilUsuario() {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(dateString).toLocaleDateString('es-ES', options);
     };
-    
+    const truncateUrl = (url) => {
+        const maxChar = 30;
+        return url.length > maxChar ? url.substring(0, maxChar) + '...' : url;
+    };
     return (
         <div className='App'><CabeceraEmpresaInicioComp />
 
@@ -117,8 +121,10 @@ function PerfilUsuario() {
                                             certificaciones.map((cert) => (
                                                 <div key={cert._id} className="mb-4 p-3 border rounded">
                                                     <h5 className="mb-2">{cert.tituloObtenido}</h5>
-                                                    <p className="mb-1"><strong>Titulo Obtenido en la Certifiación:</strong> {cert.titulo}</p>
-                                                    <p className="mb-1"><strong>Ubicación de la Institución: </strong>  {cert.url}</p>
+                                                    <strong>Titulo Obtenido en la Certificación:</strong><p>{cert.titulo}-  <a href={cert.url} target="_blank" rel="noopener noreferrer" className="certificacion-url">
+                            {truncateUrl(cert.url)}
+                            <FontAwesomeIcon icon={faExternalLinkAlt} size="sm" />
+                        </a></p>                                                   
                                                     <p className="mb-1"><strong>Fecha de Expedión:</strong> {formatDate(cert.fechaExpedicion)}</p>
                                                     
                                                 </div>

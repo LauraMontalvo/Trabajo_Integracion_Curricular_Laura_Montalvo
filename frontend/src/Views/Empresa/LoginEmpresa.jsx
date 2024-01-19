@@ -112,7 +112,9 @@ const LoginFormEmpresa = (props) => {
 
         <p className='alertaerror'>{loginStatus}</p>
 
-
+        <p style={{ color: 'red' }}>{loginStatus}</p>
+        <h6>¿Aún no estás registrado?</h6>
+        <Link to="/registrarUsuario">Regístrate ahora!</Link>
       </Form>
 
     </div>

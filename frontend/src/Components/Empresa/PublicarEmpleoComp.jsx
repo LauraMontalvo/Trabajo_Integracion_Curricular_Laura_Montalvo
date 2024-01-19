@@ -203,7 +203,8 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
         formacionAcademica,
         conocimientos,
         aptitudes,
-        experiencia,        modalidad,
+        experiencia,        
+        modalidad,
 
       })
       .then((res) => {

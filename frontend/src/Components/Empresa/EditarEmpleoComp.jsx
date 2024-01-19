@@ -13,7 +13,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
   const [error, setError] = useState('');
   const [puesto, setPuesto] = useState('');
   const [formacionAcademica, setFormacionAcademica] = useState('');
-  const [experienciarequerida, setExperienciarequerida] = useState('');
+  const [experiencia, setExperienciarequerida] = useState('');
   const [modalidad, setModalidad] = useState('');
   //modal de confimracion
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -35,7 +35,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
         setAptitudes(response.data.aptitudes);
         setPuesto(response.data.puesto);
         setFormacionAcademica(response.data.formacionAcademica);
-        setExperienciarequerida(response.data.experienciarequerida);
+        setExperienciarequerida(response.data.experiencia);
         setModalidad(response.data.modalidad);
       })
       .catch(error => {
@@ -54,7 +54,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
       aptitudes,
       puesto,
       formacionAcademica,
-      experienciarequerida,
+      experiencia,
       modalidad
     })
       .then(response => {
@@ -155,7 +155,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
               as="textarea"
               rows={4}
               placeholder="Ingrese la experiencia requerida para el empleo"
-              value={experienciarequerida}
+              value={experiencia}
               onChange={(e) => setExperienciarequerida(e.target.value)}
             />
           </div>
