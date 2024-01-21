@@ -4,7 +4,7 @@ import { Card, Button, Modal, Row, Col, Accordion, Form, Container } from 'react
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle, faHourglass, faTrash, faUser, faUsers, faBriefcase, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
-
+import "../../Styles/ListaEmpresa.scss";
 const ListaPostulacionesAdmin = () => {
     const [empleos, setEmpleos] = useState([]);
     const [filteredEmpleos, setFilteredEmpleos] = useState([]);
@@ -12,11 +12,20 @@ const ListaPostulacionesAdmin = () => {
     const [showModal, setShowModal] = useState(false);
     const [postulacionesActuales, setPostulacionesActuales] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [empleoAEliminar, setEmpleoAEliminar] = useState(null);
     const [postulacionAEliminar, setPostulacionAEliminar] = useState(null);
     const [showConfirmModalEmpleo, setShowConfirmModalEmpleo] = useState(false);
     const [showConfirmModalPostulacion, setShowConfirmModalPostulacion] = useState(false);
+    const [mostrarActivos, setMostrarActivos] = useState(true);
+    const [mostrarInactivos, setMostrarInactivos] = useState(false);
+
+    const cardClass = (estado) => {
+        return estado === 'Activo' ? '' : 'tarjeta-inactiva';
+    };
+    const renderEstadoEmpleo = (estado) => {
+        const color = estado === 'Activo' ? 'text-success' : 'text-danger';
+        return <span className={color}>{estado}</span>;
+    };
     const confirmarEliminacionEmpleo = (empleoId) => {
         setEmpleoAEliminar(empleoId);
         setShowConfirmModalEmpleo(true);
@@ -99,12 +108,26 @@ const ListaPostulacionesAdmin = () => {
         obtenerEmpleosConPostulaciones();
     }, []);
     useEffect(() => {
-        const filtered = empleos.filter(empleo =>
-            empleo.puesto.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            empleo.idEmpresa.nombreEmpresa.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        const filtered = empleos.filter((empleo) => {
+            const coincideConBusqueda = empleo.puesto.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                empleo.idEmpresa.nombreEmpresa.toLowerCase().includes(searchQuery.toLowerCase());
+
+            // Si ambos checkboxes están desactivados, mostrar todos
+            if (!mostrarActivos && !mostrarInactivos) {
+                return coincideConBusqueda;
+            }
+
+            // Si el checkbox de activos está seleccionado, filtrar los activos
+            const activo = mostrarActivos && empleo.estado === 'Activo';
+
+            // Si el checkbox de inactivos está seleccionado, filtrar los inactivos
+            const inactivo = mostrarInactivos && empleo.estado === 'Inactivo';
+
+            return coincideConBusqueda && (activo || inactivo);
+        });
+
         setFilteredEmpleos(filtered);
-    }, [searchQuery, empleos]);
+    }, [searchQuery, empleos, mostrarActivos, mostrarInactivos]);
     return (
         <>
 
@@ -123,6 +146,20 @@ const ListaPostulacionesAdmin = () => {
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                             </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Check
+                                    type="checkbox"
+                                    label="Mostrar empleos activos"
+                                    checked={mostrarActivos}
+                                    onChange={(e) => setMostrarActivos(e.target.checked)}
+                                />
+                                <Form.Check
+                                    type="checkbox"
+                                    label="Mostrar empleos inactivos"
+                                    checked={mostrarInactivos}
+                                    onChange={(e) => setMostrarInactivos(e.target.checked)}
+                                />
+                            </Form.Group>
                         </Col>
 
                         <Col md={9}>
@@ -133,7 +170,7 @@ const ListaPostulacionesAdmin = () => {
                                 <Row>
                                     {filteredEmpleos.map((empleo) => (
                                         <Col md={6} lg={6} key={empleo._id} className="mb-4">
-                                            <Card className="empresa-card">
+                                            <Card className={`empresa-card ${cardClass(empleo.estado)}`}>
                                                 <Card.Body>
                                                     <Row className="empleo-detalle">
                                                         <Col md={12}>
@@ -145,7 +182,7 @@ const ListaPostulacionesAdmin = () => {
                                                             </div>
                                                             <Card.Title>
                                                                 <FontAwesomeIcon icon={faBriefcase} className="me-2" /> {/* Ícono de Puesto */}
-                                                                {empleo.puesto}
+                                                                {empleo.puesto} - {renderEstadoEmpleo(empleo.estado)}
                                                             </Card.Title>                                                             <Card.Subtitle className="mb-2 text-muted">
                                                                 <FontAwesomeIcon icon={faBuilding} className="me-2" /> {/* Ícono de Empresa */}
                                                                 {empleo.idEmpresa.nombreEmpresa}

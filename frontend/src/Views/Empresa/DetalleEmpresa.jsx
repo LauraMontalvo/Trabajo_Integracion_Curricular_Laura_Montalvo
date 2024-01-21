@@ -64,10 +64,7 @@ function DetalleEmpresa(props) {
     setShowEditEmpleoModal(true);
   };
 
-  const handleShowModalEliminar = (empleoId) => {
-    setEmpleoAEliminar(empleoId);
-    setShowModalEliminar(true);
-  };
+ 
   const eliminarEmpleo = () => {
     axios.delete(`http://localhost:8000/api/job/${empleoAEliminar}`)
       .then(() => {
@@ -132,11 +129,13 @@ function DetalleEmpresa(props) {
   };
   const cargarEmpleos = () => {
     axios.get(`http://localhost:8000/api/jobs/company/${id}`)
-      .then((res) => {
-        setEmpleos(res.data);
-      })
-      .catch((err) => console.error(err));
-  };
+        .then((res) => {
+            // Filtrar empleos para excluir los inactivos
+            const empleosActivos = res.data.filter(empleo => empleo.estado === "Activo");
+            setEmpleos(empleosActivos);
+        })
+        .catch((err) => console.error(err));
+};
 
   const cargarEmpleoid = () => {
     axios.get(`http://localhost:8000/api/job/${id}`)
@@ -159,6 +158,23 @@ function DetalleEmpresa(props) {
   const toggleDescripcion = () => {
     setVerDescripcionCompleta(!verDescripcionCompleta);
   };
+
+
+const handleShowModalEliminar = (empleoId) => {
+  setEmpleoAEliminar(empleoId);
+  setShowModalEliminar(true);
+};
+
+const inactivarYEliminarEmpleoDeLista = () => {
+  axios.put(`http://localhost:8000/api/job/${empleoAEliminar}`, { estado: "Inactivo" })
+      .then(() => {
+          // Filtra y actualiza la lista de empleos para excluir el inactivado
+          const empleosActualizados = empleos.filter(empleo => empleo._id !== empleoAEliminar);
+          setEmpleos(empleosActualizados);
+          setShowModalEliminar(false);
+      })
+      .catch(err => console.error(err));
+};
 
   return (
     <div className="App">
@@ -235,15 +251,24 @@ function DetalleEmpresa(props) {
               <Tab eventKey="publicarEmpleo" title="Publicar Empleo">
                 <Card>
                   <Card.Body>
-                    <EmpleosPublicados
-                      empleos={empleos}
-                      mostrarPostulantes={mostrarPostulantes}
-                      handleEditEmpleoClick={handleEditEmpleoClick}
-                      handleShowModalEliminar={handleShowModalEliminar}
-                      showModalEliminar={showModalEliminar}
-                      setShowModalEliminar={setShowModalEliminar}
-                      eliminarEmpleo={eliminarEmpleo}
-                    />
+                  <EmpleosPublicados
+                empleos={empleos}
+                mostrarPostulantes={mostrarPostulantes}
+                handleEditEmpleoClick={handleEditEmpleoClick}
+                handleShowModalEliminar={handleShowModalEliminar}
+            />
+            <Modal show={showModalEliminar} onHide={() => setShowModalEliminar(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmar Inactivación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estás seguro de que deseas inactivar este empleo?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModalEliminar(false)}>Cancelar</Button>
+                    <Button variant="danger" onClick={inactivarYEliminarEmpleoDeLista}>Inactivar</Button>
+                </Modal.Footer>
+            </Modal>
                     {/* Modal para mostrar postulantes */}
                     <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
                       <Modal.Header closeButton>

@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import { Link } from 'react-router-dom';
 import "../../Styles/Lista.scss";
-
 import moment from 'moment';
 import 'moment/locale/es'; // Importar el locale español
 const ListaEmpleos = () => {
@@ -23,8 +22,9 @@ const ListaEmpleos = () => {
         const obtenerEmpleosYPostulaciones = async () => {
             try {
                 const respuestaEmpleos = await axios.get('http://localhost:8000/api/jobs');
+                const empleosActivos = respuestaEmpleos.data.filter(empleo => empleo.estado === 'Activo');
                 const empleosConEmpresa = await Promise.all(
-                    respuestaEmpleos.data.map(async (empleo) => {
+                    empleosActivos.map(async (empleo) => {
                         const resEmpresa = await axios.get(`http://localhost:8000/api/company/${empleo.idEmpresa}`);
                         return { ...empleo, nombreEmpresa: resEmpresa.data.nombreEmpresa };
                     })
@@ -87,25 +87,18 @@ const ListaEmpleos = () => {
                         if (!empleo || !empleo._id) {
                             return null; // O manejar de otra manera cuando el empleo es inválido
                         }
-
                         return (
 
                             <Accordion.Item eventKey={index.toString()} key={empleo._id}>
-
                                 <Card className="card-custom">
-
-
                                     <Accordion.Header >
-
                                         <div>
                                         <p className="publication-date">Publicado {formatRelativeDate(empleo.fechaPublicacion)}</p>
                                             Empleo en  <Link to={`/perfil-empresa/${empleo.idEmpresa._id}`} className="empresa-link">
                                                 {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}
                                             </Link>
                                         </div>
-
                                     </Accordion.Header>
-
                                     <Accordion.Body>
                                         <strong >Puesto:</strong>
                                         <p>{empleo.puesto}</p>

@@ -10,19 +10,17 @@ import 'moment/locale/es'; // Importar el locale español
 const ListaEmpleos = (props) => {
   const [empleos, setEmpleos] = useState([]);
   const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
-
-
   const isAuthenticated = props.isAuthenticated;
-  useEffect(() => {
+  
+useEffect(() => {
     axios.get('http://localhost:8000/api/jobs')
       .then(response => {
-        setEmpleos(response.data);
+        // Filtramos para obtener solo los empleos activos
+        const empleosActivos = response.data.filter(empleo => empleo.estado === 'Activo');
+        setEmpleos(empleosActivos);
       })
       .catch(error => console.error(error));
   }, []);
-
-
-
   const moment = require('moment');
   moment.locale('es'); // Configura el idioma a español
 

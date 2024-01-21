@@ -3,7 +3,7 @@ import { ListGroup, Row, Col, Modal, Button, Accordion } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
 
-const EmpleosPublicados = ({ empleos, mostrarPostulantes, handleEditEmpleoClick, handleShowModalEliminar, showModalEliminar, setShowModalEliminar, eliminarEmpleo }) => {
+const EmpleosPublicados = ({ empleos, mostrarPostulantes, handleEditEmpleoClick, handleShowModalEliminar }) => {
     const [acordeonesAbiertos, setAcordeonesAbiertos] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -78,26 +78,13 @@ const EmpleosPublicados = ({ empleos, mostrarPostulantes, handleEditEmpleoClick,
                                             <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
                                                 onClick={() => handleEditEmpleoClick(empleo._id)}
                                             />
-                                            <FontAwesomeIcon icon={faTrashAlt} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }}
-                                                onClick={() => handleShowModalEliminar(empleo._id)}
-                                            />
+                                         <FontAwesomeIcon icon={faTrashAlt} className="text-danger" style={{ cursor: 'pointer', fontSize: '1.5em' }}
+                                onClick={() => handleShowModalEliminar(empleo._id)}
+                            />
 
                                         </div>
 
-                                        <Modal show={showModalEliminar} onHide={() => setShowModalEliminar(false)}>
-                                            <Modal.Header closeButton>
-                                                <Modal.Title>Confirmar Eliminación</Modal.Title>
-                                            </Modal.Header>
-                                            <Modal.Body>
-                                                ¿Estás seguro de que deseas eliminar este empleo?
-                                            </Modal.Body>
-                                            <Modal.Footer>
-                                                <Button variant="secondary" onClick={() => setShowModalEliminar(false)}>
-                                                    Cancelar
-                                                </Button>
-                                                <Button variant="danger" onClick={eliminarEmpleo}>Eliminar</Button>
-                                            </Modal.Footer>
-                                        </Modal>
+                                        
 
                                     </Accordion.Body>
 

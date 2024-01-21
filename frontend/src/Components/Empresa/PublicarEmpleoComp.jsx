@@ -205,6 +205,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
         aptitudes,
         experiencia,        
         modalidad,
+        estado: 'Activo'
 
       })
       .then((res) => {

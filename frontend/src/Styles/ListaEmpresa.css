@@ -73,4 +73,9 @@
 
 .icon-inactive {
   color: red; /* Color para usuarios inactivos */
+}
+
+.tarjeta-inactiva {
+  opacity: 0.5; /* Ajusta la opacidad como prefieras */
+  background-color: rgba(209, 53, 53, 0.2392156863); /* Color de fondo para tarjetas inactivas */
 }/*# sourceMappingURL=ListaEmpresa.css.map */
