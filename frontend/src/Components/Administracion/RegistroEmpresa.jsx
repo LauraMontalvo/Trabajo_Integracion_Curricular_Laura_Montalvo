@@ -218,7 +218,8 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
       return;
     }
     axios.post(constantes.URL_EMPRESA_NUEVA, {
-      nombreEmpresa, correo, rol, direccion, telefono, descripcion, usuario, valores, password, confirmPassword
+      nombreEmpresa, correo, rol, direccion, telefono, descripcion, 
+      usuario, valores, password, confirmPassword,estado: 'Activo'
     })
       .then((res) => {
         console.log(res);

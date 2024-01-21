@@ -236,6 +236,7 @@ const RegistroUsuario = (props) => {
     usuario,
     password,
     confirmPassword,
+    estado: 'Activo'
   })
       .then((res) => {
         console.log(res);

@@ -110,7 +110,7 @@ const LoginFormEmpresa = (props) => {
           <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
         </div>
 
-        <p className='alertaerror'>{loginStatus}</p>
+       
 
         <p style={{ color: 'red' }}>{loginStatus}</p>
         <h6>¿Aún no estás registrado?</h6>

@@ -3,11 +3,12 @@ import axios from "axios";
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faEdit, faTrash, faIndustry, faPhone, faGlobe, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faEdit, faTrash, faIndustry, faPhone, faGlobe, faMapMarkerAlt, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/Lista.scss";
 import "../../Styles/ListaEmpresa.scss";
 import EditarEmpresa from "../../Components/Empresa/EditarEmpresaComp";
 import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
@@ -23,6 +24,7 @@ const ListaEmpresas = (props) => {
   const [editModal, setEditModal] = useState(false);
   const [empresaToEdit, setEmpresaToEdit] = useState(null);
   const [empresaActualizada, setEmpresaActualizada] = useState(false);
+
 
   // Estado para el filtro de nombre
   const [filtroNombre, setFiltroNombre] = useState("");
@@ -108,7 +110,17 @@ const ListaEmpresas = (props) => {
     // Cambiar `recargar` para forzar una actualización si es necesario
   };
 
+  const toggleEmpresaState = (empresa) => {
+    const nuevoEstado = empresa.estado === 'Activo' ? 'Inactivo' : 'Activo';
 
+    axios.put(`http://localhost:8000/api/company/${empresa._id}`, { estado: nuevoEstado })
+      .then(res => {
+        console.log(res);
+        setEmpresas(empresas.map(emp => emp._id === empresa._id ? { ...emp, estado: nuevoEstado } : emp));
+      })
+      .catch(err => console.error("Error al cambiar el estado de la empresa:", err));
+  };
+  
   return (
     <div className="App">
       <TabsAdministracionComp onAddEmpresa={addEmpresaToList} />
@@ -153,10 +165,26 @@ const ListaEmpresas = (props) => {
                         <Col xs={12} sm={6} md={4} className="text-right">
                           <div className="icon-container">
                             <FontAwesomeIcon className="icon-primary" onClick={() => handleShowEditUserModal(empresa)} icon={faEdit} />
-                            <FontAwesomeIcon className="icon-danger" onClick={() => prepareDelete(empresa)} icon={faTrash} />
+                            <OverlayTrigger
+                              placement="top"
+                              overlay={
+                                <Tooltip id={`tooltip-${empresa._id}`}>
+                                  {empresa.estado === 'Activo' ? 'Desactivar Empresa' : 'Activar Empresa'}
+                                </Tooltip>
+                              }
+                            >
+                              <FontAwesomeIcon
+                                className={empresa.estado === 'Activo' ? 'icon-active' : 'icon-inactive'}
+                                icon={empresa.estado === 'Activo' ? faLockOpen : faLock}
+                                size="lg"
+                                onClick={() => toggleEmpresaState(empresa)} />
+                            </OverlayTrigger>
                           </div>
                         </Col>
                       </Row>
+                      <div className="user-status">
+                        Estado: <span className={empresa.estado === 'Activo' ? 'text-success' : 'text-danger'}>{empresa.estado}</span>
+                      </div>
                     </Card.Body>
                   </Card>
                 </Col>

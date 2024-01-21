@@ -3,7 +3,7 @@ const CompanyPhoto = require('../models/companyPhoto.model'); // Asegúrate de i
 const fs = require('fs').promises;
 
 module.exports.createCompany = (request, response) =>{
-    const {nombreEmpresa, correo, direccion, telefono, descripcion, valores,rol, usuario, password, confirmPassword} = request.body;
+    const {nombreEmpresa, correo, direccion, telefono, descripcion, valores,rol, estado,usuario, password, confirmPassword} = request.body;
     console.log(request.body)
     Company.findOne({ usuario: usuario })
     .then(company =>{
@@ -11,7 +11,7 @@ module.exports.createCompany = (request, response) =>{
             response.status(400).json({ msg: "Usuario existe" });
         }else{
             Company.create({
-                nombreEmpresa, correo, direccion, telefono, descripcion, valores,rol, usuario, password, confirmPassword
+                nombreEmpresa, correo, direccion, telefono, descripcion, valores,rol,estado, usuario, password, confirmPassword
             }).then(Company => response.json({insertedCompany: Company, msg: 'Succesful creation'}))
             .catch(err => response.status(400).json(err));
 

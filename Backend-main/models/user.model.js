@@ -4,6 +4,10 @@ const md5 = require('md5');
 
 const UserSchema = new mongoose.Schema({   
 
+    estado:{
+        type: String,
+        
+    },
     foto:{
         type: String,
         
@@ -52,6 +56,9 @@ const UserSchema = new mongoose.Schema({
       },
 
 }, );
+
+
+
 
 UserSchema.virtual('confirmPassword')
 .get( () => this._confirmPassword )

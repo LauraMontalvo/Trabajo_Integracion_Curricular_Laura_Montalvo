@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const md5 = require('md5');
 const CompanySchema = new mongoose.Schema({   
+    estado:{
+        type: String,
+        
+    },
     foto:{
         type: String,
         

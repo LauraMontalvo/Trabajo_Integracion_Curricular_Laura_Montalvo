@@ -12,9 +12,7 @@ import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaI
 
 const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
-  const [calificaciones, setCalificaciones] = useState({}); // Almacenamiento local de calificaciones
   const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
-  const [imagenPreview, setImagenPreview] = useState(null);
   const isAuthenticated = props.isAuthenticated;
   const [filteredEmpresas, setFilteredEmpresas] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,9 +20,11 @@ const ListaEmpresas = (props) => {
   useEffect(() => {
     axios.get('http://localhost:8000/api/companies')
       .then(response => {
-        const sortedEmpresas = response.data.sort((a, b) => a.nombreEmpresa.localeCompare(b.nombreEmpresa));
-        setEmpresas(sortedEmpresas);
-        setFilteredEmpresas(sortedEmpresas); // Inicialmente, mostrar todas las empresas ordenadas
+        const activasEmpresas = response.data
+          .filter(empresa => empresa.estado === 'Activo')
+          .sort((a, b) => a.nombreEmpresa.localeCompare(b.nombreEmpresa));
+        setEmpresas(activasEmpresas);
+        setFilteredEmpresas(activasEmpresas); // Mostrar solo empresas activas
       })
       .catch(error => console.error(error));
   }, []);
@@ -38,7 +38,6 @@ const ListaEmpresas = (props) => {
     );
     setFilteredEmpresas(filtered);
   };
-
   return (
     <div className="App">
       {esUsuario ? <CabeceraUsuarioInicio isAuthenticated={isAuthenticated} /> : <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} />}

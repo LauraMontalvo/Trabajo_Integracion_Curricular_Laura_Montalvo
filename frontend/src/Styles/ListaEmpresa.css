@@ -56,4 +56,21 @@
 .icon-danger {
   font-size: 24px; /* Tamaño grande para el ícono de eliminación */
   color: #dc3545; /* Color rojo */
+}
+
+.card-inactive {
+  background-color: #f8d7da; /* Un tono suave de rojo para indicar inactividad */
+}
+
+.user-status {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.icon-active {
+  color: green; /* Color para usuarios activos */
+}
+
+.icon-inactive {
+  color: red; /* Color para usuarios inactivos */
 }/*# sourceMappingURL=ListaEmpresa.css.map */

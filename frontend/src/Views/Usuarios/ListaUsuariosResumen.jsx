@@ -17,10 +17,16 @@ const ListaUsuariosResumen = () => {
   useEffect(() => {
     axios.get('http://localhost:8000/api/users')
       .then(response => {
+        // Filtrar solo los usuarios activos antes de ordenarlos
+        const activeUsers = response.data.filter(user => user.estado === 'Activo');
+        
         // Ordenar los usuarios por nombre antes de almacenarlos en el estado
-        const sortedUsers = response.data.sort((a, b) => (a.nombre + ' ' + a.apellido).localeCompare(b.nombre + ' ' + b.apellido));
-        setUsers(sortedUsers);
-        setFilteredUsers(sortedUsers); // Inicialmente, mostrar todos los usuarios ordenados
+        const sortedActiveUsers = activeUsers.sort((a, b) => 
+          (a.nombre + ' ' + a.apellido).localeCompare(b.nombre + ' ' + b.apellido)
+        );
+        
+        setUsers(sortedActiveUsers);
+        setFilteredUsers(sortedActiveUsers); // Inicialmente, mostrar todos los usuarios activos ordenados
       })
       .catch(error => console.error(error));
   }, []);

@@ -1,15 +1,19 @@
 const User = require('../models/user.model');
 const UserPhoto = require('../models/userPhoto.model');
 const fs = require('fs').promises; // Asegúrate de importar la versión de promesas de fs
+const AcadTraining = require('../models/acadTraining.model');
+const Certification = require('../models/certification.model');
+const WorkExperience = require('../models/workExperience.model');
+const Postulation = require('../models/postulation.model');
 module.exports.createUser = (request, response) => {
-    const { nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword } = request.body;
+    const { nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, estado,password, confirmPassword } = request.body;
     User.findOne({ usuario: usuario })
         .then(user => {
             if (user) {
                 response.status(400).json({ msg: "Usuario existe" });
             } else {
                 User.create({
-                    nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, password, confirmPassword
+                    nombre, apellido, rol, sexo, fechaNacimiento, telefono, usuario, estado,password, confirmPassword
                 })
                     .then(User => response.json({ insertedUser: User, msg: 'Succesful creation' }))
                     .catch(err => response.status(400).json(err));
@@ -49,10 +53,28 @@ module.exports.updateUser = (request, response) => {
         .catch(err => response.json(err))
 }
 module.exports.deleteUser = (request, response) => {
-    User.deleteOne({ _id: request.params.id })
-        .then(UserDeleted => response.json(UserDeleted))
-        .catch(err => response.json(err))
-}
+    const userId = request.params.id;
+
+    // Primero, elimina los registros relacionados
+    Promise.all([
+        AcadTraining.deleteMany({ idUsuario: userId }).exec(),
+        Certification.deleteMany({ idUsuario: userId }).exec(),
+        WorkExperience.deleteMany({ idUsuario: userId }).exec(),
+        UserPhoto.deleteMany({ idUsuario: userId }).exec(),
+        Postulation.deleteMany({ idUsuario: userId }).exec(),
+        // Añade aquí otras operaciones de eliminación para modelos relacionados
+    ])
+    .then(() => {
+        // Ahora elimina el usuario
+        return User.deleteOne({ _id: userId }).exec();
+    })
+    .then(() => {
+        response.json({ message: "Usuario y datos relacionados eliminados correctamente." });
+    })
+    .catch(err => {
+        response.status(500).json({ error: err.message });
+    });
+};
 
 module.exports.addPhoto = async (request, response) => {
     if (!request.file) {
