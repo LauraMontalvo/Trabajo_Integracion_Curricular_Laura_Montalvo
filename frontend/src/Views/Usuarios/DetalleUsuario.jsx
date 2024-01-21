@@ -23,10 +23,11 @@ import Select from 'react-select/creatable';
 import EditarExperienciaLaboral from '../../Components/Usuario/EditarExperienciaLaboralComp.jsx';
 import DetalleEmpleoModal from '../../Components/Usuario/DetalleEmpleoPostuladoModal.jsx';
 import ListaExperienciaLaboral from '../../Components/Usuario/ListaExperienciaLaboral.jsx';
-import ListaPostulaciones from '../../Components/Usuario/ListaPostulaciones.jsx';
+import ListaPostulaciones from '../../Components/Usuario/ListaMisPostulaciones.jsx';
 import ListaInformacionAcademica from '../../Components/Usuario/ListaInformacionAcademica.jsx';
 import ImagenPerfil from '../../Components/General/ImagenPerfil.jsx';
 import ListaCertificaciones from '../../Components/Usuario/ListaCertificaciones.jsx';
+import ListaMisPostulaciones from '../../Components/Usuario/ListaMisPostulaciones.jsx';
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -474,6 +475,13 @@ function DetalleUsuario(props) {
   const onUserPhotoUpdated = (newPhotoUrl) => {
     setUser((prevUser) => ({ ...prevUser, foto: newPhotoUrl }));
   };
+  const actualizarEstadoPostulacion = (idPostulacion, nuevoEstado) => {
+    setPostulaciones((prevPostulaciones) => 
+        prevPostulaciones.map((postulacion) =>
+            postulacion._id === idPostulacion ? { ...postulacion, estadoPostulacion: nuevoEstado } : postulacion
+        )
+    );
+};
   return (
     <div className='App'>
       <CabeceraUsuarioInicio />
@@ -741,7 +749,7 @@ function DetalleUsuario(props) {
               <Tab eventKey="misPostulaciones" title="Mis Postulaciones">
                 <Card>
                   <Card.Body>
-                    <ListaPostulaciones
+                    <ListaMisPostulaciones
                       postulaciones={postulaciones}
                       handleShowModal={handleShowModal}
                       eliminarPostulacion={eliminarPostulacion}

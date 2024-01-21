@@ -1,17 +1,16 @@
 const Postulation = require('../models/postulation.model');
 
 module.exports.createPostulation = (request, response) => {
-    const { idUsuario, idEmpleo, estado } = request.body; // Remover fechaPostulacion de aquí
+    const { idUsuario, idEmpleo, estado ,estadoPostulacion} = request.body; // Remover fechaPostulacion de aquí
     Postulation.create({
         idUsuario,
         idEmpleo,
-        estado,
+        estado,estadoPostulacion,
         fechaPostulacion: new Date() // Establecer la fecha actual aquí
     })
     .then(postulation => response.json({ insertedPostulation: postulation, msg: 'Successful creation' }))
     .catch(err => response.status(400).json(err));
 };
-
 
 module.exports.getAllPostulations = (_,response) =>{
     Postulation.find({})

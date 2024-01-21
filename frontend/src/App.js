@@ -17,7 +17,6 @@ import EditarEmpresa from './Components/Empresa/EditarEmpresaComp';
 import LoadingModal from './Views/General/LoadingModal';
 import ListaInstituciones from './Views/Administrador/ListaInstituciones';
 import ListaEmpresas from './Views/Administrador/ListaEmpresas';
-import ListaEmpleos from './Views/Usuarios/ListaEmpleos';
 import PerfilEmpresa from './Views/Usuarios/Perfilempresa';
 import PerfilUsuario from './Views/Empresa/PerfilUsuario';
 import InicioResumen from './Views/General/InicioResumen';
@@ -25,8 +24,8 @@ import ListaUsuariosResumen from './Views/Usuarios/ListaUsuariosResumen';
 import ListaEmpresasResumen from './Views/Usuarios/ListaEmpresasResumen';
 import ListaEmpleosResumen from './Views/Usuarios/ListaEmpleosResumen';
 import ModuloReportes from './Views/Administrador/ModuloReportes/ModuloReportes';
-import RegistroEmpresa from './Components/Administracion/RegistroEmpresa';
 import ListaPostulacionesAdmin from './Views/Administrador/ListaPostulacionesAdmin';
+import BuscarEmpleo from './Views/Usuarios/BuscarEmpleo';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -63,7 +62,7 @@ function App() {
         
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
-            <Route path="/buscarEmpleos/:id" element={<ListaEmpleos />} />
+            <Route path="/buscarEmpleos/:id" element={<BuscarEmpleo/>} />
       
             <Route path="/listaInstituciones" element={<ListaInstituciones />} />
             <Route path="/admin" element={<LoginAdminForm />} />

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const PostulationSchema = new mongoose.Schema({   
+    
+    estadoPostulacion:{
+        type: String,
+        
+    },
     idUsuario: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

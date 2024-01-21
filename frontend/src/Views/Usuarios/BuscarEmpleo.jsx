@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import "../../Styles/Lista.scss";
 import moment from 'moment';
 import 'moment/locale/es'; // Importar el locale español
-const ListaEmpleos = () => {
+const BuscarEmpleo = () => {
     const [empleos, setEmpleos] = useState([]);
     const [postulacionesUsuario, setPostulacionesUsuario] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -57,6 +57,7 @@ const ListaEmpleos = () => {
             const response = await axios.post('http://localhost:8000/api/postulation/new', {
                 idUsuario,
                 idEmpleo: selectedJobId,
+                estadoPostulacion: 'Activo',
                 estado: 'En Espera',
             });
 
@@ -151,4 +152,4 @@ const ListaEmpleos = () => {
     );
 };
 
-export default ListaEmpleos;
+export default BuscarEmpleo;

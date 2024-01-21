@@ -17,27 +17,28 @@ const PerfilEmpresa = () => {
 
   useEffect(() => {
     const cargarDatosEmpresa = async () => {
-      try {
-        // Obtener información de la empresa
-        const resEmpresa = await axios.get(`http://localhost:8000/api/company/${id}`);
-        setEmpresa(resEmpresa.data);
-  
-        // Obtener empleos publicados por la empresa
-        const resEmpleos = await axios.get(`http://localhost:8000/api/jobs/company/${id}`);
-        setEmpleos(resEmpleos.data);
-  
-        const fotoResponse = await axios.get(`http://localhost:8000/api/company/foto/${id}`);
+        try {
+            // Obtener información de la empresa
+            const resEmpresa = await axios.get(`http://localhost:8000/api/company/${id}`);
+            setEmpresa(resEmpresa.data);
+
+            // Obtener empleos publicados por la empresa
+            const resEmpleos = await axios.get(`http://localhost:8000/api/jobs/company/${id}`);
+            const empleosActivos = resEmpleos.data.filter(empleo => empleo.estado === 'Activo'); // Filtrar empleos activos
+            setEmpleos(empleosActivos);
+
+            // Código para la foto
+            const fotoResponse = await axios.get(`http://localhost:8000/api/company/foto/${id}`);
             if (fotoResponse.data && fotoResponse.data.foto) {
                 setImagenPreview(fotoResponse.data.foto);
             }
-            } catch (error) {
-                console.error('Error al cargar los datos:', error);
-            }
+        } catch (error) {
+            console.error('Error al cargar los datos:', error);
+        }
     };
-  
+
     cargarDatosEmpresa();
-  }, [id]);
-  
+}, [id]);
 
   if (!empresa) {
     return null;
