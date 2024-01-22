@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle, faHourglass, faTrash, faUser, faUsers, faBriefcase, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
 import "../../Styles/ListaEmpresa.scss";
+
+
 const ListaPostulacionesAdmin = () => {
     const [empleos, setEmpleos] = useState([]);
     const [filteredEmpleos, setFilteredEmpleos] = useState([]);
@@ -186,6 +188,8 @@ const ListaPostulacionesAdmin = () => {
                                                             </Card.Title>                                                             <Card.Subtitle className="mb-2 text-muted">
                                                                 <FontAwesomeIcon icon={faBuilding} className="me-2" /> {/* Ícono de Empresa */}
                                                                 {empleo.idEmpresa.nombreEmpresa}
+
+                                                                
                                                             </Card.Subtitle>
                                                             <Card.Text>
                                                                 {acordeonesAbiertos[empleo._id] ? empleo.descripcion : `${empleo.descripcion.substring(0, 100)}...`}
@@ -271,6 +275,8 @@ const ListaPostulacionesAdmin = () => {
                             <Row key={postulacion._id} className="mb-2 align-items-center">
                                 <Col>
                                     <FontAwesomeIcon icon={faUser} className="me-2" /> {postulacion.idUsuario.nombre} {postulacion.idUsuario.apellido}
+
+                                    
                                 </Col>
                                 <Col>
                                     {renderEstadoIcono(postulacion.estado)} {postulacion.estado}

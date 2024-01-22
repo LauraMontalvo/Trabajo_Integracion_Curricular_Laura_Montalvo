@@ -9,6 +9,7 @@ import "../../Styles/ListaEmpresa.scss";
 import EditarEmpresa from "../../Components/Empresa/EditarEmpresaComp";
 import TabsAdministracionComp from "../../Components/Administracion/TabsAdministracionComp";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
@@ -150,7 +151,10 @@ const ListaEmpresas = (props) => {
                     <Card.Body>
                       <Row className="align-items-center">
                         <Col xs={12} sm={6} md={8}>
-                          <Card.Title>{empresa.nombreEmpresa}</Card.Title>
+                          <Card.Title>  <Link to={`/perfil-empresa/${empresa._id}`} className="empresa-link">
+                          {empresa.nombreEmpresa || "Empresa no especificada"}
+                        </Link></Card.Title>
+                        
                           <Card.Text>
                             <FontAwesomeIcon icon={faEnvelope} /> {empresa.correo}
                           </Card.Text>

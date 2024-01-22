@@ -39,6 +39,7 @@ function ModuloReportes() {
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentCompanies, setRecentCompanies] = useState([]);
   const [recentJobs, setRecentJobs] = useState([]);
+  const [motivosRechazo, setMotivosRechazo] = useState({}); // Estado para almacenar los conteos de los motivos de rechazo
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/jobs')
@@ -95,7 +96,15 @@ function ModuloReportes() {
             idsUsuariosEnEspera.add(postulacion.idUsuario);
           }
         });
+        const conteoMotivos = {};
 
+        response.data.forEach(postulacion => {
+          if (postulacion.estado === 'Negada' && postulacion.motivoRechazo) {
+            conteoMotivos[postulacion.motivoRechazo] = (conteoMotivos[postulacion.motivoRechazo] || 0) + 1;
+          }
+        });
+
+        setMotivosRechazo(conteoMotivos);
         // Actualizar los estados con la cantidad de usuarios únicos
         setUsuariosAceptados(idsUsuariosAceptados.size);
         setUsuariosRechazados(idsUsuariosRechazados.size);
@@ -109,6 +118,18 @@ function ModuloReportes() {
     // ... aquí irían otras llamadas a API o lógicas adicionales si las tienes
 
   }, [datosPorEmpresa]); // Dependencias de useEffect
+
+  const dataMotivosRechazo = {
+    labels: Object.keys(motivosRechazo),
+    datasets: [
+      {
+        label: 'Motivos de Rechazo',
+        data: Object.values(motivosRechazo),
+        backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0'],
+        hoverBackgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0']
+      },
+    ],
+  };
 
   // Preparar los datos para la gráfica de dona
   const doughnutData = {
@@ -144,7 +165,8 @@ function ModuloReportes() {
         position: 'right',
         labels: {
           font: {
-            size: 14
+            size: 14,
+            family: 'Century Gothic',
           }
         }
       }
@@ -243,13 +265,21 @@ function ModuloReportes() {
       {/* Gráficos */}
       <Row className="justify-content-center mb-4">
         <Col xs={12} md={6}>
-          <Card>
-            <Card.Body>
+          <h2>Estadísticas de Postulaciones</h2>
+          <Card >
+            <Card.Body >
               <Doughnut data={doughnutData} options={doughnutOptions} />
             </Card.Body>
           </Card>
         </Col>
-        {/* Otros gráficos si es necesario */}
+        <Col xs={12} md={6}>
+          <h2>Estadísticas de Motivos de Rechazo</h2>
+          <Card>
+            <Card.Body>
+              <Doughnut data={dataMotivosRechazo} options={doughnutOptions} />
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
 
       {/* Notificaciones */}

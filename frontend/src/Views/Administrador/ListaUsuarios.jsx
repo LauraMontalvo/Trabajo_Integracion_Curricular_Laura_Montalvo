@@ -10,6 +10,7 @@ import * as constantes from '../../Models/Constantes';
 import "../../Styles/Lista.scss";
 import "../../Styles/ListaEmpresa.scss"; // Importa los mismos estilos de ListaEmpresas
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -131,7 +132,11 @@ const ListaUsuarios = () => {
                     <Card.Body>
                       <Row className="align-items-center">
                         <Col md={8}>
-                          <Card.Title><FontAwesomeIcon icon={faUser} className="me-2" />{usuario.nombre} {usuario.apellido}</Card.Title>
+                          <Card.Title><FontAwesomeIcon icon={faUser} className="me-2" />
+                          <Link to={`/perfilUsuario/${usuario._id}`} className="empresa-link">
+                          {usuario.nombre} {usuario.apellido}
+                        </Link>
+                          </Card.Title>
                           <Card.Text><strong>Género:</strong> {usuario.sexo}</Card.Text>
                           <Card.Text><strong>Fecha de Nacimiento:</strong> {formatDate(usuario.fechaNacimiento)}</Card.Text>
                           <Card.Text><strong>Teléfono:</strong> {usuario.telefono}</Card.Text>

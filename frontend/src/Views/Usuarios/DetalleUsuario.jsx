@@ -75,6 +75,7 @@ function DetalleUsuario(props) {
   const [editingExperienceId, setEditingExperienceId] = useState(null);
 
   ///
+  
   const handleUbicacionChange = (e) => {
     setUbicacion(e.target.value);
     console.log("Ubicación editada:", e.target.value);
@@ -756,6 +757,8 @@ function DetalleUsuario(props) {
                       showModal={showModal}
                       setShowModal={setShowModal}
                       empleoSeleccionado={empleoSeleccionado}
+                      setPostulaciones={setPostulaciones} // Pasa setPostulaciones al componente hijo
+
                     />
                   </Card.Body>
                 </Card>

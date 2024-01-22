@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
-import { ListGroup, Row, Col, Button, Modal } from 'react-bootstrap';
+import { ListGroup, Row, Col, Button, Modal ,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faTrashAlt, faHourglass, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faTrashAlt, faHourglass, faCheckCircle, faTimesCircle,faEye,faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/loginstyle.css"
 import "../../Styles/detalle.scss"
 import DetalleEmpleoPostuladoModal from './DetalleEmpleoPostuladoModal'; // Asegúrate de que la ruta sea correcta
 import axios from 'axios';
+
 const ListaMisPostulaciones = ({
     postulaciones,
     handleShowModal,
@@ -15,7 +16,7 @@ const ListaMisPostulaciones = ({
     showModal,
     setShowModal,
     empleoSeleccionado,
-    actualizarEstadoPostulacion, // Usa esta función para actualizar el estado
+    setPostulaciones, // Usa esta función para actualizar el estado
 
 }) => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -37,22 +38,53 @@ const ListaMisPostulaciones = ({
                 return null;
         }
     };
+    const renderMotivoRechazo = (postulacion) => {
+        if (postulacion.estado === 'Negada' && postulacion.motivoRechazo) {
+            return (
+                <OverlayTrigger
+                    placement="top"
+                    overlay={
+                        <Tooltip id={`tooltip-icon-button-${postulacion._id}`}>
+                            {postulacion.motivoRechazo}
+                        </Tooltip>
+                    }
+                >
+                    <FontAwesomeIcon icon={faEye} className="ms-2 icon-button" />
+                </OverlayTrigger>
+            );
+        }
+        return null;
+    };
     const inactivarPostulacion = async () => {
         if (selectedPostulacionId) {
             try {
-                await axios.put(`http://localhost:8000/api/postulation/${selectedPostulacionId}`, {
+                const response = await axios.put(`http://localhost:8000/api/postulation/${selectedPostulacionId}`, {
                     estadoPostulacion: 'Inactivo'
                 });
-                actualizarEstadoPostulacion(selectedPostulacionId, 'Inactivo');
-                setShowConfirmModal(false);
+    
+                // Si la operación fue exitosa, actualiza el estado para reflejar el cambio.
+                if (response.data) {
+                    const updatedPostulaciones = postulaciones.map(postulacion => {
+                        if (postulacion._id === selectedPostulacionId) {
+                            return { ...postulacion, estadoPostulacion: 'Inactivo' }; // Actualiza el estado de la postulación específica
+                        }
+                        return postulacion; // Retorna las postulaciones que no han cambiado
+                    });
+    
+                    // Filtra las postulaciones inactivas para no mostrarlas en la lista
+                    const activePostulaciones = updatedPostulaciones.filter(postulacion => postulacion.estadoPostulacion !== 'Inactivo');
+                    setShowConfirmModal(false);
+                    setPostulaciones(activePostulaciones); // Actualiza el estado con las postulaciones activas
+                }
             } catch (error) {
                 console.error('Error al inactivar postulación:', error);
+                // Asegúrate de manejar el error aquí, como mostrar un mensaje al usuario.
             }
         }
     };
-    const postulacionesActivas = postulaciones.filter((postulacion) => 
-    postulacion.estadoPostulacion !== 'Inactivo' && postulacion.idEmpleo.estado === 'Activo'
-);
+    const postulacionesActivas = postulaciones.filter(postulacion => 
+        postulacion.estadoPostulacion !== 'Inactivo' && postulacion.idEmpleo.estado === 'Activo'
+      );
     return (
         <>
             {postulaciones.length > 0 ? (
@@ -66,7 +98,8 @@ const ListaMisPostulaciones = ({
                                             <strong>Empresa:</strong>{" "}
                                             <Link to={`/perfil-empresa/${postulacion.idEmpleo?.idEmpresa?._id}`}>
                                                 {postulacion.idEmpleo?.idEmpresa?.nombreEmpresa}
-                                            </Link>                                            <FontAwesomeIcon
+                                            </Link>                                            
+                                            <FontAwesomeIcon
                                                 icon={faInfoCircle}
                                                 className="icon-button"
                                                 onClick={() => handleShowModal(postulacion.idEmpleo)}
@@ -78,7 +111,7 @@ const ListaMisPostulaciones = ({
                                         <span>
                                             <strong>Estado:</strong> {postulacion.estado}
                                             <strong> {renderEstadoIcono(postulacion.estado)}</strong>
-
+                                            {renderMotivoRechazo(postulacion)}
                                         </span>
                                     </div>
                                     </Col>
