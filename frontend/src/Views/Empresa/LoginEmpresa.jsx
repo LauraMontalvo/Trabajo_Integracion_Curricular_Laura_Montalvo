@@ -9,10 +9,11 @@ import * as constantes from '../../Models/Constantes'
 import profile from "../../img/empresa.png";
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../../img/logofondo.png";
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../../Components/General/Cabecera';
+import RegistroEmpresa from '../../Components/Administracion/RegistroEmpresa';
 
 const LoginFormEmpresa = (props) => {
   const [password, setPassword] = useState("");
@@ -20,6 +21,10 @@ const LoginFormEmpresa = (props) => {
   const [loginStatus, setLoginStatus] = useState("");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const handleRegisterModalShow = () => setShowRegisterModal(true);
+  const handleRegisterModalClose = () => setShowRegisterModal(false);
 
   const handlerLoginEmpresa = (e) => {
     e.preventDefault();
@@ -49,9 +54,7 @@ const LoginFormEmpresa = (props) => {
     }
   }
 
-  const RegresarPaginaPrincipal = () => {
-    navigate("/");
-  }
+  
   const RegresarRegistrarComo = () => navigate("/registrarseComo");
 
   return (
@@ -109,18 +112,19 @@ const LoginFormEmpresa = (props) => {
 
           <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
         </div>
-
-       
-
         <p style={{ color: 'red' }}>{loginStatus}</p>
         <h6>¿Aún no estás registrado?</h6>
-        <Link to="/registrarUsuario">Regístrate ahora!</Link>
+        <Link to="#" onClick={handleRegisterModalShow}>Regístrate ahora!</Link>
       </Form>
-
+      <Modal show={showRegisterModal} onHide={handleRegisterModalClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Registro de Empresa</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <RegistroEmpresa onCloseRegisterModal={handleRegisterModalClose} />
+        </Modal.Body>
+      </Modal>
     </div>
-
-
-
 
   )
 }

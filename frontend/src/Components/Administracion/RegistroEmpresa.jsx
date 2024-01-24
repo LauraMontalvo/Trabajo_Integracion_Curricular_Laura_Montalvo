@@ -46,20 +46,16 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
   const [direccionError, setDireccionError] = useState("");
   const [telefonoError, settelefonoError] = useState("");
   const [descripcionError, setDescripcionError] = useState("");
-
   const [usuarioError, setusuarioError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const rol = "Empresa";
   const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
   const handleSuccessModalShow = () => setShowSuccessModal(true);
-  ////
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
   };
-
   const validateValores = () => {
     if (!valores.trim()) {
       setValoresError("Los valores de la empresa son obligatorios");
@@ -69,11 +65,9 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
       return true;
     }
   };
-
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
     setterFunction(value);
-
     // Validación del Correo Electrónico
     if (name === 'correo') {
       const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -134,11 +128,8 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
       settelefonoError('');
     }
   };
-
-
   const validarFormularioAntesDeEnviar = () => {
     let formularioEsValido = true;
-
     if (!validateValores()) {
       formularioEsValido = false;
     }
@@ -149,7 +140,6 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
     } else {
       setNombreEmpresaError('');
     }
-
     // Validar correo
     const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!correo || !regexCorreo.test(correo)) {
@@ -158,7 +148,6 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
     } else {
       setCorreoError('');
     }
-
     // Validar dirección
     if (!direccion) {
       setDireccionError(constantes.TEXTO_DIRECCION_EMPRESA_OBLIGATORIO);
@@ -463,7 +452,6 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
 
             <div className="botones-centrados">
               <Button type="submit" className='btn-primary'>Crear cuenta</Button>
-              <Button className='btn-danger' onClick={() => navigate('/listaEmpresas')}>Cancelar</Button>
             </div>
             <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
               <Modal.Header closeButton>

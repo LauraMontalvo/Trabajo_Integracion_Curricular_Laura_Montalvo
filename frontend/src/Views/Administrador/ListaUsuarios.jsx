@@ -19,7 +19,18 @@ const ListaUsuarios = () => {
   const [mostrarActivos, setMostrarActivos] = useState(true);
   const [mostrarInactivos, setMostrarInactivos] = useState(true);
 
+  const recargarUsuarios = () => {
+    axios.get(constantes.URL_OBTENER_USUARIOS)
+      .then(res => {
+        setUsuarios(res.data);
+        setUsuariosFiltrados(res.data);
+      })
+      .catch(err => console.error("Error al obtener usuarios:", err));
+  };
 
+  useEffect(() => {
+    recargarUsuarios();
+  }, []);
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
@@ -88,7 +99,7 @@ const ListaUsuarios = () => {
 
   return (
     <div className="App">
-      <TabsAdministracionComp />
+<TabsAdministracionComp onRecargarUsuarios={recargarUsuarios} />
       <Container fluid className="mt-4">
         <Row>
           <Col md={3} className="widget">

@@ -20,7 +20,7 @@ const CampoEstado = ({ valido, mensajeError }) => {
     return null;
   }
 };
-const RegistroUsuario = (props) => {
+const RegistroUsuarioUS = (props) => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [sexo, setSexo] = useState(null);
@@ -281,7 +281,6 @@ const RegistroUsuario = (props) => {
   return (
 
     <div className='App'>
-      <Cabecera />
       <Form onSubmit={onsubmitHandler} className="mi-formulario">
         <Row>
           <Col md={6}>
@@ -452,7 +451,7 @@ const RegistroUsuario = (props) => {
 
         <div className="botones-centrados">
           <Button type="submit" className='btn-primary'>Crear cuenta</Button>
-          <Button className='btn-danger' onClick={() => navigate('/loginusuario')}>Cancelar</Button>
+       
         </div>
         <div></div>
         <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
@@ -488,4 +487,4 @@ const RegistroUsuario = (props) => {
   );
 };
 
-export default RegistroUsuario;
+export default RegistroUsuarioUS;

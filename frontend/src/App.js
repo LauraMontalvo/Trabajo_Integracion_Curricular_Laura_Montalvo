@@ -1,7 +1,7 @@
 // Importa las librerías necesarias
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import RegistroUsuario from './Views/Usuarios/RegistroUsuario';
+import RegistroUsuario from './Components/Administracion/RegistroUsuario';
 import LoginForm from './Views/Usuarios/LoginUsuario';
 import LoginFormEmpresa from './Views/Empresa/LoginEmpresa';
 
@@ -26,6 +26,8 @@ import ListaEmpleosResumen from './Views/Usuarios/ListaEmpleosResumen';
 import ModuloReportes from './Views/Administrador/ModuloReportes/ModuloReportes';
 import ListaPostulacionesAdmin from './Views/Administrador/ListaPostulacionesAdmin';
 import BuscarEmpleo from './Views/Usuarios/BuscarEmpleo';
+import RegistroUsuarioUS from './Components/Usuario/RegistrarUsuarioUS';
+import ListaAdministradores from './Views/Administrador/ListaAdministradores';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +56,7 @@ function App() {
             <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
             <Route path="/loginusuario" element={<LoginForm />} />
             <Route path="/empresa" element={<LoginFormEmpresa />} />
-            <Route path="/registrarUsuario" element={<RegistroUsuario />} />
+            <Route path="/registrarUsuarioUS" element={<RegistroUsuarioUS />} />
           
 
             <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
@@ -62,6 +64,7 @@ function App() {
         
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
+            <Route path="/listaAdministradores" element={<ListaAdministradores />} />
             <Route path="/buscarEmpleos/:id" element={<BuscarEmpleo/>} />
       
             <Route path="/listaInstituciones" element={<ListaInstituciones />} />

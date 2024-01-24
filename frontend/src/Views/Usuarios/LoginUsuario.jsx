@@ -1,23 +1,27 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button } from 'reactstrap';
-
 import { Form } from 'react-bootstrap';
 import md5 from 'md5';
 import "../../Styles/loginstyle.css"
 import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../../img/logofondo.png";
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Modal } from 'react-bootstrap';
 import * as constantes from '../../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../../Components/General/Cabecera';
+import RegistroUsuarioUS from '../../Components/Usuario/RegistrarUsuarioUS';
 
 const LoginForm = (props) => {
   const [password, setPassword] = useState("");
   const [usuario, setUsuario] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const handleRegisterModalShow = () => setShowRegisterModal(true);
+  const handleRegisterModalClose = () => setShowRegisterModal(false);
+
   const navigate = useNavigate();
   const handlerLogin = (e) => {
     e.preventDefault();
@@ -108,8 +112,16 @@ const LoginForm = (props) => {
 
         <p style={{ color: 'red' }}>{loginStatus}</p>
         <h6>¿Aún no estás registrado?</h6>
-        <Link to="/registrarUsuario">Regístrate ahora!</Link>
+        <Link to="#" onClick={handleRegisterModalShow}>Regístrate ahora!</Link>
       </Form>
+      <Modal show={showRegisterModal} onHide={handleRegisterModalClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Registro de Usuario</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <RegistroUsuarioUS />
+        </Modal.Body>
+      </Modal>
     </div>
 
   )

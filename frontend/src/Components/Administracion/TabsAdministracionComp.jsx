@@ -7,9 +7,24 @@ import { useState } from 'react';
 import * as constantes from '../../Models/Constantes'
 import RegistroInstituciones from "./RegistroInstitucionesView";
 import RegistroEmpresa from "./RegistroEmpresa";
-const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa }) => {
+import RegistroUsuario from "./RegistroUsuario";
+import RegistroAdministrador from "./RegistroAdministrador";
+const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa, onRecargarUsuarios,onRecargarAdministradores}) => {
   const [showRegisterInstitutionModal, setShowRegisterInstitutionModal] = useState(false);
   const [showRegisterCompanyModal, setShowRegisterCompanyModal] = useState(false);
+  const [showRegisterUserModal, setShowRegisterUserModal] = useState(false);
+  const [showRegisterAdminModal, setShowRegisterAdminModal] = useState(false);
+
+  const handleShowRegisterAdminModal = () => setShowRegisterAdminModal(true);
+  const handleCloseRegisterAdminModal = () => setShowRegisterAdminModal(false);
+  
+  const handleShowRegisterUserModal = () => {
+    setShowRegisterUserModal(true);
+  };
+
+  const handleCloseRegisterUserModal = () => {
+    setShowRegisterUserModal(false);
+  };
 
   const handleShowRegisterInstitutionModal = () => {
     setShowRegisterInstitutionModal(true);
@@ -43,7 +58,17 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa }) => {
               <NavDropdown.Item onClick={handleShowRegisterCompanyModal}>Registrar Empresa</NavDropdown.Item>
             </NavDropdown>
 
-            <Nav.Link as={Link} to="/listaUsuarios">Lista de Usuarios</Nav.Link>
+            <NavDropdown title="Administradores" id="nav-dropdown">
+              <NavDropdown.Item as={Link} to="/listaAdministradores">Ver Administradores</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleShowRegisterAdminModal}>Registrar Administrador</NavDropdown.Item>
+
+            </NavDropdown>
+
+
+            <NavDropdown title="Usuarios" id="nav-dropdown">
+        <NavDropdown.Item as={Link} to="/listaUsuarios">Ver Usuarios</NavDropdown.Item>
+        <NavDropdown.Item onClick={handleShowRegisterUserModal}>Registrar Usuarios</NavDropdown.Item>
+      </NavDropdown>
             <NavDropdown title="Instituciones" id="nav-dropdown">
               <NavDropdown.Item as={Link} to="/listaInstituciones" >Lista Instituciones</NavDropdown.Item>
               <NavDropdown.Item onClick={handleShowRegisterInstitutionModal}>
@@ -73,6 +98,22 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa }) => {
           <RegistroEmpresa onEmpresaRegistered={onAddEmpresa} onCloseRegisterModal={handleCloseRegisterCompanyModal} />
         </Modal.Body>
       </Modal>
+      <Modal show={showRegisterUserModal} onHide={handleCloseRegisterUserModal} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>Registrar Usuario</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <RegistroUsuario onRecargarUsuarios={onRecargarUsuarios} />
+      </Modal.Body>
+    </Modal>
+    <Modal show={showRegisterAdminModal} onHide={handleCloseRegisterAdminModal} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>Registrar Administrador</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <RegistroAdministrador onRegistroExitoso={onRecargarAdministradores} />
+      </Modal.Body>
+    </Modal>
     </>
   );
 };
