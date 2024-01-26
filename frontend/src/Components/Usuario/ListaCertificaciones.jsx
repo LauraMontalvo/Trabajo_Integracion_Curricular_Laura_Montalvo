@@ -2,9 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, ListGroup, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faExternalLinkAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faExternalLinkAlt, faTrashAlt, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import EditarCertificacion from './EditarCertificaciones';
 
+const CampoEstado = ({ valido, mensajeError }) => {
+    if (mensajeError) {
+        return <FontAwesomeIcon icon={faExclamationCircle} className="text-danger" />;
+    } else if (valido) {
+        return <FontAwesomeIcon icon={faCheckCircle} className="text-success" />;
+    } else {
+        return null; // No muestra nada si el campo aún no ha sido validado o está vacío
+    }
+};
 const ListaCertificaciones = ({ userId }) => {
     const [certificaciones, setCertificaciones] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -15,6 +24,53 @@ const ListaCertificaciones = ({ userId }) => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [certificacionAEliminar, setCertificacionAEliminar] = useState(null);
+    const [tituloError, setTituloError] = useState('');
+    const [urlError, setUrlError] = useState('');
+    const [fechaExpedicionError, setFechaExpedicionError] = useState('');
+    const [showSuccessAddModal, setShowSuccessAddModal] = useState(false); // Estado para el modal de éxito al agregar
+    const handleSuccessAddClose = () => {
+        setShowSuccessAddModal(false); // Cierra el modal de éxito
+        setShowModal(false); // Cierra el modal de agregar
+        resetForm(); // Restablece el formulario si es necesario
+    };
+    
+
+    const esCampoValido = (valor, error) => {
+        return valor && !error;
+    }
+    const validarTitulo = (titulo) => {
+        if (!titulo) {
+            setTituloError('El título es obligatorio.');
+            return false;
+        }
+        setTituloError('');
+        return true;
+    };
+
+    const validarUrl = (url) => {
+        if (!url) {
+            setUrlError('La URL es obligatoria.');
+            return false;
+        }
+
+        const regexUrl = /^(ftp|http|https):\/\/[^ "]+$/;
+        if (!regexUrl.test(url)) {
+            setUrlError('La URL no es válida.');
+            return false;
+        }
+
+        setUrlError('');
+        return true;
+    };
+
+    const validarFechaExpedicion = (fecha) => {
+        if (!fecha) {
+            setFechaExpedicionError('La fecha de expedición es obligatoria.');
+            return false;
+        }
+        setFechaExpedicionError('');
+        return true;
+    };
 
     // Agrega las funciones handleEdit y handleDelete en tu componente
     const handleEdit = (certificacion) => {
@@ -53,6 +109,16 @@ const ListaCertificaciones = ({ userId }) => {
     }, [userId]);
 
     const handleAgregarCertificacion = async () => {
+
+        const esTituloValido = validarTitulo(titulo);
+        const esUrlValida = validarUrl(url);
+        const esFechaValida = validarFechaExpedicion(fechaExpedicion);
+
+        if (!esTituloValido || !esUrlValida || !esFechaValida) {
+            // No continuar si hay errores
+            return;
+        }
+
         try {
             const response = await axios.post('http://localhost:8000/api/certification/new', {
                 titulo,
@@ -62,7 +128,11 @@ const ListaCertificaciones = ({ userId }) => {
             });
 
             setCertificaciones([...certificaciones, response.data.insertedCertification]);
+            resetForm();
             setShowModal(false);
+            setShowSuccessAddModal(true); // Muestra el modal de éxito
+
+
         } catch (error) {
             console.error('Error al agregar certificación:', error);
         }
@@ -70,6 +140,20 @@ const ListaCertificaciones = ({ userId }) => {
     const truncateUrl = (url) => {
         const maxChar = 30;
         return url.length > maxChar ? url.substring(0, maxChar) + '...' : url;
+    };
+    const resetForm = () => {
+        setTitulo('');
+        setUrl('');
+        setFechaExpedicion('');
+        setTituloError('');
+        setUrlError('');
+        setFechaExpedicionError('');
+    };
+
+    // Esta función se llamará cuando el modal se cierre
+    const handleOpenModal = () => {
+        resetForm(); // Restablece los estados de error al abrir el modal
+        setShowModal(true); // Abre el modal
     };
     return (
         <>
@@ -100,7 +184,7 @@ const ListaCertificaciones = ({ userId }) => {
                 ))}
             </ListGroup>
             <Card.Body className="text-center">
-                <Button variant="primary" onClick={() => setShowModal(true)}>Agregar Certificación</Button>
+                <Button variant="primary" onClick={handleOpenModal}>Agregar Certificación</Button>
             </Card.Body>
 
             {certificacionAEditar && (
@@ -120,27 +204,60 @@ const ListaCertificaciones = ({ userId }) => {
                     <Form className="mi-formulario">
                         <Form.Group>
                             <Form.Label>Título Obtenido en la Certificación</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={titulo}
-                                onChange={(e) => setTitulo(e.target.value)}
-                            />
+                            <div className="input-icon-wrapper">
+                                <Form.Control
+                                    type="text"
+                                    value={titulo}
+                                    onChange={(e) => {
+                                        setTitulo(e.target.value);
+                                        validarTitulo(e.target.value);
+                                    }}
+                                    isInvalid={!!tituloError}
+                                />
+                                <CampoEstado
+                                    valido={esCampoValido(titulo, tituloError)}
+                                    mensajeError={tituloError}
+                                />
+                            </div>
+                            {tituloError && <p className="text-danger">{tituloError}</p>}
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>URL</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={url}
-                                onChange={(e) => setUrl(e.target.value)}
-                            />
+                            <div className="input-icon-wrapper">
+                                <Form.Control
+                                    type="text"
+                                    value={url}
+                                    onChange={(e) => {
+                                        setUrl(e.target.value);
+                                        validarUrl(e.target.value);
+                                    }}
+                                    isInvalid={!!urlError}
+                                />
+                                <CampoEstado
+                                    valido={esCampoValido(url, urlError)}
+                                    mensajeError={urlError}
+                                />
+                            </div>
+                            {urlError && <p className="text-danger">{urlError}</p>}
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Fecha de Expedición</Form.Label>
-                            <Form.Control
-                                type="date"
-                                value={fechaExpedicion}
-                                onChange={(e) => setFechaExpedicion(e.target.value)}
-                            />
+                            <div className="input-icon-wrapper">
+                                <Form.Control
+                                    type="date"
+                                    value={fechaExpedicion}
+                                    onChange={(e) => {
+                                        setFechaExpedicion(e.target.value);
+                                        validarFechaExpedicion(e.target.value, setFechaExpedicionError);
+                                    }}
+                                    isInvalid={!!fechaExpedicionError}
+                                />
+                                <CampoEstado
+                                    valido={esCampoValido(fechaExpedicion, fechaExpedicionError)}
+                                    mensajeError={fechaExpedicionError}
+                                />
+                            </div>
+                            {fechaExpedicionError && <p className="text-danger">{fechaExpedicionError}</p>}
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -169,6 +286,19 @@ const ListaCertificaciones = ({ userId }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <Modal show={showSuccessAddModal} onHide={handleSuccessAddClose}>
+    <Modal.Header closeButton>
+        <Modal.Title>Certificación agregada con éxito</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+        ¡Tu certificación ha sido agregada exitosamente!
+    </Modal.Body>
+    <Modal.Footer>
+        <Button variant="success" onClick={handleSuccessAddClose}>
+            Cerrar
+        </Button>
+    </Modal.Footer>
+</Modal>
         </>
     );
 };

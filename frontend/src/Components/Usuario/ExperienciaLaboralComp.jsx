@@ -99,47 +99,47 @@ const ExperieciaLaboral = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-     // Valida todos los campos
-  validateDescripcionResp(descripcionResponsabilidades, setDescripciaonResponsabilidadesError);
-  validateAmbito(ambitoLaboral, setAmbitoLaboralError);
-  validateRazonSocial(empresa, setEmpresaError);
-  validateFechaInicio(fechaInicio, setFechaInicioError);
-  validateFechaFin(fechaFin, setFechaFinError, fechaInicio);
-  validatePuesto(puesto, setPuestoError);
+    // Valida todos los campos
+    validateDescripcionResp(descripcionResponsabilidades, setDescripciaonResponsabilidadesError);
+    validateAmbito(ambitoLaboral, setAmbitoLaboralError);
+    validateRazonSocial(empresa, setEmpresaError);
+    validateFechaInicio(fechaInicio, setFechaInicioError);
+    validateFechaFin(fechaFin, setFechaFinError, fechaInicio);
+    validatePuesto(puesto, setPuestoError);
 
-  // Comprobar si todos los campos son válidos antes de enviar el formulario
-  if (esCampoValido(descripcionResponsabilidades, descripcionResponsabilidadesError) &&
-  esCampoValido(ambitoLaboral, ambitoLaboralError) &&
-  esCampoValido(empresa, empresaError) &&
-  esCampoValido(fechaInicio, fechaInicioError) &&
-  esCampoValido(fechaFin, fechaFinError) &&
-  esCampoValido(puesto, puestoError)) {
-    // Todos los campos son válidos, proceder con el envío del formulario
-    axios.post(constantes.URL_EXPERIENCIA_LABORAL_NUEVA, {
-      puesto,
-      descripcionResponsabilidades,
-      ambitoLaboral,
-      empresa,
-      fechaInicio,
-      fechaFin,
-      idUsuario
-    })
-      .then((res) => {
-        console.log(res);
-        setShowSuccessModal(true);
-        setDescripcionResponsabilidades('');
-        setAmbitoLaboral('');
-        setEmpresa('');
-        setFechaInicio('');
-        setFechaFin('');
-        setPuesto('');
-        props.onExperienciaAdded();
-
+    // Comprobar si todos los campos son válidos antes de enviar el formulario
+    if (esCampoValido(descripcionResponsabilidades, descripcionResponsabilidadesError) &&
+      esCampoValido(ambitoLaboral, ambitoLaboralError) &&
+      esCampoValido(empresa, empresaError) &&
+      esCampoValido(fechaInicio, fechaInicioError) &&
+      esCampoValido(fechaFin, fechaFinError) &&
+      esCampoValido(puesto, puestoError)) {
+      // Todos los campos son válidos, proceder con el envío del formulario
+      axios.post(constantes.URL_EXPERIENCIA_LABORAL_NUEVA, {
+        puesto,
+        descripcionResponsabilidades,
+        ambitoLaboral,
+        empresa,
+        fechaInicio,
+        fechaFin,
+        idUsuario
       })
-      .catch((error) => {
-        console.error(error.response);
-        // Manejo de error
-      });
+        .then((res) => {
+          console.log(res);
+          setShowSuccessModal(true);
+          setDescripcionResponsabilidades('');
+          setAmbitoLaboral('');
+          setEmpresa('');
+          setFechaInicio('');
+          setFechaFin('');
+          setPuesto('');
+          props.onExperienciaAdded();
+
+        })
+        .catch((error) => {
+          console.error(error.response);
+          // Manejo de error
+        });
     }
   };
 
@@ -147,22 +147,22 @@ const ExperieciaLaboral = (props) => {
     <Form onSubmit={handleSubmit} className="mi-formulario">
       {error && <Alert variant="danger">{error}</Alert>}
       <Row>
-      <Col md={12}>
-  <Form.Group>
-    <Form.Label>Puesto</Form.Label>
-    <div className="input-icon-wrapper">
-      <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
-      <Form.Control
-        type="text"
-        placeholder="Ingrese su puesto"
-        value={puesto}
-        onChange={(e) => handleInputChange(e, setPuesto, setPuestoError, validatePuesto)}
-      />
-      <CampoEstado valido={esCampoValido(puesto, puestoError)} mensajeError={puestoError} />
-    </div>
-    {puestoError && <p className="text-danger">{puestoError}</p>}
-  </Form.Group>
-</Col>
+        <Col md={12}>
+          <Form.Group>
+            <Form.Label>Puesto</Form.Label>
+            <div className="input-icon-wrapper">
+              <FontAwesomeIcon icon={faBriefcase} className="input-icon" />
+              <Form.Control
+                type="text"
+                placeholder="Ingrese su puesto"
+                value={puesto}
+                onChange={(e) => handleInputChange(e, setPuesto, setPuestoError, validatePuesto)}
+              />
+              <CampoEstado valido={esCampoValido(puesto, puestoError)} mensajeError={puestoError} />
+            </div>
+            {puestoError && <p className="text-danger">{puestoError}</p>}
+          </Form.Group>
+        </Col>
         <Col md={12}>
           <Form.Group>
             <Form.Label>Descripción de Responsabilidades</Form.Label>
@@ -199,7 +199,7 @@ const ExperieciaLaboral = (props) => {
 
           </Form.Group>
         </Col>
-      
+
         <Col md={12}>
           <Form.Group>
             <Form.Label>Empresa/Razón Social</Form.Label>
