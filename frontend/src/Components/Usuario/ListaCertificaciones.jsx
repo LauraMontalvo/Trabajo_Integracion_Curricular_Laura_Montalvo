@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, ListGroup, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faExternalLinkAlt, faTrashAlt, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faCertificate, faLink, faCalendarDay, faExternalLinkAlt, faTrashAlt, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import EditarCertificacion from './EditarCertificaciones';
 
 const CampoEstado = ({ valido, mensajeError }) => {
@@ -155,33 +155,44 @@ const ListaCertificaciones = ({ userId }) => {
         resetForm(); // Restablece los estados de error al abrir el modal
         setShowModal(true); // Abre el modal
     };
+    const format = (dateString) => {
+        if (!dateString) {
+            return 'No disponible';
+          }
+        
+          // Ya que la fecha está en formato ISO, simplemente devuelve la parte de la fecha.
+          return dateString.split('T')[0];
+        };
     return (
         <>
             <ListGroup className="empleos-lista">
-                <h3>Certificaciones</h3>
-                {certificaciones.map((certificacion) => (
-                    <ListGroup.Item key={certificacion._id} className="mt-4 border p-3 position-relative">
-                        <strong>Titulo Obtenido en la Certificación:</strong><p>{certificacion.titulo}-  <a href={certificacion.url} target="_blank" rel="noopener noreferrer" className="certificacion-url">
-                            {truncateUrl(certificacion.url)}
-                            <FontAwesomeIcon icon={faExternalLinkAlt} size="sm" />
-                        </a></p>
+            {certificaciones.length > 0 ? (
+          certificaciones.map((certificacion) => (
+              <ListGroup.Item key={certificacion._id} className="mt-4 border p-3 position-relative">
+                  <strong>Titulo Obtenido en la Certificación:</strong><p>{certificacion.titulo}-  <a href={certificacion.url} target="_blank" rel="noopener noreferrer" className="certificacion-url">
+                      {truncateUrl(certificacion.url)}
+                      <FontAwesomeIcon icon={faExternalLinkAlt} size="sm" />
+                  </a></p>
 
-                        <strong className="certificacion-fecha">
-                            Fecha de Expedición:
-                        </strong> {new Date(certificacion.fechaExpedicion).toLocaleDateString()}
+                  <strong className="certificacion-fecha">
+                      Fecha de Expedición:
+                  </strong> {format(certificacion.fechaExpedicion)}
 
-                        <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
-                            <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }} onClick={() => handleEdit(certificacion)} />
-                            <FontAwesomeIcon icon={faTrashAlt}
-                                className="text-danger"
-                                style={{ cursor: 'pointer', fontSize: '1.5em' }}
-                                onClick={() => handleDelete(certificacion._id)} />
-                        </div>
+                  <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                      <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }} onClick={() => handleEdit(certificacion)} />
+                      <FontAwesomeIcon icon={faTrashAlt}
+                          className="text-danger"
+                          style={{ cursor: 'pointer', fontSize: '1.5em' }}
+                          onClick={() => handleDelete(certificacion._id)} />
+                  </div>
+              </ListGroup.Item>
+          ))
+      ) : (
+    
 
-
-
-                    </ListGroup.Item>
-                ))}
+              <p>No se han publicado certificaciones.</p>
+         
+      )}
             </ListGroup>
             <Card.Body className="text-center">
                 <Button variant="primary" onClick={handleOpenModal}>Agregar Certificación</Button>
@@ -205,6 +216,8 @@ const ListaCertificaciones = ({ userId }) => {
                         <Form.Group>
                             <Form.Label>Título Obtenido en la Certificación</Form.Label>
                             <div className="input-icon-wrapper">
+                            <FontAwesomeIcon icon={faCertificate} className="input-icon" />
+
                                 <Form.Control
                                     type="text"
                                     value={titulo}
@@ -224,6 +237,8 @@ const ListaCertificaciones = ({ userId }) => {
                         <Form.Group>
                             <Form.Label>URL</Form.Label>
                             <div className="input-icon-wrapper">
+                            <FontAwesomeIcon icon={faLink} className="input-icon" />
+
                                 <Form.Control
                                     type="text"
                                     value={url}
@@ -243,6 +258,7 @@ const ListaCertificaciones = ({ userId }) => {
                         <Form.Group>
                             <Form.Label>Fecha de Expedición</Form.Label>
                             <div className="input-icon-wrapper">
+
                                 <Form.Control
                                     type="date"
                                     value={fechaExpedicion}

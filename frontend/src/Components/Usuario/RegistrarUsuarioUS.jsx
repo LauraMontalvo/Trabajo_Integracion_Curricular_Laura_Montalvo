@@ -66,16 +66,33 @@ const RegistroUsuarioUS = (props) => {
 
 
   const validarEdad = (fechaNacimiento) => {
-    const hoy = new Date();
     const fechaNac = new Date(fechaNacimiento);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // Asegurarse de que solo se considera la fecha
+  
+    // Verificar que la fecha de nacimiento no sea futura
+    if (fechaNac > hoy) {
+      return { esValida: false, mensaje: "La fecha de nacimiento no puede ser futura." };
+    }
+  
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
-  
+    
     if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
       edad--;
     }
   
-    return edad >= 18;
+    // Verificar que la edad sea al menos 18
+    if (edad < 18) {
+      return { esValida: false, mensaje: "Debes tener al menos 18 años." };
+    }
+  
+    // Verificar que la fecha de nacimiento sea razonable (por ejemplo, no más de 120 años)
+    if (edad > 120) {
+      return { esValida: false, mensaje: "Por favor, ingrese una fecha de nacimiento válida." };
+    }
+  
+    return { esValida: true, mensaje: "" };
   };
   const validarFormularioAntesDeEnviar = () => {
     let formularioEsValido = true;
@@ -103,15 +120,16 @@ const RegistroUsuarioUS = (props) => {
       setSexoError('');
     }
    // Validar fecha de nacimiento
+   const validacionFechaNac = validarEdad(fechaNacimiento);
    if (!fechaNacimiento) {
-    setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
-    formularioEsValido = false;
-  } else if (!validarEdad(fechaNacimiento)) {
-    setFechaNacimientoError("Debes tener al menos 18 años.");
-    formularioEsValido = false;
-  } else {
-    setFechaNacimientoError('');
-  }
+     setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
+     formularioEsValido = false;
+   } else if (!validacionFechaNac.esValida) {
+     setFechaNacimientoError(validacionFechaNac.mensaje);
+     formularioEsValido = false;
+   } else {
+     setFechaNacimientoError('');
+   }
     // Validar teléfono
     if (!telefono || telefono.length !== 10) { // Asumiendo que el teléfono debe tener 10 dígitos
       setTelefonoError(constantes.TEXTO_NUMERO_TELEFONOOBLIGATORIO);
@@ -275,7 +293,15 @@ const RegistroUsuarioUS = (props) => {
   };
   const calcularAnioMaximo = () => {
     const fechaActual = new Date();
-    return fechaActual.getFullYear() - 18;
+    const anioActual = fechaActual.getFullYear();
+    const mesActual = fechaActual.getMonth() + 1; // +1 porque getMonth() devuelve un índice basado en 0
+    const diaActual = fechaActual.getDate();
+    
+    // Resta 18 años del año actual
+    const anioMaximo = anioActual - 18;
+  
+    // Devuelve la fecha en formato YYYY-MM-DD
+    return `${anioMaximo}-${mesActual.toString().padStart(2, '0')}-${diaActual.toString().padStart(2, '0')}`;
   };
   
   return (
@@ -338,8 +364,6 @@ const RegistroUsuarioUS = (props) => {
               {sexoError && <p className="text-danger">{sexoError}</p>}
             </Form.Group>
           </Col>
-
-
           <Col md={6}>
             <Form.Group>
               <Form.Label>Fecha de Nacimiento</Form.Label>
@@ -347,10 +371,11 @@ const RegistroUsuarioUS = (props) => {
                 <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
                 <Form.Control
   type="date"
-  max={`${calcularAnioMaximo()}-12-31`}
+  max={calcularAnioMaximo()}
   onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
   value={fechaNacimiento}
-  className="input-with-icon" />
+  className="input-with-icon"
+/>
 
                 <CampoEstado valido={esCampoValido(fechaNacimiento, fechaNacimientoError)} mensajeError={fechaNacimientoError} />
 

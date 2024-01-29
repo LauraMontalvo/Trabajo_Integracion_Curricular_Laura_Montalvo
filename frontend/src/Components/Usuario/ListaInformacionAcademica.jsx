@@ -4,6 +4,15 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ListaInformacionAcademica = ({ acadTraining, handleShowAcadTrainingModal, handleShowDeleteModal }) => {
+ 
+  const format = (dateString) => {
+    if (!dateString) {
+        return 'No disponible';
+      }
+    
+      // Ya que la fecha está en formato ISO, simplemente devuelve la parte de la fecha.
+      return dateString.split('T')[0];
+    };
   return (
     <ListGroup className="empleos-lista" variant="flush">
       <h3>Información Académica</h3>
@@ -19,10 +28,11 @@ const ListaInformacionAcademica = ({ acadTraining, handleShowAcadTrainingModal, 
             <span><strong>Ubicación de la Institución:</strong> {item.idInstitucion?.ubicacion || 'No disponible'}</span>
           </div>
           <div className="empleo-detalle">
-            <span><strong>Fecha de inicio:</strong> {new Date(item.fechaInicio).toLocaleDateString()}</span>
+            <span><strong>Fecha de inicio:</strong> {format(item.fechaInicio)}</span>
+           
           </div>
           <div className="empleo-detalle">
-            <span><strong>Fecha de fin:</strong> {new Date(item.fechaFin).toLocaleDateString()}</span>
+            <span><strong>Fecha de fin:</strong>{format(item.fechaFin)}</span>
           </div>
 
           <div style={{ position: 'absolute', top: '10px', right: '10px' }}>

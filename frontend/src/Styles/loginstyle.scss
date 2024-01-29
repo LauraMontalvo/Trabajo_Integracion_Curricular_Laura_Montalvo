@@ -348,7 +348,7 @@ $primary-color: #007bff; // o cualquier color que coincida con tu paleta
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f8f9fa; // O el color de fondo que prefieras
+    background-color: rgb(223, 234, 245); // O el color de fondo que prefieras
     position: relative;
   }
 
@@ -362,8 +362,43 @@ $primary-color: #007bff; // o cualquier color que coincida con tu paleta
   // Estilos para los elementos de la lista
   .list-group-item {
     border: none;
-    padding-left: 20px; // Añade un poco más de padding a la izquierda
+    padding-left: 20px; 
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+ 
+    
+  }
+    .field-title {
+      font-weight: bold; // Título en negrita
+    }
+    .field-value {
+      font-weight: normal; // Valor con la fuente normal
+    }
+  .list-group-item:hover {
+    background-color: rgba($primary-color, 0.1); // Ligero resaltado al pasar el ratón por encima
+  }
+  @media (max-width: 768px) {
+    padding: 10px; // Menos padding en dispositivos más pequeños
+    .card-header {
+      flex-direction: column; // Apila los elementos del header en dispositivos pequeños
+      align-items: flex-start; // Alinea al inicio para dispositivos pequeños
+    }
+  }
+}
+
+.contenido-desplegable {
+  transition: max-height 0.5s ease;
+  max-height: 50px; // Tamaño inicial para una vista previa
+  overflow: hidden;
+
+  &.expandido {
+    max-height: 500px; // o 'none' si quieres que se ajuste completamente al contenido
   }
 
-  // Añade estilos adicionales si es necesario
+  // Ajustes para pantallas pequeñas
+  @media (max-width: 768px) {
+    max-height: none; // Permite que se expanda según el contenido
+  }
 }
+

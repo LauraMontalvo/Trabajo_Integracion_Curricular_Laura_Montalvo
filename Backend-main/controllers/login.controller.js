@@ -20,9 +20,7 @@ module.exports.validateUser = (req, res) => {
                         msg: 'Usuario validado correctamente!!',
                         user: user
                     });
-                } else {
-                    res.json({ msg: 'Datos incorrectos!!' });
-                }
+                } 
             } else {
                 res.json({ msg: 'El usuario o la contraseña son incorrectos' });
             }
@@ -45,9 +43,7 @@ module.exports.validateCompany = (req, res) => {
                         msg: 'Empresa validada correctamente!!',
                         user: company
                     });
-                } else {
-                    res.json({ msg: 'Contraseña incorrecta, ingrese nuevamente!!' });
-                }
+                } 
             } else {
                 res.json({ msg: 'El usuario o la contraseña son incorrectos' });
             }

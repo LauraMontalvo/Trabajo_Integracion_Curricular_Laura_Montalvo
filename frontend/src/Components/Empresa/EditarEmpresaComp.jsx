@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { faUser, faLock, faCheckCircle,faBalanceScale, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCheckCircle, faBalanceScale, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as constantes from '../../Models/Constantes'
@@ -18,7 +18,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [valores, setValores] = useState("");
- 
+
     const [updateError, setUpdateError] = useState('');
     const navigate = useNavigate();
     const [updateSuccess, setUpdateSuccess] = useState('');
@@ -57,7 +57,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
             return true;
         }
     };
-    
+
 
     const validarDireccion = () => {
         if (!direccion) {
@@ -130,7 +130,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
         return regexCorreo.test(email.toLowerCase());
     }
 
-  
+
     const handleTelefonoChange = (e) => {
         let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
 
@@ -163,7 +163,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const handleNombreEmpresaChange = (e) => {
         const nuevoNombre = e.target.value;
         setNombreEmpresa(nuevoNombre);
-    
+
         // Establece o elimina el mensaje de error según el contenido del campo
         if (!nuevoNombre.trim()) {
             setNombreEmpresaError('El nombre de Empresa es obligatorio');
@@ -172,51 +172,51 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
         }
     };
 
-const handleDireccion = (e) => {
-    const nuevaDireccion = e.target.value;
-    setDireccion(nuevaDireccion);
+    const handleDireccion = (e) => {
+        const nuevaDireccion = e.target.value;
+        setDireccion(nuevaDireccion);
 
-    // Establece o elimina el mensaje de error según el contenido del campo
-    if (!nuevaDireccion.trim()) {
-        setdireccionError('La direccion es obligatoria');
-    } else {
-        setdireccionError('');
-    }
-};
-const handleValor= (e) => {
-    const nuevoValor = e.target.value;
-    setValores(nuevoValor);
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevaDireccion.trim()) {
+            setdireccionError('La direccion es obligatoria');
+        } else {
+            setdireccionError('');
+        }
+    };
+    const handleValor = (e) => {
+        const nuevoValor = e.target.value;
+        setValores(nuevoValor);
 
-    // Establece o elimina el mensaje de error según el contenido del campo
-    if (!nuevoValor.trim()) {
-        setValoresError('Los valores de la empresa son obligatorios');
-    } else {
-        setValoresError('');
-    }
-};
-const handleDescripcion = (e) => {
-    const nuevaDescripcion = e.target.value;
-    setDescripcion(nuevaDescripcion);
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevoValor.trim()) {
+            setValoresError('Los valores de la empresa son obligatorios');
+        } else {
+            setValoresError('');
+        }
+    };
+    const handleDescripcion = (e) => {
+        const nuevaDescripcion = e.target.value;
+        setDescripcion(nuevaDescripcion);
 
-    // Establece o elimina el mensaje de error según el contenido del campo
-    if (!nuevaDescripcion.trim()) {
-        setDescripcionError('La Descripcion es obligatoria');
-    } else {
-        setDescripcionError('');
-    }
-};
-const handleUsuarioChange = (e) => {
-    const nuevoUsuario = e.target.value;
-    setUsuario(nuevoUsuario);
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevaDescripcion.trim()) {
+            setDescripcionError('La Descripcion es obligatoria');
+        } else {
+            setDescripcionError('');
+        }
+    };
+    const handleUsuarioChange = (e) => {
+        const nuevoUsuario = e.target.value;
+        setUsuario(nuevoUsuario);
 
-    // Establece o elimina el mensaje de error según el contenido del campo
-    if (!nuevoUsuario.trim()) {
-        // Aquí asumo que tienes un estado para el error del campo usuario, como `usuarioError`
-        setUsuarioError('El campo de usuario es obligatorio');
-    } else {
-        setUsuarioError('');
-    }
-};
+        // Establece o elimina el mensaje de error según el contenido del campo
+        if (!nuevoUsuario.trim()) {
+            // Aquí asumo que tienes un estado para el error del campo usuario, como `usuarioError`
+            setUsuarioError('El campo de usuario es obligatorio');
+        } else {
+            setUsuarioError('');
+        }
+    };
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
         if (closeEditModal) {
@@ -269,12 +269,12 @@ const handleUsuarioChange = (e) => {
         const esTelefonoValido = validarTelefono();
         const esDireccionValida = validarDireccion();
         const esDescripcionValida = validarDescripcion();
-        const esUsuarioValido= validarUsuario();
-        const esvalorValido= validarValores();
+        const esUsuarioValido = validarUsuario();
+        const esvalorValido = validarValores();
 
         // ... (Validar otros campos)
 
-        if (!esNombreEmpresaValido || !esCorreoValido || !esTelefonoValido || !esDireccionValida || !esDescripcionValida || !esUsuarioValido ||!esvalorValido) {
+        if (!esNombreEmpresaValido || !esCorreoValido || !esTelefonoValido || !esDireccionValida || !esDescripcionValida || !esUsuarioValido || !esvalorValido) {
             return; // Detener si hay errores
         }
         if (password !== confirmPassword) {
@@ -341,7 +341,7 @@ const handleUsuarioChange = (e) => {
                                 <FontAwesomeIcon icon={faEnvelope} className="input-icon fa-lg" />
                                 <Form.Control
                                     type="email"
-                                  
+
                                     onChange={handleCorreoChange}
                                     value={correo}
                                     isInvalid={!!correoError} />
@@ -351,51 +351,51 @@ const handleUsuarioChange = (e) => {
                     </Col>
                 </Row>
                 <Row>
-                        <Form.Group controlId="formNombre">
-                            <Form.Label> Dirección </Form.Label>
-                            <div className="input-icon-wrapper">
-                                <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" /> {/* Icono de dirección */}
-                                <Form.Control
-                                    placeholder="Ingrese su Direccion"
-                                    type="text"
-                                    onChange={handleDireccion}
-                                    value={direccion}
-                                    isInvalid={!!direccionError} />
+                    <Form.Group controlId="formNombre">
+                        <Form.Label> Dirección </Form.Label>
+                        <div className="input-icon-wrapper">
+                            <FontAwesomeIcon icon={faMapMarker} className="input-icon fa-lg" /> {/* Icono de dirección */}
+                            <Form.Control
+                                placeholder="Ingrese su Direccion"
+                                type="text"
+                                onChange={handleDireccion}
+                                value={direccion}
+                                isInvalid={!!direccionError} />
 
-                            </div>
-                            <div className="text-danger">{direccionError}</div>
+                        </div>
+                        <div className="text-danger">{direccionError}</div>
 
-                        </Form.Group>
-                    </Row>
-                    <Form.Group >
-                            <Form.Label>Valores</Form.Label>
-                            <div className="input-icon-wrapper">
-                            <FontAwesomeIcon icon={faBalanceScale} className="input-icon" />
-                                <Form.Control as="textarea"
-                                    rows={4}
-                                    placeholder="Ingrese la descripción de la empresa"
-                                    onChange={handleValor}
-                                    value={valores}
-                                    isInvalid={!!valoresError} />
-                            </div>
-                            <div className="text-danger">{valoresError}</div>
+                    </Form.Group>
+                </Row>
+                <Form.Group >
+                    <Form.Label>Valores</Form.Label>
+                    <div className="input-icon-wrapper">
+                        <FontAwesomeIcon icon={faBalanceScale} className="input-icon" />
+                        <Form.Control as="textarea"
+                            rows={4}
+                            placeholder="Ingrese la descripción de la empresa"
+                            onChange={handleValor}
+                            value={valores}
+                            isInvalid={!!valoresError} />
+                    </div>
+                    <div className="text-danger">{valoresError}</div>
 
-                        </Form.Group>
-                    <Form.Group >
-                            <Form.Label>Descripción</Form.Label>
-                            <div className="input-icon-wrapper">
-                                <Form.Control as="textarea"
-                                    rows={4}
-                                    placeholder="Ingrese la descripción de la empresa"
-                                    onChange={handleDescripcion}
-                                    value={descripcion}
-                                    isInvalid={!!descripcionError} />
-                            </div>
-                            <div className="text-danger">{descripcionError}</div>
+                </Form.Group>
+                <Form.Group >
+                    <Form.Label>Descripción</Form.Label>
+                    <div className="input-icon-wrapper">
+                        <Form.Control as="textarea"
+                            rows={4}
+                            placeholder="Ingrese la descripción de la empresa"
+                            onChange={handleDescripcion}
+                            value={descripcion}
+                            isInvalid={!!descripcionError} />
+                    </div>
+                    <div className="text-danger">{descripcionError}</div>
 
-                        </Form.Group>
+                </Form.Group>
                 <Row>
-                   
+
                     <Col md={6}>
                         <Form.Group controlId="formTelefono">
                             <Form.Label>Teléfono:</Form.Label>
@@ -419,21 +419,21 @@ const handleUsuarioChange = (e) => {
                             <div className="input-icon-wrapper">
                                 <FontAwesomeIcon icon={faUserCircle} className="input-icon fa-lg" /> {/* Icono de usuario */}
 
-                                <Form.Control type="text" 
-                                 placeholder="Ingrese su Usuario"
-                                 onChange={handleUsuarioChange}
-                                  value={usuario} 
-                                  isInvalid={!!usuarioError} />
+                                <Form.Control type="text"
+                                    placeholder="Ingrese su Usuario"
+                                    onChange={handleUsuarioChange}
+                                    value={usuario}
+                                    isInvalid={!!usuarioError} />
 
                             </div>
                             <div className="text-danger">{usuarioError}</div>
 
-                           
+
                         </Form.Group>
                     </Col>
-                    
+
                 </Row>
-                
+
                 <Row>
 
 

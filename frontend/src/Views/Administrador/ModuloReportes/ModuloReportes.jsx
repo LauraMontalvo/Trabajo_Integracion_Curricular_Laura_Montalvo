@@ -52,21 +52,17 @@ function ModuloReportes() {
     // Obtener usuarios
     axios.get('http://localhost:8000/api/users')
       .then(response => {
-        const usuarios = response.data;
-        setTotalUsuarios(usuarios.length);
+        const filteredUsers = response.data.filter(user => user.estado === 'Activo' && user.rol !== 'Administrador');
+
+        const latestUsers = filteredUsers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+        setRecentUsers(latestUsers);
+    
+        setTotalUsuarios(filteredUsers.length);
         // Aquí puedes calcular y actualizar los usuarios aceptados, rechazados, etc.
       })
       .catch(error => console.error('Error al obtener usuarios:', error));
 
-    // Obtener empresas
-    axios.get('http://localhost:8000/api/users')
-      .then(response => {
-        const latestUsers = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
-        setRecentUsers(latestUsers);
-        const usuarios = response.data;
-        setTotalUsuarios(usuarios.length);
-      })
-      .catch(error => console.error('Error al obtener usuarios:', error));
+
 
     // Obtener empresas
     axios.get('http://localhost:8000/api/companies')

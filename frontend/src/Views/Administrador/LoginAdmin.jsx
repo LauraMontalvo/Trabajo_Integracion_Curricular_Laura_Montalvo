@@ -12,7 +12,8 @@ import logofondo from "../../img/logofondo.png";
 import { Row, Col } from 'react-bootstrap';
 import * as constantes from '../../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faLock, faEyeSlash, faEye, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { Alert } from 'react-bootstrap';
 
 const LoginAdminForm = (props) => {
   const [password, setPassword] = useState("");
@@ -27,25 +28,24 @@ const LoginAdminForm = (props) => {
   const handlerLogin = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
-      setLoginStatus(TEXTO_INGRESE_DATOS);
+      setLoginStatus({ msg: constantes.TEXTO_INGRESE_DATOS, type: "warning" });
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
       axios.post(URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
-          console.log(respuesta);
           if (respuesta.data.msg === MENSAJE_LOGIN_EXITO && respuesta.data.user.rol === ROL_ADMINISTRADOR) {
             const user = respuesta.data.user;
-            console.log(user);
-            setLoginStatus(respuesta.data.msg);
+
+            setLoginStatus({ msg: "Inicio de sesión exitoso, redirigiendo...", type: "success" });
             setTimeout(() => navigate(URL_ADMIN_CONSOLA + user._id), 1000);
           } else {
-            setLoginStatus(MENSAJE_LOGIN_FALLIDO);
+            setLoginStatus({ msg: respuesta.data.msg, type: "danger" }); // Puedes ajustar el tipo según corresponda
           }
         })
         .catch(err => {
-          console.log(err);
-          setLoginStatus(err.msg);
+
+          setLoginStatus({ msg: "Usuario o contraseña incorrectos", type: "danger" });
 
         });
     }
@@ -93,7 +93,6 @@ const LoginAdminForm = (props) => {
                 className="toggle-password-icon"
                 onClick={() => setShowPassword(!showPassword)} />
             </div>
-
           </Form.Group>
         </Col>
       </Row>
@@ -101,7 +100,13 @@ const LoginAdminForm = (props) => {
         <Button type="submit">{TEXTO_INICIAR_SESION}</Button>
         <Button onClick={RegresarPaginaPrincipal} className='btn-primary'>{TEXTO_IR_PAGINA_PRINCIPAL}</Button>
       </div>
-      <p style={{ color: 'red' }}>{loginStatus}</p>
+      {loginStatus.msg && (
+        <Alert variant={loginStatus.type} className="mt-3">
+          {loginStatus.type === "danger" && <FontAwesomeIcon icon={faExclamationCircle} className="me-2" />}
+          {loginStatus.type === "success" && <FontAwesomeIcon icon={faCheckCircle} className="me-2" />}
+          {loginStatus.msg}
+        </Alert>
+      )}
 
 
     </Form>

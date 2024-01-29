@@ -45,7 +45,12 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
             console.error('Error al rechazar la postulación:', error);
         }
     };
-
+    useEffect(() => {
+        const postulantesFiltrados = postulantes.filter(postulacion => postulacion.idUsuario && postulacion.idUsuario.estado !== 'Eliminado');
+        setPostulantesList(postulantesFiltrados);
+    }, [postulantes]);
+    
+    
     useEffect(() => {
         // Utilizado para el seguimiento de cambios en postulantesList
         console.log(postulantesList);

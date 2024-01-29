@@ -11,9 +11,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import logofondo from "../../img/logofondo.png";
 import { Row, Col, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faLock, faEyeSlash, faEye,faExclamationCircle,faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../../Components/General/Cabecera';
 import RegistroEmpresa from '../../Components/Administracion/RegistroEmpresa';
+import { Alert } from 'react-bootstrap';
 
 const LoginFormEmpresa = (props) => {
   const [password, setPassword] = useState("");
@@ -29,26 +30,24 @@ const LoginFormEmpresa = (props) => {
   const handlerLoginEmpresa = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
-      setLoginStatus(constantes.TEXTO_INGRESE_DATOS);
+      setLoginStatus({ msg: constantes.TEXTO_INGRESE_DATOS, type: "warning" });
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
       axios.post(constantes.URL_VALIDAR_AUTENTICACION_EMPRESA, { usuario, password: hashedPassword })
         .then(respuesta => {
-          console.log(respuesta);
           if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO_EMPRESA) {
             const user = respuesta.data.user;
 
-            console.log(user);
-            setLoginStatus(respuesta.data.msg);
+            setLoginStatus({ msg: "Inicio de sesión exitoso, redirigiendo...", type: "success" });
+
             setTimeout(() => navigate(constantes.URL_DETALLE_EMPRESA + user._id), 1000);
           } else {
-            setLoginStatus(respuesta.data.msg);
+            setLoginStatus({ msg: respuesta.data.msg, type: "danger" }); // Puedes ajustar el tipo según corresponda
           }
         })
         .catch(err => {
-          console.log(err);
-          setLoginStatus(err.msg);
+          setLoginStatus({ msg: "Usuario o contraseña incorrectos", type: "danger" });
 
         });
     }
@@ -101,20 +100,26 @@ const LoginFormEmpresa = (props) => {
                   className="toggle-password-icon"
                   onClick={() => setShowPassword(!showPassword)} />
               </div>
-
             </Form.Group>
           </Col>
-
         </Row>
-
         <div className="botones-centrados">
           <Button className='btn-primary'>Iniciar Sesión</Button>
 
           <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
         </div>
-        <p style={{ color: 'red' }}>{loginStatus}</p>
-        <h6>¿Aún no estás registrado?</h6>
-        <Link to="#" onClick={handleRegisterModalShow}>Regístrate ahora!</Link>
+        {loginStatus.msg && (
+          <Alert variant={loginStatus.type} className="mt-3">
+            {loginStatus.type === "danger" && <FontAwesomeIcon icon={faExclamationCircle} className="me-2" />}
+            {loginStatus.type === "success" && <FontAwesomeIcon icon={faCheckCircle} className="me-2" />}
+            {loginStatus.msg}
+          </Alert>
+        )}
+
+<div className="mt-4 text-center">
+      <h6>¿Aún no estás registrado?</h6>
+      <Link to="#" onClick={handleRegisterModalShow} className="text-primary">Regístrate ahora!</Link>
+    </div>
       </Form>
       <Modal show={showRegisterModal} onHide={handleRegisterModalClose} size="lg">
         <Modal.Header closeButton>

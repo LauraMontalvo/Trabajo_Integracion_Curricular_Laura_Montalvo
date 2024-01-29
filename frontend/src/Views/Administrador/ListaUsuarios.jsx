@@ -11,6 +11,7 @@ import "../../Styles/Lista.scss";
 import "../../Styles/ListaEmpresa.scss"; // Importa los mismos estilos de ListaEmpresas
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import EditarUsuario from "../../Components/Usuario/EditarUsuarioComp";
 
 const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -19,31 +20,55 @@ const ListaUsuarios = () => {
   const [mostrarActivos, setMostrarActivos] = useState(true);
   const [mostrarInactivos, setMostrarInactivos] = useState(true);
 
-  const recargarUsuarios = () => {
-    axios.get(constantes.URL_OBTENER_USUARIOS)
-      .then(res => {
-        setUsuarios(res.data);
-        setUsuariosFiltrados(res.data);
-      })
-      .catch(err => console.error("Error al obtener usuarios:", err));
+  //editar usuario: 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const handleEditClick = (userId) => {
+    setSelectedUserId(userId);
+    setShowEditModal(true);
+  };
+  ///
+
+  const cargarUsuarios = async () => {
+    try {
+      const response = await axios.get(constantes.URL_OBTENER_USUARIOS);
+      const usuariosFiltrados = response.data.filter(usuario => usuario.rol !== 'Administrador');
+      setUsuarios(usuariosFiltrados);
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+    }
   };
 
   useEffect(() => {
-    recargarUsuarios();
+    cargarUsuarios();
   }, []);
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
+
+  const format = (dateString) => {
+    if (!dateString) {
+      return 'No disponible';
+    }
+
+    // Ya que la fecha está en formato ISO, simplemente devuelve la parte de la fecha.
+    return dateString.split('T')[0];
+  };
+  const filtrarUsuarios = (usuarios) => {
+    // Filtra para excluir a los usuarios con rol 'Administrador'
+    const soloUsuarios = usuarios.filter(usuario => usuario.rol !== 'Administrador');
+
+    // Aquí podrías agregar más lógica de filtrado basada en `searchQuery`, `mostrarActivos`, y `mostrarInactivos` si es necesario
+
+    return soloUsuarios;
   };
 
-  useEffect(() => {
-    axios.get(constantes.URL_OBTENER_USUARIOS)
-      .then(res => {
-        setUsuarios(res.data);
-        setUsuariosFiltrados(res.data); // Inicia con todos los usuarios
-      })
-      .catch(err => console.error("Error al obtener usuarios:", err));
-  }, []);
+
+  ///
+  const actualizarUsuarios = (nuevosUsuarios) => {
+    const usuariosFiltrados = filtrarUsuarios(nuevosUsuarios);
+    setUsuarios(usuariosFiltrados);
+    setUsuariosFiltrados(usuariosFiltrados);
+  };
+
+
 
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
@@ -87,8 +112,10 @@ const ListaUsuarios = () => {
       .then(res => {
         console.log(res);
         // Actualiza el estado de los usuarios con la nueva información
+
         setUsuarios(prevUsuarios => prevUsuarios.map(usr => usr._id === usuario._id ? { ...usr, estado: nuevoEstado } : usr));
         setUsuariosFiltrados(prevUsuariosFiltrados => prevUsuariosFiltrados.map(usr => usr._id === usuario._id ? { ...usr, estado: nuevoEstado } : usr));
+
       })
       .catch(err => {
         console.error("Error al cambiar el estado del usuario:", err);
@@ -99,7 +126,7 @@ const ListaUsuarios = () => {
 
   return (
     <div className="App">
-<TabsAdministracionComp onRecargarUsuarios={recargarUsuarios} />
+      <TabsAdministracionComp onRecargarUsuarios={cargarUsuarios} />
       <Container fluid className="mt-4">
         <Row>
           <Col md={3} className="widget">
@@ -144,19 +171,23 @@ const ListaUsuarios = () => {
                       <Row className="align-items-center">
                         <Col md={8}>
                           <Card.Title><FontAwesomeIcon icon={faUser} className="me-2" />
-                          <Link to={`/perfilUsuario/${usuario._id}`} className="empresa-link">
-                          {usuario.nombre} {usuario.apellido}
-                        </Link>
+                            <Link to={`/perfilUsuario/${usuario._id}`} className="empresa-link">
+                              {usuario.nombre} {usuario.apellido}
+                            </Link>
                           </Card.Title>
                           <Card.Text><strong>Género:</strong> {usuario.sexo}</Card.Text>
-                          <Card.Text><strong>Fecha de Nacimiento:</strong> {formatDate(usuario.fechaNacimiento)}</Card.Text>
+                          <Card.Text><strong>Fecha de Nacimiento:</strong> {format(usuario.fechaNacimiento)}</Card.Text>
                           <Card.Text><strong>Teléfono:</strong> {usuario.telefono}</Card.Text>
                         </Col>
                         <Col xs={12} sm={6} md={4} className="text-right">
                           <div className="icon-container">
                             {/* Icono de editar */}
-                            <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} size="lg" onClick={() => {/* función para editar */ }} />
-
+                            <FontAwesomeIcon
+                              className="icon-primary me-2"
+                              icon={faEdit}
+                              size="lg"
+                              onClick={() => handleEditClick(usuario._id)} // Asegúrate de pasar el ID correcto del usuario aquí
+                            />
                             {/* Icono de activar/desactivar */}
                             <OverlayTrigger
                               placement="top"
@@ -187,7 +218,22 @@ const ListaUsuarios = () => {
           </Col>
         </Row>
       </Container>
-
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Usuario</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedUserId && (
+            <EditarUsuario
+              id={selectedUserId}
+              onUsuarioUpdated={() => {
+                cargarUsuarios(); // Llama a cargarUsuarios para refrescar la lista después de la edición
+              }}
+              closeEditModal={() => setShowEditModal(false)}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

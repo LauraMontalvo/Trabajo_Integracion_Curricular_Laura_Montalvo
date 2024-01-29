@@ -15,15 +15,13 @@ import {
 } from 'react-bootstrap';
 
 import EditarUsuario from '../../Components/Usuario/EditarUsuarioComp.jsx';
-import "../../Styles/loginstyle.css"
+import "../../Styles/loginstyle.scss"
 import "../../Styles/detalle.scss"
 import ExperieciaLaboral from '../../Components/Usuario/ExperienciaLaboralComp.jsx';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp.jsx';
 import Select from 'react-select/creatable';
 import EditarExperienciaLaboral from '../../Components/Usuario/EditarExperienciaLaboralComp.jsx';
-import DetalleEmpleoModal from '../../Components/Usuario/DetalleEmpleoPostuladoModal.jsx';
 import ListaExperienciaLaboral from '../../Components/Usuario/ListaExperienciaLaboral.jsx';
-import ListaPostulaciones from '../../Components/Usuario/ListaMisPostulaciones.jsx';
 import ListaInformacionAcademica from '../../Components/Usuario/ListaInformacionAcademica.jsx';
 import ImagenPerfil from '../../Components/General/ImagenPerfil.jsx';
 import ListaCertificaciones from '../../Components/Usuario/ListaCertificaciones.jsx';
@@ -50,7 +48,7 @@ function DetalleUsuario(props) {
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
   const [editingAcadTrainingId, setEditingAcadTrainingId] = useState(null);
-  const navigate = useNavigate();
+
   const [edad, setEdad] = useState(null);
   const [institucion, setInstitucion] = useState(null);
   const [showAcadTrainingModal, setShowAcadTrainingModal] = useState(false);
@@ -223,13 +221,18 @@ function DetalleUsuario(props) {
       return true;
     }
   };
-
   const validarFechaFin = (fechaInicio, fechaFin) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // Establece la hora actual a medianoche para ignorar la hora
+
     if (!fechaFin) {
       setFechaFinError('La fecha de fin es obligatoria.');
       return false;
     } else if (new Date(fechaFin) < new Date(fechaInicio)) {
       setFechaFinError('La fecha de fin no puede ser anterior a la fecha de inicio.');
+      return false;
+    } else if (new Date(fechaFin) > hoy) {
+      setFechaFinError('La fecha de fin no puede ser una fecha futura.');
       return false;
     } else {
       setFechaFinError('');
@@ -517,11 +520,25 @@ function DetalleUsuario(props) {
       console.error('Error al agregar/editar datos académicos:', error);
     }
   };
+// En DetalleUsuario, añade una función para manejar el cierre del modal
+const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
 
+// Función para cerrar el modal de agregar experiencia laboral
+const handleCloseAddExperienceModal = () => {
+  setShowAddExperienceModal(false);
+};
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
+  };
+  const format = (dateString) => {
+    if (!dateString) {
+      return 'No disponible';
+    }
+
+    // Ya que la fecha está en formato ISO, simplemente devuelve la parte de la fecha.
+    return dateString.split('T')[0];
   };
   const handleDeleteAcadTraining = async (acadTrainingId) => {
     try {
@@ -546,6 +563,9 @@ function DetalleUsuario(props) {
     setUser((prevUser) => ({ ...prevUser, foto: newPhotoUrl }));
   };
 
+
+
+
   return (
     <div className='App'>
       <CabeceraUsuarioInicio />
@@ -553,8 +573,8 @@ function DetalleUsuario(props) {
         <Row>
           <Col xs={12} md={6} lg={4}  >
             {/* Información del usuario */}
-            <Card className="datos-personales-card">
-              <Card.Body >
+            <Card fluid  className="datos-personales-card">
+              <Card.Body className="mt-4">
                 <ImagenPerfil
                   id={id}
                   userParam={user}
@@ -563,8 +583,8 @@ function DetalleUsuario(props) {
                 />                <div className="text-center"> <Card.Title ><strong>{user.nombre} {user.apellido}</strong></Card.Title></div>
 
                 <ListGroup variant="flush">
-                  {/* ... Listado de datos personales del usuario ... */}
-                  <Card.Header>
+
+                  <Card.Header >
                     <div className="header-content">
                       <h5> Datos Personales</h5>
 
@@ -572,10 +592,18 @@ function DetalleUsuario(props) {
                     <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
                   </Card.Header>
 
-                  <ListGroup.Item >Género: {user.sexo}</ListGroup.Item>
-                  <ListGroup.Item>Fecha de Nacimiento: {formatDate(user.fechaNacimiento)}</ListGroup.Item>
-                  <ListGroup.Item>Teléfono: {user.telefono}</ListGroup.Item>
-                  <ListGroup.Item>Edad: {edad !== null ? `${edad} años` : ''}</ListGroup.Item>
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Género:</span> <span className="field-value">{user.sexo}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Fecha de Nacimiento:</span> <span className="field-value">{format(user.fechaNacimiento)}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Teléfono:</span> <span className="field-value">{user.telefono}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Edad:</span> <span className="field-value">{edad !== null ? `${edad} años` : ''}</span>
+                  </ListGroup.Item>
 
 
 
@@ -593,11 +621,7 @@ function DetalleUsuario(props) {
               </Card.Body>
 
             </Card>
-            <div className="botones-centrados">
-              <Button variant="danger" onClick={() => navigate("/loginusuario")}>
-                Salir
-              </Button>
-            </div>
+
 
           </Col>
           <Col md={8}>
@@ -606,12 +630,17 @@ function DetalleUsuario(props) {
               <Tab eventKey="academic" title="Información Académica">
                 <Card>
                   <Card.Body>
-
-                    <ListaInformacionAcademica
-                      acadTraining={acadTraining}
-                      handleShowAcadTrainingModal={handleShowAcadTrainingModal}
-                      handleShowDeleteModal={handleShowDeleteModal}
-                    />
+                  {acadTraining.length > 0 ? (
+        <ListaInformacionAcademica
+          acadTraining={acadTraining}
+          handleShowAcadTrainingModal={handleShowAcadTrainingModal}
+          handleShowDeleteModal={handleShowDeleteModal}
+        />
+      ) : (
+  
+          <p>No se ha publicado información académica.</p>
+     
+      )}
 
                     <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
                       <Modal.Header closeButton>
@@ -630,9 +659,12 @@ function DetalleUsuario(props) {
                       </Modal.Footer>
                     </Modal>
 
+                    
+                    <Card.Body className="text-center">
                     <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
-                      Agregar
+                      Agregar Información Académica
                     </Button>
+            </Card.Body>
                     <Modal show={showAcadTrainingModal} onHide={handleCloseAcadTrainingModal} size='lg'>
                       <Modal.Header closeButton>
                         <Modal.Title className='tituloModal'>{editingAcadTrainingId ? 'Editar' : 'Agregar'} Información Académica</Modal.Title>
@@ -817,16 +849,18 @@ function DetalleUsuario(props) {
                     <div className='botones-centrados'>
                       <Button variant="primary" onClick={() => showExperienceForm()}>Agregar Experiencia Laboral</Button>
                     </div>
-
-                    <Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)} size='lg'>
-                      <Modal.Header closeButton>
-                        <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <ExperieciaLaboral idUsuario={id} onExperienciaAdded={cargarExperienciaLaboral} />
-                      </Modal.Body>
-
-                    </Modal>
+<Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)} size='lg'>
+  <Modal.Header closeButton>
+    <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <ExperieciaLaboral
+      idUsuario={id} 
+      onExperienciaAdded={cargarExperienciaLaboral} 
+      closeAddModal={handleCloseAddExperienceModal} 
+    />
+  </Modal.Body>
+</Modal>
 
                   </Card.Body>
                 </Card>

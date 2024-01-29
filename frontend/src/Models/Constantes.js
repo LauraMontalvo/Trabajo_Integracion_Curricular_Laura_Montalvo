@@ -1,6 +1,6 @@
 //MENSAJES - ETIQUETAS
 export const MENSAJE_LOGIN_EXITO = "Usuario validado correctamente!!";
-export const MENSAJE_LOGIN_FALLIDO = "Error en los datos";
+export const MENSAJE_LOGIN_FALLIDO = "El usuario o la contraseña son incorrectos";
 export const TEXTO_BIENVENIDO = "Bienvenido!";
 export const TEXTO_INGRESE_DATOS = "Ingrese su usuario y contraseña";
 export const TITULO_ADMINISTRACION = "ADMINISTRACIÓN";

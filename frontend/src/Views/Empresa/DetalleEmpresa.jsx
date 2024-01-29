@@ -17,13 +17,14 @@ import "../../Styles/detalle.scss"
 import ImagenPerfil from '../../Components/General/ImagenPerfil';
 import ImagenEmpresa from '../../Components/General/ImagenPerfilEmpresa';
 
-function DetalleEmpresa(props) {
+function DetalleEmpresa({ isAuthenticated }) {
   const { id } = useParams();
   const [empresa, setEmpresa] = useState({});
   const [newImageUrl, setNewImageUrl] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const [verDescripcionCompleta, setVerDescripcionCompleta] = useState(false);
+  const [verValores, setValores] = useState(false);
   // Estados y manejadores para el modal de editar usuario
   // Estados y manejadores para el modal de editar usuario
   const [showEditUserModal, setShowEditUserModal] = useState(false);
@@ -158,6 +159,9 @@ function DetalleEmpresa(props) {
   const toggleDescripcion = () => {
     setVerDescripcionCompleta(!verDescripcionCompleta);
   };
+  const toggleValores= () => {
+    setValores(!verValores);
+  };
 
 
 const handleShowModalEliminar = (empleoId) => {
@@ -178,7 +182,7 @@ const inactivarYEliminarEmpleoDeLista = () => {
 
   return (
     <div className="App">
-      <CabeceraEmpresaInicioComp ></CabeceraEmpresaInicioComp>
+      <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} esEmpresa={true} />
       <Container fluid className="mt-4">
         <Row>
           <Col md={4}  >
@@ -202,29 +206,39 @@ const inactivarYEliminarEmpleoDeLista = () => {
                     </div>
                     <FontAwesomeIcon icon={faPencilAlt} onClick={handleShowEditUserModal} className="edit-icon" />
                   </Card.Header>
-                  <ListGroup.Item >Correo: {empresa.correo}</ListGroup.Item >
-                  <ListGroup.Item >Dirección: {empresa.direccion}</ListGroup.Item >
-                  <ListGroup.Item >Teléfono: {empresa.telefono}</ListGroup.Item >
-                  <ListGroup.Item>
-                    Descripción: {empresa && empresa.descripcion
-                      ? (verDescripcionCompleta ? empresa.descripcion : `${empresa.descripcion.substring(0, 100)}...`)
-                      : 'Cargando descripción...'}
-                    {empresa && empresa.descripcion && (
-                      <Button variant="link" onClick={toggleDescripcion}>
-                        {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
-                      </Button>
-                    )}
+            
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Correo:</span> <span className="field-value">{empresa.correo}</span>
                   </ListGroup.Item>
-                  <ListGroup.Item>
-                    Valores: {empresa && empresa.valores
-                      ? (verDescripcionCompleta ? empresa.valores : `${empresa.valores.substring(0, 100)}...`)
-                      : 'Cargando descripción...'}
-                    {empresa && empresa.valores && (
-                      <Button variant="link" onClick={toggleDescripcion}>
-                        {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
-                      </Button>
-                    )}
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Dirección:</span> <span className="field-value">{empresa.direccion}</span>
                   </ListGroup.Item>
+                  
+                  <ListGroup.Item className="list-group-item">
+                    <span className="field-title">Teléfono:</span> 
+                    <span className="field-value"> {empresa.telefono}</span>
+                  </ListGroup.Item>
+                  
+           
+                  <ListGroup.Item  className="list-group-item" >
+  <div className={`contenido-desplegable ${verDescripcionCompleta ? 'expandido' : ''}`}>
+    <span className="field-title">Descripción:</span>
+    <p className="field-value">{empresa.descripcion}</p>
+  </div>
+  <Button variant="link" onClick={toggleDescripcion} className="expand-button">
+    {verDescripcionCompleta ? 'Ver menos' : 'Ver más'}
+  </Button>
+</ListGroup.Item>
+
+<ListGroup.Item  className="list-group-item">
+  <div className={`contenido-desplegable ${verValores ? 'expandido' : ''}`}>
+    <span className="field-title">Valores:</span>
+    <p className="field-value">{empresa.valores}</p>
+  </div>
+  <Button variant="link" onClick={toggleValores} className="expand-button">
+    {verValores ? 'Ver menos' : 'Ver más'}
+  </Button>
+</ListGroup.Item>
 
                   <Modal show={showEditUserModal} onHide={handleCloseEditUserModal} size="lg">
                     <Modal.Header closeButton>
@@ -238,12 +252,7 @@ const inactivarYEliminarEmpleoDeLista = () => {
                 </ListGroup>
               </Card.Body>
             </Card>
-            <div className="botones-centrados">
-              <Button variant="danger" onClick={() => navigate("/empresa")}>
-                Salir
-              </Button>
-
-            </div>
+      
           </Col>
           <Col xs={12} md={6} lg={8}>
             {/* Pestañas para información académica y laboral */}

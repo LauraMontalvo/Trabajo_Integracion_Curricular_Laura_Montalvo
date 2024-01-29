@@ -6,14 +6,17 @@ import { faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/Lista.scss";
 import { Link } from 'react-router-dom';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
+import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 
 
-const ListaUsuariosResumen = () => {
+const ListaUsuariosResumen = (props) => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [imagenPreview, setImagenPreview] = useState(null);
-  
+  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
+  const isAuthenticated = props.isAuthenticated;
   useEffect(() => {
     axios.get('http://localhost:8000/api/users')
       .then(response => {
@@ -53,6 +56,8 @@ const ListaUsuariosResumen = () => {
   };
 
   return (
+    <div className='App'>
+      {esUsuario ? <CabeceraUsuarioInicio isAuthenticated={isAuthenticated} /> : <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} />}
     <Container fluid className="mt-4">
       <Row>
 
@@ -98,7 +103,8 @@ const ListaUsuariosResumen = () => {
         </Col>
       </Row>
     </Container>
-  );
+    </div > );
+ 
 };
 
 export default ListaUsuariosResumen;

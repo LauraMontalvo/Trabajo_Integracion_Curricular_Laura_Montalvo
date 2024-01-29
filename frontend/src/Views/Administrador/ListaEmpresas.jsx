@@ -121,7 +121,7 @@ const ListaEmpresas = (props) => {
       })
       .catch(err => console.error("Error al cambiar el estado de la empresa:", err));
   };
-  
+
   return (
     <div className="App">
       <TabsAdministracionComp onAddEmpresa={addEmpresaToList} />
@@ -152,9 +152,9 @@ const ListaEmpresas = (props) => {
                       <Row className="align-items-center">
                         <Col xs={12} sm={6} md={8}>
                           <Card.Title>  <Link to={`/perfil-empresa/${empresa._id}`} className="empresa-link">
-                          {empresa.nombreEmpresa || "Empresa no especificada"}
-                        </Link></Card.Title>
-                        
+                            {empresa.nombreEmpresa || "Empresa no especificada"}
+                          </Link></Card.Title>
+
                           <Card.Text>
                             <FontAwesomeIcon icon={faEnvelope} /> {empresa.correo}
                           </Card.Text>

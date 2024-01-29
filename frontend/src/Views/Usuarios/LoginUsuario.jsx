@@ -9,14 +9,15 @@ import logofondo from "../../img/logofondo.png";
 import { Row, Col, Modal } from 'react-bootstrap';
 import * as constantes from '../../Models/Constantes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faLock, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faLock,faExclamationCircle, faEyeSlash, faCheckCircle,faEye } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../../Components/General/Cabecera';
 import RegistroUsuarioUS from '../../Components/Usuario/RegistrarUsuarioUS';
+import { Alert } from 'react-bootstrap';
 
 const LoginForm = (props) => {
   const [password, setPassword] = useState("");
   const [usuario, setUsuario] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
+  const [loginStatus, setLoginStatus] = useState({ msg: "", type: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const handleRegisterModalShow = () => setShowRegisterModal(true);
@@ -26,26 +27,24 @@ const LoginForm = (props) => {
   const handlerLogin = (e) => {
     e.preventDefault();
     if (password === "" || usuario === "") {
-      setLoginStatus(constantes.TEXTO_INGRESE_DATOS);
+      setLoginStatus({ msg: constantes.TEXTO_INGRESE_DATOS, type: "warning" });
+
     } else {
       const hashedPassword = md5(password); // Cifrar la contraseña con md5
 
       axios.post(constantes.URL_VALIDAR_AUTENTICACION, { usuario, password: hashedPassword })
         .then(respuesta => {
-          console.log(respuesta);
           if (respuesta.data.msg === constantes.MENSAJE_LOGIN_EXITO) {
             const user = respuesta.data.user;
+            setLoginStatus({ msg: "Inicio de sesión exitoso, redirigiendo...", type: "success" });
 
-            console.log(user);
-            setLoginStatus(respuesta.data.msg);
             setTimeout(() => navigate('/detalleUsuario/' + user._id), 1000);
           } else {
-            setLoginStatus(respuesta.data.msg);
+            setLoginStatus({ msg: respuesta.data.msg, type: "danger" }); // Puedes ajustar el tipo según corresponda
           }
         })
         .catch(err => {
-          console.log(err);
-          setLoginStatus(err.msg);
+          setLoginStatus({ msg: "Usuario o contraseña incorrectos", type: "danger" });
 
         });
     }
@@ -110,9 +109,17 @@ const LoginForm = (props) => {
           <Button onClick={RegresarRegistrarComo} className='btn-danger'>Cancelar</Button>
         </div>
 
-        <p style={{ color: 'red' }}>{loginStatus}</p>
-        <h6>¿Aún no estás registrado?</h6>
-        <Link to="#" onClick={handleRegisterModalShow}>Regístrate ahora!</Link>
+        {loginStatus.msg && (
+        <Alert variant={loginStatus.type} className="mt-3">
+          {loginStatus.type === "danger" && <FontAwesomeIcon icon={faExclamationCircle} className="me-2" />}
+          {loginStatus.type === "success" && <FontAwesomeIcon icon={faCheckCircle} className="me-2" />}
+          {loginStatus.msg}
+        </Alert>
+      )}
+  <div className="mt-4 text-center">
+      <h6>¿Aún no estás registrado?</h6>
+      <Link to="#" onClick={handleRegisterModalShow} className="text-primary">Regístrate ahora!</Link>
+    </div>
       </Form>
       <Modal show={showRegisterModal} onHide={handleRegisterModalClose} size="lg">
         <Modal.Header closeButton>

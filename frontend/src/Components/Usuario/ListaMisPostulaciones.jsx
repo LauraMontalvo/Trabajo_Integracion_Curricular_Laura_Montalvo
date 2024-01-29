@@ -82,8 +82,9 @@ const ListaMisPostulaciones = ({
             }
         }
     };
-    const postulacionesActivas = postulaciones.filter(postulacion => 
-        postulacion.estadoPostulacion !== 'Inactivo' && postulacion.idEmpleo.estado === 'Activo'
+ 
+      const postulacionesActivas = postulaciones.filter(postulacion => 
+        postulacion.idEmpleo && postulacion.estadoPostulacion !== 'Inactivo' && postulacion.idEmpleo.estado === 'Activo'
       );
     return (
         <>

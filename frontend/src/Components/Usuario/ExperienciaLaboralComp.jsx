@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Row, Col, Modal, Alert } from 'react-bootstrap';
 import { faBriefcase, faBuilding, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt, faTools, faClipboardList, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes'
+
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -17,13 +18,12 @@ const CampoEstado = ({ valido, mensajeError }) => {
   }
 };
 
-const ExperieciaLaboral = (props) => {
-  const { idUsuario } = props;
+const ExperieciaLaboral = ({  idUsuario,onExperienciaAdded, closeAddModal }) => {
+
   const [descripcionResponsabilidades, setDescripcionResponsabilidades] = useState('');
   const [ambitoLaboral, setAmbitoLaboral] = useState('');
   const [empresa, setEmpresa] = useState('');
-  const [fechaInicio, setFechaInicio] = useState('');
-  const [fechaFin, setFechaFin] = useState('');
+  const { id } = useParams();
   const [puesto, setPuesto] = useState('');
   const [descripcionResponsabilidadesError, setDescripciaonResponsabilidadesError] = useState('');
   const [ambitoLaboralError, setAmbitoLaboralError] = useState('');
@@ -31,19 +31,37 @@ const ExperieciaLaboral = (props) => {
   const [fechaInicioError, setFechaInicioError] = useState('');
   const [fechaFinError, setFechaFinError] = useState('');
   const [puestoError, setPuestoError] = useState('');
-  const navigate = useNavigate();
-  const [error, setError] = useState('');
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
-  const handleSuccessModalClose = () => setShowSuccessModal(false);
-  const handleErrorModalClose = () => setShowErrorModal(false);
+  const [experienciaLaboral, setexperienciaLaboral] = useState([]);
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
 
+  const [error, setError] = useState();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false); // Cierra el modal de éxito
+    if (closeAddModal) {
+      closeAddModal(); // Cierra el modal principal de la experiencia laboral
+    }
+  };
+  const handleErrorModalClose = () => setShowErrorModal(false);
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  
+  const cargarExperienciaLaboral = () => {
+    axios.get(`http://localhost:8000/api/workExperiences/user/${id}`)
+      .then((res) => {
+        setexperienciaLaboral(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleCloseAddExperienceModal = () => {
+    setShowAddExperienceModal(false);
+  };
   const esCampoValido = (valor, error) => {
     return valor !== '' && error === '';
   };
   const validateDescripcionResp = (value, setError) => {
-    if (!value.trim()) {
+    if (!value) {
       setError(constantes.TEXTO_DESCRIPCION_RESPONSABILIDADES_OBLIGATORIO);
     } else {
       setError('');
@@ -51,46 +69,58 @@ const ExperieciaLaboral = (props) => {
   };
 
   const validateAmbito = (value, setError) => {
-    if (!value.trim()) {
+    if (!value) {
       setError(constantes.TEXTO_AMBITO_LABORAL_OBLIGATORIO);
     } else {
       setError('');
     }
   };
   const validateRazonSocial = (value, setError) => {
-    if (!value.trim()) {
+    if (!value) {
       setError(constantes.TEXTO_RAZON_SOCIAL_OBLIGATORIO);
     } else {
       setError('');
     }
   };
-  const validateFechaInicio = (value, setError) => {
-    if (!value) {
-      setError("La fecha de inicio es obligatoria.");
-    } else if (new Date(value) > new Date()) {
-      setError("La fecha de inicio no puede ser una fecha futura.");
-    } else {
-      setError('');
-    }
-  };
+ 
   const validatePuesto = (value, setError) => {
-    if (!value.trim()) {
+    if (!value) {
       setError(constantes.TEXTO_PUESTO_OBLIGATORIO);
     } else {
       setError('');
     }
   };
+  const validateDate = (date, errorSetterFunction) => {
+    if (!date) {
+      errorSetterFunction("La fecha es obligatoria.");
+    } else if (new Date(date) > new Date()) {
+      errorSetterFunction("La fecha no puede ser una fecha futura.");
+    } else {
+      errorSetterFunction('');
+    }
+  };
+  
+  // Función para validar la fecha de inicio
+  const validateFechaInicio = (value, setError) => {
+    validateDate(value, setError);
+  };
+  
+  // Función para validar la fecha de fin
   const validateFechaFin = (value, setError, fechaInicio) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // Establece la hora a medianoche
+  
     if (!value) {
       setError("La fecha de fin es obligatoria.");
     } else if (new Date(value) < new Date(fechaInicio)) {
       setError("La fecha de fin debe ser posterior a la fecha de inicio.");
-    } else if (new Date(value) > new Date()) {
+    } else if (new Date(value) > hoy) {
       setError("La fecha de fin no puede ser una fecha futura.");
     } else {
       setError('');
     }
   };
+  
   const handleInputChange = (e, setterFunction, errorSetterFunction, validateFunction) => {
     const { value } = e.target;
     setterFunction(value);
@@ -115,13 +145,16 @@ const ExperieciaLaboral = (props) => {
       esCampoValido(fechaFin, fechaFinError) &&
       esCampoValido(puesto, puestoError)) {
       // Todos los campos son válidos, proceder con el envío del formulario
+      const fechaInicioFormatted = fechaInicio.split('T')[0]; // Esto asume que fechaInicio ya es una cadena ISO
+      const fechaFinFormatted = fechaFin.split('T')[0]; // Esto asume que fechaFin ya es una cadena ISO
+  
       axios.post(constantes.URL_EXPERIENCIA_LABORAL_NUEVA, {
         puesto,
         descripcionResponsabilidades,
         ambitoLaboral,
         empresa,
-        fechaInicio,
-        fechaFin,
+        fechaInicio: fechaInicioFormatted,
+        fechaFin: fechaFinFormatted,
         idUsuario
       })
         .then((res) => {
@@ -133,7 +166,9 @@ const ExperieciaLaboral = (props) => {
           setFechaInicio('');
           setFechaFin('');
           setPuesto('');
-          props.onExperienciaAdded();
+     onExperienciaAdded();
+          setShowSuccessModal(true); // Muestra el modal de éxito
+          closeAddModal(); 
 
         })
         .catch((error) => {
@@ -142,6 +177,8 @@ const ExperieciaLaboral = (props) => {
         });
     }
   };
+
+
 
   return (
     <Form onSubmit={handleSubmit} className="mi-formulario">
@@ -219,41 +256,55 @@ const ExperieciaLaboral = (props) => {
           </Form.Group>
         </Col>
         <Col md={6}>
+        
           <Form.Group>
-            <Form.Label>Fecha de Inicio</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
-              <Form.Control
-                type="date"
-                value={fechaInicio}
-                onChange={(e) => handleInputChange(e, setFechaInicio, setFechaInicioError, validateFechaInicio)}
-              />
-              <CampoEstado valido={esCampoValido(fechaInicio, fechaInicioError)} mensajeError={fechaInicioError} />
-            </div>
-            {fechaInicioError && <p className="text-danger">{fechaInicioError}</p>}
-          </Form.Group>
+    <Form.Label>Fecha de Inicio</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+      <Form.Control
+  type="date"
+  value={fechaInicio}
+  onChange={(e) => handleInputChange(e, setFechaInicio, setFechaInicioError, validateFechaInicio)}
+/>
+      <CampoEstado valido={esCampoValido(fechaInicio, fechaInicioError)} mensajeError={fechaInicioError} />
+    </div>
+    {fechaInicioError && <p className="text-danger">{fechaInicioError}</p>}
+  </Form.Group>
         </Col>
         <Col md={6}>
-          <Form.Group>
-            <Form.Label>Fecha de Fin</Form.Label>
-            <div className="input-icon-wrapper">
-              <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
-              <Form.Control
-                type="date"
-                value={fechaFin}
-                onChange={(e) => handleInputChange(e, setFechaFin, setFechaFinError, validateFechaFin)}
-              />
-              <CampoEstado valido={esCampoValido(fechaFin, fechaFinError)} mensajeError={fechaFinError} />
-            </div>
-            {fechaFinError && <p className="text-danger">{fechaFinError}</p>}
-
-          </Form.Group>
+        <Form.Group>
+    <Form.Label>Fecha de Fin</Form.Label>
+    <div className="input-icon-wrapper">
+      <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
+      <Form.Control
+  type="date"
+  value={fechaFin}
+  onChange={(e) => handleInputChange(e, setFechaFin, setFechaFinError, () => validateFechaFin(e.target.value, setFechaFinError, fechaInicio))}
+/>
+      <CampoEstado valido={esCampoValido(fechaFin, fechaFinError)} mensajeError={fechaFinError} />
+    </div>
+    {fechaFinError && <p className="text-danger">{fechaFinError}</p>}
+  </Form.Group>
         </Col>
       </Row>
       {/* Botón para enviar el formulario */}
       <div className="botones-centrados">
         <Button type="submit" className='btn-primary'>Guardar</Button>
       </div>
+      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+  <Modal.Header closeButton>
+    <Modal.Title>Experiencia Laboral Agregada</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    ¡Tu experiencia ha sido agregada exitosamente!
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="success" onClick={handleSuccessModalClose}>
+      Cerrar
+    </Button>
+  </Modal.Footer>
+</Modal>
+
     </Form>
 
 

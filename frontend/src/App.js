@@ -52,15 +52,12 @@ function App() {
         ) : (
           <Routes>
             <Route path={constantes.URL_PAGINA_PRINCIPAL} element={<Main />} />
-            <Route path="/detalleUsuario/:id" element={<DetalleUsuario />} />
+            <Route path="/detalleUsuario/:id" element={<DetalleUsuario isAuthenticated={isAuthenticated}/>} />
             <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
             <Route path="/loginusuario" element={<LoginForm />} />
             <Route path="/empresa" element={<LoginFormEmpresa />} />
             <Route path="/registrarUsuarioUS" element={<RegistroUsuarioUS />} />
-          
 
-            <Route path="/detalleUsuario/:id/editar" element={<EditarUsuario />} />
-            <Route path="/detalleEmpresa/:id/editar" element={<EditarEmpresa />} />
         
             <Route path="/listaEmpresas" element={<ListaEmpresas />} />
             <Route path="/listaUsuarios" element={<ListaUsuarios />} />
@@ -73,13 +70,12 @@ function App() {
             <Route path="/perfil-empresa/:id" element={<PerfilEmpresa />} />
             <Route path="/perfilUsuario/:id" element={<PerfilUsuario />} />
             <Route path="/resumen/:id" element={<InicioResumen isAuthenticated={isAuthenticated} />} />
-            <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen  />} />
-            <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen />} />
-            <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen />} />
+            <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen isAuthenticated={isAuthenticated} />} />
+            <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen isAuthenticated={isAuthenticated} />} />
+            <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen isAuthenticated={isAuthenticated}/>} />
             <Route path="/listaPostulacionesAdmin" element={<ListaPostulacionesAdmin/>} />
             <Route path="/moduloReportes" element={<ModuloReportes/>} />
-            {/* Asegúrate de tener una ruta de redirección al componente principal */}
-            <Route path="/*" element={<Navigate to={constantes.URL_PAGINA_PRINCIPAL} />} />
+        
           </Routes>
         )}
       </>

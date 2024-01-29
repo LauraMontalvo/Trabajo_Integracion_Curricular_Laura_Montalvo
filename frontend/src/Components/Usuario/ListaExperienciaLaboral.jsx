@@ -16,6 +16,14 @@ const ListaExperienciaLaboral = ({ experienciaLaboral, onEdit, onDelete, formatD
         onDelete(selectedExperienceId); // Llama a la función de eliminar del componente padre
         setShowDeleteModal(false); // Cierra el modal
     };
+    const format = (dateString) => {
+        if (!dateString) {
+            return 'No disponible';
+          }
+        
+          // Ya que la fecha está en formato ISO, simplemente devuelve la parte de la fecha.
+          return dateString.split('T')[0];
+        };
     return (
         <div>
             {experienciaLaboral.length > 0 ? (
@@ -36,10 +44,10 @@ const ListaExperienciaLaboral = ({ experienciaLaboral, onEdit, onDelete, formatD
                            
                            
                             <div className="empleo-detalle">
-                                <span><strong>Fecha de inicio:</strong> {formatDate(experiencia.fechaInicio)}</span>
+                                <span><strong>Fecha de inicio:</strong> {format(experiencia.fechaInicio)}</span>
                             </div>
                             <div className="empleo-detalle">
-                                <span><strong>Fecha de fin:</strong> {formatDate(experiencia.fechaFin)}</span>
+                                <span><strong>Fecha de fin:</strong> {format(experiencia.fechaFin)}</span>
                             </div>
                             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
                                 <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
