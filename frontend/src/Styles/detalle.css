@@ -214,4 +214,10 @@
 .descripcion-empresa {
   max-height: 100px; /* Establece la altura máxima que desees */
   overflow-y: auto; /* Agrega una barra de desplazamiento vertical si es necesario */
+}
+
+.descripcion-personal {
+  padding: 10px; /* Añade relleno en todos los lados */
+  margin-bottom: 10px; /* Añade un margen en la parte inferior */
+  text-align: justify; /* Justifica el texto */
 }/*# sourceMappingURL=detalle.css.map */

@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @keyframes fondoMovimiento {
   0% {
     background-position: 0% 50%;
@@ -13,68 +12,51 @@
 .navbar {
   background-color: #ffffff;
   padding: 1rem 2rem;
-  margin-bottom: 0;
   border-bottom: 3px solid #6c757d;
-  -webkit-background-clip: text;
-          background-clip: text;
-  color: transparent;
-  text-align: center;
   font-size: 20px;
   font-family: "Century Gothic", sans-serif;
   background: linear-gradient(270deg, #a6e3e9, #f5cbe7, #a1effd);
   background-size: 400% 400%;
   animation: fondoMovimiento 15s ease infinite;
-  border-bottom: 2px solid #6c757d;
+  color: transparent;
+  text-align: center;
 }
 .navbar .navbar-brand {
-  color: #000000;
-  font-weight: 500;
+  color: #ffffff;
 }
 .navbar .navbar-brand:hover {
-  color: #1a1a1a;
-  text-decoration: none;
-}
-.navbar .titulo-Chavp {
-  display: flex;
-  align-items: center;
+  color: white;
 }
 .navbar .titulo-Chavp img {
   margin-right: 0.5rem;
 }
 .navbar .titulo-Chavp h2 {
-  margin-bottom: 0;
-}
-.navbar h2 {
   background: linear-gradient(to right, rgba(14, 224, 161, 0.671), rgb(255, 115, 0), green);
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
-  text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 .navbar .navbar-toggler {
-  border-color: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .nav-link {
-  color: #000000;
+  color: #ffffff;
   margin-right: 1rem;
 }
 .nav-link:hover, .nav-link:focus {
-  color: #fdfdfd;
-  text-decoration: none;
+  color: #ff8800;
 }
 .nav-link.active {
-  color: #fdfdfd;
-  background-color: transparent;
+  color: #ff8800;
 }
 
 .nav-dropdown .dropdown-menu {
   background-color: #ffffff;
-  border: none;
 }
 .nav-dropdown .dropdown-menu .dropdown-item {
-  color: #000000;
+  color: #ffffff;
 }
 .nav-dropdown .dropdown-menu .dropdown-item:hover {
   background-color: #1a6abb;
@@ -90,12 +72,12 @@
 .user-initials-circle {
   width: 35px;
   height: 35px;
-  background-color: #007bff; /* El color de fondo del círculo */
-  color: white; /* Color del texto */
+  background-color: #007bff;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   font-size: 1em;
-  margin-left: 10px; /* Espaciado si es necesario */
+  margin-left: 10px;
 }/*# sourceMappingURL=header.css.map */

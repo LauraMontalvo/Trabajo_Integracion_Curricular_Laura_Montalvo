@@ -7,7 +7,7 @@ import '../../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faPen, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../../Components/General/Cabecera';
 import * as constantes from '../../Models/Constantes'
 
@@ -29,6 +29,8 @@ const RegistroUsuarioUS = (props) => {
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [descripcionPersonal, setdescripcionPersonal] = useState('');
+  const [descripcionPersonalError, setdescripcionPersonalError] = useState('');
 
   const [nombreError, setNombreError] = useState('');
   const [apellidoError, setApellidoError] = useState('');
@@ -69,29 +71,29 @@ const RegistroUsuarioUS = (props) => {
     const fechaNac = new Date(fechaNacimiento);
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0); // Asegurarse de que solo se considera la fecha
-  
+
     // Verificar que la fecha de nacimiento no sea futura
     if (fechaNac > hoy) {
       return { esValida: false, mensaje: "La fecha de nacimiento no puede ser futura." };
     }
-  
+
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
-    
+
     if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
       edad--;
     }
-  
+
     // Verificar que la edad sea al menos 18
     if (edad < 18) {
       return { esValida: false, mensaje: "Debes tener al menos 18 años." };
     }
-  
+
     // Verificar que la fecha de nacimiento sea razonable (por ejemplo, no más de 120 años)
     if (edad > 120) {
       return { esValida: false, mensaje: "Por favor, ingrese una fecha de nacimiento válida." };
     }
-  
+
     return { esValida: true, mensaje: "" };
   };
   const validarFormularioAntesDeEnviar = () => {
@@ -114,22 +116,22 @@ const RegistroUsuarioUS = (props) => {
     }
 
     if (!sexo || sexo === ' ') {
-      setSexoError("Seleccionar género es obligatorio");
+      setSexoError(constantes.TEXTO_SELECCIONAR_GENERO);
       formularioEsValido = false;
     } else {
       setSexoError('');
     }
-   // Validar fecha de nacimiento
-   const validacionFechaNac = validarEdad(fechaNacimiento);
-   if (!fechaNacimiento) {
-     setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
-     formularioEsValido = false;
-   } else if (!validacionFechaNac.esValida) {
-     setFechaNacimientoError(validacionFechaNac.mensaje);
-     formularioEsValido = false;
-   } else {
-     setFechaNacimientoError('');
-   }
+    // Validar fecha de nacimiento
+    const validacionFechaNac = validarEdad(fechaNacimiento);
+    if (!fechaNacimiento) {
+      setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else if (!validacionFechaNac.esValida) {
+      setFechaNacimientoError(validacionFechaNac.mensaje);
+      formularioEsValido = false;
+    } else {
+      setFechaNacimientoError('');
+    }
     // Validar teléfono
     if (!telefono || telefono.length !== 10) { // Asumiendo que el teléfono debe tener 10 dígitos
       setTelefonoError(constantes.TEXTO_NUMERO_TELEFONOOBLIGATORIO);
@@ -145,7 +147,12 @@ const RegistroUsuarioUS = (props) => {
     } else {
       setUsuarioError('');
     }
-
+    if (!descripcionPersonal) {
+      setdescripcionPersonalError(constantes.TEXTO_DESCRIPCIONPERSONAL_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setdescripcionPersonalError('');
+    }
     // Validar contraseña
     if (!password) {
       setPasswordError(constantes.TEXTO_CONTRASEÑA_OBLIGATORIO);
@@ -169,6 +176,18 @@ const RegistroUsuarioUS = (props) => {
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
+    // Validación específica para nombre y apellido
+    if (name === 'nombre' || name === 'apellido') {
+      const regex = /^[A-Za-z\s]+$/; // Permite solo letras y espacios
+      if (!regex.test(value) && value !== '') {
+        errorSetter('Este campo solo debe contener letras. No se permiten números ni caracteres especiales.');
+        return; // Detiene la ejecución si la validación falla
+      } else {
+        errorSetter(''); // Limpia el mensaje de error si la validación es correcta
+      }
+    }
+
+   
     setterFunction(value);
     if (name === 'sexo') {
       if (!value || value === ' ') {
@@ -241,21 +260,22 @@ const RegistroUsuarioUS = (props) => {
       return;
     }
     const fecha = new Date(fechaNacimiento);
-  // Ajustar la fecha al huso horario de Ecuador (UTC-5)
-  const fechaAjustada = new Date(fecha.getTime() - (5 * 60 * 60 * 1000));
+    // Ajustar la fecha al huso horario de Ecuador (UTC-5)
+    const fechaAjustada = new Date(fecha.getTime() - (5 * 60 * 60 * 1000));
 
-  axios.post(constantes.URL_USUARIO_NUEVO, {
-    nombre,
-    apellido,
-    rol: 'Usuario',
-    sexo,
-    fechaNacimiento: fechaAjustada.toISOString(),
-    telefono,
-    usuario,
-    password,
-    confirmPassword,
-    estado: 'Activo'
-  })
+    axios.post(constantes.URL_USUARIO_NUEVO, {
+      nombre,
+      apellido,
+      rol: 'Usuario',
+      sexo,
+      fechaNacimiento: fechaAjustada.toISOString(),
+      telefono,
+      usuario,
+      password,
+      confirmPassword,
+      descripcionPersonal,
+      estado: 'Activo'
+    })
       .then((res) => {
         console.log(res);
         // Extraer la edad de la respuesta del servidor y establecerla en el estado
@@ -264,6 +284,9 @@ const RegistroUsuarioUS = (props) => {
         setNombre('');
         setApellido('');
         setSexo('');
+        setdescripcionPersonal('');
+        setdescripcionPersonalError('');
+
         setFechaNacimiento('');
         setTelefono('');
         setUsuario('');
@@ -279,7 +302,7 @@ const RegistroUsuarioUS = (props) => {
         setConfirmPasswordError('');
       })
       .catch((err) => {
-        console.log(err)
+
         const errorResponse = err.response.data.errors;
 
         if (err.response.data.msg === constantes.TEXTO_USUARIO_EXISTE) {
@@ -296,14 +319,14 @@ const RegistroUsuarioUS = (props) => {
     const anioActual = fechaActual.getFullYear();
     const mesActual = fechaActual.getMonth() + 1; // +1 porque getMonth() devuelve un índice basado en 0
     const diaActual = fechaActual.getDate();
-    
+
     // Resta 18 años del año actual
     const anioMaximo = anioActual - 18;
-  
+
     // Devuelve la fecha en formato YYYY-MM-DD
     return `${anioMaximo}-${mesActual.toString().padStart(2, '0')}-${diaActual.toString().padStart(2, '0')}`;
   };
-  
+
   return (
 
     <div className='App'>
@@ -317,13 +340,13 @@ const RegistroUsuarioUS = (props) => {
                 <Form.Control
                   type="text"
                   placeholder="Ingrese su Nombre"
+                  name="nombre" // Importante para la validación
                   value={nombre}
-                  onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
+                  onChange={(e) => handleInputChange(e, setNombre, setNombreError)}
+                  className="input-with-icon" />
                 <CampoEstado valido={esCampoValido(nombre, nombreError)} mensajeError={nombreError} />
-
               </div>
-              {nombreError && <p className="text-danger">{nombreError}</p>}
-
+              {nombreError && <p className="text-danger">{nombreError}</p>} {/* Muestra el mensaje de error aquí */}
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -333,13 +356,13 @@ const RegistroUsuarioUS = (props) => {
                 <Form.Control
                   type="text"
                   placeholder="Ingrese su Apellido"
+                  name="apellido" // Importante para la validación
                   value={apellido}
                   onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
                   className="input-with-icon" />
                 <CampoEstado valido={esCampoValido(apellido, apellidoError)} mensajeError={apellidoError} />
-
               </div>
-              {apellidoError && <p className="text-danger">{apellidoError}</p>}
+              {apellidoError && <p className="text-danger">{apellidoError}</p>} {/* Muestra el mensaje de error aquí */}
             </Form.Group>
           </Col>
 
@@ -370,12 +393,12 @@ const RegistroUsuarioUS = (props) => {
               <div className="input-icon-wrapper">
                 <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
                 <Form.Control
-  type="date"
-  max={calcularAnioMaximo()}
-  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
-  value={fechaNacimiento}
-  className="input-with-icon"
-/>
+                  type="date"
+                  max={calcularAnioMaximo()}
+                  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
+                  value={fechaNacimiento}
+                  className="input-with-icon"
+                />
 
                 <CampoEstado valido={esCampoValido(fechaNacimiento, fechaNacimientoError)} mensajeError={fechaNacimientoError} />
 
@@ -416,6 +439,23 @@ const RegistroUsuarioUS = (props) => {
 
               </div>
               {usuarioError && <p className="text-danger">{usuarioError}</p>}
+            </Form.Group>
+          </Col>
+          <Col md={12}>
+            <Form.Group>
+              <Form.Label>Descripción Personal</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faPen} className="input-icon" />
+                <Form.Control
+                  as="textarea"
+                  rows={3} // Puedes ajustar el número de líneas iniciales
+                  placeholder="Describa brevemente quién es usted"
+                  value={descripcionPersonal}
+                  onChange={(e) => handleInputChange(e, setdescripcionPersonal, setdescripcionPersonalError)}
+                  className="input-with-icon textarea-custom" />
+                <CampoEstado valido={esCampoValido(descripcionPersonal, descripcionPersonalError)} mensajeError={descripcionPersonalError} />
+              </div>
+              {descripcionPersonalError && <p className="text-danger">{descripcionPersonalError}</p>}
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -476,12 +516,12 @@ const RegistroUsuarioUS = (props) => {
 
         <div className="botones-centrados">
           <Button type="submit" className='btn-primary'>Crear cuenta</Button>
-       
+
         </div>
         <div></div>
         <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
           <Modal.Header closeButton>
-            <Modal.Title>¡Usuario creado con éxito!</Modal.Title>
+            <Modal.Title>           <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />¡Usuario creado con éxito!</Modal.Title>
           </Modal.Header>
           <Modal.Body>Ahora puede acceder con sus credenciales.</Modal.Body>
           <Modal.Footer>
@@ -492,12 +532,19 @@ const RegistroUsuarioUS = (props) => {
         </Modal>
 
         <Modal show={showErrorModal} onHide={handleErrorModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>¡Error!</Modal.Title>
+          <Modal.Header closeButton className="bg-danger text-white">
+            <Modal.Title id="contained-modal-title-vcenter">
+              <FontAwesomeIcon icon={faExclamationCircle} /> Error
+            </Modal.Title>
           </Modal.Header>
-          <Modal.Body>Usuario ya existe.</Modal.Body>
+          <Modal.Body>
+
+            <p>
+              El usuario ya existe. Por favor, intenta con un nombre de usuario diferente.
+            </p>
+          </Modal.Body>
           <Modal.Footer>
-            <Button className="botones-centrados" variant="success" onClick={handleErrorModalClose}>
+            <Button variant="secondary" onClick={handleErrorModalClose}>
               Cerrar
             </Button>
           </Modal.Footer>

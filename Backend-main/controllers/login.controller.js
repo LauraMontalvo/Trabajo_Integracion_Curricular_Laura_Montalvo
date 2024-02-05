@@ -22,7 +22,7 @@ module.exports.validateUser = (req, res) => {
                     });
                 } 
             } else {
-                res.json({ msg: 'El usuario o la contraseña son incorrectos' });
+                res.json({ msg: 'El usuario o la Contraseña son incorrectos' });
             }
         })
         .catch(err => res.json({ err: err, msg: "Error al validar el usuario." }));
@@ -45,7 +45,7 @@ module.exports.validateCompany = (req, res) => {
                     });
                 } 
             } else {
-                res.json({ msg: 'El usuario o la contraseña son incorrectos' });
+                res.json({ msg: 'El usuario o la Contraseña son incorrectos' });
             }
         })
         .catch(err => res.json({ err: err, msg: "Error al validar la empresa." }));

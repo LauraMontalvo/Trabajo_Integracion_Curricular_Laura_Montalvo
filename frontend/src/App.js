@@ -52,30 +52,32 @@ function App() {
         ) : (
           <Routes>
             <Route path={constantes.URL_PAGINA_PRINCIPAL} element={<Main />} />
-            <Route path="/detalleUsuario/:id" element={<DetalleUsuario isAuthenticated={isAuthenticated}/>} />
-            <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
+            {/*Usuario*/}
             <Route path="/loginusuario" element={<LoginForm />} />
-            <Route path="/empresa" element={<LoginFormEmpresa />} />
+            <Route path="/detalleUsuario/:id" element={<DetalleUsuario isAuthenticated={isAuthenticated} />} />
+            <Route path="/buscarEmpleos/:id" element={<BuscarEmpleo />} />
             <Route path="/registrarUsuarioUS" element={<RegistroUsuarioUS />} />
-
-        
-            <Route path="/listaEmpresas" element={<ListaEmpresas />} />
-            <Route path="/listaUsuarios" element={<ListaUsuarios />} />
-            <Route path="/listaAdministradores" element={<ListaAdministradores />} />
-            <Route path="/buscarEmpleos/:id" element={<BuscarEmpleo/>} />
-      
-            <Route path="/listaInstituciones" element={<ListaInstituciones />} />
+            {/*Empresa*/}
+            <Route path="/empresa" element={<LoginFormEmpresa />} />
+            <Route path="/detalleEmpresa/:id" element={<DetalleEmpresa />} />
+            {/*Admin*/}
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />
+            <Route path="/admin/consola/listaEmpresas/:id" element={<ListaEmpresas />} />
+            <Route path="/admin/consola/listaUsuarios/:id" element={<ListaUsuarios />} />
+            <Route path="/admin/consola/listaPostulacionesAdmin/:id" element={<ListaPostulacionesAdmin />} />
+            <Route path="/admin/consola/listaAdministradores/:id" element={<ListaAdministradores />} />
+            <Route path="/admin/consola/listaInstituciones/:id" element={<ListaInstituciones />} />
+            <Route path="/admin/consola/moduloReportes/:id" element={<ModuloReportes />} />
+            {/*General Admin y usuario*/}
             <Route path="/perfil-empresa/:id" element={<PerfilEmpresa />} />
             <Route path="/perfilUsuario/:id" element={<PerfilUsuario />} />
             <Route path="/resumen/:id" element={<InicioResumen isAuthenticated={isAuthenticated} />} />
             <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen isAuthenticated={isAuthenticated} />} />
             <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen isAuthenticated={isAuthenticated} />} />
-            <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen isAuthenticated={isAuthenticated}/>} />
-            <Route path="/listaPostulacionesAdmin" element={<ListaPostulacionesAdmin/>} />
-            <Route path="/moduloReportes" element={<ModuloReportes/>} />
-        
+            <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen isAuthenticated={isAuthenticated} />} />
+
+
           </Routes>
         )}
       </>

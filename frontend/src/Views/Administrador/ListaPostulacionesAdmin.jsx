@@ -185,12 +185,12 @@ const ListaPostulacionesAdmin = () => {
                                                             <Card.Title>
                                                                 <FontAwesomeIcon icon={faBriefcase} className="me-2" /> {/* Ícono de Puesto */}
                                                                 {empleo.puesto} - {renderEstadoEmpleo(empleo.estado)}
-                                                            </Card.Title>                                                             <Card.Subtitle className="mb-2 text-muted">
+                                                            </Card.Title>
+                                                            <Card.Subtitle className="mb-2 text-muted">
                                                                 <FontAwesomeIcon icon={faBuilding} className="me-2" /> {/* Ícono de Empresa */}
-                                                                {empleo.idEmpresa.nombreEmpresa}
-
-                                                                
+                                                                {empleo.idEmpresa?.nombreEmpresa || 'Nombre de Empresa no disponible'}
                                                             </Card.Subtitle>
+
                                                             <Card.Text>
                                                                 {acordeonesAbiertos[empleo._id] ? empleo.descripcion : `${empleo.descripcion.substring(0, 100)}...`}
                                                             </Card.Text>
@@ -274,10 +274,10 @@ const ListaPostulacionesAdmin = () => {
                         {postulacionesActuales.map((postulacion) => (
                             <Row key={postulacion._id} className="mb-2 align-items-center">
                                 <Col>
-                                    <FontAwesomeIcon icon={faUser} className="me-2" /> {postulacion.idUsuario.nombre} {postulacion.idUsuario.apellido}
-
-                                    
+                                    <FontAwesomeIcon icon={faUser} className="me-2" />
+                                    {postulacion.idUsuario ? `${postulacion.idUsuario.nombre} ${postulacion.idUsuario.apellido}` : 'Usuario no disponible'}
                                 </Col>
+
                                 <Col>
                                     {renderEstadoIcono(postulacion.estado)} {postulacion.estado}
                                 </Col>

@@ -15,6 +15,7 @@ import {
   ArcElement
 } from 'chart.js';
 import '../../../Styles/moduloReportes.scss';
+import TabsAdministracionComp from '../../../Components/Administracion/TabsAdministracionComp';
 
 // Registro de componentes para Chart.js v3
 ChartJS.register(
@@ -56,7 +57,7 @@ function ModuloReportes() {
 
         const latestUsers = filteredUsers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
         setRecentUsers(latestUsers);
-    
+
         setTotalUsuarios(filteredUsers.length);
         // Aquí puedes calcular y actualizar los usuarios aceptados, rechazados, etc.
       })
@@ -139,6 +140,47 @@ function ModuloReportes() {
       },
     ],
   };
+  // Suponiendo que ya tienes `motivosRechazo` actualizado con los conteos por motivo
+  const totalRechazos = Object.values(motivosRechazo).reduce((acc, curr) => acc + curr, 0);
+
+  // Calcular porcentajes por motivo
+  const porcentajesPorMotivo = {};
+  for (const motivo in motivosRechazo) {
+    porcentajesPorMotivo[motivo] = ((motivosRechazo[motivo] / totalRechazos) * 100).toFixed(2);
+  }
+
+  // Asumiendo que tienes un objeto `motivosRechazo` con los conteos
+  const motivosLabels = ['Fuera de rango de edad', 'Formación académica', 'Plaza ya no disponible', 'Información incompleta', 'Otro'];
+  const motivosColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'];
+
+  // Convertir cada motivo de rechazo en su propio conjunto de datos
+  const datasets = motivosLabels.map((motivo, index) => ({
+    label: motivo, // El motivo se convierte en el nombre del conjunto de datos
+    data: [motivosRechazo[motivo] || 0], // Asegúrate de que esto es un array con un solo elemento
+    backgroundColor: motivosColors[index],
+    borderColor: motivosColors[index],
+    borderWidth: 1,
+  }));
+
+  const barChartData = {
+    labels: ['Motivos de Rechazo'], // Un único label general para el eje X
+    datasets: datasets,
+  };
+
+  const barChartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    },
+  };
+
 
 
   // Datos para la gráfica de barras (Puedes personalizar esta parte)
@@ -185,7 +227,7 @@ function ModuloReportes() {
   const ListGroupSection = ({ title, items }) => (
     <div className="list-group-section">
       <h4 className="list-group-title">{title}</h4>
-      <ListGroup className="mb-3">
+      <ListGroup className="mb-10">
         {items.map((item, index) => (
           <ListGroup.Item key={index} className="list-group-item">
             {item.text}
@@ -195,11 +237,7 @@ function ModuloReportes() {
     </div>
 
   );
-  // Simula la obtención de las notificaciones de usuarios que actualizaron su perfil
-  const userNotifications = recentUsers.map(user => ({
-    text: `${user.nombre} se a registrado recientemente.`,
-    id: user._id
-  }));
+
 
   // Simula la obtención de actividades de empresas que publicaron nuevas ofertas de empleo
   const moment = require('moment');
@@ -217,77 +255,78 @@ function ModuloReportes() {
   }));
 
   return (
-    <Container fluid className="dashboard-container">
-      {/* Carrusel con tarjetas */}
-      <Row className="justify-content-center mb-4">
-        <Col lg={8}>
-          <Carousel interval={5000} pause="hover">
-            {data.map((item, index) => (
-              <Carousel.Item key={index}>
-                <Card className="text-center dashboard-card">
-                  <Card.Body>
-                    <div className="dashboard-icon">{item.icon}</div>
-                    <Card.Title>{item.title}</Card.Title>
-                    <Card.Text className="dashboard-value">
-                      {item.value}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Carousel.Item>
-            ))}
-          </Carousel>
-        </Col>
-      </Row>
+    <div className='App'>
+      <TabsAdministracionComp />
+      <Container fluid className="mt-4">
+        {/* Carrusel con tarjetas */}
+        <Row className="justify-content-center mb-4">
+          <Col lg={8}>
+            <Carousel interval={5000} pause="hover">
+              {data.map((item, index) => (
+                <Carousel.Item key={index}>
+                  <Card className="text-center dashboard-card">
+                    <Card.Body>
+                      <div className="dashboard-icon">{item.icon}</div>
+                      <Card.Title>{item.title}</Card.Title>
+                      <Card.Text className="dashboard-value">
+                        {item.value}
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          </Col>
+        </Row>
 
-      {/* Secciones */}
-      <Row className="justify-content-center mb-4">
-        <Col md={12} className="section-title">
-          <h2>Resumen de Usuarios</h2>
-        </Col>
-        <Col md={3}>
-          <SummaryCard title="Total de Usuarios" value={totalUsuarios} Icon={FaUsers} />
-        </Col>
-        <Col md={3}>
-          <SummaryCard title="Usuarios Aceptados" value={usuariosAceptados} Icon={FaHandshake} />
-        </Col>
-        <Col md={3}>
-          <SummaryCard title="Usuarios Rechazados" value={usuariosRechazados} Icon={FaTimesCircle} />
-        </Col>
-        <Col md={3}>
-          <SummaryCard title="Usuarios en Espera" value={usuariosEspera} Icon={FaHourglassHalf} />
-        </Col>
-      </Row>
+        {/* Secciones */}
+        <Row className="justify-content-center mb-4">
+          <Col md={12} className="section-title">
+            <h2>Resumen de Usuarios</h2>
+          </Col>
+          <Col md={3}>
+            <SummaryCard title="Total de Usuarios" value={totalUsuarios} Icon={FaUsers} />
+          </Col>
+          <Col md={3}>
+            <SummaryCard title="Usuarios Aceptados" value={usuariosAceptados} Icon={FaHandshake} />
+          </Col>
+          <Col md={3}>
+            <SummaryCard title="Usuarios Rechazados" value={usuariosRechazados} Icon={FaTimesCircle} />
+          </Col>
+          <Col md={3}>
+            <SummaryCard title="Usuarios en Espera" value={usuariosEspera} Icon={FaHourglassHalf} />
+          </Col>
+        </Row>
 
-      {/* Gráficos */}
-      <Row className="justify-content-center mb-4">
-        <Col xs={12} md={6}>
-          <h2>Estadísticas de Postulaciones</h2>
-          <Card >
-            <Card.Body >
-              <Doughnut data={doughnutData} options={doughnutOptions} />
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={12} md={6}>
-          <h2>Estadísticas de Motivos de Rechazo</h2>
-          <Card>
-            <Card.Body>
-              <Doughnut data={dataMotivosRechazo} options={doughnutOptions} />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+        {/* Gráficos */}
+        <Row className="justify-content-center mb-4">
+          <Col xs={12} md={6}>
+            <h2>Estadísticas de Postulaciones</h2>
+            <Card >
+              <Card.Body >
+                <Doughnut data={doughnutData} options={doughnutOptions} />
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col xs={12} md={6}>
+            <Card>
+              <Card.Body>
+                <h2>Estadísticas de Motivos de Rechazo</h2>
+                <Bar data={barChartData} options={barChartOptions} />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
 
-      {/* Notificaciones */}
-      <Row className="justify-content-center mb-4">
-        <Col md={6}>
-          <ListGroupSection title="Notificaciones" items={userNotifications} />
-        </Col>
-        <Col md={6}>
+        {/* Notificaciones */}
+        <Row className="justify-content-center mb-4">
+        <Col xs={12}> {/* Esto asegurará que la columna ocupe todo el ancho en todos los tamaños de pantalla */}
           <ListGroupSection title="Actividades Recientes" items={companyActivities} />
         </Col>
       </Row>
-    </Container>
+      </Container>
+    </div>
+
   );
 }
 

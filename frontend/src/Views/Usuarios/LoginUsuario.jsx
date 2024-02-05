@@ -44,7 +44,7 @@ const LoginForm = (props) => {
           }
         })
         .catch(err => {
-          setLoginStatus({ msg: "Usuario o contraseña incorrectos", type: "danger" });
+          setLoginStatus({ msg: 'El usuario o la Contraseña son incorrectos' , type: "danger" });
 
         });
     }

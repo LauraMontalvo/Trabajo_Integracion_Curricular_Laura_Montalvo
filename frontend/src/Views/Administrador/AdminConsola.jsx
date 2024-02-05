@@ -22,14 +22,14 @@ const Main = () => {
     const toggleUsuarios = () => setModalUsuarios(!modalUsuarios);
     const toggleInstituciones = () => setModalUsuarios(!modalInstituciones);
 
-    const handleVerEmpresas = () => navigate('/listaEmpresas');
-    const handleVerUsuarios = () => navigate('/listaUsuarios');
-    const handleVerInstituciones = () => navigate('/listaInstituciones');
+    const handleVerEmpresas = () => navigate(`/admin/consola/listaEmpresas/${id}`);
+    const handleVerUsuarios = () => navigate(`/admin/consola/listaUsuarios/${id}`);
+    const handleVerInstituciones = () => navigate(`/admin/consola/listaInstituciones/${id}`);
     const handleVerReportes = () => {
-        navigate('/moduloReportes');
+        navigate(`/admin/consola/moduloReportes/${id}`);
     };
     const handleVerPostulaciones = () => {
-        navigate('/listaPostulacionesAdmin');
+        navigate(`/admin/consola/listaPostulacionesAdmin/${id}`);
     };
 
 

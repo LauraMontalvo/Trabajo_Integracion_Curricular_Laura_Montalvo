@@ -58,7 +58,13 @@ function DetalleUsuario(props) {
   const [isEditingExperience, setIsEditingExperience] = useState(false);
   const [instituciones, setInstituciones] = useState([]);
   const [ubicacion, setUbicacion] = useState('');
+  const [verMasDescripcion, setVerMasDescripcion] = useState(false); // Nuevo estado para controlar la visualización
 
+  //Descripcion
+  const toggleVerMasDescripcion = () => {
+    setVerMasDescripcion(!verMasDescripcion);
+  };
+  //
   const [errorUbicacion, setErrorUbicacion] = useState('');
 
   const [experienciaLaboral, setexperienciaLaboral] = useState([]);
@@ -520,13 +526,13 @@ function DetalleUsuario(props) {
       console.error('Error al agregar/editar datos académicos:', error);
     }
   };
-// En DetalleUsuario, añade una función para manejar el cierre del modal
-const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
+  // En DetalleUsuario, añade una función para manejar el cierre del modal
+  const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
 
-// Función para cerrar el modal de agregar experiencia laboral
-const handleCloseAddExperienceModal = () => {
-  setShowAddExperienceModal(false);
-};
+  // Función para cerrar el modal de agregar experiencia laboral
+  const handleCloseAddExperienceModal = () => {
+    setShowAddExperienceModal(false);
+  };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
@@ -573,7 +579,7 @@ const handleCloseAddExperienceModal = () => {
         <Row>
           <Col xs={12} md={6} lg={4}  >
             {/* Información del usuario */}
-            <Card fluid  className="datos-personales-card">
+            <Card fluid className="datos-personales-card">
               <Card.Body className="mt-4">
                 <ImagenPerfil
                   id={id}
@@ -596,6 +602,20 @@ const handleCloseAddExperienceModal = () => {
                     <span className="field-title">Género:</span> <span className="field-value">{user.sexo}</span>
                   </ListGroup.Item>
                   <ListGroup.Item className="list-group-item">
+  <span className="field-title">Descripción Personal: </span>
+  <span className="field-value descripcion-personal">
+
+    {verMasDescripcion || user.descripcionPersonal?.length <= 10
+      ? user.descripcionPersonal
+      : `${user.descripcionPersonal?.substring(0, 10)}... `}
+    {user.descripcionPersonal?.length > 10 && (
+      <Button variant="link" onClick={toggleVerMasDescripcion}>
+        {verMasDescripcion ? 'Ver menos' : 'Ver más'}
+      </Button>
+    )}
+  </span>
+</ListGroup.Item>
+                  <ListGroup.Item className="list-group-item">
                     <span className="field-title">Fecha de Nacimiento:</span> <span className="field-value">{format(user.fechaNacimiento)}</span>
                   </ListGroup.Item>
                   <ListGroup.Item className="list-group-item">
@@ -604,6 +624,7 @@ const handleCloseAddExperienceModal = () => {
                   <ListGroup.Item className="list-group-item">
                     <span className="field-title">Edad:</span> <span className="field-value">{edad !== null ? `${edad} años` : ''}</span>
                   </ListGroup.Item>
+
 
 
 
@@ -630,17 +651,17 @@ const handleCloseAddExperienceModal = () => {
               <Tab eventKey="academic" title="Información Académica">
                 <Card>
                   <Card.Body>
-                  {acadTraining.length > 0 ? (
-        <ListaInformacionAcademica
-          acadTraining={acadTraining}
-          handleShowAcadTrainingModal={handleShowAcadTrainingModal}
-          handleShowDeleteModal={handleShowDeleteModal}
-        />
-      ) : (
-  
-          <p>No se ha publicado información académica.</p>
-     
-      )}
+                    {acadTraining.length > 0 ? (
+                      <ListaInformacionAcademica
+                        acadTraining={acadTraining}
+                        handleShowAcadTrainingModal={handleShowAcadTrainingModal}
+                        handleShowDeleteModal={handleShowDeleteModal}
+                      />
+                    ) : (
+
+                      <p>No se ha publicado información académica.</p>
+
+                    )}
 
                     <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
                       <Modal.Header closeButton>
@@ -659,12 +680,12 @@ const handleCloseAddExperienceModal = () => {
                       </Modal.Footer>
                     </Modal>
 
-                    
+
                     <Card.Body className="text-center">
-                    <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
-                      Agregar Información Académica
-                    </Button>
-            </Card.Body>
+                      <Button variant="primary" onClick={handleShowAcadTrainingModal} className="mt-3">
+                        Agregar Información Académica
+                      </Button>
+                    </Card.Body>
                     <Modal show={showAcadTrainingModal} onHide={handleCloseAcadTrainingModal} size='lg'>
                       <Modal.Header closeButton>
                         <Modal.Title className='tituloModal'>{editingAcadTrainingId ? 'Editar' : 'Agregar'} Información Académica</Modal.Title>
@@ -849,18 +870,18 @@ const handleCloseAddExperienceModal = () => {
                     <div className='botones-centrados'>
                       <Button variant="primary" onClick={() => showExperienceForm()}>Agregar Experiencia Laboral</Button>
                     </div>
-<Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)} size='lg'>
-  <Modal.Header closeButton>
-    <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <ExperieciaLaboral
-      idUsuario={id} 
-      onExperienciaAdded={cargarExperienciaLaboral} 
-      closeAddModal={handleCloseAddExperienceModal} 
-    />
-  </Modal.Body>
-</Modal>
+                    <Modal show={showExperienceModal} onHide={() => setShowExperienceModal(false)} size='lg'>
+                      <Modal.Header closeButton>
+                        <Modal.Title className='tituloModal'>{isEditingExperience ? 'Editar Experiencia Laboral' : 'Agregar Experiencia Laboral'}</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <ExperieciaLaboral
+                          idUsuario={id}
+                          onExperienciaAdded={cargarExperienciaLaboral}
+                          closeAddModal={handleCloseAddExperienceModal}
+                        />
+                      </Modal.Body>
+                    </Modal>
 
                   </Card.Body>
                 </Card>

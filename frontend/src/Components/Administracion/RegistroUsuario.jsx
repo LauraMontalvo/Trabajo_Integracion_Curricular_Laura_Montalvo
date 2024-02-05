@@ -7,7 +7,7 @@ import '../../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye,faPen, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../General/Cabecera';
 import * as constantes from '../../Models/Constantes'
 
@@ -26,6 +26,7 @@ const RegistroUsuario = (props) => {
   const [sexo, setSexo] = useState(null);
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [telefono, setTelefono] = useState('');
+  const [descripcionPersonal, setdescripcionPersonal] = useState('');
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +37,7 @@ const RegistroUsuario = (props) => {
   const [fechaNacimientoError, setFechaNacimientoError] = useState('');
   const [telefonoError, setTelefonoError] = useState('');
   const [usuarioError, setUsuarioError] = useState('');
+  const [descripcionPersonalError, setdescripcionPersonalError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
@@ -140,6 +142,12 @@ const RegistroUsuario = (props) => {
     } else {
       setUsuarioError('');
     }
+    if (!descripcionPersonal) {
+      setdescripcionPersonalError(constantes.TEXTO_DESCRIPCIONPERSONAL_OBLIGATORIO);
+      formularioEsValido = false;
+    } else {
+      setdescripcionPersonalError('');
+    }
 
     // Validar contraseña
     if (!password) {
@@ -164,6 +172,18 @@ const RegistroUsuario = (props) => {
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
+    // Validación específica para nombre y apellido
+    if (name === 'nombre' || name === 'apellido') {
+      const regex = /^[A-Za-z\s]+$/; // Permite solo letras y espacios
+      if (!regex.test(value) && value !== '') {
+        errorSetter('Este campo solo debe contener letras. No se permiten números ni caracteres especiales.');
+        return; // Detiene la ejecución si la validación falla
+      } else {
+        errorSetter(''); // Limpia el mensaje de error si la validación es correcta
+      }
+    }
+
+
     setterFunction(value);
     if (name === 'sexo') {
       if (!value || value === ' ') {
@@ -247,6 +267,7 @@ const RegistroUsuario = (props) => {
       telefono,
       usuario,
       password,
+      descripcionPersonal,
       confirmPassword,
       estado: 'Activo'
     })
@@ -258,6 +279,7 @@ const RegistroUsuario = (props) => {
         setNombre('');
         setApellido('');
         setSexo('');
+        setdescripcionPersonal('');
         setFechaNacimiento('');
         setTelefono('');
         setUsuario('');
@@ -266,6 +288,7 @@ const RegistroUsuario = (props) => {
         setNombreError('');
         setApellidoError('');
         setSexoError('');
+        setdescripcionPersonalError('');
         setFechaNacimientoError('');
         setTelefonoError('');
         setUsuarioError('');
@@ -318,13 +341,13 @@ const RegistroUsuario = (props) => {
                 <Form.Control
                   type="text"
                   placeholder="Ingrese su Nombre"
+                  name="nombre" // Importante para la validación
                   value={nombre}
-                  onChange={(e) => handleInputChange(e, setNombre, setNombreError)} />
+                  onChange={(e) => handleInputChange(e, setNombre, setNombreError)}
+                  className="input-with-icon" />
                 <CampoEstado valido={esCampoValido(nombre, nombreError)} mensajeError={nombreError} />
-
               </div>
-              {nombreError && <p className="text-danger">{nombreError}</p>}
-
+              {nombreError && <p className="text-danger">{nombreError}</p>} {/* Muestra el mensaje de error aquí */}
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -334,13 +357,13 @@ const RegistroUsuario = (props) => {
                 <Form.Control
                   type="text"
                   placeholder="Ingrese su Apellido"
+                  name="apellido" // Importante para la validación
                   value={apellido}
                   onChange={(e) => handleInputChange(e, setApellido, setApellidoError)}
                   className="input-with-icon" />
                 <CampoEstado valido={esCampoValido(apellido, apellidoError)} mensajeError={apellidoError} />
-
               </div>
-              {apellidoError && <p className="text-danger">{apellidoError}</p>}
+              {apellidoError && <p className="text-danger">{apellidoError}</p>} {/* Muestra el mensaje de error aquí */}
             </Form.Group>
           </Col>
 
@@ -422,6 +445,25 @@ const RegistroUsuario = (props) => {
               {usuarioError && <p className="text-danger">{usuarioError}</p>}
             </Form.Group>
           </Col>
+          
+          <Col md={12}>
+            <Form.Group>
+              <Form.Label>Descripción Personal</Form.Label>
+              <div className="input-icon-wrapper">
+                <FontAwesomeIcon icon={faPen} className="input-icon" />
+                <Form.Control
+                  as="textarea"
+                  rows={3} // Puedes ajustar el número de líneas iniciales
+                  placeholder="Describa brevemente quién es usted"
+                  value={descripcionPersonal}
+                  onChange={(e) => handleInputChange(e, setdescripcionPersonal, setdescripcionPersonalError)}
+                  className="input-with-icon textarea-custom" />
+                <CampoEstado valido={esCampoValido(descripcionPersonal, descripcionPersonalError)} mensajeError={descripcionPersonalError} />
+              </div>
+              {descripcionPersonalError && <p className="text-danger">{descripcionPersonalError}</p>}
+            </Form.Group>
+          </Col>
+        
           <Col md={6}>
             <Form.Group>
               <Form.Label>Contraseña</Form.Label>

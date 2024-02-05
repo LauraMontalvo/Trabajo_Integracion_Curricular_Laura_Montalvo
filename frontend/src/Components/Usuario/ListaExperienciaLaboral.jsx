@@ -39,16 +39,15 @@ const ListaExperienciaLaboral = ({ experienciaLaboral, onEdit, onDelete, formatD
                             <p>{experiencia.ambitoLaboral}</p>
                             <strong >Empresa en la que trabajó:</strong>
                             <p> {experiencia.empresa}</p>
+                      
 
-
-                           
-                           
                             <div className="empleo-detalle">
                                 <span><strong>Fecha de inicio:</strong> {format(experiencia.fechaInicio)}</span>
                             </div>
                             <div className="empleo-detalle">
                                 <span><strong>Fecha de fin:</strong> {format(experiencia.fechaFin)}</span>
                             </div>
+                           
                             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
                                 <FontAwesomeIcon icon={faEdit} className="text-primary mr-2" style={{ cursor: 'pointer', fontSize: '1.5em', marginRight: '15px' }}
                                     onClick={() => onEdit(experiencia._id)}

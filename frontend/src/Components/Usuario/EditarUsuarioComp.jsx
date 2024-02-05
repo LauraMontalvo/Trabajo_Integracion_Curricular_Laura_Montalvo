@@ -5,7 +5,7 @@ import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Styles/loginstyle.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faPen,faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes'
 
 
@@ -17,6 +17,8 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const [fechaNacimiento, setFechaNacimiento] = useState("");
     const [telefono, setTelefono] = useState("");
     const [usuario, setUsuario] = useState("");
+    const [descripcionPersonal, setDescripcionPersonal] = useState("");
+
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [updateError, setUpdateError] = useState('');
@@ -29,6 +31,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const [fechaNacimientoError, setFechaNacimientoError] = useState('');
     const [telefonoError, setTelefonoError] = useState('');
     const [nombreError, setNombreError] = useState('');
+    const [descripcionPersonalError, setdescripcionPersonalError] = useState('');
     const [apellidoError, setApellidoError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -70,6 +73,16 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         setNombreError('');
         return true;
     };
+    const validarDescripcionPersonal = () => {
+        if (!descripcionPersonal) {
+            setdescripcionPersonalError('La descripción persona es obligatoria');
+            return false;
+        }
+        // Agregar más lógica de validación si es necesario
+        setdescripcionPersonalError('');
+        return true;
+    };
+
 
     const validarApellido = () => {
         if (!apellido) {
@@ -133,7 +146,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         setNombre(nuevoNombre);
 
         // Establece o elimina el mensaje de error según el contenido del campo
-        if (!nuevoNombre.trim()) {
+        if (!nuevoNombre) {
             setNombreError('El nombre es obligatorio');
         } else {
             setNombreError('');
@@ -146,12 +159,38 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         setApellido(nuevoApellido);
 
         // Establece o elimina el mensaje de error según el contenido del campo
-        if (!nuevoApellido.trim()) {
+        if (!nuevoApellido) {
             setApellidoError('El apellido es obligatorio');
         } else {
             setApellidoError('');
         }
     };
+
+    const verificarUsuarioExistente = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/api/usuarios/verificar/${usuario}`);
+            if (response.data.existe && response.data.usuarioId !== id) {
+                setUsuarioError('El nombre de usuario ya está en uso por otro usuario.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error al verificar el usuario existente', error);
+            return false;
+        }
+        return true;
+    };
+    const handleDescripcionPerChange = (e) => {
+        const nuevaDescripcionPer = e.target.value;
+        setDescripcionPersonal(nuevaDescripcionPer);
+    
+        // Aquí, probablemente quisiste limpiar el mensaje de error si hay contenido válido.
+        if (!nuevaDescripcionPer) {
+            setdescripcionPersonalError('La descripción personal es obligatoria');
+        } else {
+            setdescripcionPersonalError('');
+        }
+    };
+
 
     const handleUsuarioChange = (e) => {
         const nuevoUsuario = e.target.value;
@@ -205,6 +244,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setFechaNacimiento(toShortDateFormat(res.data.fechaNacimiento));
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
+                setDescripcionPersonal(res.data.descripcionPersonal);
                 // No necesitas setear las contraseñas aquí
             })
             .catch(err => console.log(err));
@@ -218,6 +258,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setFechaNacimiento(res.data.fechaNacimiento);
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
+                setDescripcionPersonal(res.data.descripcionPersonal);
             })
             .catch(err => console.log(err));
     };
@@ -239,11 +280,13 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const esApellidoValido = validarApellido();
         const esTelefonoValido = validarTelefono();
         const esUsuarioValido = validarUsuario();
+        const esdescripcionPersValido = validarDescripcionPersonal();
         // ... (Validar otros campos)
 
-        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido) {
+        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido || !esdescripcionPersValido) {
             return; // Detener si hay errores
         }
+        
         // Verificar si la fecha de nacimiento es válida antes de actualizar
         if (fechaNacimientoError) {
             return; // Detiene la función si hay errores
@@ -261,6 +304,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             fechaNacimiento,
             telefono,
             usuario,
+            descripcionPersonal,
             // Solo incluye las contraseñas si realmente se han ingresado nuevas
             ...(password && confirmPassword && { password: md5(password) })
         };
@@ -410,6 +454,23 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
                         </Form.Group>
                     </Col>
+                    <Col md={12}>
+  <Form.Group controlId="formDescripcionPersonal">
+    <Form.Label>Descripción Personal:</Form.Label>
+    <div className="input-icon-wrapper">
+          <FontAwesomeIcon icon={faPen} className="input-icon" />
+    <Form.Control
+      as="textarea"
+      rows={3}
+      placeholder="Describe brevemente tus habilidades y experiencias"
+      value={descripcionPersonal}
+      isInvalid={!!descripcionPersonalError}
+      onChange={handleDescripcionPerChange}
+    />
+          </div>
+                            <div className="text-danger">{descripcionPersonalError}</div>
+  </Form.Group>
+</Col>
 
 
                     <Col md={6}>

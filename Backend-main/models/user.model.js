@@ -36,7 +36,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El número telefono es obligatorio'],
     },
-    
+    descripcionPersonal:{
+        type: String,
+        
+    },
     usuario:{
         type: String,
         required: [true, 'El usuario es obligatorio'],

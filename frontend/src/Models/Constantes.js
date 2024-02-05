@@ -2,7 +2,7 @@
 export const MENSAJE_LOGIN_EXITO = "Usuario validado correctamente!!";
 export const MENSAJE_LOGIN_FALLIDO = "El usuario o la contraseña son incorrectos";
 export const TEXTO_BIENVENIDO = "Bienvenido!";
-export const TEXTO_INGRESE_DATOS = "Ingrese su usuario y contraseña";
+export const TEXTO_INGRESE_DATOS = "Ingrese su Usuario y Contraseña";
 export const TITULO_ADMINISTRACION = "ADMINISTRACIÓN";
 export const TEXTO_INICIAR_SESION = "Iniciar Sesión";
 export const TEXTO_IR_PAGINA_PRINCIPAL = "Ir a la pagina principal";
@@ -23,6 +23,7 @@ export const TEXTO_NOMBRE_EMPRESA_OBLIGATORIO='El nombre de la empresa es obliga
 export const TEXTO_DIRECCION_EMPRESA_OBLIGATORIO='La dirección es obligatoria';
 export const TEXTO_DESCRIPCION_EMPRESA_OBLIGATORIO='La descripción es obligatoria';
 export const TEXTO_USUARIO_OBLIGATORIO='El usuario es obligatorio';
+export const TEXTO_DESCRIPCIONPERSONAL_OBLIGATORIO='La descripción personal es obligatoria ';
 export const TEXTO_NOMBRE_USUARIO_OBLIGATORIO='El nombre es obligatorio';
 export const TEXTO_APELLIDO_USUARIO_OBLIGATORIO='El apellido es obligatorio';
 export const TEXTO_SELECCIONAR_GENERO='Debe seleccionar un género';
