@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const WorkExperienceSchema = new mongoose.Schema({   
+
+    puesto: {
+        type: String,
+        required: [true, 'El puesto es obligatorio']
+    },
     descripcionResponsabilidades: {
         type: String,
         required: [true, 'La descripcion de Responsabilidades es obligatoria']

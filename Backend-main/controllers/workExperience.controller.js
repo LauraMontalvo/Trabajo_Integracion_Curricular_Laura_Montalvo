@@ -2,10 +2,10 @@ const WorkExperience = require('../models/workExperience.model');
 
 module.exports.createWorkExperience = (request, response) =>{
     
-    const {descripcionResponsabilidades, ambitoLaboral, empresa, fechaInicio, fechaFin, idUsuario} = request.body;
+    const {puesto,descripcionResponsabilidades, ambitoLaboral, empresa, fechaInicio, fechaFin, idUsuario} = request.body;
     console.log(request.body)
     WorkExperience.create({
-        descripcionResponsabilidades, ambitoLaboral, empresa, fechaInicio, fechaFin, idUsuario
+        puesto,descripcionResponsabilidades, ambitoLaboral, empresa, fechaInicio, fechaFin, idUsuario
     })
         .then(WorkExperience => response.json({insertedWorkExperience: WorkExperience, msg: 'Succesful creation'}))
         .catch(err => response.status(400).json(err));

@@ -4,6 +4,10 @@ const md5 = require('md5');
 
 const UserSchema = new mongoose.Schema({   
 
+    estado:{
+        type: String,
+        
+    },
     foto:{
         type: String,
         
@@ -32,6 +36,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El número telefono es obligatorio'],
     },
+    descripcionPersonal:{
+        type: String,
+        
+    },
     usuario:{
         type: String,
         required: [true, 'El usuario es obligatorio'],
@@ -49,7 +57,11 @@ const UserSchema = new mongoose.Schema({
             'La contraseña debe contener al menos una mayúscula, un número y un carácter especial',
         },
       },
+
 }, );
+
+
+
 
 UserSchema.virtual('confirmPassword')
 .get( () => this._confirmPassword )

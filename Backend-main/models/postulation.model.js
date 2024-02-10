@@ -1,17 +1,27 @@
 const mongoose = require('mongoose');
 
 const PostulationSchema = new mongoose.Schema({   
-    idUsuario: {
+    
+    estadoPostulacion:{
         type: String,
+        
+    },
+    idUsuario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: [true, 'El idUsuario es obligatorio']
     },
     idEmpleo: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId, // Cambia a ObjectId
+        ref: 'Job',
         required: [true, 'El idEmpleo es obligatorio']
     },
     estado:{
         type: String,
         required: [true, 'El El idUsuario es obligatorio'],
+    },
+    motivoRechazo:{
+        type: String,
     },
     fechaPostulacion:{
         type: Date,
