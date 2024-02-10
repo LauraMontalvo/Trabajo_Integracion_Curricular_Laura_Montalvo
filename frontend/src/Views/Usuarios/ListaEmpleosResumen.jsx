@@ -16,7 +16,7 @@ const ListaEmpleos = (props) => {
   const isAuthenticated = props.isAuthenticated;
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/jobs')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/jobs')
       .then(response => {
         // Suponiendo que cada empleo tiene un objeto idEmpresa con un campo nombreEmpresa
         const empleosActivos = response.data.filter(empleo => empleo.estado === 'Activo');

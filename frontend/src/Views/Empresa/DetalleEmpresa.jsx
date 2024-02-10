@@ -50,7 +50,7 @@ function DetalleEmpresa({ isAuthenticated }) {
   // Función para mostrar los postulantes de un empleo específico
   const mostrarPostulantes = async (idEmpleo) => {
     try {
-      const respuesta = await axios.get(`http://localhost:8000/api/postulations/job/${idEmpleo}`);
+      const respuesta = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/job/${idEmpleo}`);
       setPostulantes(respuesta.data); // Actualiza el estado con los postulantes obtenidos
       setShowModal(true);             // Muestra el modal
     } catch (error) {
@@ -67,7 +67,7 @@ function DetalleEmpresa({ isAuthenticated }) {
 
  
   const eliminarEmpleo = () => {
-    axios.delete(`http://localhost:8000/api/job/${empleoAEliminar}`)
+    axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/job/${empleoAEliminar}`)
       .then(() => {
         setEmpleos(empleos.filter(empleo => empleo._id !== empleoAEliminar));
         setShowModalEliminar(false);
@@ -79,7 +79,7 @@ function DetalleEmpresa({ isAuthenticated }) {
 
   //INFORMACION DE LA EMPRESA
   const recargarInformacionEmpresa = () => {
-    axios.get(`http://localhost:8000/api/company/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
       })
@@ -93,14 +93,14 @@ function DetalleEmpresa({ isAuthenticated }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/company/${id}`)
+      .get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
         recargarInformacionEmpresa();
         cargarEmpleos();
       })
       .catch((err) => console.error(err));
-    axios.get(`http://localhost:8000/api/job/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/job/${id}`)
       .then((res) => {
         setempleoid(res.data);
       })
@@ -116,7 +116,7 @@ function DetalleEmpresa({ isAuthenticated }) {
 
   const handleSaveClick = async () => {
     try {
-      await axios.put(`http://localhost:8000/api/company/${id}`, { foto: newImageUrl });
+      await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`, { foto: newImageUrl });
       setEmpresa({ ...empresa, foto: newImageUrl });
       setIsEditing(false);
     } catch (error) {
@@ -129,7 +129,7 @@ function DetalleEmpresa({ isAuthenticated }) {
     setNewImageUrl(empresa.foto); // Restablece la imagen al valor original
   };
   const cargarEmpleos = () => {
-    axios.get(`http://localhost:8000/api/jobs/company/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/jobs/company/${id}`)
         .then((res) => {
             // Filtrar empleos para excluir los inactivos
             const empleosActivos = res.data.filter(empleo => empleo.estado === "Activo");
@@ -139,7 +139,7 @@ function DetalleEmpresa({ isAuthenticated }) {
 };
 
   const cargarEmpleoid = () => {
-    axios.get(`http://localhost:8000/api/job/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/job/${id}`)
       .then((res) => {
         setempleoid(res.data);
       })
@@ -170,7 +170,7 @@ const handleShowModalEliminar = (empleoId) => {
 };
 
 const inactivarYEliminarEmpleoDeLista = () => {
-  axios.put(`http://localhost:8000/api/job/${empleoAEliminar}`, { estado: "Inactivo" })
+  axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/job/${empleoAEliminar}`, { estado: "Inactivo" })
       .then(() => {
           // Filtra y actualiza la lista de empleos para excluir el inactivado
           const empleosActualizados = empleos.filter(empleo => empleo._id !== empleoAEliminar);

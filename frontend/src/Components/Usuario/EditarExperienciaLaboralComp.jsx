@@ -32,7 +32,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
         }
     };
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/workExperience/${idExperiencia}`)
+        axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperience/${idExperiencia}`)
             .then(response => {
                 // Aquí estableces los estados con los datos obtenidos
                 setDescripcionResponsabilidades(response.data.descripcionResponsabilidades);
@@ -52,7 +52,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
         e.preventDefault();
         // ... Aquí incluyes tus validaciones ...
 
-        axios.put(`http://localhost:8000/api/workExperience/${idExperiencia}`, {
+        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/workExperience/${idExperiencia}`, {
             descripcionResponsabilidades,
             ambitoLaboral,
             puesto,

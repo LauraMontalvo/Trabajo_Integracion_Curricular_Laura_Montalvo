@@ -27,7 +27,7 @@ module.exports.getAllCompanies = (_, response) => {
             // Buscar y adjuntar la URL de la foto a cada empresa
             const companiesWithPhotos = await Promise.all(retrievedCompanies.map(async company => {
                 const companyPhoto = await CompanyPhoto.findOne({ idEmpresa: company._id });
-                const photoUrl = companyPhoto ? `http://localhost:8000/Imagenes/${companyPhoto.foto}` : null;
+                const photoUrl = companyPhoto ? `https://46wm6186-8000.use.devtunnels.ms/Imagenes/${companyPhoto.foto}` : null;
                 return { ...company.toObject(), foto: photoUrl };
             }));
             response.json(companiesWithPhotos);
@@ -82,7 +82,7 @@ module.exports.addPhoto = async (request, response) => {
             await CompanyPhoto.create(nuevaFoto);
         }
 
-        const imageUrl = `http://localhost:8000/${nuevaFoto.ruta}`; // Construye la URL de la imagen
+        const imageUrl = `https://46wm6186-8000.use.devtunnels.ms/${nuevaFoto.ruta}`; // Construye la URL de la imagen
 
         return response.json({ mensaje: 'Foto agregada exitosamente', foto: imageUrl });
     } catch (error) {
@@ -100,7 +100,7 @@ module.exports.getCompanyPhoto = (request, response) => {
             if (!empresa) {
                 return response.status(404).json({ error: 'Empresa no encontrada.' });
             }
-            const imageUrl = empresa.foto ? `http://localhost:8000/Imagenes/${empresa.foto}` : null;
+            const imageUrl = empresa.foto ? `https://46wm6186-8000.use.devtunnels.ms/Imagenes/${empresa.foto}` : null;
             response.json({ foto: imageUrl });
         })
         .catch(error => {

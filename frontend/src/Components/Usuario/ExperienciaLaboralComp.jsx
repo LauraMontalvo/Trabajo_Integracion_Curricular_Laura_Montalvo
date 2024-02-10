@@ -48,7 +48,7 @@ const ExperieciaLaboral = ({  idUsuario,onExperienciaAdded, closeAddModal }) => 
   const [fechaFin, setFechaFin] = useState('');
   
   const cargarExperienciaLaboral = () => {
-    axios.get(`http://localhost:8000/api/workExperiences/user/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperiences/user/${id}`)
       .then((res) => {
         setexperienciaLaboral(res.data);
       })

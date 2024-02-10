@@ -43,7 +43,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     };
     useEffect(() => {
         if (idInstitucion) {
-            axios.get(`http://localhost:8000/api/school/${idInstitucion}`)
+            axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/school/${idInstitucion}`)
                 .then(res => {
                     setNombreInstitucion(res.data.nombreInstitucion);
                     setUbicacion(res.data.ubicacion || ''); // Agregado para manejar la ubicación
@@ -73,7 +73,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             return; // Detiene la ejecución si hay errores
         }
 
-        axios.put(`http://localhost:8000/api/school/${idInstitucion}`, { nombreInstitucion, ubicacion })
+        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/school/${idInstitucion}`, { nombreInstitucion, ubicacion })
             .then((res) => {
                 setUpdateSuccess("Institución actualizada correctamente");
                 setUpdateError('');

@@ -35,12 +35,12 @@ const ListaEmpresas = (props) => {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/companies')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/companies')
       .then(res => {
         setEmpresas(res.data.sort((a, b) => a.nombreEmpresa.localeCompare(b.nombreEmpresa)))
       })
       .catch(err => console.error("Error al obtener empresas:", err));
-    axios.get(`http://localhost:8000/api/company/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
       })
@@ -62,7 +62,7 @@ const ListaEmpresas = (props) => {
   }
 
   const cargarInformacionEmpresa = () => {
-    axios.get(`http://localhost:8000/api/company/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`)
       .then((res) => {
         setEmpresa({ ...res.data });
       })
@@ -70,7 +70,7 @@ const ListaEmpresas = (props) => {
   };
 
   const deleteEmpresa = () => {
-    axios.delete(`http://localhost:8000/api/company/${empresaToDelete._id}`)
+    axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/company/${empresaToDelete._id}`)
       .then(res => {
         console.log(res);
         removeFromDom(empresaToDelete._id);
@@ -114,7 +114,7 @@ const ListaEmpresas = (props) => {
   const toggleEmpresaState = (empresa) => {
     const nuevoEstado = empresa.estado === 'Activo' ? 'Inactivo' : 'Activo';
 
-    axios.put(`http://localhost:8000/api/company/${empresa._id}`, { estado: nuevoEstado })
+    axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/company/${empresa._id}`, { estado: nuevoEstado })
       .then(res => {
         console.log(res);
         setEmpresas(empresas.map(emp => emp._id === empresa._id ? { ...emp, estado: nuevoEstado } : emp));

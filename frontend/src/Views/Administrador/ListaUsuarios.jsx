@@ -108,7 +108,7 @@ const ListaUsuarios = () => {
   const toggleUsuarioState = (usuario) => {
     const nuevoEstado = usuario.estado === 'Activo' ? 'Inactivo' : 'Activo';
 
-    axios.put(`http://localhost:8000/api/user/${usuario._id}`, { estado: nuevoEstado })
+    axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/user/${usuario._id}`, { estado: nuevoEstado })
       .then(res => {
         console.log(res);
         // Actualiza el estado de los usuarios con la nueva información

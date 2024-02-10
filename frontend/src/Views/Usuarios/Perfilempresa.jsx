@@ -19,16 +19,16 @@ const PerfilEmpresa = () => {
     const cargarDatosEmpresa = async () => {
         try {
             // Obtener información de la empresa
-            const resEmpresa = await axios.get(`http://localhost:8000/api/company/${id}`);
+            const resEmpresa = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`);
             setEmpresa(resEmpresa.data);
 
             // Obtener empleos publicados por la empresa
-            const resEmpleos = await axios.get(`http://localhost:8000/api/jobs/company/${id}`);
+            const resEmpleos = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/jobs/company/${id}`);
             const empleosActivos = resEmpleos.data.filter(empleo => empleo.estado === 'Activo'); // Filtrar empleos activos
             setEmpleos(empleosActivos);
 
             // Código para la foto
-            const fotoResponse = await axios.get(`http://localhost:8000/api/company/foto/${id}`);
+            const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${id}`);
             if (fotoResponse.data && fotoResponse.data.foto) {
                 setImagenPreview(fotoResponse.data.foto);
             }

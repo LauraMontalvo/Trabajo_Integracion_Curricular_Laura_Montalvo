@@ -43,7 +43,7 @@ function ModuloReportes() {
   const [motivosRechazo, setMotivosRechazo] = useState({}); // Estado para almacenar los conteos de los motivos de rechazo
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/jobs')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/jobs')
       .then(response => {
         // Supongamos que response.data contiene las ofertas de empleo
         const jobs = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
@@ -51,7 +51,7 @@ function ModuloReportes() {
       })
       .catch(error => console.error('Error al obtener trabajos:', error));
     // Obtener usuarios
-    axios.get('http://localhost:8000/api/users')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/users')
       .then(response => {
         const filteredUsers = response.data.filter(user => user.estado === 'Activo' && user.rol !== 'Administrador');
 
@@ -66,7 +66,7 @@ function ModuloReportes() {
 
 
     // Obtener empresas
-    axios.get('http://localhost:8000/api/companies')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/companies')
       .then(response => {
         const latestCompanies = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
         setRecentCompanies(latestCompanies);
@@ -75,7 +75,7 @@ function ModuloReportes() {
       .catch(error => console.error('Error al obtener empresas:', error));
 
     // Obtener postulaciones
-    axios.get('http://localhost:8000/api/postulations')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/postulations')
       .then(response => {
         const postulaciones = response.data;
 

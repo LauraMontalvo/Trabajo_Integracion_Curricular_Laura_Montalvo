@@ -124,7 +124,7 @@ function DetalleUsuario(props) {
   // Función para eliminar una postulación
   const eliminarPostulacion = async (idPostulacion) => {
     try {
-      await axios.delete(`http://localhost:8000/api/postulation/${idPostulacion}`);
+      await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${idPostulacion}`);
       // Filtra para eliminar la postulación del estado
       const postulacionesActualizadas = postulaciones.filter(postulacion => postulacion._id !== idPostulacion);
       setPostulaciones(postulacionesActualizadas);
@@ -141,7 +141,7 @@ function DetalleUsuario(props) {
 
   const refreshAcadTraining = () => {
     // Aquí puedes recargar la información académica del usuario
-    axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/acadTrainings/user/${id}`)
       .then(response => {
         // Suponiendo que setAcadTraining es tu función para actualizar el estado de la formación académica
         setAcadTraining(response.data);
@@ -162,7 +162,7 @@ function DetalleUsuario(props) {
   const confirmDeleteExperience = async () => {
     if (deleteExperienceId) {
       try {
-        await axios.delete(`http://localhost:8000/api/workExperience/${deleteExperienceId}`);
+        await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/workExperience/${deleteExperienceId}`);
         // Aquí actualizarías el estado para reflejar la eliminación
         cargarExperienciaLaboral(); // Suponiendo que esta función recarga la experiencia laboral
         handleCloseDeleteExperienceModal();
@@ -312,7 +312,7 @@ function DetalleUsuario(props) {
 
 
   const recargarInformacionUsuario = () => {
-    axios.get(`http://localhost:8000/api/user/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`)
       .then((res) => {
         setUser({ ...res.data });
         const fechaNac = new Date(res.data.fechaNacimiento);
@@ -338,7 +338,7 @@ function DetalleUsuario(props) {
   }
 
   const cargarExperienciaLaboral = () => {
-    axios.get(`http://localhost:8000/api/workExperiences/user/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperiences/user/${id}`)
       .then((res) => {
         setexperienciaLaboral(res.data);
       })
@@ -351,7 +351,7 @@ function DetalleUsuario(props) {
       try {
         console.log("POSTULACIONES")
         console.log(id)
-        const response = await axios.get(`http://localhost:8000/api/postulations/user/${id}`);
+        const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/user/${id}`);
         console.log(response);
 
         setPostulaciones(response.data);
@@ -362,7 +362,7 @@ function DetalleUsuario(props) {
 
     cargarPostulaciones();
 
-    axios.get(`http://localhost:8000/api/user/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`)
       .then((res) => {
         setUser({ ...res.data });
 
@@ -372,7 +372,7 @@ function DetalleUsuario(props) {
       .catch((err) => console.log(err));
 
 
-    axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/acadTrainings/user/${id}`)
       .then((res) => {
         setAcadTraining(res.data);
       })
@@ -383,7 +383,7 @@ function DetalleUsuario(props) {
   }, [id]);
 
   const cargarInstituciones = () => {
-    axios.get('http://localhost:8000/api/schools').then(res => setInstituciones(res.data)).catch(err => console.log(err));
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/schools').then(res => setInstituciones(res.data)).catch(err => console.log(err));
   }
 
 
@@ -476,7 +476,7 @@ function DetalleUsuario(props) {
 
       if (institucion) {
         if (!instituciones.find(inst => inst.nombreInstitucion === institucion.label)) {
-          const response = await axios.post('http://localhost:8000/api/school/new', {
+          const response = await axios.post('https://46wm6186-8000.use.devtunnels.ms/api/school/new', {
             nombreInstitucion: institucion.label,
             ubicacion: ubicacion // Incluye la ubicación aquí
           });
@@ -493,7 +493,7 @@ function DetalleUsuario(props) {
         // Si la institución es existente y la ubicación ha cambiado
         const institucionExistente = instituciones.find(inst => inst._id === institucion.value);
         if (institucionExistente && institucionExistente.ubicacion !== ubicacion) {
-          await axios.put(`http://localhost:8000/api/school/${institucion.value}`, {
+          await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/school/${institucion.value}`, {
             ubicacion: ubicacion
           });
         }
@@ -507,9 +507,9 @@ function DetalleUsuario(props) {
       };
 
       if (editingAcadTrainingId) {
-        await axios.put(`http://localhost:8000/api/acadTraining/${editingAcadTrainingId}`, dataToSend);
+        await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/acadTraining/${editingAcadTrainingId}`, dataToSend);
       } else {
-        await axios.post('http://localhost:8000/api/acadTraining/new', {
+        await axios.post('https://46wm6186-8000.use.devtunnels.ms/api/acadTraining/new', {
           ...dataToSend, idUsuario: id
         });
       }
@@ -548,7 +548,7 @@ function DetalleUsuario(props) {
   };
   const handleDeleteAcadTraining = async (acadTrainingId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/acadTraining/${acadTrainingId}`);
+      await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/acadTraining/${acadTrainingId}`);
       const updatedAcadTrainings = acadTraining.filter(item => item._id !== acadTrainingId);
       setAcadTraining(updatedAcadTrainings);
     } catch (error) {
@@ -557,7 +557,7 @@ function DetalleUsuario(props) {
   };
   const handleDeleteExperience = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/workExperience/${id}`);
+      await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/workExperience/${id}`);
       // Filtrar la experiencia eliminada del estado
       const updatedExperiences = experienciaLaboral.filter(experiencia => experiencia._id !== id);
       setexperienciaLaboral(updatedExperiences);

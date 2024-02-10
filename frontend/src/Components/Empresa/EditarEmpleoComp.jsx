@@ -27,7 +27,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/job/${idEmpleo}`)
+    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/job/${idEmpleo}`)
       .then(response => {
         // Aquí estableces los estados con los datos obtenidos
         setDescripcion(response.data.descripcion);
@@ -48,7 +48,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
     e.preventDefault();
     // ... Aquí incluyes tus validaciones ...
 
-    axios.put(`http://localhost:8000/api/job/${idEmpleo}`, {
+    axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/job/${idEmpleo}`, {
       descripcion,
       conocimientos,
       aptitudes,

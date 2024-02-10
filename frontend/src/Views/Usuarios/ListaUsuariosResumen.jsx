@@ -18,7 +18,7 @@ const ListaUsuariosResumen = (props) => {
   const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
   const isAuthenticated = props.isAuthenticated;
   useEffect(() => {
-    axios.get('http://localhost:8000/api/users')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/users')
       .then(response => {
         // Filtrar solo los usuarios activos antes de ordenarlos
         const nonAdminActiveUsers = response.data.filter(user => 

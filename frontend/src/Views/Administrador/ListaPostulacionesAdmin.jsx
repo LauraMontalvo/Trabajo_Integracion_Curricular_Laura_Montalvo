@@ -53,7 +53,7 @@ const ListaPostulacionesAdmin = () => {
     const eliminarPostulacion = async () => {
         if (postulacionAEliminar) {
             try {
-                await axios.delete(`http://localhost:8000/api/postulation/${postulacionAEliminar}`);
+                await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${postulacionAEliminar}`);
                 const nuevasPostulaciones = postulacionesActuales.filter(postulacion => postulacion._id !== postulacionAEliminar);
                 setPostulacionesActuales(nuevasPostulaciones);
                 setShowConfirmModalPostulacion(false);
@@ -68,7 +68,7 @@ const ListaPostulacionesAdmin = () => {
     const eliminarEmpleo = async () => {
         if (empleoAEliminar) {
             try {
-                await axios.delete(`http://localhost:8000/api/job/${empleoAEliminar}`);
+                await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/job/${empleoAEliminar}`);
                 const empleosActualizados = empleos.filter(empleo => empleo._id !== empleoAEliminar);
                 setEmpleos(empleosActualizados);
                 setFilteredEmpleos(empleosActualizados);
@@ -95,9 +95,9 @@ const ListaPostulacionesAdmin = () => {
     useEffect(() => {
         const obtenerEmpleosConPostulaciones = async () => {
             try {
-                const respuestaEmpleos = await axios.get('http://localhost:8000/api/jobs');
+                const respuestaEmpleos = await axios.get('https://46wm6186-8000.use.devtunnels.ms/api/jobs');
                 const empleosConPostulaciones = await Promise.all(respuestaEmpleos.data.map(async (empleo) => {
-                    const respuestaPostulaciones = await axios.get(`http://localhost:8000/api/postulations/job/${empleo._id}`);
+                    const respuestaPostulaciones = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/job/${empleo._id}`);
                     return { ...empleo, postulaciones: respuestaPostulaciones.data };
                 }));
                 setEmpleos(empleosConPostulaciones);

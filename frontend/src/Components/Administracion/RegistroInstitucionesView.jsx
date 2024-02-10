@@ -73,7 +73,7 @@ const RegistroInstituciones = ({ onInstitucionRegistered, onCloseRegisterModal }
       return; // Evita enviar la solicitud si hay errores de validación
     }
 
-    axios.post('http://localhost:8000/api/school/new', { nombreInstitucion,ubicacion })
+    axios.post('https://46wm6186-8000.use.devtunnels.ms/api/school/new', { nombreInstitucion,ubicacion })
       .then((res) => {
         console.log(res);
         setShowModal(true); // Mostrar modal al registrar con éxito

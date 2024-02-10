@@ -34,7 +34,7 @@ const ImagenPerfil = ({ id, userParam, isEditingParam, onPhotoUpdated }) => {
             const formData = new FormData();
             formData.append('foto', imagen);
 
-            const response = await axios.put(`http://localhost:8000/api/user/foto/${id}`, formData, {
+            const response = await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -72,7 +72,7 @@ const ImagenPerfil = ({ id, userParam, isEditingParam, onPhotoUpdated }) => {
                 setImagenPreview(user.foto);
             }
             try {
-                const response = await axios.get(`http://localhost:8000/api/user/foto/${id}`);
+                const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${id}`);
                 console.log(response.data)
                 if (response.data && response.data.foto) {
 

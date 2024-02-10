@@ -196,7 +196,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
       return;
     }
     axios
-      .post('http://localhost:8000/api/job/new', {
+      .post('https://46wm6186-8000.use.devtunnels.ms/api/job/new', {
         idEmpresa,
         puesto,
         descripcion,

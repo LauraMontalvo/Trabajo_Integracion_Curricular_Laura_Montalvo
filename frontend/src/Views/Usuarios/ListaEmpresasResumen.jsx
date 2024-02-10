@@ -18,7 +18,7 @@ const ListaEmpresas = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/companies')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/companies')
       .then(response => {
         const activasEmpresas = response.data
           .filter(empresa => empresa.estado === 'Activo')

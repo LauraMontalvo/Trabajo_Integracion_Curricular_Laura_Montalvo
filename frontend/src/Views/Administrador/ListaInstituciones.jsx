@@ -31,7 +31,7 @@ const ListaInstituciones = () => {
   
   
   useEffect(() => {
-    axios.get('http://localhost:8000/api/schools')
+    axios.get('https://46wm6186-8000.use.devtunnels.ms/api/schools')
       .then(res => {
         const institucionesOrdenadas = res.data.sort((a, b) => a.nombreInstitucion.localeCompare(b.nombreInstitucion));
         setInstituciones(institucionesOrdenadas);
@@ -54,7 +54,7 @@ const ListaInstituciones = () => {
     toggleDeleteModal();
   }
   const deleteInstitucion = () => {
-    axios.delete(`http://localhost:8000/api/school/${institucionToDelete._id}`)
+    axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/school/${institucionToDelete._id}`)
       .then(res => {
         console.log(res);
         removeFromDom(institucionToDelete._id);

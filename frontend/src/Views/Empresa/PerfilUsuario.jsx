@@ -27,19 +27,19 @@ function PerfilUsuario() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userResponse = await axios.get(`http://localhost:8000/api/user/${id}`);
+                const userResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`);
                 setUser(userResponse.data);
 
-                const acadResponse = await axios.get(`http://localhost:8000/api/acadTrainings/user/${id}`);
+                const acadResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/acadTrainings/user/${id}`);
                 setAcadTraining(acadResponse.data);
 
-                const expResponse = await axios.get(`http://localhost:8000/api/workExperiences/user/${id}`);
+                const expResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperiences/user/${id}`);
                 setExperienciaLaboral(expResponse.data);
 
-                const certiResponse = await axios.get(`http://localhost:8000/api/certification/user/${id}`);
+                const certiResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/certification/user/${id}`);
                 setCertificaciones(certiResponse.data);
                 // Obtener la foto del usuario
-                const fotoResponse = await axios.get(`http://localhost:8000/api/user/foto/${id}`);
+                const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${id}`);
                 if (fotoResponse.data && fotoResponse.data.foto) {
                     setImagenPreview(fotoResponse.data.foto);
                 }

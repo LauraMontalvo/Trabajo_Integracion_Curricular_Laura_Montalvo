@@ -32,7 +32,7 @@ const ImagenEmpresa = ({ id, empresaParam, isEditingParam }) => {
             const formData = new FormData();
             formData.append('foto', imagen);
 
-            const response = await axios.put(`http://localhost:8000/api/company/foto/${id}`, formData, {
+            const response = await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -56,7 +56,7 @@ const ImagenEmpresa = ({ id, empresaParam, isEditingParam }) => {
         const fetchCompanyImage = async () => {
             
             try {
-                const response = await axios.get(`http://localhost:8000/api/company/foto/${id}`);
+                const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${id}`);
                 if (response.data && response.data.foto) {
                     setEmpresa(prevEmpresa => ({ ...prevEmpresa, foto: response.data.foto }));
                 }

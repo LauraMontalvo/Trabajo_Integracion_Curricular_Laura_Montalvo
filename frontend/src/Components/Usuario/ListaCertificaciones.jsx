@@ -83,7 +83,7 @@ const ListaCertificaciones = ({ userId }) => {
     };
     const handleConfirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8000/api/certification/${certificacionAEliminar}`);
+            await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/certification/${certificacionAEliminar}`);
             setCertificaciones(certificaciones.filter(cert => cert._id !== certificacionAEliminar));
             setShowDeleteModal(false);
         } catch (error) {
@@ -98,7 +98,7 @@ const ListaCertificaciones = ({ userId }) => {
         const cargarCertificaciones = async () => {
             // Llamada a la API para obtener las certificaciones del usuario
             try {
-                const response = await axios.get(`http://localhost:8000/api/certification/user/${userId}`);
+                const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/certification/user/${userId}`);
                 setCertificaciones(response.data);
             } catch (error) {
                 console.error('Error al cargar certificaciones:', error);
@@ -120,7 +120,7 @@ const ListaCertificaciones = ({ userId }) => {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/api/certification/new', {
+            const response = await axios.post('https://46wm6186-8000.use.devtunnels.ms/api/certification/new', {
                 titulo,
                 url,
                 idUsuario: userId,

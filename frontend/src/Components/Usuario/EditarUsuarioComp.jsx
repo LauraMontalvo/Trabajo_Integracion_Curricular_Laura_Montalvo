@@ -168,7 +168,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
     const verificarUsuarioExistente = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/usuarios/verificar/${usuario}`);
+            const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/usuarios/verificar/${usuario}`);
             if (response.data.existe && response.data.usuarioId !== id) {
                 setUsuarioError('El nombre de usuario ya está en uso por otro usuario.');
                 return false;
@@ -236,7 +236,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/user/${id}`)
+        axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`)
             .then(res => {
                 setNombre(res.data.nombre);
                 setApellido(res.data.apellido);
@@ -250,7 +250,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             .catch(err => console.log(err));
     }, [id]);
     const refrescarDatosUsuario = () => {
-        axios.get(`http://localhost:8000/api/user/${id}`)
+        axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`)
             .then(res => {
                 setNombre(res.data.nombre);
                 setApellido(res.data.apellido);
@@ -309,7 +309,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             ...(password && confirmPassword && { password: md5(password) })
         };
 
-        axios.put(`http://localhost:8000/api/user/${id}`, dataToUpdate)
+        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`, dataToUpdate)
             .then((res) => {
 
                 setUpdateError('');

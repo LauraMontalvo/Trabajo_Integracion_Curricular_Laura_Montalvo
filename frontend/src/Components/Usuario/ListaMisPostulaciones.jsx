@@ -58,7 +58,7 @@ const ListaMisPostulaciones = ({
     const inactivarPostulacion = async () => {
         if (selectedPostulacionId) {
             try {
-                const response = await axios.put(`http://localhost:8000/api/postulation/${selectedPostulacionId}`, {
+                const response = await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${selectedPostulacionId}`, {
                     estadoPostulacion: 'Inactivo'
                 });
     

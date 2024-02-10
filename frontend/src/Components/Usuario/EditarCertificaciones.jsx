@@ -52,7 +52,7 @@ const EditarCertificacion = ({ show, handleClose, certificacion, actualizarCerti
       // Llama a la API para actualizar la certificación
       const fechaAEnviar = new Date(fechaExpedicion);
 
-      const response = await axios.put(`http://localhost:8000/api/certification/${certificacion._id}`, {
+      const response = await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/certification/${certificacion._id}`, {
         titulo,
         url,
         fechaExpedicion: fechaAEnviar

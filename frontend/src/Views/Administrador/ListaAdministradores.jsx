@@ -14,7 +14,7 @@ const ListaAdministradores = () => {
   const [administradores, setAdministradores] = useState([]);
 
   const recargarAdministradores = () => {
-    axios.get("http://localhost:8000/api/users") // Asegúrate de que esta URL devuelva todos los usuarios
+    axios.get("https://46wm6186-8000.use.devtunnels.ms/api/users") // Asegúrate de que esta URL devuelva todos los usuarios
       .then(res => {
         // Filtra para obtener solo los usuarios con el rol de 'Administrador'
         const administradores = res.data.filter(usuario => usuario.rol === 'Administrador');
@@ -29,7 +29,7 @@ const ListaAdministradores = () => {
   const toggleAdministradorState = (administrador) => {
     const nuevoEstado = administrador.estado === 'Activo' ? 'Inactivo' : 'Activo';
 
-    axios.put(`http://localhost:8000/api/user/${administrador._id}`, { estado: nuevoEstado }) // Asegúrate de que esta URL y método sean correctos
+    axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/user/${administrador._id}`, { estado: nuevoEstado }) // Asegúrate de que esta URL y método sean correctos
       .then(res => {
         console.log(res);
         // Actualiza el estado de los administradores con la nueva información

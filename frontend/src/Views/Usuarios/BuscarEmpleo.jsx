@@ -21,18 +21,18 @@ const BuscarEmpleo = () => {
     useEffect(() => {
         const obtenerEmpleosYPostulaciones = async () => {
             try {
-                const respuestaEmpleos = await axios.get('http://localhost:8000/api/jobs');
+                const respuestaEmpleos = await axios.get('https://46wm6186-8000.use.devtunnels.ms/api/jobs');
                 const empleosActivos = respuestaEmpleos.data.filter(empleo => empleo.estado === 'Activo');
                 const empleosConEmpresa = await Promise.all(
                     empleosActivos.map(async (empleo) => {
-                        const resEmpresa = await axios.get(`http://localhost:8000/api/company/${empleo.idEmpresa}`);
+                        const resEmpresa = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${empleo.idEmpresa}`);
                         return { ...empleo, nombreEmpresa: resEmpresa.data.nombreEmpresa };
                     })
                 );
                 setEmpleos(empleosConEmpresa);
 
                 // Obtener postulaciones del usuario desde el servidor
-                const respuestaPostulaciones = await axios.get(`http://localhost:8000/api/postulations/user/${idUsuario}`);
+                const respuestaPostulaciones = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/user/${idUsuario}`);
                 setPostulacionesUsuario(respuestaPostulaciones.data);
             } catch (error) {
                 console.error('Error al obtener empleos o postulaciones:', error);
@@ -54,7 +54,7 @@ const BuscarEmpleo = () => {
 
     const confirmarPostulacion = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/postulation/new', {
+            const response = await axios.post('https://46wm6186-8000.use.devtunnels.ms/api/postulation/new', {
                 idUsuario,
                 idEmpleo: selectedJobId,
                 estadoPostulacion: 'Activo',

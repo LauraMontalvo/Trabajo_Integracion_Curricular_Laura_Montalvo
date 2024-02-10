@@ -31,7 +31,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
         }
 
         try {
-            await axios.put(`http://localhost:8000/api/postulation/${postulationToReject}`, {
+            await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${postulationToReject}`, {
                 estado: 'Negada',
                 motivoRechazo: selectedReason
             });
@@ -58,7 +58,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
 
     const actualizarEstadoPostulacion = async (idPostulacion, nuevoEstado) => {
         try {
-            await axios.put(`http://localhost:8000/api/postulation/${idPostulacion}`, { estado: nuevoEstado });
+            await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${idPostulacion}`, { estado: nuevoEstado });
             setPostulantesList(prevPostulantes =>
                 prevPostulantes.map(postulacion =>
                     postulacion._id === idPostulacion ? { ...postulacion, estado: nuevoEstado } : postulacion

@@ -48,14 +48,14 @@ export const TEXTO_INICIO_SESION_EMPRESA = "Inicio de sesión de Empresa";
 export const ROL_ADMINISTRADOR = "Administrador";
 
 //URLS Backend
-export const URL_VALIDAR_AUTENTICACION = "http://localhost:8000/api/user/login";
-export const URL_VALIDAR_AUTENTICACION_EMPRESA ="http://localhost:8000/api/company/login";
-export const URL_CONSULTAR_DATOS_USUARIO = "http://localhost:8000/api/user/";
-export const URL_OBTENER_USUARIOS ='http://localhost:8000/api/users'
-export const URL_USUARIO_NUEVO='http://localhost:8000/api/user/new'
-export const URL_EMPRESA_NUEVA= 'http://localhost:8000/api/company/new'
-export const URL_EMPRESAS= 'http://localhost:8000/api/companies'
-export const URL_EXPERIENCIA_LABORAL_NUEVA= 'http://localhost:8000/api/workExperience/new';
+export const URL_VALIDAR_AUTENTICACION = "https://46wm6186-8000.use.devtunnels.ms/api/user/login";
+export const URL_VALIDAR_AUTENTICACION_EMPRESA ="https://46wm6186-8000.use.devtunnels.ms/api/company/login";
+export const URL_CONSULTAR_DATOS_USUARIO = "https://46wm6186-8000.use.devtunnels.ms/api/user/";
+export const URL_OBTENER_USUARIOS ='https://46wm6186-8000.use.devtunnels.ms/api/users'
+export const URL_USUARIO_NUEVO='https://46wm6186-8000.use.devtunnels.ms/api/user/new'
+export const URL_EMPRESA_NUEVA= 'https://46wm6186-8000.use.devtunnels.ms/api/company/new'
+export const URL_EMPRESAS= 'https://46wm6186-8000.use.devtunnels.ms/api/companies'
+export const URL_EXPERIENCIA_LABORAL_NUEVA= 'https://46wm6186-8000.use.devtunnels.ms/api/workExperience/new';
 
 //URLS FrontEnd
 export const URL_DETALLE_USUARIO = "/detalleUsuario/";

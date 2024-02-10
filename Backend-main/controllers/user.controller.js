@@ -28,7 +28,7 @@ module.exports.getAllUsers = (_, response) => {
             // Buscar y adjuntar la URL de la foto a cada usuario
             const usersWithPhotos = await Promise.all(retrievedUsers.map(async user => {
                 const userPhoto = await UserPhoto.findOne({ idUsuario: user._id });
-                const photoUrl = userPhoto ? `http://localhost:8000/Imagenes/${userPhoto.foto}` : null;
+                const photoUrl = userPhoto ? `https://46wm6186-8000.use.devtunnels.ms/Imagenes/${userPhoto.foto}` : null;
                 return { ...user.toObject(), foto: photoUrl };
             }));
             response.json(usersWithPhotos);
@@ -106,7 +106,7 @@ module.exports.addPhoto = async (request, response) => {
             await UserPhoto.create(nuevaFoto);
         }
 
-        const imageUrl = `http://localhost:8000/${nuevaFoto.ruta}`; // Construye la URL de la imagen
+        const imageUrl = `https://46wm6186-8000.use.devtunnels.ms/${nuevaFoto.ruta}`; // Construye la URL de la imagen
 
         return response.json({ mensaje: 'Foto agregada exitosamente', foto: imageUrl });
     } catch (error) {
@@ -126,7 +126,7 @@ module.exports.getUserPhoto = (request, response) => {
                 return response.status(404).json({ error: 'Usuario no encontrado.' });
             }
             // Asegúrate de que la ruta de la imagen sea accesible para el cliente
-            const imageUrl = user.foto ? `http://localhost:8000/Imagenes/${user.foto}` : null;
+            const imageUrl = user.foto ? `https://46wm6186-8000.use.devtunnels.ms/Imagenes/${user.foto}` : null;
             response.json({ foto: imageUrl });
         })
         .catch(error => {
