@@ -111,7 +111,7 @@ const RegistroUsuario = (props) => {
     }
 
     if (!sexo || sexo === ' ') {
-      setSexoError("Seleccionar género es obligatorio");
+      setSexoError(constantes.TEXTO_SELECCIONAR_GENERO);
       formularioEsValido = false;
     } else {
       setSexoError('');
@@ -172,17 +172,18 @@ const RegistroUsuario = (props) => {
 
   const handleInputChange = (e, setterFunction, errorSetter, otherValue = null) => {
     const { name, value } = e.target;
-    // Validación específica para nombre y apellido
-    if (name === 'nombre' || name === 'apellido') {
-      const regex = /^[A-Za-z\s]+$/; // Permite solo letras y espacios
-      if (!regex.test(value) && value !== '') {
-        errorSetter('Este campo solo debe contener letras. No se permiten números ni caracteres especiales.');
-        return; // Detiene la ejecución si la validación falla
-      } else {
-        errorSetter(''); // Limpia el mensaje de error si la validación es correcta
-      }
-    }
 
+    // Validación específica para nombre y apellido que permite tildes
+    if (name === 'nombre' || name === 'apellido') {
+        const regex = /^[A-Za-z\u00C0-\u00FF\s]+$/; // Permite letras, espacios, y letras con tildes
+        if (!regex.test(value) && value !== '') {
+            errorSetter('Este campo solo debe contener letras y tildes. No se permiten números ni caracteres especiales.');
+        } else {
+            errorSetter(''); // Limpia el mensaje de error si la validación es correcta
+        }
+    } else {
+        // Continúa con el resto de la validación para otros campos
+    }
 
     setterFunction(value);
     if (name === 'sexo') {
@@ -193,8 +194,6 @@ const RegistroUsuario = (props) => {
       }
     }
 
-    // ... Lógica para otros campos ...
-    setterFunction(value);
     // Validación de la Contraseña
     if (name === 'password') {
       const regexMayuscula = /[A-Z]/;

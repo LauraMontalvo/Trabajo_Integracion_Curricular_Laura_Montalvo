@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle, faHourglass, faTrash, faUser, faUsers, faBriefcase, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
 import "../../Styles/ListaEmpresa.scss";
-
+import * as constantes from '../../Models/Constantes'
 
 const ListaPostulacionesAdmin = () => {
     const [empleos, setEmpleos] = useState([]);
@@ -53,7 +53,7 @@ const ListaPostulacionesAdmin = () => {
     const eliminarPostulacion = async () => {
         if (postulacionAEliminar) {
             try {
-                await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${postulacionAEliminar}`);
+                await axios.delete(`${constantes.URL_ELIMINAR_UNA_POSTULACION}/${postulacionAEliminar}`);
                 const nuevasPostulaciones = postulacionesActuales.filter(postulacion => postulacion._id !== postulacionAEliminar);
                 setPostulacionesActuales(nuevasPostulaciones);
                 setShowConfirmModalPostulacion(false);
@@ -68,7 +68,7 @@ const ListaPostulacionesAdmin = () => {
     const eliminarEmpleo = async () => {
         if (empleoAEliminar) {
             try {
-                await axios.delete(`https://46wm6186-8000.use.devtunnels.ms/api/job/${empleoAEliminar}`);
+                await axios.delete(`${constantes.URL_ELIMINAR_UN_EMPLEO}/${empleoAEliminar}`);
                 const empleosActualizados = empleos.filter(empleo => empleo._id !== empleoAEliminar);
                 setEmpleos(empleosActualizados);
                 setFilteredEmpleos(empleosActualizados);
@@ -95,9 +95,9 @@ const ListaPostulacionesAdmin = () => {
     useEffect(() => {
         const obtenerEmpleosConPostulaciones = async () => {
             try {
-                const respuestaEmpleos = await axios.get('https://46wm6186-8000.use.devtunnels.ms/api/jobs');
+                const respuestaEmpleos = await axios.get(constantes.URL_OBTENER_EMPLEOS);
                 const empleosConPostulaciones = await Promise.all(respuestaEmpleos.data.map(async (empleo) => {
-                    const respuestaPostulaciones = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/job/${empleo._id}`);
+                    const respuestaPostulaciones = await axios.get(`${constantes.URL_OBTENER_POSTULANTES_CON_SU_EMPLEO}/${empleo._id}`);
                     return { ...empleo, postulaciones: respuestaPostulaciones.data };
                 }));
                 setEmpleos(empleosConPostulaciones);
@@ -106,7 +106,6 @@ const ListaPostulacionesAdmin = () => {
                 console.error('Error al obtener empleos y postulaciones:', error);
             }
         };
-
         obtenerEmpleosConPostulaciones();
     }, []);
     useEffect(() => {
@@ -171,26 +170,40 @@ const ListaPostulacionesAdmin = () => {
                             {filteredEmpleos.length > 0 ? (
                                 <Row>
                                     {filteredEmpleos.map((empleo) => (
-                                        <Col md={6} lg={6} key={empleo._id} className="mb-4">
+                                        <Col xs={12} md={6} lg={5} key={empleo._id} className="mb-4">
                                             <Card className={`empresa-card ${cardClass(empleo.estado)}`}>
                                                 <Card.Body>
                                                     <Row className="empleo-detalle">
                                                         <Col md={12}>
                                                             {/* Botón de Ver Postulantes en la esquina superior derecha */}
                                                             <div style={{ position: 'absolute', top: 10, right: 10 }}>
-                                                                <Button variant="primary" onClick={() => abrirModalPostulantes(empleo.postulaciones)}>
-                                                                    <FontAwesomeIcon icon={faUsers} /> Ver Postulantes
+
+                                                                <Button
+                                                                    onClick={() => abrirModalPostulantes(empleo.postulaciones)}
+                                                                    className="ml-auto d-none d-lg-block btn-outline-azul"
+                                                                >
+                                                                    <FontAwesomeIcon icon={faUsers} /> Ver postulantes
                                                                 </Button>
+                                                                <Button
+                                                                    onClick={() => abrirModalPostulantes(empleo.postulaciones)}
+                                                                    className="ml-auto d-lg-none btn-outline-azul"
+                                                                >
+                                                                    <FontAwesomeIcon icon={faUsers} />
+                                                                </Button>
+
+
+
                                                             </div>
                                                             <Card.Title>
                                                                 <FontAwesomeIcon icon={faBriefcase} className="me-2" /> {/* Ícono de Puesto */}
-                                                                {empleo.puesto} - {renderEstadoEmpleo(empleo.estado)}
+                                                                {empleo.puesto}
                                                             </Card.Title>
                                                             <Card.Subtitle className="mb-2 text-muted">
                                                                 <FontAwesomeIcon icon={faBuilding} className="me-2" /> {/* Ícono de Empresa */}
-                                                                {empleo.idEmpresa?.nombreEmpresa || 'Nombre de Empresa no disponible'}
+                                                               <strong>{empleo.idEmpresa?.nombreEmpresa || 'Nombre de Empresa no disponible'}</strong> 
                                                             </Card.Subtitle>
-
+                                                            <strong>{renderEstadoEmpleo(empleo.estado)}
+                                                            </strong>
                                                             <Card.Text>
                                                                 {acordeonesAbiertos[empleo._id] ? empleo.descripcion : `${empleo.descripcion.substring(0, 100)}...`}
                                                             </Card.Text>
@@ -206,30 +219,30 @@ const ListaPostulacionesAdmin = () => {
                                                         <Accordion defaultActiveKey="0">
                                                             <Accordion.Item eventKey="0">
 
-                                                                <Accordion.Header>Detalles adicionales</Accordion.Header>
+                                                                <Accordion.Header> <strong>Detalles adicionales</strong></Accordion.Header>
                                                                 <Accordion.Body>
                                                                     <Row className="empleo-detalle">
                                                                         <Col xs={12} md={6}>
-                                                                            <h6>Formación Académica:</h6>
+                                                                            <strong>Formación Académica:</strong>
                                                                             <p>{empleo.formacionAcademica}</p>
                                                                         </Col>
                                                                         <Col xs={12} md={6}>
-                                                                            <h6>Conocimientos Requeridos:</h6>
+                                                                            <strong>Conocimientos Requeridos:</strong>
                                                                             <p>{empleo.conocimientos}</p>
                                                                         </Col>
                                                                         <Col xs={12} md={6}>
-                                                                            <h6>Aptitudes Necesarias:</h6>
+                                                                            <strong>Aptitudes Necesarias:</strong>
                                                                             <p>{empleo.aptitudes}</p>
                                                                         </Col>
                                                                         <Col xs={12} md={6}>
-                                                                            <h6>Experiencia Requerida:</h6>
+                                                                            <strong>Experiencia Requerida:</strong>
                                                                             <p>{empleo.experiencia}</p>
                                                                         </Col>
                                                                     </Row>
                                                                     <Row className="empleo-detalle">
 
                                                                         <Col xs={12} md={6}>
-                                                                            <h6>Modalidad:</h6>
+                                                                            <strong>Modalidad:</strong>
                                                                             <p>{empleo.modalidad}</p>
                                                                         </Col>
                                                                     </Row>

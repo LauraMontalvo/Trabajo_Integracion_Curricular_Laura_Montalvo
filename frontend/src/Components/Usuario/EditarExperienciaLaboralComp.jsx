@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Form, Button, Row, Col, Alert, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faBuilding, faCalendarAlt, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-
+import * as constantes from '../../Models/Constantes'
 // ... Importaciones adicionales si son necesarias ...
 const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEditModal }) => {
     // Estados para los datos del formulario
@@ -32,7 +32,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
         }
     };
     useEffect(() => {
-        axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperience/${idExperiencia}`)
+        axios.get(`${constantes.URL_EDITAR_U_OBTENER_EXPERIENCIA_LABORAL}/${idExperiencia}`)
             .then(response => {
                 // Aquí estableces los estados con los datos obtenidos
                 setDescripcionResponsabilidades(response.data.descripcionResponsabilidades);
@@ -52,7 +52,7 @@ const EditarExperienciaLaboral = ({ idExperiencia, onExperienciaEdited, closeEdi
         e.preventDefault();
         // ... Aquí incluyes tus validaciones ...
 
-        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/workExperience/${idExperiencia}`, {
+        axios.put(`${constantes.URL_EDITAR_U_OBTENER_EXPERIENCIA_LABORAL}/${idExperiencia}`, {
             descripcionResponsabilidades,
             ambitoLaboral,
             puesto,

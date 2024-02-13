@@ -236,7 +236,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
 
 
     useEffect(() => {
-        axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`)
+        axios.get(`${constantes.URL_OBTENER_UNA_EMPRESA}/${id}`)
             .then(res => {
                 setNombreEmpresa(res.data.nombreEmpresa);
                 setCorreo(res.data.correo);
@@ -297,7 +297,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
             dataToUpdate.password = md5(password);
             dataToUpdate.confirmPassword = md5(confirmPassword);
         }
-        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`, dataToUpdate)
+        axios.put(`${constantes.URL_ACTUALIZAR_EMPRESA}/${id}`, dataToUpdate)
             .then((res) => {
                 console.log(res.data);
                 setUpdateSuccess("Se ha actualizado correctamente");

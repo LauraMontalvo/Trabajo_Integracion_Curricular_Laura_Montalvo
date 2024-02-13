@@ -17,28 +17,28 @@ const PerfilEmpresa = () => {
 
   useEffect(() => {
     const cargarDatosEmpresa = async () => {
-        try {
-            // Obtener información de la empresa
-            const resEmpresa = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`);
-            setEmpresa(resEmpresa.data);
+      try {
+        const resEmpresa = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`);
+        setEmpresa(resEmpresa.data);
 
-            // Obtener empleos publicados por la empresa
-            const resEmpleos = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/jobs/company/${id}`);
-            const empleosActivos = resEmpleos.data.filter(empleo => empleo.estado === 'Activo'); // Filtrar empleos activos
-            setEmpleos(empleosActivos);
+        const resEmpleos = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/jobs/company/${id}`);
+        const empleosActivos = resEmpleos.data.filter(empleo => empleo.estado === 'Activo');
+        setEmpleos(empleosActivos);
 
-            // Código para la foto
-            const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${id}`);
-            if (fotoResponse.data && fotoResponse.data.foto) {
-                setImagenPreview(fotoResponse.data.foto);
-            }
-        } catch (error) {
-            console.error('Error al cargar los datos:', error);
+        const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${id}`);
+        if (fotoResponse.data && fotoResponse.data.foto) {
+          setImagenPreview(fotoResponse.data.foto);
+        } else {
+          setImagenPreview(defaultImage); // Establecer imagen por defecto si no hay foto
         }
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        setImagenPreview(defaultImage); // Asegurarse de que la imagen por defecto se establezca en caso de error
+      }
     };
 
     cargarDatosEmpresa();
-}, [id]);
+  }, [id]);
 
   if (!empresa) {
     return null;
@@ -57,11 +57,11 @@ const PerfilEmpresa = () => {
         <Row>
           <Col md={4}>
             <Card className="card-empresa">
-            
+
               <Card.Body>
-              <div className="image-container text-center mb-3">
-                                <Image src={empresa.foto || imagenPreview || defaultImage} alt="Foto de perfil" roundedCircle className="img-fluid" />
-                                </div>
+                <div className="image-container text-center mb-3">
+                  <Image src={imagenPreview || defaultImage} alt="Foto de perfil" roundedCircle className="img-fluid" />
+                </div>
                 <Card.Title className="titulo-empresa">{empresa.nombreEmpresa}</Card.Title>
                 <ListGroup variant="flush">
                   <ListGroup.Item>Correo: {empresa.correo}</ListGroup.Item>

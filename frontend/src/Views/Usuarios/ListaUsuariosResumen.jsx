@@ -4,7 +4,7 @@ import { Card, Container, Row, Col, Button, Image, Form } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/Lista.scss";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
@@ -15,8 +15,14 @@ const ListaUsuariosResumen = (props) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [imagenPreview, setImagenPreview] = useState(null);
-  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
+  const {usuario,id} = useParams();
+  const esUsuario = usuario === 'usuario'; // Cambia esto a `true` o `false` según corresponda
   const isAuthenticated = props.isAuthenticated;
+
+
+  console.log(esUsuario)
+
+
   useEffect(() => {
     axios.get('https://46wm6186-8000.use.devtunnels.ms/api/users')
       .then(response => {
@@ -94,7 +100,7 @@ const ListaUsuariosResumen = (props) => {
                     <Card.Text className="text-muted">{user.cargo}</Card.Text>
                     {/* Agregar un resumen de habilidades o intereses aquí */}
 
-                    <Button variant="primary" as={Link} to={`/perfilUsuario/${user._id}`}>Ver perfil</Button>
+                    <Button variant="primary" as={Link} to={`perfilUsuario/${user._id}/${usuario}`}>Ver perfil</Button>
                   </Card.Body>
                 </Card>
               </Col>

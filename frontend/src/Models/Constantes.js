@@ -8,7 +8,7 @@ export const TEXTO_INICIAR_SESION = "Iniciar Sesión";
 export const TEXTO_IR_PAGINA_PRINCIPAL = "Ir a la pagina principal";
 export const TEXTO_INICIO_SESION = "Inicio de sesión de Usuario";
 export const TEXTO_REGISTRATE = "Regístrate ahora!";
-export const TEXTO_TITULO = "Empleos ChavezPamba";
+export const TEXTO_TITULO = "Empleos Chavezpamba";
 export const TEXTO_USUARIO_EXISTE="Usuario existe";
 export const TEXTO_CORREO_OBLIGATORIO='El correo electrónico es obligatorio';
 export const TEXTO_INGRESE_CORREO_VALIDO='Ingrese un correo electrónico válido';
@@ -29,6 +29,9 @@ export const TEXTO_APELLIDO_USUARIO_OBLIGATORIO='El apellido es obligatorio';
 export const TEXTO_SELECCIONAR_GENERO='Debe seleccionar un género';
 export const TEXTO_FECHA_NACIMIENTO_OBLIGATORIO='La fecha de nacimiento es obligatoria';
 export const TEXTO_NUMERO_TELEFONOOBLIGATORIO='El número de teléfono es obligatorio';
+export const TEXTO_DEBES_TENER_18_AÑOS="Debes tener al menos 18 años";
+export const TEXTO_VALORES_OBLIGATORIOS="Los valores de la empresa son obligatorios";
+
 //expLaboral
 export const TEXTO_DESCRIPCION_RESPONSABILIDADES_OBLIGATORIO='La descripción de Resposabilidades es obligatoria';
 export const TEXTO_AMBITO_LABORAL_OBLIGATORIO='El Ámbito Laboral es obligatorio';
@@ -46,16 +49,55 @@ export const TEXTO_INICIO_SESION_EMPRESA = "Inicio de sesión de Empresa";
 
 //CONSTANTES USUARIO
 export const ROL_ADMINISTRADOR = "Administrador";
+export const ROL_EMPRESA = "Empresa";
+//ESTADOS
+export const ESTADO_ACTIVO='Activo';
+export const ESTADO_INACTIVO="";
+export const ESTADO_EN_ESPERA="";
 
-//URLS Backend
+//URLS Backent USERS
 export const URL_VALIDAR_AUTENTICACION = "https://46wm6186-8000.use.devtunnels.ms/api/user/login";
-export const URL_VALIDAR_AUTENTICACION_EMPRESA ="https://46wm6186-8000.use.devtunnels.ms/api/company/login";
 export const URL_CONSULTAR_DATOS_USUARIO = "https://46wm6186-8000.use.devtunnels.ms/api/user/";
 export const URL_OBTENER_USUARIOS ='https://46wm6186-8000.use.devtunnels.ms/api/users'
 export const URL_USUARIO_NUEVO='https://46wm6186-8000.use.devtunnels.ms/api/user/new'
+export const URL_EDITAR_U_OBTENER_FOTO_USUARIO= 'https://46wm6186-8000.use.devtunnels.ms/api/user/foto';
+
+
+//URLS Back COMPANY
+export const URL_VALIDAR_AUTENTICACION_EMPRESA ="https://46wm6186-8000.use.devtunnels.ms/api/company/login";
 export const URL_EMPRESA_NUEVA= 'https://46wm6186-8000.use.devtunnels.ms/api/company/new'
 export const URL_EMPRESAS= 'https://46wm6186-8000.use.devtunnels.ms/api/companies'
+export const URL_OBTENER_UNA_EMPRESA= 'https://46wm6186-8000.use.devtunnels.ms/api/company';
+export const URL_ACTUALIZAR_EMPRESA= 'https://46wm6186-8000.use.devtunnels.ms/api/company';
+export const URL_EDITAR_U_OBTENER_FOTO_EMPRESA= 'https://46wm6186-8000.use.devtunnels.ms/api/company/foto';
+
+//URL Work exprience
 export const URL_EXPERIENCIA_LABORAL_NUEVA= 'https://46wm6186-8000.use.devtunnels.ms/api/workExperience/new';
+export const URL_EDITAR_U_OBTENER_EXPERIENCIA_LABORAL='https://46wm6186-8000.use.devtunnels.ms/api/workExperience';
+
+//INSTITUCIONES
+export const URL_ACTUALIZAR_INSTITUCION= 'https://46wm6186-8000.use.devtunnels.ms/api/school';
+export const URL_OBTENER_UNA_INSTITUCION= 'https://46wm6186-8000.use.devtunnels.ms/api/school';
+export const URL_AGREGAR_NUEVA_INSTITUCION= 'https://46wm6186-8000.use.devtunnels.ms/api/school/new';
+
+
+//CERTIFICACIONES
+export const URL_OBTENER_U_EDITAR_CERTIFICADO= 'https://46wm6186-8000.use.devtunnels.ms/api/certification';
+
+//informacion academica
+
+
+//publicar empleo
+export const URL_PUBLICAR_EMPLEO= 'https://46wm6186-8000.use.devtunnels.ms/api/job/new';
+export const URL_ELIMINAR_UN_EMPLEO= 'https://46wm6186-8000.use.devtunnels.ms/api/job';
+export const URL_OBTENER_EMPLEOS= 'https://46wm6186-8000.use.devtunnels.ms/api/jobs';
+export const URL_OBTENER_UN_EMPLEO= 'https://46wm6186-8000.use.devtunnels.ms/api/job';
+export const URL_ACTUALIZAR_UN_EMPLEO= 'https://46wm6186-8000.use.devtunnels.ms/api/job';
+//POSTULACIONES
+export const URL_ELIMINAR_UNA_POSTULACION= 'https://46wm6186-8000.use.devtunnels.ms/api/postulation';
+export const URL_OBTENER_POSTULANTES_CON_SU_EMPLEO=' https://46wm6186-8000.use.devtunnels.ms/api/postulations/job';
+export const URL_MOTIVO_RECHAZO_POSTULACION= 'https://46wm6186-8000.use.devtunnels.ms/api/postulation';
+
 
 //URLS FrontEnd
 export const URL_DETALLE_USUARIO = "/detalleUsuario/";

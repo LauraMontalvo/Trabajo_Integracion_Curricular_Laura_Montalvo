@@ -349,10 +349,9 @@ function DetalleUsuario(props) {
 
     const cargarPostulaciones = async () => {
       try {
-        console.log("POSTULACIONES")
-        console.log(id)
+     
         const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/user/${id}`);
-        console.log(response);
+       
 
         setPostulaciones(response.data);
       } catch (error) {
@@ -602,19 +601,19 @@ function DetalleUsuario(props) {
                     <span className="field-title">Género:</span> <span className="field-value">{user.sexo}</span>
                   </ListGroup.Item>
                   <ListGroup.Item className="list-group-item">
-  <span className="field-title">Descripción Personal: </span>
-  <span className="field-value descripcion-personal">
+                    <span className="field-title">Descripción Personal: </span>
+                    <span className="field-value descripcion-personal">
 
-    {verMasDescripcion || user.descripcionPersonal?.length <= 10
-      ? user.descripcionPersonal
-      : `${user.descripcionPersonal?.substring(0, 10)}... `}
-    {user.descripcionPersonal?.length > 10 && (
-      <Button variant="link" onClick={toggleVerMasDescripcion}>
-        {verMasDescripcion ? 'Ver menos' : 'Ver más'}
-      </Button>
-    )}
-  </span>
-</ListGroup.Item>
+                      {verMasDescripcion || user.descripcionPersonal?.length <= 10
+                        ? user.descripcionPersonal
+                        : `${user.descripcionPersonal?.substring(0, 10)}... `}
+                      {user.descripcionPersonal?.length > 10 && (
+                        <Button variant="link" onClick={toggleVerMasDescripcion}>
+                          {verMasDescripcion ? 'Ver menos' : 'Ver más'}
+                        </Button>
+                      )}
+                    </span>
+                  </ListGroup.Item>
                   <ListGroup.Item className="list-group-item">
                     <span className="field-title">Fecha de Nacimiento:</span> <span className="field-value">{format(user.fechaNacimiento)}</span>
                   </ListGroup.Item>

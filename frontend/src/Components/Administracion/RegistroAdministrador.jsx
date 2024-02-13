@@ -21,7 +21,7 @@ const CampoEstado = ({ valido, mensajeError }) => {
   }
 };
 const RegistroAdministrador = ({ onRegistroExitoso }) => {
-    const [nombre, setNombre] = useState('');
+  const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [sexo, setSexo] = useState(null);
   const [fechaNacimiento, setFechaNacimiento] = useState('');
@@ -69,11 +69,11 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
     const fechaNac = new Date(fechaNacimiento);
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
-  
+
     if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
       edad--;
     }
-  
+
     return edad >= 18;
   };
   const validarFormularioAntesDeEnviar = () => {
@@ -96,21 +96,21 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
     }
 
     if (!sexo || sexo === ' ') {
-      setSexoError("Seleccionar género es obligatorio");
+      setSexoError(constantes.TEXTO_SELECCIONAR_GENERO);
       formularioEsValido = false;
     } else {
       setSexoError('');
     }
-   // Validar fecha de nacimiento
-   if (!fechaNacimiento) {
-    setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
-    formularioEsValido = false;
-  } else if (!validarEdad(fechaNacimiento)) {
-    setFechaNacimientoError("Debes tener al menos 18 años.");
-    formularioEsValido = false;
-  } else {
-    setFechaNacimientoError('');
-  }
+    // Validar fecha de nacimiento
+    if (!fechaNacimiento) {
+      setFechaNacimientoError(constantes.TEXTO_FECHA_NACIMIENTO_OBLIGATORIO);
+      formularioEsValido = false;
+    } else if (!validarEdad(fechaNacimiento)) {
+      setFechaNacimientoError(constantes.TEXTO_DEBES_TENER_18_AÑOS);
+      formularioEsValido = false;
+    } else {
+      setFechaNacimientoError('');
+    }
     // Validar teléfono
     if (!telefono || telefono.length !== 10) { // Asumiendo que el teléfono debe tener 10 dígitos
       setTelefonoError(constantes.TEXTO_NUMERO_TELEFONOOBLIGATORIO);
@@ -222,21 +222,21 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
       return;
     }
     const fecha = new Date(fechaNacimiento);
-  // Ajustar la fecha al huso horario de Ecuador (UTC-5)
-  const fechaAjustada = new Date(fecha.getTime() - (5 * 60 * 60 * 1000));
+    // Ajustar la fecha al huso horario de Ecuador (UTC-5)
+    const fechaAjustada = new Date(fecha.getTime() - (5 * 60 * 60 * 1000));
 
-  axios.post(constantes.URL_USUARIO_NUEVO, {
-    nombre,
-    apellido,
-    rol: 'Administrador',
-    sexo,
-    fechaNacimiento: fechaAjustada.toISOString(),
-    telefono,
-    usuario,
-    password,
-    confirmPassword,
-    estado: 'Activo'
-  })
+    axios.post(constantes.URL_USUARIO_NUEVO, {
+      nombre,
+      apellido,
+      rol: constantes.ROL_ADMINISTRADOR,
+      sexo,
+      fechaNacimiento: fechaAjustada.toISOString(),
+      telefono,
+      usuario,
+      password,
+      confirmPassword,
+      estado: 'Activo'
+    })
       .then((res) => {
         console.log(res);
         // Extraer la edad de la respuesta del servidor y establecerla en el estado
@@ -259,8 +259,8 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
         setPasswordError('');
         setConfirmPasswordError('');
         if (onRegistroExitoso) {
-            onRegistroExitoso();
-          }
+          onRegistroExitoso();
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -280,7 +280,7 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
     const fechaActual = new Date();
     return fechaActual.getFullYear() - 18;
   };
-  
+
   return (
 
     <div className='App'>
@@ -349,11 +349,11 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
               <div className="input-icon-wrapper">
                 <FontAwesomeIcon icon={faCalendarAlt} className="input-icon" />
                 <Form.Control
-  type="date"
-  max={`${calcularAnioMaximo()}-12-31`}
-  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
-  value={fechaNacimiento}
-  className="input-with-icon" />
+                  type="date"
+                  max={`${calcularAnioMaximo()}-12-31`}
+                  onChange={(e) => handleInputChange(e, setFechaNacimiento, setFechaNacimientoError)}
+                  value={fechaNacimiento}
+                  className="input-with-icon" />
 
                 <CampoEstado valido={esCampoValido(fechaNacimiento, fechaNacimientoError)} mensajeError={fechaNacimientoError} />
 
@@ -454,7 +454,7 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
 
         <div className="botones-centrados">
           <Button type="submit" className='btn-primary'>Crear cuenta</Button>
-       
+
         </div>
         <div></div>
         <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>

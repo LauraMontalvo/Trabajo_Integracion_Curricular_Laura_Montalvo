@@ -10,19 +10,19 @@ import * as constantes from '../../Models/Constantes'
 
 
 import md5 from 'md5';
-const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
+const EditarAdministrador = ({ id, onAdministradorUpdated, closeEditModal }) => {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [sexo, setSexo] = useState("");
     const [fechaNacimiento, setFechaNacimiento] = useState("");
     const [telefono, setTelefono] = useState("");
     const [usuario, setUsuario] = useState("");
-    const [descripcionPersonal, setDescripcionPersonal] = useState("");
+
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [updateError, setUpdateError] = useState('');
-    const navigate = useNavigate();
+
     const [updateSuccess, setUpdateSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
@@ -31,7 +31,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const [fechaNacimientoError, setFechaNacimientoError] = useState('');
     const [telefonoError, setTelefonoError] = useState('');
     const [nombreError, setNombreError] = useState('');
-    const [descripcionPersonalError, setdescripcionPersonalError] = useState('');
+
     const [apellidoError, setApellidoError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -71,15 +71,6 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         }
         // Agregar más lógica de validación si es necesario
         setNombreError('');
-        return true;
-    };
-    const validarDescripcionPersonal = () => {
-        if (!descripcionPersonal) {
-            setdescripcionPersonalError('La descripción persona es obligatoria');
-            return false;
-        }
-        // Agregar más lógica de validación si es necesario
-        setdescripcionPersonalError('');
         return true;
     };
 
@@ -179,17 +170,6 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         }
         return true;
     };
-    const handleDescripcionPerChange = (e) => {
-        const nuevaDescripcionPer = e.target.value;
-        setDescripcionPersonal(nuevaDescripcionPer);
-
-        // Aquí, probablemente quisiste limpiar el mensaje de error si hay contenido válido.
-        if (!nuevaDescripcionPer) {
-            setdescripcionPersonalError('La descripción personal es obligatoria');
-        } else {
-            setdescripcionPersonalError('');
-        }
-    };
 
 
     const handleUsuarioChange = (e) => {
@@ -206,9 +186,9 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        if (closeEditModal) {
-            closeEditModal();
-        }
+
+        closeEditModal();
+
     };
 
     const handlePasswrod = (e) => {
@@ -217,7 +197,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const handleConfPasswrod = (e) => {
         setConfirmPassword(e.target.value);
     };
-    const rol = "Usuario";
+    const rol = "Administrador";
 
     const handleTelefonoChange = (e) => {
         let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
@@ -244,7 +224,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setFechaNacimiento(toShortDateFormat(res.data.fechaNacimiento));
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
-                setDescripcionPersonal(res.data.descripcionPersonal);
+
                 // No necesitas setear las contraseñas aquí
             })
             .catch(err => console.log(err));
@@ -258,7 +238,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setFechaNacimiento(res.data.fechaNacimiento);
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
-                setDescripcionPersonal(res.data.descripcionPersonal);
+
             })
             .catch(err => console.log(err));
     };
@@ -280,10 +260,10 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const esApellidoValido = validarApellido();
         const esTelefonoValido = validarTelefono();
         const esUsuarioValido = validarUsuario();
-        const esdescripcionPersValido = validarDescripcionPersonal();
+
         // ... (Validar otros campos)
 
-        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido || !esdescripcionPersValido) {
+        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido) {
             return; // Detener si hay errores
         }
 
@@ -304,7 +284,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             fechaNacimiento,
             telefono,
             usuario,
-            descripcionPersonal,
+
             // Solo incluye las contraseñas si realmente se han ingresado nuevas
             ...(password && confirmPassword && { password: md5(password) })
         };
@@ -318,9 +298,10 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setConfirmPassword('');
                 // Refresca los datos del usuario
                 refrescarDatosUsuario();
-                if (onUsuarioUpdated) {
-                    onUsuarioUpdated(); // Llama a la función callback
-                }
+                // Maneja la respuesta exitosa
+
+                onAdministradorUpdated(); // Llama a esta función para actualizar la lista de administradores en el componente padre
+
                 setShowSuccessModal(true);  // Muestra el modal de éxito
 
             })
@@ -454,25 +435,6 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
                         </Form.Group>
                     </Col>
-                    <Col md={12}>
-                        <Form.Group controlId="formDescripcionPersonal">
-                            <Form.Label>Descripción Personal:</Form.Label>
-                            <div className="input-icon-wrapper">
-                                <FontAwesomeIcon icon={faPen} className="input-icon" />
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    placeholder="Describe brevemente tus habilidades y experiencias"
-                                    value={descripcionPersonal}
-                                    isInvalid={!!descripcionPersonalError}
-                                    onChange={handleDescripcionPerChange}
-                                />
-                            </div>
-                            <div className="text-danger">{descripcionPersonalError}</div>
-                        </Form.Group>
-                    </Col>
-
-
                     <Col md={6}>
                         <Form.Group controlId="formPassword">
                             <Form.Label>Contraseña:</Form.Label>
@@ -546,4 +508,4 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     );
 };
 
-export default EditarUsuario;
+export default EditarAdministrador;

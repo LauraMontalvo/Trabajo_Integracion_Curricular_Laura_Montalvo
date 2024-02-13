@@ -7,6 +7,8 @@ import {
     faHourglass, faCheckCircle, faTimesCircle, faUser, faInfoCircle
 } from '@fortawesome/free-solid-svg-icons';import { Link } from 'react-router-dom';
 import "../../Styles/Lista.scss"
+import * as constantes from '../../Models/Constantes'
+
 // Estilo personalizado para los botones
 const buttonStyle = {
     margin: '0 5px',
@@ -31,7 +33,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
         }
 
         try {
-            await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${postulationToReject}`, {
+            await axios.put(`${constantes.URL_MOTIVO_RECHAZO_POSTULACION}/${postulationToReject}`, {
                 estado: 'Negada',
                 motivoRechazo: selectedReason
             });
@@ -58,7 +60,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
 
     const actualizarEstadoPostulacion = async (idPostulacion, nuevoEstado) => {
         try {
-            await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/postulation/${idPostulacion}`, { estado: nuevoEstado });
+            await axios.put(`${constantes.URL_MOTIVO_RECHAZO_POSTULACION}/${idPostulacion}`, { estado: nuevoEstado });
             setPostulantesList(prevPostulantes =>
                 prevPostulantes.map(postulacion =>
                     postulacion._id === idPostulacion ? { ...postulacion, estado: nuevoEstado } : postulacion

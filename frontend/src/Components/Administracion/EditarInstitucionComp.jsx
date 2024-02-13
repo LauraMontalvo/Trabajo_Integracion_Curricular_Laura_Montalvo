@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSchool, faExclamationCircle, faCheckCircle,faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSchool, faExclamationCircle, faCheckCircle, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes';
 
 const CampoEstado = ({ mensajeError }) => {
@@ -27,7 +27,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     const esCampoValido = (valor, error) => {
         return valor !== '' && error === '';
     };
-  
+
 
     const handleUbicacionChange = (e) => {
         setUbicacion(e.target.value);
@@ -43,7 +43,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     };
     useEffect(() => {
         if (idInstitucion) {
-            axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/school/${idInstitucion}`)
+            axios.get(`${constantes.URL_OBTENER_UNA_INSTITUCION}/${idInstitucion}`)
                 .then(res => {
                     setNombreInstitucion(res.data.nombreInstitucion);
                     setUbicacion(res.data.ubicacion || ''); // Agregado para manejar la ubicación
@@ -60,7 +60,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             setError(''); // Limpia el mensaje de error
         }
     };
-    const validarUbicacion= (value, setError) => {
+    const validarUbicacion = (value, setError) => {
         if (!value.trim()) {
             setError(constantes.TEXTO_NOMBRE_INSTITUCION_OBLIGATORIO);
         } else {
@@ -73,7 +73,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             return; // Detiene la ejecución si hay errores
         }
 
-        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/school/${idInstitucion}`, { nombreInstitucion, ubicacion })
+        axios.put(`${constantes.URL_ACTUALIZAR_INSTITUCION}/${idInstitucion}`, { nombreInstitucion, ubicacion })
             .then((res) => {
                 setUpdateSuccess("Institución actualizada correctamente");
                 setUpdateError('');

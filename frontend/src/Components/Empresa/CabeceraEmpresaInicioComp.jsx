@@ -37,7 +37,7 @@ const CabeceraEmpresaInicioComp = ({ isAuthenticated }) => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {/* Siempre mostramos el enlace al Inicio */}
-          <Nav.Link as={Link} to={`/resumen/${id}`}>Inicio</Nav.Link>
+          <Nav.Link as={Link} to={`/resumen/${id}/empresa`}>Inicio</Nav.Link>
           
           {/* Mostramos el enlace al perfil solo si no estamos actualmente en el perfil */}
           {!viendoPerfil && (

@@ -78,4 +78,19 @@
 .tarjeta-inactiva {
   opacity: 0.5; /* Ajusta la opacidad como prefieras */
   background-color: rgba(209, 53, 53, 0.2392156863); /* Color de fondo para tarjetas inactivas */
+}
+
+.btn-outline-azul {
+  color: #007bff;
+  border-color: #007bff;
+}
+.btn-outline-azul:hover {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.btn-outline-azul:focus, .btn-outline-azul:active {
+  color: #fff;
+  background-color: #0056b3;
+  border-color: #0056b3;
 }/*# sourceMappingURL=ListaEmpresa.css.map */

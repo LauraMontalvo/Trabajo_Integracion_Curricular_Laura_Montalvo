@@ -168,6 +168,8 @@ function ModuloReportes() {
   };
 
   const barChartOptions = {
+   
+    responsive: true, // Esto hace que el gráfico sea responsivo en anchura
     scales: {
       y: {
         beginAtZero: true,

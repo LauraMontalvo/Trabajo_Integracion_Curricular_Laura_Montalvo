@@ -70,12 +70,12 @@ function App() {
             <Route path="/admin/consola/listaInstituciones/:id" element={<ListaInstituciones />} />
             <Route path="/admin/consola/moduloReportes/:id" element={<ModuloReportes />} />
             {/*General Admin y usuario*/}
-            <Route path="/perfil-empresa/:id" element={<PerfilEmpresa />} />
+            <Route path="perfil-empresa/:id" element={<PerfilEmpresa />} />
             <Route path="/perfilUsuario/:id" element={<PerfilUsuario />} />
-            <Route path="/resumen/:id" element={<InicioResumen isAuthenticated={isAuthenticated} />} />
-            <Route path="resumen/usuariosResumen/:id" element={<ListaUsuariosResumen isAuthenticated={isAuthenticated} />} />
-            <Route path="resumen/empresasResumen/:id" element={<ListaEmpresasResumen isAuthenticated={isAuthenticated} />} />
-            <Route path="resumen/empleosResumen/:id" element={<ListaEmpleosResumen isAuthenticated={isAuthenticated} />} />
+            <Route path="/resumen/:id/:usuario" element={<InicioResumen isAuthenticated={isAuthenticated} />} />
+            <Route path="resumen/usuariosResumen/:id/:usuario" element={<ListaUsuariosResumen isAuthenticated={isAuthenticated}/>} />
+            <Route path="resumen/empresasResumen/:id/:usuario" element={<ListaEmpresasResumen isAuthenticated={isAuthenticated}/>} />
+            <Route path="resumen/empleosResumen/:id/:usuario" element={<ListaEmpleosResumen isAuthenticated={isAuthenticated} />} />
 
 
           </Routes>

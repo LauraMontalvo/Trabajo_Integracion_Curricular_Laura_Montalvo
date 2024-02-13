@@ -35,6 +35,7 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa, onRecargarUsua
   const handleCloseRegisterInstitutionModal = () => {
     setShowRegisterInstitutionModal(false);
   };
+
   const handleShowRegisterCompanyModal = () => {
     setShowRegisterCompanyModal(true);
   };
@@ -42,7 +43,7 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa, onRecargarUsua
   const handleCloseRegisterCompanyModal = () => {
     setShowRegisterCompanyModal(false);
   };
-
+  
   return (
     <>
       <Navbar bg="light" expand="lg" className="mb-4">
@@ -54,19 +55,14 @@ const TabsAdministracionComp = ({ onAddInstitucion, onAddEmpresa, onRecargarUsua
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto" variant="tabs">
           <Nav.Link as={Link} to={`/admin/consola/${id}`}>Inicio</Nav.Link>
-
             <NavDropdown title="Empresas" id="nav-dropdown">
               <NavDropdown.Item as={Link} to={`/admin/consola/listaEmpresas/${id}`}>Ver Empresas</NavDropdown.Item>
               <NavDropdown.Item onClick={handleShowRegisterCompanyModal}>Registrar Empresa</NavDropdown.Item>
             </NavDropdown>
-
             <NavDropdown title="Administradores" id="nav-dropdown">
               <NavDropdown.Item as={Link} to={`/admin/consola/listaAdministradores/${id}`}>Ver Administradores</NavDropdown.Item>
               <NavDropdown.Item onClick={handleShowRegisterAdminModal}>Registrar Administrador</NavDropdown.Item>
-
             </NavDropdown>
-
-
             <NavDropdown title="Usuarios" id="nav-dropdown">
         <NavDropdown.Item as={Link} to={`/admin/consola/listaUsuarios/${id}`}>Ver Usuarios</NavDropdown.Item>
         <NavDropdown.Item onClick={handleShowRegisterUserModal}>Registrar Usuarios</NavDropdown.Item>

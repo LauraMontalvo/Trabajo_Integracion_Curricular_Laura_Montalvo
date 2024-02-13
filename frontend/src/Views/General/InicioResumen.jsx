@@ -6,10 +6,10 @@ import usuariosImg from "../../img/usuarios.png";
 import jobImg from "../../img/job.png";
 import empresaiconoImg from "../../img/empresaicono.png";
 import { useParams } from 'react-router-dom';
-import CabeceraUsuarioInicio from '../../Components/Empresa/CabeceraEmpresaInicioComp';
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 const InicioResumen = (props) => {
-  const { id } = useParams();
+  const { id, usuario } = useParams();
   const [expandedCard, setExpandedCard] = useState(null);
   const isAuthenticated = props.isAuthenticated;
   const handleCardClick = (index) => {
@@ -20,7 +20,7 @@ const InicioResumen = (props) => {
     {
       title: "Usuarios Existentes",
       text: "Ver usuarios existentes.",
-      link: `/resumen/usuariosResumen/${id}`,
+      link: `/resumen/usuariosResumen/${id}/${usuario}`,
 
       icon: usuariosImg, // Imagen para usuarios
     },
@@ -28,19 +28,22 @@ const InicioResumen = (props) => {
       title: "Empresas Existentes",
       text: "Ver empresas existentes.",
 
-      link: `/resumen/empresasResumen/${id}`,
+      link: `/resumen/empresasResumen/${id}/${usuario}`,
       icon: empresaiconoImg, // Imagen para empresas
     },
     {
       title: "Empleos disponibles",
       text: "Ver empresas existentes.",
 
-      link: `/resumen/empleosResumen/${id}`,
+      link: `/resumen/empleosResumen/${id}/${usuario}`,
       icon: jobImg, // Imagen para empresas
     },
     // ... otras tarjetas
   ];
-  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
+
+  console.log(usuario)
+  console.log('sddddddddddddddddddddddddddddddddddddddd')
+  const esUsuario = usuario == "usuario"; // Cambia esto a `true` o `false` según corresponda
 
   return (
     <div className='App'>

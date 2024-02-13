@@ -49,8 +49,8 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
   const [usuarioError, setusuarioError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const rol = "Empresa";
-  const navigate = useNavigate();
+  const rol = constantes.ROL_EMPRESA;
+
   const [showPassword, setShowPassword] = useState(false);
   const handleSuccessModalShow = () => setShowSuccessModal(true);
   const esCampoValido = (valor, error) => {
@@ -58,7 +58,7 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
   };
   const validateValores = () => {
     if (!valores.trim()) {
-      setValoresError("Los valores de la empresa son obligatorios");
+      setValoresError(constantes.TEXTO_VALORES_OBLIGATORIOS);
       return false;
     } else {
       setValoresError("");
@@ -241,10 +241,8 @@ const RegistroEmpresa = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
 
       })
       .catch((err) => {
-        console.log(err)
         const errorResponse = err.response.data.errors;
-
-        if (err.response.data.msg === "Usuario existe") {
+        if (err.response.data.msg === constantes.TEXTO_USUARIO_EXISTE) {
           handleErrorModalShow();
           setPassword('');
           setConfirmPassword('');

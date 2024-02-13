@@ -5,14 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faIndustry, faPhone, faGlobe, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import '../../Styles/Lista.css';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 
 const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
-  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
+  const {usuario} = useParams();
+  const esUsuario = usuario == "usuario"; // Cambia esto a `true` o `false` según corresponda
   const isAuthenticated = props.isAuthenticated;
   const [filteredEmpresas, setFilteredEmpresas] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');

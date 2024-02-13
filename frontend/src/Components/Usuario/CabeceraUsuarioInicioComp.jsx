@@ -34,7 +34,7 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
 
   const handleInicioClick = () => {
     if (isAuthenticated && id) {
-      navigate(`/resumen/${id}`);
+      navigate(`/resumen/${id}/${'usuario'}`);
     } else {
       // Aquí puedes decidir qué hacer si no hay un usuario autenticado o no hay un ID disponible.
       // Por ejemplo, podrías mostrar un mensaje de error, o redirigir a una página de error.
@@ -62,7 +62,7 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to={`/resumen/${id}`}>Inicio</Nav.Link>
+            <Nav.Link as={Link} to={`/resumen/${id}/usuario`}>Inicio</Nav.Link>
             {enPerfilUsuario ? (
               <Nav.Link as={Link} to={`/buscarEmpleos/${id}`}>
                 <FontAwesomeIcon icon={faSearch} /> Buscar Empleo

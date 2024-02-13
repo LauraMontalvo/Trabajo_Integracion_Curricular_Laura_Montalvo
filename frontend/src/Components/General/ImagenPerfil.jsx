@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera, faUpload } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
-
+import * as constantes from '../../Models/Constantes';
 
 const ImagenPerfil = ({ id, userParam, isEditingParam, onPhotoUpdated }) => {
     const [imagen, setImagen] = useState(null);
@@ -30,28 +30,27 @@ const ImagenPerfil = ({ id, userParam, isEditingParam, onPhotoUpdated }) => {
 
     const handleSaveClick = async () => {
         try {
-            
+
             const formData = new FormData();
             formData.append('foto', imagen);
 
-            const response = await axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${id}`, formData, {
+            const response = await axios.put(`${constantes.URL_EDITAR_U_OBTENER_FOTO_USUARIO}/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(response.data);  // Imprime la respuesta completa
+          
 
             if (response && response.data && response.data.mensaje) {
-                console.log("Foto guardada exitosamente, pero no se proporcionó URL para actualizar.");
-                // Aquí necesitas manejar la actualización del estado o recargar la imagen de alguna manera.
+                
                 setIsEditing(false);
-                // Puedes recargar la información del usuario para obtener la nueva imagen
-                onPhotoUpdated(); // Asumiendo que tienes una función para recargar el usuario
+            
+                onPhotoUpdated();
             } else {
                 console.error('Respuesta inesperada del servidor');
             }
             setUser({ foto: response.data.foto });
-            setImagenPreview(response.data.foto); // Establece la nueva imagen como vista previa
+            setImagenPreview(response.data.foto); 
             setIsEditing(false);
 
         } catch (error) {
@@ -72,7 +71,7 @@ const ImagenPerfil = ({ id, userParam, isEditingParam, onPhotoUpdated }) => {
                 setImagenPreview(user.foto);
             }
             try {
-                const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${id}`);
+                const response = await axios.get(`${constantes.URL_EDITAR_U_OBTENER_FOTO_USUARIO}/${id}`);
                 console.log(response.data)
                 if (response.data && response.data.foto) {
 

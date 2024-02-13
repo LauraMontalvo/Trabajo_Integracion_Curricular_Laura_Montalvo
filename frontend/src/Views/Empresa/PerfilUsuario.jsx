@@ -8,7 +8,9 @@ import defaultImage from '../../img/imagenUsuarioDefecto.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/detalle.scss"
-function PerfilUsuario() {
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
+
+function PerfilUsuario(props) {
     const { id } = useParams();
     const [user, setUser] = useState(null);
     const [acadTraining, setAcadTraining] = useState([]);
@@ -17,7 +19,9 @@ function PerfilUsuario() {
     const [certificaciones, setCertificaciones] = useState([]);
     const [verMasDescripcion, setVerMasDescripcion] = useState(false); // Nuevo estado para controlar la visualización
 
-    const [isEditing, setIsEditing] = useState(false);
+    const {usuario} = useParams();
+    const esUsuario = usuario == "usuario"; // Cambia esto a `true` o `false` según corresponda
+    const isAuthenticated = props.isAuthenticated;
     //Descripcion
     const toggleVerMasDescripcion = () => {
         setVerMasDescripcion(!verMasDescripcion);
@@ -81,7 +85,8 @@ function PerfilUsuario() {
         return url.length > maxChar ? url.substring(0, maxChar) + '...' : url;
     };
     return (
-        <div className='App'><CabeceraEmpresaInicioComp />
+        <div className='App'>
+             {esUsuario ? <CabeceraUsuarioInicio isAuthenticated={isAuthenticated} /> : <CabeceraEmpresaInicioComp isAuthenticated={isAuthenticated} />}
 
             <Container className="mt-4">
                 <Row>
