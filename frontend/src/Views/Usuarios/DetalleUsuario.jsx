@@ -349,9 +349,9 @@ function DetalleUsuario(props) {
 
     const cargarPostulaciones = async () => {
       try {
-     
+
         const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/postulations/user/${id}`);
-       
+
 
         setPostulaciones(response.data);
       } catch (error) {
@@ -578,7 +578,7 @@ function DetalleUsuario(props) {
         <Row>
           <Col xs={12} md={6} lg={4}  >
             {/* Información del usuario */}
-            <Card fluid className="datos-personales-card">
+            <Card className="datos-personales-card">
               <Card.Body className="mt-4">
                 <ImagenPerfil
                   id={id}

@@ -7,7 +7,7 @@ import '../../Styles/loginstyle.css';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye,faPen, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faPen, faEyeSlash, faVenusMars, faUserCircle, faExclamationCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Cabecera from '../General/Cabecera';
 import * as constantes from '../../Models/Constantes'
 
@@ -175,14 +175,14 @@ const RegistroUsuario = (props) => {
 
     // Validación específica para nombre y apellido que permite tildes
     if (name === 'nombre' || name === 'apellido') {
-        const regex = /^[A-Za-z\u00C0-\u00FF\s]+$/; // Permite letras, espacios, y letras con tildes
-        if (!regex.test(value) && value !== '') {
-            errorSetter('Este campo solo debe contener letras y tildes. No se permiten números ni caracteres especiales.');
-        } else {
-            errorSetter(''); // Limpia el mensaje de error si la validación es correcta
-        }
+      const regex = /^[A-Za-z\u00C0-\u00FF\s]+$/; // Permite letras, espacios, y letras con tildes
+      if (!regex.test(value) && value !== '') {
+        errorSetter('Este campo solo debe contener letras y tildes. No se permiten números ni caracteres especiales.');
+      } else {
+        errorSetter(''); // Limpia el mensaje de error si la validación es correcta
+      }
     } else {
-        // Continúa con el resto de la validación para otros campos
+      // Continúa con el resto de la validación para otros campos
     }
 
     setterFunction(value);
@@ -444,7 +444,7 @@ const RegistroUsuario = (props) => {
               {usuarioError && <p className="text-danger">{usuarioError}</p>}
             </Form.Group>
           </Col>
-          
+
           <Col md={12}>
             <Form.Group>
               <Form.Label>Descripción Personal</Form.Label>
@@ -462,7 +462,7 @@ const RegistroUsuario = (props) => {
               {descripcionPersonalError && <p className="text-danger">{descripcionPersonalError}</p>}
             </Form.Group>
           </Col>
-        
+
           <Col md={6}>
             <Form.Group>
               <Form.Label>Contraseña</Form.Label>
@@ -537,12 +537,19 @@ const RegistroUsuario = (props) => {
         </Modal>
 
         <Modal show={showErrorModal} onHide={handleErrorModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>¡Error!</Modal.Title>
+          <Modal.Header closeButton className="bg-danger text-white">
+            <Modal.Title id="contained-modal-title-vcenter">
+              <FontAwesomeIcon icon={faExclamationCircle} /> Error
+            </Modal.Title>
           </Modal.Header>
-          <Modal.Body>Usuario ya existe.</Modal.Body>
+          <Modal.Body>
+
+            <p>
+              Este usuario ya existe, por favor ingrese uno diferente.
+            </p>
+          </Modal.Body>
           <Modal.Footer>
-            <Button className="botones-centrados" variant="success" onClick={handleErrorModalClose}>
+            <Button variant="danger" onClick={handleErrorModalClose}>
               Cerrar
             </Button>
           </Modal.Footer>

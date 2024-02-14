@@ -5,7 +5,7 @@ import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Styles/loginstyle.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faExclamationCircle, faVenusMars, faUserCircle, faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes'
 
 
@@ -37,6 +37,12 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const [usuarioError, setUsuarioError] = useState('');
 
+    const handleErrorModalClose = () => {
+        setShowErrorModal(false);
+        setUsuario(''); 
+    };
+
+
     const calcularAnioMaximo = () => {
         const fechaActual = new Date();
         return fechaActual.getFullYear() - 18;
@@ -57,7 +63,6 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const nuevaFechaNacimiento = e.target.value;
         setFechaNacimiento(nuevaFechaNacimiento);
 
-        // Valida la edad y actualiza el mensaje de error
         if (!validarEdad(nuevaFechaNacimiento)) {
             setFechaNacimientoError("Debes tener al menos 18 años.");
         } else {
@@ -69,7 +74,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setNombreError('El nombre es obligatorio');
             return false;
         }
-        // Agregar más lógica de validación si es necesario
+   
         setNombreError('');
         return true;
     };
@@ -78,7 +83,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setdescripcionPersonalError('La descripción persona es obligatoria');
             return false;
         }
-        // Agregar más lógica de validación si es necesario
+
         setdescripcionPersonalError('');
         return true;
     };
@@ -89,7 +94,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setApellidoError('El apellido es obligatorio');
             return false;
         }
-        // Agregar más lógica de validación si es necesario
+    
         setApellidoError('');
         return true;
     };
@@ -97,7 +102,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         if (!telefono) {
             setTelefonoError('El número de teléfono es obligatorio');
             return false;
-        } else if (telefono.length !== 10) { // Asumiendo que esperas 10 dígitos
+        } else if (telefono.length !== 10) { 
             setTelefonoError('El número de teléfono debe tener 10 dígitos');
             return false;
         }
@@ -131,7 +136,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setPasswordError('');
             return true;
         }
-        return true; // Si no se intenta cambiar la contraseña, considerarla válida
+        return true;
     };
     const validarConfirmPassword = () => {
         if (password && confirmPassword !== password) {
@@ -145,7 +150,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const nuevoNombre = e.target.value;
         setNombre(nuevoNombre);
 
-        // Establece o elimina el mensaje de error según el contenido del campo
+        
         if (!nuevoNombre) {
             setNombreError('El nombre es obligatorio');
         } else {
@@ -153,12 +158,12 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         }
     };
 
-    // Actualizar la función de manejo de cambio para el apellido
+    
     const handleApellidoChange = (e) => {
         const nuevoApellido = e.target.value;
         setApellido(nuevoApellido);
 
-        // Establece o elimina el mensaje de error según el contenido del campo
+
         if (!nuevoApellido) {
             setApellidoError('El apellido es obligatorio');
         } else {
@@ -166,24 +171,12 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         }
     };
 
-    const verificarUsuarioExistente = async () => {
-        try {
-            const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/usuarios/verificar/${usuario}`);
-            if (response.data.existe && response.data.usuarioId !== id) {
-                setUsuarioError('El nombre de usuario ya está en uso por otro usuario.');
-                return false;
-            }
-        } catch (error) {
-            console.error('Error al verificar el usuario existente', error);
-            return false;
-        }
-        return true;
-    };
+
     const handleDescripcionPerChange = (e) => {
         const nuevaDescripcionPer = e.target.value;
         setDescripcionPersonal(nuevaDescripcionPer);
 
-        // Aquí, probablemente quisiste limpiar el mensaje de error si hay contenido válido.
+        
         if (!nuevaDescripcionPer) {
             setdescripcionPersonalError('La descripción personal es obligatoria');
         } else {
@@ -196,7 +189,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const nuevoUsuario = e.target.value;
         setUsuario(nuevoUsuario);
 
-        // Establece o elimina el mensaje de error según el contenido del campo
+     
         if (!nuevoUsuario.trim()) {
             setUsuarioError('El nombre de usuario es obligatorio');
         } else {
@@ -220,10 +213,9 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const rol = "Usuario";
 
     const handleTelefonoChange = (e) => {
-        let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
-
+        let value = e.target.value.replace(/[^0-9]/g, ''); 
         if (value.length > 10) {
-            value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
+            value = value.substring(0, 10); 
         }
 
         setTelefono(value);
@@ -245,7 +237,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
                 setDescripcionPersonal(res.data.descripcionPersonal);
-                // No necesitas setear las contraseñas aquí
+             
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -267,14 +259,14 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         let esPasswordValido = true;
         let esConfirmPasswordValido = true;
 
-        // Solo validar si el usuario ha intentado cambiar la contraseña
+
         if (password) {
             esPasswordValido = validarPassword();
             esConfirmPasswordValido = validarConfirmPassword();
         }
 
         if (!esPasswordValido || !esConfirmPasswordValido) {
-            return; // Detiene la función si hay errores
+            return; 
         }
         const esNombreValido = validarNombre();
         const esApellidoValido = validarApellido();
@@ -313,22 +305,31 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             .then((res) => {
 
                 setUpdateError('');
-                // Limpia los campos de contraseña después de la actualización
                 setPassword('');
                 setConfirmPassword('');
-                // Refresca los datos del usuario
                 refrescarDatosUsuario();
                 if (onUsuarioUpdated) {
-                    onUsuarioUpdated(); // Llama a la función callback
+                    onUsuarioUpdated();
                 }
-                setShowSuccessModal(true);  // Muestra el modal de éxito
-
+                setShowSuccessModal(true);
             })
             .catch((err) => {
-                setUpdateError(err.response?.data?.msg || 'Error desconocido');
-                console.log(err);
+                if (err.response && err.response.status === 400 && err.response.data.msg) {
+                    if (err.response.data.msg === "El nombre de usuario ya está en uso.") {
+                        setShowErrorModal(true); // Solo muestra el modal para este error específico
+                        setUsuario(''); // Limpia el campo de usuario
+                    } else {
+                        setUpdateError(err.response.data.msg); // Para otros mensajes de error del backend
+                    }
+                } else {
+                    setUpdateError('Ocurrió un error desconocido al actualizar el usuario.'); // Para cualquier otro error
+                }
+
             });
     };
+
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
     function toShortDateFormat(dateString) {
         const date = new Date(dateString);
         return date.toISOString().split('T')[0];
@@ -362,7 +363,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                         <Form.Group>
                             <Form.Label>Apellido:</Form.Label>
                             <div className="input-icon-wrapper">
-                                <FontAwesomeIcon className="input-icon" />
+                            
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingrese su Apellido"
@@ -542,6 +543,22 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <Modal show={showErrorModal} onHide={handleErrorModalClose}>
+                <Modal.Header closeButton className="bg-danger text-white">
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        <FontAwesomeIcon icon={faExclamationCircle} /> Error al Actualizar
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                Este usuario ya existe, por favor ingrese uno diferente.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleErrorModalClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };

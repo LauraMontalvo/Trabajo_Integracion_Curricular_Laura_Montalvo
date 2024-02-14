@@ -470,12 +470,20 @@ const RegistroAdministrador = ({ onRegistroExitoso }) => {
         </Modal>
 
         <Modal show={showErrorModal} onHide={handleErrorModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>¡Error!</Modal.Title>
+        <Modal.Header closeButton className="bg-danger text-white">
+            <Modal.Title id="contained-modal-title-vcenter">
+              <FontAwesomeIcon icon={faExclamationCircle} /> Error
+            </Modal.Title>
           </Modal.Header>
-          <Modal.Body>Usuario ya existe.</Modal.Body>
+          <Modal.Body>
+
+            <p>
+            Este usuario ya existe, por favor ingrese uno diferente.
+            </p>
+          </Modal.Body>
+      
           <Modal.Footer>
-            <Button className="botones-centrados" variant="success" onClick={handleErrorModalClose}>
+            <Button variant="danger"  onClick={handleErrorModalClose}>
               Cerrar
             </Button>
           </Modal.Footer>

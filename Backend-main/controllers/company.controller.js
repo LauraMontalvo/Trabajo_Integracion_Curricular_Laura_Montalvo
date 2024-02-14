@@ -41,11 +41,25 @@ module.exports.getCompany = (request, response) =>{
     .catch(err => response.json(err))
 }
 
-module.exports.updateCompany = (request, response) =>{
-    Company.findOneAndUpdate({_id: request.params.id}, request.body, {new: true})
-    .then(updateCompany => response.json(updateCompany))
-    .catch(err => response.json(err))
-}
+module.exports.updateCompany = (request, response) => {
+    const { usuario } = request.body;
+    const companyId = request.params.id;
+
+    // Primero verifica si el nombre de usuario ya está tomado por otra empresa
+    Company.findOne({ usuario: usuario, _id: { $ne: companyId } })
+        .then(existingCompany => {
+            if (existingCompany) {
+                // Si se encuentra una empresa con el mismo usuario pero diferente ID, devuelve un error
+                response.status(400).json({ msg: "El nombre de usuario ya está en uso." });
+            } else {
+                // Si no hay conflicto, actualiza la empresa
+                Company.findOneAndUpdate({ _id: companyId }, request.body, { new: true })
+                    .then(updatedCompany => response.json(updatedCompany))
+                    .catch(err => response.status(400).json(err));
+            }
+        })
+        .catch(err => response.status(400).json(err));
+};
 
 module.exports.deleteCompany = (request, response) =>{
     Company.deleteOne({_id: request.params.id})

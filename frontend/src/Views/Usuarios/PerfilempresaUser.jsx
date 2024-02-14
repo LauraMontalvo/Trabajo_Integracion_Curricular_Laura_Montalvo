@@ -43,8 +43,8 @@ const PerfilempresaUser= (props) => {
   }, [id]);
 
   if (!empresa) {
-    return null;
-  }
+    return <div>Cargando...</div>;
+}
   // Función para alternar la visualización de la descripción
   const toggleDescripcion = () => {
     setVerDescripcionCompleta(!verDescripcionCompleta);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Form, Row, Col ,Modal} from 'react-bootstrap';
+import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSchool, faExclamationCircle, faCheckCircle, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes';
@@ -30,7 +30,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada, onClos
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
         if (onCloseModals) onCloseModals(); // Llamando directamente a onCloseModals
-      };
+    };
     const esCampoValido = (valor, error) => {
         return valor !== '' && error === '';
     };
@@ -128,7 +128,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada, onClos
                     {ubicacionError && <p className="text-danger">{ubicacionError}</p>}
                 </Form.Group>
                 <div>
-                    <p style={{ color: 'green' }}>{updateSuccess}</p>
+
                     <p style={{ color: 'red' }}>{updateError}</p>
                 </div>
                 <div className="botones-centrados">
@@ -136,16 +136,16 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada, onClos
                 </div><br />
             </Form>
             <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
-    <Modal.Header closeButton>
-        <Modal.Title>Institución actualizada con éxito</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>La información de la institución ha sido actualizada correctamente.</Modal.Body>
-    <Modal.Footer>
-        <Button variant="success" onClick={() => setShowSuccessModal(false)}>
-            Cerrar
-        </Button>
-    </Modal.Footer>
-</Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Institución actualizada con éxito</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>La información de la institución ha sido actualizada correctamente.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={() => setShowSuccessModal(false)}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
         </div>
     );

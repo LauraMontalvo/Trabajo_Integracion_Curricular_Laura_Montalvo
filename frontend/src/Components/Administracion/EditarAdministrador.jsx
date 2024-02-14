@@ -5,7 +5,7 @@ import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Styles/loginstyle.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faVenusMars, faUserCircle, faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash,faExclamationCircle, faVenusMars, faUserCircle, faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes'
 
 
@@ -37,6 +37,14 @@ const EditarAdministrador = ({ id, onAdministradorUpdated, closeEditModal }) => 
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const [usuarioError, setUsuarioError] = useState('');
 
+
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+
+    const handleErrorModalClose = () => {
+        setShowErrorModal(false);
+        setUsuario(''); 
+    };
     const calcularAnioMaximo = () => {
         const fechaActual = new Date();
         return fechaActual.getFullYear() - 18;
@@ -306,8 +314,16 @@ const EditarAdministrador = ({ id, onAdministradorUpdated, closeEditModal }) => 
 
             })
             .catch((err) => {
-                setUpdateError(err.response?.data?.msg || 'Error desconocido');
-                console.log(err);
+                if (err.response && err.response.status === 400 && err.response.data.msg) {
+                    if (err.response.data.msg === "El nombre de usuario ya está en uso.") {
+                        setShowErrorModal(true); // Solo muestra el modal para este error específico
+                        setUsuario(''); // Limpia el campo de usuario
+                    } else {
+                        setUpdateError(err.response.data.msg); // Para otros mensajes de error del backend
+                    }
+                } else {
+                    setUpdateError('Ocurrió un error desconocido al actualizar el usuario.'); // Para cualquier otro error
+                }
             });
     };
     function toShortDateFormat(dateString) {
@@ -343,7 +359,6 @@ const EditarAdministrador = ({ id, onAdministradorUpdated, closeEditModal }) => 
                         <Form.Group>
                             <Form.Label>Apellido:</Form.Label>
                             <div className="input-icon-wrapper">
-                                <FontAwesomeIcon className="input-icon" />
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingrese su Apellido"
@@ -504,6 +519,22 @@ const EditarAdministrador = ({ id, onAdministradorUpdated, closeEditModal }) => 
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <Modal show={showErrorModal} onHide={handleErrorModalClose}>
+                <Modal.Header closeButton className="bg-danger text-white">
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        <FontAwesomeIcon icon={faExclamationCircle} /> Error al Actualizar
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                Este usuario ya existe, por favor ingrese uno diferente.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleErrorModalClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };
