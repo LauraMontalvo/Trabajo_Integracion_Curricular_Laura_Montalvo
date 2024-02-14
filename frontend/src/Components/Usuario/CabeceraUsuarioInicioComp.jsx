@@ -56,7 +56,7 @@ const CabeceraUsuarioInicio = ({ isAuthenticated }) => {
     <>
       <Navbar bg="light" expand="lg" className="mb-4">
 
-        <Navbar.Brand as={Link} to="/" className="titulo-Chavp">
+        <Navbar.Brand  className="titulo-Chavp">
           <h2>{constantes.TEXTO_TITULO}</h2>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

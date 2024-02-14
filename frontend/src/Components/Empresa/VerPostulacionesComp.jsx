@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faHourglass, faCheckCircle, faTimesCircle, faUser, faInfoCircle
-} from '@fortawesome/free-solid-svg-icons';import { Link } from 'react-router-dom';
+} from '@fortawesome/free-solid-svg-icons';import { Link ,useParams} from 'react-router-dom';
 import "../../Styles/Lista.scss"
 import * as constantes from '../../Models/Constantes'
 
@@ -20,7 +20,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
     const [showRejectionModal, setShowRejectionModal] = useState(false);
     const [selectedReason, setSelectedReason] = useState('');
     const [postulationToReject, setPostulationToReject] = useState(null);
-
+    const {id} = useParams();
     const openRejectionModal = (idPostulacion) => {
         setPostulationToReject(idPostulacion);
         setShowRejectionModal(true);
@@ -95,7 +95,7 @@ const VerPostulaciones = ({ idEmpleo, postulantes }) => {
                     <div className="mb-2 mb-md-0 d-flex align-items-center">
                         
                         <FontAwesomeIcon icon={faUser} className="me-2" />
-                        <Link to={`/perfilUsuario/${postulacion.idUsuario?._id}`}>
+                        <Link to={`/perfilUsuario/${id}/${postulacion.idUsuario?._id}`}>
                             {postulacion.idUsuario?.nombre} {postulacion.idUsuario?.apellido}
                         </Link>
                         

@@ -7,9 +7,10 @@ import "../../Styles/detalle.scss"
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import ListaEmpleosPerfilEmpresa from '../../Components/Usuario/ListaEmpleosPerfilEmpresa';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
+import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
 
-const PerfilEmpresa = () => {
-  const { id } = useParams(); // Obtener el ID de la empresa desde la URL
+const PerfilEmpresaAdmin = () => {
+  const { id, idEmpresa } = useParams(); // Obtener el ID de la empresa desde la URL
   const [empresa, setEmpresa] = useState(null);
   const [empleos, setEmpleos] = useState([]);
   const [verDescripcionCompleta, setVerDescripcionCompleta] = useState(false);
@@ -18,14 +19,14 @@ const PerfilEmpresa = () => {
   useEffect(() => {
     const cargarDatosEmpresa = async () => {
       try {
-        const resEmpresa = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`);
+        const resEmpresa = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${idEmpresa}`);
         setEmpresa(resEmpresa.data);
 
-        const resEmpleos = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/jobs/company/${id}`);
+        const resEmpleos = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/jobs/company/${idEmpresa}`);
         const empleosActivos = resEmpleos.data.filter(empleo => empleo.estado === 'Activo');
         setEmpleos(empleosActivos);
 
-        const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${id}`);
+        const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/foto/${idEmpresa}`);
         if (fotoResponse.data && fotoResponse.data.foto) {
           setImagenPreview(fotoResponse.data.foto);
         } else {
@@ -52,7 +53,7 @@ const PerfilEmpresa = () => {
 
   return (
     <div className='App'>
-      <CabeceraUsuarioInicio></CabeceraUsuarioInicio>
+      <TabsAdministracionComp/>
       <Container className="perfil-empresa mt-4">
         <Row>
           <Col md={4}>
@@ -99,4 +100,4 @@ const PerfilEmpresa = () => {
   );
 };
 
-export default PerfilEmpresa;
+export default PerfilEmpresaAdmin;

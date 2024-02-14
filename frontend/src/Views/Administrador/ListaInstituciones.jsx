@@ -20,7 +20,7 @@ const ListaInstituciones = () => {
   const navigate = useNavigate();
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
   const toggleEditarModal = () => setEditarModal(!EditarModal);
-  const [showRegisterInstitutionModal, setShowRegisterInstitutionModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [recargar, setRecargar] = useState(false);
   const [EditarModal, setEditarModal] = useState(false);
@@ -28,6 +28,10 @@ const ListaInstituciones = () => {
   const [filtroNombre, setFiltroNombre] = useState("");
   const [institucionesFiltradas, setInstitucionesFiltradas] = useState([]);
 
+  const handleCloseModals = () => {
+    setEditarModal(false); // Cierra el modal de edición
+    setShowSuccessModal(false); // Intenta cerrar el modal de éxito, aunque este estado no exista aquí
+  };
   
   
   useEffect(() => {
@@ -154,10 +158,12 @@ const ListaInstituciones = () => {
         </Modal.Header>
         <Modal.Body>
           {institucionToEdit && (
-            <EditarInstitucionComp
-              idInstitucion={institucionToEdit._id}
-              onInstitucionActualizada={handleInstitucionActualizada}
-            />
+          <EditarInstitucionComp
+          idInstitucion={institucionToEdit._id}
+          onInstitucionActualizada={handleInstitucionActualizada}
+          onCloseModals={handleCloseModals} // Pasando la función como prop
+        />
+        
           )}
         </Modal.Body>
         <Modal.Footer>

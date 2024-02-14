@@ -12,8 +12,8 @@ import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaI
 
 const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
-  const {usuario} = useParams();
-  const esUsuario = usuario == "usuario"; // Cambia esto a `true` o `false` según corresponda
+  const {usuario, id} = useParams();
+  const esUsuario = usuario === 'usuario';
   const isAuthenticated = props.isAuthenticated;
   const [filteredEmpresas, setFilteredEmpresas] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,7 +75,7 @@ const ListaEmpresas = (props) => {
                     </Col>
                     <Col xs={12} sm={8} md={8}>
                       <Card.Title>
-                        <Link to={`/perfil-empresa/${empresa._id}`} className="empresa-link">
+                        <Link to={`/perfil-empresa/${id}/${empresa._id}/${usuario}`} className="empresa-link">
                           {empresa.nombreEmpresa || "Empresa no especificada"}
                         </Link>
                       </Card.Title>

@@ -15,7 +15,7 @@ const ListaUsuariosResumen = (props) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [imagenPreview, setImagenPreview] = useState(null);
-  const {usuario,id} = useParams();
+  const {usuario, id} = useParams();
   const esUsuario = usuario === 'usuario'; // Cambia esto a `true` o `false` según corresponda
   const isAuthenticated = props.isAuthenticated;
 
@@ -100,7 +100,7 @@ const ListaUsuariosResumen = (props) => {
                     <Card.Text className="text-muted">{user.cargo}</Card.Text>
                     {/* Agregar un resumen de habilidades o intereses aquí */}
 
-                    <Button variant="primary" as={Link} to={`perfilUsuario/${user._id}/${usuario}`}>Ver perfil</Button>
+                    <Button variant="primary" as={Link} to={`/perfilUsuario/${id}/${user._id}/${usuario }`}>Ver perfil</Button>
                   </Card.Body>
                 </Card>
               </Col>

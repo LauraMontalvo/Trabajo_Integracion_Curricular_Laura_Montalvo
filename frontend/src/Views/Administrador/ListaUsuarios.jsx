@@ -10,10 +10,11 @@ import * as constantes from '../../Models/Constantes';
 import "../../Styles/Lista.scss";
 import "../../Styles/ListaEmpresa.scss"; // Importa los mismos estilos de ListaEmpresas
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import EditarUsuario from "../../Components/Usuario/EditarUsuarioComp";
 
 const ListaUsuarios = () => {
+  const {id} = useParams();
   const [usuarios, setUsuarios] = useState([]);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -171,7 +172,7 @@ const ListaUsuarios = () => {
                       <Row className="align-items-center">
                         <Col md={8}>
                           <Card.Title><FontAwesomeIcon icon={faUser} className="me-2" />
-                            <Link to={`/perfilUsuario/${usuario._id}`} className="empresa-link">
+                            <Link to={`/admin/perfilUsuario/${id}/${usuario._id}`} className="empresa-link">
                               {usuario.nombre} {usuario.apellido}
                             </Link>
                           </Card.Title>
