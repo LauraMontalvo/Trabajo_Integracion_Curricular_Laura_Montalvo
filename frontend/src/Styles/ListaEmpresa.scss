@@ -73,3 +73,22 @@
     opacity: 0.5; /* Ajusta la opacidad como prefieras */
     background-color: #d135353d; /* Color de fondo para tarjetas inactivas */
 }
+
+.btn-outline-azul {
+  color: #007bff; // Un tono de azul, ajusta este valor al color exacto que deseas
+  border-color: #007bff;
+
+  &:hover {
+    color: #fff; // Color del texto cuando se pasa el mouse por encima
+    background-color: #007bff; // Color de fondo cuando se pasa el mouse por encima
+    border-color: #007bff;
+  }
+
+  &:focus, &:active {
+    color: #fff; // Color del texto para el estado activo/foco
+    background-color: #0056b3; // Color de fondo más oscuro para el estado activo/foco
+    border-color: #0056b3;
+  }
+
+  // Asegúrate de ajustar los estados :hover y :active a tus necesidades
+}

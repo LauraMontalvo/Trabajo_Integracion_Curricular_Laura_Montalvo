@@ -54,7 +54,7 @@ const LoginFormEmpresa = (props) => {
   }
 
   
-  const RegresarRegistrarComo = () => navigate("/registrarseComo");
+  const RegresarRegistrarComo = () => navigate("/");
 
   return (
     <div className='App'>

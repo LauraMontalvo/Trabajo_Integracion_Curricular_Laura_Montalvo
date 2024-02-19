@@ -17,7 +17,7 @@ const BuscarEmpleo = () => {
     const [selectedJobId, setSelectedJobId] = useState(null);
 
     const { id: idUsuario } = useParams();
-
+    const { id } = useParams();
     useEffect(() => {
         const obtenerEmpleosYPostulaciones = async () => {
             try {
@@ -95,7 +95,7 @@ const BuscarEmpleo = () => {
                                     <Accordion.Header >
                                         <div>
                                         <p className="publication-date">Publicado {formatRelativeDate(empleo.fechaPublicacion)}</p>
-                                            Empleo en  <Link to={`/perfil-empresa/${empleo.idEmpresa._id}`} className="empresa-link">
+                                            Empleo en  <Link to={`/perfilEmpresa/${id}/${empleo.idEmpresa._id}`} className="empresa-link">
                                                 {empleo.idEmpresa?.nombreEmpresa || "Empresa no especificada"}
                                             </Link>
                                         </div>
@@ -105,7 +105,7 @@ const BuscarEmpleo = () => {
                                         <p>{empleo.puesto}</p>
                                         <strong >Descripción:</strong>
                                         <p>{empleo.descripcion}</p>
-                                        <strong >Foramcion Académica:</strong>
+                                        <strong >Formación Académica:</strong>
                                         <p>{empleo.formacionAcademica}</p>
                                         <strong>Conocimientos Requeridos:</strong>
                                         <p>{empleo.conocimientos}</p>

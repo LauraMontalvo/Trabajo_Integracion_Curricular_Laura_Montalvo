@@ -23,6 +23,7 @@ const Main = () => {
     const toggleInstituciones = () => setModalUsuarios(!modalInstituciones);
 
     const handleVerEmpresas = () => navigate(`/admin/consola/listaEmpresas/${id}`);
+    const handleVerEmpresasExternas = () => navigate(`/admin/consola/listaEmpresasExternas/${id}`);
     const handleVerUsuarios = () => navigate(`/admin/consola/listaUsuarios/${id}`);
     const handleVerInstituciones = () => navigate(`/admin/consola/listaInstituciones/${id}`);
     const handleVerReportes = () => {
@@ -52,6 +53,7 @@ const Main = () => {
                             </Card.Body>
                         </Card>
                     </Col>
+                 
                     <Col xs={12} sm={6} md={4} lg={3}>
                         {/* Card para Usuarios */}
                         <Card className="text-center p-4" onClick={handleVerUsuarios}>
@@ -83,6 +85,17 @@ const Main = () => {
 
                 <Row className="justify-content-center">
                     {/* Asegúrate de que las clases de columnas se ajusten a la cantidad deseada */}
+                    <Col xs={12} sm={6} md={4} lg={3}>
+                        {/* Card para Empresas */}
+                        <Card onClick={handleVerEmpresasExternas} className="text-center p-4">
+                            <Card.Body>
+                                <FaBuilding size={70} className="icono-empresa" />
+                                <Card.Title>Empresas Extermas</Card.Title>
+                                <Card.Text>Gestionar empresas Externas.</Card.Text>
+                                <Button variant="primary">Ver Empresas Externas</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
                     <Col xs={12} sm={6} md={4} lg={3}>
                         <Card className="text-center p-4" onClick={handleVerInstituciones}>
                             <Card.Body>

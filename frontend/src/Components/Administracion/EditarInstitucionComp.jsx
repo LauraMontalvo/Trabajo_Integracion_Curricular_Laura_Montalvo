@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSchool, faExclamationCircle, faCheckCircle,faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSchool, faExclamationCircle, faCheckCircle, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes';
 
 const CampoEstado = ({ mensajeError }) => {
@@ -13,7 +13,7 @@ const CampoEstado = ({ mensajeError }) => {
         return null; // No muestra nada si no hay mensaje de error
     }
 };
-const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
+const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada, onCloseModals }) => {
     const [nombreInstitucion, setNombreInstitucion] = useState('');
     const [ubicacion, setUbicacion] = useState('');
     const [ubicacionError, setUbicacionError] = useState(''); // Corregido
@@ -22,12 +22,19 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     const [nombreInstitucionError, setNombreInstitucionError] = useState('');
     const [updateError, setUpdateError] = useState('');
     const [updateSuccess, setUpdateSuccess] = useState('');
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
     const navigate = useNavigate();
     const { id } = useParams();
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        if (onCloseModals) onCloseModals(); // Llamando directamente a onCloseModals
+    };
     const esCampoValido = (valor, error) => {
         return valor !== '' && error === '';
     };
-  
+
 
     const handleUbicacionChange = (e) => {
         setUbicacion(e.target.value);
@@ -43,7 +50,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
     };
     useEffect(() => {
         if (idInstitucion) {
-            axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/school/${idInstitucion}`)
+            axios.get(`${constantes.URL_OBTENER_UNA_INSTITUCION}/${idInstitucion}`)
                 .then(res => {
                     setNombreInstitucion(res.data.nombreInstitucion);
                     setUbicacion(res.data.ubicacion || ''); // Agregado para manejar la ubicación
@@ -60,7 +67,7 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             setError(''); // Limpia el mensaje de error
         }
     };
-    const validarUbicacion= (value, setError) => {
+    const validarUbicacion = (value, setError) => {
         if (!value.trim()) {
             setError(constantes.TEXTO_NOMBRE_INSTITUCION_OBLIGATORIO);
         } else {
@@ -73,11 +80,11 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
             return; // Detiene la ejecución si hay errores
         }
 
-        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/school/${idInstitucion}`, { nombreInstitucion, ubicacion })
+        axios.put(`${constantes.URL_ACTUALIZAR_INSTITUCION}/${idInstitucion}`, { nombreInstitucion, ubicacion })
             .then((res) => {
                 setUpdateSuccess("Institución actualizada correctamente");
                 setUpdateError('');
-
+                setShowSuccessModal(true); // Mostrar el modal de éxito
                 if (onInstitucionActualizada) {
                     onInstitucionActualizada(res.data);
                 }
@@ -121,13 +128,25 @@ const EditarInstitucionComp = ({ idInstitucion, onInstitucionActualizada }) => {
                     {ubicacionError && <p className="text-danger">{ubicacionError}</p>}
                 </Form.Group>
                 <div>
-                    <p style={{ color: 'green' }}>{updateSuccess}</p>
+
                     <p style={{ color: 'red' }}>{updateError}</p>
                 </div>
                 <div className="botones-centrados">
                     <Button variant='primary' type="submit" className='btn'>Guardar</Button>
                 </div><br />
             </Form>
+            <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Institución actualizada con éxito</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>La información de la institución ha sido actualizada correctamente.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={() => setShowSuccessModal(false)}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };

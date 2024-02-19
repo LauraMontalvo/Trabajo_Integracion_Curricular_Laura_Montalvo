@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { ListGroup, Row, Col, Button, Modal ,OverlayTrigger,Tooltip} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faTrashAlt, faHourglass, faCheckCircle, faTimesCircle,faEye,faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/loginstyle.css"
@@ -25,6 +25,7 @@ const ListaMisPostulaciones = ({
         setSelectedPostulacionId(idPostulacion);
         setShowConfirmModal(true);
     };
+    const {id} = useParams();
     
     const renderEstadoIcono = (estado) => {
         switch (estado) {
@@ -97,7 +98,7 @@ const ListaMisPostulaciones = ({
                                     <Col>
                                         <div className="empleo-detalle">
                                             <strong>Empresa:</strong>{" "}
-                                            <Link to={`/perfil-empresa/${postulacion.idEmpleo?.idEmpresa?._id}`}>
+                                            <Link to={`/perfilEmpresa/${id}/${postulacion.idEmpleo?.idEmpresa?._id}`}>
                                                 {postulacion.idEmpleo?.idEmpresa?.nombreEmpresa}
                                             </Link>                                            
                                             <FontAwesomeIcon

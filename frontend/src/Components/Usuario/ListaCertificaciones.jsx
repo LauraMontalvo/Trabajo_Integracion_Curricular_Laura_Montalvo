@@ -30,8 +30,8 @@ const ListaCertificaciones = ({ userId }) => {
     const [showSuccessAddModal, setShowSuccessAddModal] = useState(false); // Estado para el modal de éxito al agregar
     const handleSuccessAddClose = () => {
         setShowSuccessAddModal(false); // Cierra el modal de éxito
-        setShowModal(false); // Cierra el modal de agregar
-        resetForm(); // Restablece el formulario si es necesario
+        setShowModal(false); // Cierra el modal de agregar certificación
+        resetForm(); // Opcional, si quieres restablecer el formulario al cerrar
     };
     
 
@@ -155,6 +155,7 @@ const ListaCertificaciones = ({ userId }) => {
         resetForm(); // Restablece los estados de error al abrir el modal
         setShowModal(true); // Abre el modal
     };
+    
     const format = (dateString) => {
         if (!dateString) {
             return 'No disponible';

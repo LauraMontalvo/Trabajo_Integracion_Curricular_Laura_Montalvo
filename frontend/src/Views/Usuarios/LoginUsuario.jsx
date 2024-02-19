@@ -50,7 +50,7 @@ const LoginForm = (props) => {
     }
   }
 
-  const RegresarRegistrarComo = () => navigate("/registrarseComo");
+  const RegresarRegistrarComo = () => navigate("/");
 
 
 

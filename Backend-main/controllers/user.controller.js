@@ -48,10 +48,24 @@ module.exports.getUserByUsername = (request, response) => {
 }
 
 module.exports.updateUser = (request, response) => {
-    User.findOneAndUpdate({ _id: request.params.id }, request.body, { new: true })
-        .then(updateUser => response.json(updateUser))
-        .catch(err => response.json(err))
-}
+    const userId = request.params.id;
+    const { usuario } = request.body;
+
+    // Primero, verifica si el nombre de usuario ya está tomado por otro usuario
+    User.findOne({ usuario: usuario, _id: { $ne: userId } })
+        .then(user => {
+            if (user) {
+                // Usuario encontrado con el mismo nombre de usuario pero diferente ID
+                return response.status(400).json({ msg: "El nombre de usuario ya está en uso." });
+            } else {
+                // Actualiza el usuario si el nombre de usuario no está tomado
+                User.findOneAndUpdate({ _id: userId }, request.body, { new: true })
+                    .then(updateUser => response.json(updateUser))
+                    .catch(err => response.status(400).json(err));
+            }
+        })
+        .catch(err => response.status(400).json(err));
+};
 module.exports.deleteUser = (request, response) => {
     const userId = request.params.id;
 

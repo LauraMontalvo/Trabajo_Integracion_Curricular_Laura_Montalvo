@@ -4,6 +4,7 @@ import { Card, Container, Row, Col, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/loginstyle.css";
+import { useParams } from 'react-router-dom';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 import 'moment/locale/es'; // Importar el locale español
@@ -12,7 +13,8 @@ const ListaEmpleos = (props) => {
   const [empleos, setEmpleos] = useState([]);
   const [filteredEmpleos, setFilteredEmpleos] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const esUsuario = true; // Cambia esto según el contexto de tu aplicación
+  const {usuario} = useParams();
+  const esUsuario = usuario == "usuario"; // Cambia esto a `true` o `false` según corresponda
   const isAuthenticated = props.isAuthenticated;
 
   useEffect(() => {

@@ -540,7 +540,7 @@ const RegistroUsuarioUS = (props) => {
           <Modal.Body>
 
             <p>
-              El usuario ya existe. Por favor, intenta con un nombre de usuario diferente.
+            Este usuario ya existe, por favor ingrese uno diferente.
             </p>
           </Modal.Body>
           <Modal.Footer>

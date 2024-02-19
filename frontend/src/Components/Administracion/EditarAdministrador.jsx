@@ -5,24 +5,24 @@ import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../Styles/loginstyle.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash, faExclamationCircle, faVenusMars, faUserCircle, faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faCalendarAlt, faPhone, faEye, faEyeSlash,faExclamationCircle, faVenusMars, faUserCircle, faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import * as constantes from '../../Models/Constantes'
 
 
 import md5 from 'md5';
-const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
+const EditarAdministrador = ({ id, onAdministradorUpdated, closeEditModal }) => {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [sexo, setSexo] = useState("");
     const [fechaNacimiento, setFechaNacimiento] = useState("");
     const [telefono, setTelefono] = useState("");
     const [usuario, setUsuario] = useState("");
-    const [descripcionPersonal, setDescripcionPersonal] = useState("");
+
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [updateError, setUpdateError] = useState('');
-    const navigate = useNavigate();
+
     const [updateSuccess, setUpdateSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
@@ -31,18 +31,20 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const [fechaNacimientoError, setFechaNacimientoError] = useState('');
     const [telefonoError, setTelefonoError] = useState('');
     const [nombreError, setNombreError] = useState('');
-    const [descripcionPersonalError, setdescripcionPersonalError] = useState('');
+
     const [apellidoError, setApellidoError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const [usuarioError, setUsuarioError] = useState('');
 
+
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+
     const handleErrorModalClose = () => {
         setShowErrorModal(false);
         setUsuario(''); 
     };
-
-
     const calcularAnioMaximo = () => {
         const fechaActual = new Date();
         return fechaActual.getFullYear() - 18;
@@ -63,6 +65,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const nuevaFechaNacimiento = e.target.value;
         setFechaNacimiento(nuevaFechaNacimiento);
 
+        // Valida la edad y actualiza el mensaje de error
         if (!validarEdad(nuevaFechaNacimiento)) {
             setFechaNacimientoError("Debes tener al menos 18 años.");
         } else {
@@ -74,17 +77,8 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setNombreError('El nombre es obligatorio');
             return false;
         }
-   
+        // Agregar más lógica de validación si es necesario
         setNombreError('');
-        return true;
-    };
-    const validarDescripcionPersonal = () => {
-        if (!descripcionPersonal) {
-            setdescripcionPersonalError('La descripción persona es obligatoria');
-            return false;
-        }
-
-        setdescripcionPersonalError('');
         return true;
     };
 
@@ -94,7 +88,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setApellidoError('El apellido es obligatorio');
             return false;
         }
-    
+        // Agregar más lógica de validación si es necesario
         setApellidoError('');
         return true;
     };
@@ -102,7 +96,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         if (!telefono) {
             setTelefonoError('El número de teléfono es obligatorio');
             return false;
-        } else if (telefono.length !== 10) { 
+        } else if (telefono.length !== 10) { // Asumiendo que esperas 10 dígitos
             setTelefonoError('El número de teléfono debe tener 10 dígitos');
             return false;
         }
@@ -136,7 +130,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             setPasswordError('');
             return true;
         }
-        return true;
+        return true; // Si no se intenta cambiar la contraseña, considerarla válida
     };
     const validarConfirmPassword = () => {
         if (password && confirmPassword !== password) {
@@ -150,7 +144,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const nuevoNombre = e.target.value;
         setNombre(nuevoNombre);
 
-        
+        // Establece o elimina el mensaje de error según el contenido del campo
         if (!nuevoNombre) {
             setNombreError('El nombre es obligatorio');
         } else {
@@ -158,12 +152,12 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         }
     };
 
-    
+    // Actualizar la función de manejo de cambio para el apellido
     const handleApellidoChange = (e) => {
         const nuevoApellido = e.target.value;
         setApellido(nuevoApellido);
 
-
+        // Establece o elimina el mensaje de error según el contenido del campo
         if (!nuevoApellido) {
             setApellidoError('El apellido es obligatorio');
         } else {
@@ -171,17 +165,18 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         }
     };
 
-
-    const handleDescripcionPerChange = (e) => {
-        const nuevaDescripcionPer = e.target.value;
-        setDescripcionPersonal(nuevaDescripcionPer);
-
-        
-        if (!nuevaDescripcionPer) {
-            setdescripcionPersonalError('La descripción personal es obligatoria');
-        } else {
-            setdescripcionPersonalError('');
+    const verificarUsuarioExistente = async () => {
+        try {
+            const response = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/usuarios/verificar/${usuario}`);
+            if (response.data.existe && response.data.usuarioId !== id) {
+                setUsuarioError('El nombre de usuario ya está en uso por otro usuario.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error al verificar el usuario existente', error);
+            return false;
         }
+        return true;
     };
 
 
@@ -189,7 +184,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         const nuevoUsuario = e.target.value;
         setUsuario(nuevoUsuario);
 
-     
+        // Establece o elimina el mensaje de error según el contenido del campo
         if (!nuevoUsuario.trim()) {
             setUsuarioError('El nombre de usuario es obligatorio');
         } else {
@@ -199,9 +194,9 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        if (closeEditModal) {
-            closeEditModal();
-        }
+
+        closeEditModal();
+
     };
 
     const handlePasswrod = (e) => {
@@ -210,12 +205,13 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     const handleConfPasswrod = (e) => {
         setConfirmPassword(e.target.value);
     };
-    const rol = "Usuario";
+    const rol = "Administrador";
 
     const handleTelefonoChange = (e) => {
-        let value = e.target.value.replace(/[^0-9]/g, ''); 
+        let value = e.target.value.replace(/[^0-9]/g, ''); // Elimina caracteres no numéricos
+
         if (value.length > 10) {
-            value = value.substring(0, 10); 
+            value = value.substring(0, 10); // Restringe el valor a los primeros 10 dígitos
         }
 
         setTelefono(value);
@@ -236,8 +232,8 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setFechaNacimiento(toShortDateFormat(res.data.fechaNacimiento));
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
-                setDescripcionPersonal(res.data.descripcionPersonal);
-             
+
+                // No necesitas setear las contraseñas aquí
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -250,7 +246,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 setFechaNacimiento(res.data.fechaNacimiento);
                 setTelefono(res.data.telefono);
                 setUsuario(res.data.usuario);
-                setDescripcionPersonal(res.data.descripcionPersonal);
+
             })
             .catch(err => console.log(err));
     };
@@ -259,23 +255,23 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
         let esPasswordValido = true;
         let esConfirmPasswordValido = true;
 
-
+        // Solo validar si el usuario ha intentado cambiar la contraseña
         if (password) {
             esPasswordValido = validarPassword();
             esConfirmPasswordValido = validarConfirmPassword();
         }
 
         if (!esPasswordValido || !esConfirmPasswordValido) {
-            return; 
+            return; // Detiene la función si hay errores
         }
         const esNombreValido = validarNombre();
         const esApellidoValido = validarApellido();
         const esTelefonoValido = validarTelefono();
         const esUsuarioValido = validarUsuario();
-        const esdescripcionPersValido = validarDescripcionPersonal();
+
         // ... (Validar otros campos)
 
-        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido || !esdescripcionPersValido) {
+        if (!esNombreValido || !esApellidoValido || !esTelefonoValido || !esUsuarioValido) {
             return; // Detener si hay errores
         }
 
@@ -296,7 +292,7 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             fechaNacimiento,
             telefono,
             usuario,
-            descripcionPersonal,
+
             // Solo incluye las contraseñas si realmente se han ingresado nuevas
             ...(password && confirmPassword && { password: md5(password) })
         };
@@ -305,13 +301,17 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
             .then((res) => {
 
                 setUpdateError('');
+                // Limpia los campos de contraseña después de la actualización
                 setPassword('');
                 setConfirmPassword('');
+                // Refresca los datos del usuario
                 refrescarDatosUsuario();
-                if (onUsuarioUpdated) {
-                    onUsuarioUpdated();
-                }
-                setShowSuccessModal(true);
+                // Maneja la respuesta exitosa
+
+                onAdministradorUpdated(); // Llama a esta función para actualizar la lista de administradores en el componente padre
+
+                setShowSuccessModal(true);  // Muestra el modal de éxito
+
             })
             .catch((err) => {
                 if (err.response && err.response.status === 400 && err.response.data.msg) {
@@ -324,12 +324,8 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                 } else {
                     setUpdateError('Ocurrió un error desconocido al actualizar el usuario.'); // Para cualquier otro error
                 }
-
             });
     };
-
-    const [showErrorModal, setShowErrorModal] = useState(false);
-
     function toShortDateFormat(dateString) {
         const date = new Date(dateString);
         return date.toISOString().split('T')[0];
@@ -363,7 +359,6 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
                         <Form.Group>
                             <Form.Label>Apellido:</Form.Label>
                             <div className="input-icon-wrapper">
-                            
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingrese su Apellido"
@@ -455,25 +450,6 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
 
                         </Form.Group>
                     </Col>
-                    <Col md={12}>
-                        <Form.Group controlId="formDescripcionPersonal">
-                            <Form.Label>Descripción Personal:</Form.Label>
-                            <div className="input-icon-wrapper">
-                                <FontAwesomeIcon icon={faPen} className="input-icon" />
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    placeholder="Describe brevemente tus habilidades y experiencias"
-                                    value={descripcionPersonal}
-                                    isInvalid={!!descripcionPersonalError}
-                                    onChange={handleDescripcionPerChange}
-                                />
-                            </div>
-                            <div className="text-danger">{descripcionPersonalError}</div>
-                        </Form.Group>
-                    </Col>
-
-
                     <Col md={6}>
                         <Form.Group controlId="formPassword">
                             <Form.Label>Contraseña:</Form.Label>
@@ -563,4 +539,4 @@ const EditarUsuario = ({ id, onUsuarioUpdated, closeEditModal }) => {
     );
 };
 
-export default EditarUsuario;
+export default EditarAdministrador;

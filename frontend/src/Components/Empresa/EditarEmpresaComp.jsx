@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col, Modal } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { faUser, faLock, faCheckCircle, faBalanceScale, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faExclamationCircle, faLock, faCheckCircle, faBalanceScale, faPhone, faEnvelope, faMapMarker, faExclamationTriangle, faEye, faEyeSlash, faBuilding, faVenusMars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import md5 from 'md5';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as constantes from '../../Models/Constantes'
@@ -23,10 +23,9 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const navigate = useNavigate();
     const [updateSuccess, setUpdateSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    ///
+
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    //modal de conrfirmacion
-    //
+
     const [nombreEmpresaError, setNombreEmpresaError] = useState('');
     const [direccionError, setdireccionError] = useState("");
     const [descripcionError, setDescripcionError] = useState("");
@@ -38,12 +37,19 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+    const handleErrorModalClose = () => {
+        setShowErrorModal(false);
+        setUsuario('');
+    };
+
     const validarNombreEmpresa = () => {
         if (!nombreEmpresa) {
             setNombreEmpresaError('El nombre de Empresa es obligatorio');
             return false;
         }
-        // Agregar más lógica de validación si es necesario
+
         setNombreEmpresaError('');
         return true;
     };
@@ -64,7 +70,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
             setdireccionError('La direccion es obligatorio');
             return false;
         }
-        // Agregar más lógica de validación si es necesario
+
         setdireccionError('');
         return true;
     };
@@ -72,7 +78,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
         if (!telefono) {
             setTelefonoError('El número de teléfono es obligatorio');
             return false;
-        } else if (telefono.length !== 10) { // Asumiendo que esperas 10 dígitos
+        } else if (telefono.length !== 10) {
             setTelefonoError('El número de teléfono debe tener 10 dígitos');
             return false;
         }
@@ -236,7 +242,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
 
 
     useEffect(() => {
-        axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`)
+        axios.get(`${constantes.URL_OBTENER_UNA_EMPRESA}/${id}`)
             .then(res => {
                 setNombreEmpresa(res.data.nombreEmpresa);
                 setCorreo(res.data.correo);
@@ -297,7 +303,7 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
             dataToUpdate.password = md5(password);
             dataToUpdate.confirmPassword = md5(confirmPassword);
         }
-        axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/company/${id}`, dataToUpdate)
+        axios.put(`${constantes.URL_ACTUALIZAR_EMPRESA}/${id}`, dataToUpdate)
             .then((res) => {
                 console.log(res.data);
                 setUpdateSuccess("Se ha actualizado correctamente");
@@ -309,8 +315,16 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
                 setShowSuccessModal(true);  // Muestra el modal de éxito
             })
             .catch((err) => {
-                setUpdateError(err.response?.data?.msg || 'Error desconocido');
-                console.log(err);
+                if (err.response && err.response.status === 400) {
+                    if (err.response.data.msg === "El nombre de usuario ya está en uso.") {
+                        setShowErrorModal(true); // Muestra el modal de error
+                        setUsuario(''); // Limpia el campo de usuario
+                    } else {
+                        setUpdateError(err.response.data.msg); // Maneja otros mensajes de error del backend
+                    }
+                } else {
+                    setUpdateError('Ocurrió un error desconocido al actualizar la empresa.'); // Maneja otros errores
+                }
             });
     };
 
@@ -509,7 +523,21 @@ const EditarEmpresa = ({ id, onEmpresaUpdated, closeEditModal }) => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
+                <Modal show={showErrorModal} onHide={handleErrorModalClose}>
+                    <Modal.Header closeButton className="bg-danger text-white">
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            <FontAwesomeIcon icon={faExclamationCircle} /> Error al Actualizar
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Este usuario ya existe, por favor ingrese uno diferente.
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={handleErrorModalClose}>
+                            Cerrar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Form>
         </div>
     );

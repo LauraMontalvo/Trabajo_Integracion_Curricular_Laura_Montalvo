@@ -5,14 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faIndustry, faPhone, faGlobe, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import '../../Styles/Lista.css';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import defaultImage from '../../img/imagenUsuarioDefecto.png';
 import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
 import CabeceraEmpresaInicioComp from '../../Components/Empresa/CabeceraEmpresaInicioComp';
 
 const ListaEmpresas = (props) => {
   const [empresas, setEmpresas] = useState([]);
-  const esUsuario = true; // Cambia esto a `true` o `false` según corresponda
+  const {usuario, id} = useParams();
+  const esUsuario = usuario === 'usuario';
   const isAuthenticated = props.isAuthenticated;
   const [filteredEmpresas, setFilteredEmpresas] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -74,7 +75,7 @@ const ListaEmpresas = (props) => {
                     </Col>
                     <Col xs={12} sm={8} md={8}>
                       <Card.Title>
-                        <Link to={`/perfil-empresa/${empresa._id}`} className="empresa-link">
+                        <Link to={`/perfil-empresa/${id}/${empresa._id}/${usuario}`} className="empresa-link">
                           {empresa.nombreEmpresa || "Empresa no especificada"}
                         </Link>
                       </Card.Title>

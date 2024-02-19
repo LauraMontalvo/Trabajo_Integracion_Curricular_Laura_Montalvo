@@ -151,7 +151,7 @@ const ListaEmpresas = (props) => {
                     <Card.Body>
                       <Row className="align-items-center">
                         <Col xs={12} sm={6} md={8}>
-                          <Card.Title>  <Link to={`/perfil-empresa/${empresa._id}`} className="empresa-link">
+                          <Card.Title>  <Link to={`/admin/perfil-empresa/${id}/${empresa._id}`} className="empresa-link">
                             {empresa.nombreEmpresa || "Empresa no especificada"}
                           </Link></Card.Title>
 

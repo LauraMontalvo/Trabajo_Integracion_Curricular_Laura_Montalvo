@@ -4,6 +4,7 @@ import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faTools, faGraduationCap, faCalendarAlt, faClipboardList, faBriefcase, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/camps.scss"; // Importa tus estilos personalizados
+import * as constantes from '../../Models/Constantes'
 
 const CampoEstado = ({ valido, mensajeError }) => {
   if (mensajeError) {
@@ -196,7 +197,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
       return;
     }
     axios
-      .post('https://46wm6186-8000.use.devtunnels.ms/api/job/new', {
+      .post(constantes.URL_PUBLICAR_EMPLEO, {
         idEmpresa,
         puesto,
         descripcion,
@@ -205,7 +206,7 @@ const PublicarEmpleo = ({ idEmpresa, onEmpleoPublicado, closeEditModal }) => {
         aptitudes,
         experiencia,        
         modalidad,
-        estado: 'Activo'
+        estado: constantes.ESTADO_ACTIVO
 
       })
       .then((res) => {

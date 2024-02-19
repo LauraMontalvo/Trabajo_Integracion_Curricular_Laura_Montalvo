@@ -4,7 +4,7 @@ import { Form, Button, Row, Col, Alert, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faTools, faClipboardList, faGraduationCap, faUserCircle, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faBriefcase, faBuilding, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-
+import * as constantes from '../../Models/Constantes'
 const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
   // Estados para los datos del formulario
   const [descripcion, setDescripcion] = useState('');
@@ -25,9 +25,9 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
     }
   };
 
-
+ 
   useEffect(() => {
-    axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/job/${idEmpleo}`)
+    axios.get(`${constantes.URL_OBTENER_UN_EMPLEO}/${idEmpleo}`)
       .then(response => {
         // Aquí estableces los estados con los datos obtenidos
         setDescripcion(response.data.descripcion);
@@ -48,7 +48,7 @@ const EditarEmpleoComp = ({ idEmpleo, onEmpleoEditado, closeEditModal }) => {
     e.preventDefault();
     // ... Aquí incluyes tus validaciones ...
 
-    axios.put(`https://46wm6186-8000.use.devtunnels.ms/api/job/${idEmpleo}`, {
+    axios.put(`${constantes.URL_ACTUALIZAR_UN_EMPLEO}/${idEmpleo}`, {
       descripcion,
       conocimientos,
       aptitudes,

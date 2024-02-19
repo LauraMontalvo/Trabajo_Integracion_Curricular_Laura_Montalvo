@@ -9,9 +9,20 @@ import TabsAdministracionComp from "../../Components/Administracion/TabsAdminist
 import * as constantes from '../../Models/Constantes';
 import "../../Styles/Lista.scss";
 import { Link } from 'react-router-dom';
+import EditarAdministrador from "../../Components/Administracion/EditarAdministrador";
 
 const ListaAdministradores = () => {
   const [administradores, setAdministradores] = useState([]);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [administradorSeleccionado, setAdministradorSeleccionado] = useState(null);
+
+  const toggleEditarModal = () => setShowEditModal(!showEditModal);
+  const [selectedAdminId, setSelectedAdminId] = useState(null);
+  const handleEditClick = (adminId) => {
+    setSelectedAdminId(adminId);
+    setShowEditModal(true);
+  };
 
   const recargarAdministradores = () => {
     axios.get("https://46wm6186-8000.use.devtunnels.ms/api/users") // Asegúrate de que esta URL devuelva todos los usuarios
@@ -65,7 +76,9 @@ const ListaAdministradores = () => {
                         <Col xs={12} sm={6} md={4} className="text-right">
                           <div className="icon-container">
                             {/* Iconos de acciones como editar o cambiar estado */}
-                            <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} size="lg" />
+                            <FontAwesomeIcon className="icon-primary me-2" icon={faEdit} size="lg" onClick={() => handleEditClick(administrador._id)} />
+
+
 
                             <OverlayTrigger
                               placement="top"
@@ -95,6 +108,22 @@ const ListaAdministradores = () => {
           </Col>
         </Row>
       </Container>
+      {/* Modal para editar Admin */}
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Administrador</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedAdminId && (
+            <EditarAdministrador
+              id={selectedAdminId}
+              onAdministradorUpdated={recargarAdministradores} // Recarga los administradores después de editar
+              closeEditModal={() => setShowEditModal(false)}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
+
     </div>
   );
 }

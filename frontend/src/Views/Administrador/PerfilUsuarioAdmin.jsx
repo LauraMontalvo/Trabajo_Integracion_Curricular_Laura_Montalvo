@@ -8,8 +8,11 @@ import defaultImage from '../../img/imagenUsuarioDefecto.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import "../../Styles/detalle.scss"
-function PerfilUsuario() {
-    const { id } = useParams();
+import CabeceraUsuarioInicio from '../../Components/Usuario/CabeceraUsuarioInicioComp';
+import TabsAdministracionComp from '../../Components/Administracion/TabsAdministracionComp';
+
+function PerfilUsuarioAdmin(props) {
+    const { id, idUsuario } = useParams();
     const [user, setUser] = useState(null);
     const [acadTraining, setAcadTraining] = useState([]);
     const [experienciaLaboral, setExperienciaLaboral] = useState([]);
@@ -17,7 +20,9 @@ function PerfilUsuario() {
     const [certificaciones, setCertificaciones] = useState([]);
     const [verMasDescripcion, setVerMasDescripcion] = useState(false); // Nuevo estado para controlar la visualización
 
-    const [isEditing, setIsEditing] = useState(false);
+
+    const esUsuario = true;
+    const isAuthenticated = props.isAuthenticated;
     //Descripcion
     const toggleVerMasDescripcion = () => {
         setVerMasDescripcion(!verMasDescripcion);
@@ -27,19 +32,19 @@ function PerfilUsuario() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${id}`);
+                const userResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/${idUsuario}`);
                 setUser(userResponse.data);
 
-                const acadResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/acadTrainings/user/${id}`);
+                const acadResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/acadTrainings/user/${idUsuario}`);
                 setAcadTraining(acadResponse.data);
 
-                const expResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperiences/user/${id}`);
+                const expResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/workExperiences/user/${idUsuario}`);
                 setExperienciaLaboral(expResponse.data);
 
-                const certiResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/certification/user/${id}`);
+                const certiResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/certification/user/${idUsuario}`);
                 setCertificaciones(certiResponse.data);
                 // Obtener la foto del usuario
-                const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${id}`);
+                const fotoResponse = await axios.get(`https://46wm6186-8000.use.devtunnels.ms/api/user/foto/${idUsuario}`);
                 if (fotoResponse.data && fotoResponse.data.foto) {
                     setImagenPreview(fotoResponse.data.foto);
                 }
@@ -49,7 +54,7 @@ function PerfilUsuario() {
         };
 
         fetchUserData();
-    }, [id]);
+    }, [idUsuario]);
 
     const calcularEdad = (fechaNacimiento) => {
         if (!fechaNacimiento) return '';
@@ -81,7 +86,8 @@ function PerfilUsuario() {
         return url.length > maxChar ? url.substring(0, maxChar) + '...' : url;
     };
     return (
-        <div className='App'><CabeceraEmpresaInicioComp />
+        <div className='App'>
+             <TabsAdministracionComp/>
 
             <Container className="mt-4">
                 <Row>
@@ -192,4 +198,4 @@ function PerfilUsuario() {
     );
 }
 
-export default PerfilUsuario;
+export default PerfilUsuarioAdmin;
