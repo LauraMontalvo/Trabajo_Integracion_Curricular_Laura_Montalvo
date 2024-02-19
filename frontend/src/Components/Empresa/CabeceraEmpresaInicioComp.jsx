@@ -20,6 +20,7 @@ const CabeceraEmpresaInicioComp = ({ isAuthenticated }) => {
 
   const handleShowLogoutModal = () => setShowLogoutModal(true);
   const handleCloseLogoutModal = () => setShowLogoutModal(false);
+  
   const handleConfirmLogout = () => {
     handleLogout();
     handleCloseLogoutModal();

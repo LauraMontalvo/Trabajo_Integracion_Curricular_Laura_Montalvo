@@ -105,7 +105,7 @@ const BuscarEmpleo = () => {
                                         <p>{empleo.puesto}</p>
                                         <strong >Descripción:</strong>
                                         <p>{empleo.descripcion}</p>
-                                        <strong >Foramcion Académica:</strong>
+                                        <strong >Formación Académica:</strong>
                                         <p>{empleo.formacionAcademica}</p>
                                         <strong>Conocimientos Requeridos:</strong>
                                         <p>{empleo.conocimientos}</p>

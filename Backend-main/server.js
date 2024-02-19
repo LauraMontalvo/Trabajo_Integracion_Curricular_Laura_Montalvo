@@ -35,6 +35,9 @@ allCertificationRoutes(app);
 const allWorkExperienceRoutes = require('./routes/workExperience.routes');
 allWorkExperienceRoutes(app);
 
+const allExternalCompanyRoutes = require('./routes/externalCompany.routes');
+allExternalCompanyRoutes(app);
+
 const allCompanyRoutes = require('./routes/company.routes');
 allCompanyRoutes(app);
 

@@ -32,6 +32,7 @@ import PerfilUsuarioAdmin from './Views/Administrador/PerfilUsuarioAdmin';
 import PerfilEmpresaAdmin from './Views/Administrador/PerfilEmpresaAdmin';
 import PerfilempresaUser from './Views/Usuarios/PerfilempresaUser';
 import PerfilUsuarioEmpresa from './Views/Empresa/PerfilUsuarioEmpresa';
+import ListaEmpresasExternas from './Views/Administrador/ListaEmpresasExternas';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +70,7 @@ function App() {
             <Route path="/admin" element={<LoginAdminForm />} />
             <Route path="/admin/consola/:id" element={<AdminConsola />} />
             <Route path="/admin/consola/listaEmpresas/:id" element={<ListaEmpresas />} />
+            <Route path="/admin/consola/listaEmpresasExternas/:id" element={<ListaEmpresasExternas />} />
             <Route path="/admin/consola/listaUsuarios/:id" element={<ListaUsuarios />} />
             <Route path="/admin/consola/listaPostulacionesAdmin/:id" element={<ListaPostulacionesAdmin />} />
             <Route path="/admin/consola/listaAdministradores/:id" element={<ListaAdministradores />} />
