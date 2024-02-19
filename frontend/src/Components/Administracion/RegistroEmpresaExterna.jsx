@@ -16,7 +16,6 @@ const CampoEstado = ({ valido, mensajeError }) => {
   }
 };
 
-
 const RegistroEmpresaExterna = ({ onEmpresaRegistered, onCloseRegisterModal }) => {
   const [nombreEmpresa, setNombreEmpresa] = useState("");
   const [descripcionPublicacion, setDescripcionPublicacion] = useState("");
